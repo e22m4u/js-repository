@@ -532,7 +532,7 @@ schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
 
 - **where** *(условия выборки)*  
   примеры:  
-  `where: {foo: 'bar'}` поиск по значению поля  
+  `where: {foo: 'bar'}` поиск по значению поля `foo`  
   `where: {foo: {eq: 'bar'}}` оператор равенства `eq`  
   `where: {foo: {neq: 'bar'}}` оператор неравенства `neq`  
   `where: {foo: {gt: 5}}` оператор "больше" `gt`  
