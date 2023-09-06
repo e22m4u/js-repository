@@ -551,7 +551,7 @@ schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
   `where: {foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения  
 
 
-- **order** *(упорядочить по полю)*  
+- **order** *(упорядочить строки по полю)*  
   примеры:  
   `order: 'foo'` порядок по полю `foo`  
   `order: 'foo ASC'` явное указание порядка  
