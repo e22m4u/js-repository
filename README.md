@@ -38,7 +38,7 @@ schema.defineDatasource({
 });
 ```
 
-Создаем модель пользователя `user`
+Создаем модель `user`
 
 ```js
 schema.defineModel({
