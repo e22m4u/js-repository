@@ -551,7 +551,7 @@ schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
   `where: {foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения  
 
 
-- **order** *(упорядочить строки по полю)*  
+- **order** *(упорядочить записи по полю)*  
   примеры:  
   `order: 'foo'` порядок по полю `foo`  
   `order: 'foo ASC'` явное указание порядка  
@@ -559,13 +559,13 @@ schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
   `order: ['foo', 'bar ASC', 'baz DESC']` по нескольким полям  
 
 
-- **limit** *(не более N строк)*  
+- **limit** *(не более N записей)*  
   примеры:  
   `limit: 0` не ограничивать  
   `limit: 14` не более 14-и  
 
 
-- **skip** *(пропуск первых N строк)*  
+- **skip** *(пропуск первых N записей)*  
   примеры:  
   `skip: 0` выборка без пропуска  
   `skip: 10` пропустить 10 объектов выборки  
