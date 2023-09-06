@@ -45,7 +45,7 @@ schema.defineModel({
   name: 'order', // название модели
   datasource: 'myDatasource', // используемый источник
   properties: { // поля модели
-    cost: 'number', // поле типа "number"
+    cost: 'number', // поле "cost" типа "number"
   },
   relations: { // связи с другими моделями
     customer: { // название связи
