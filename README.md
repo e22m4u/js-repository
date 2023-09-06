@@ -21,19 +21,26 @@ npm install @e22m4u/repository-mongodb-adapter
 
 ## Пример
 
+Создаем экземпляр класса `Schema`
+
 ```js
 import {Schema} from '@e22m4u/repository';
 
-// создаем экземпляр класса Schema
 const schema = new Schema();
+```
 
-// объявляем источник данных "myMemory"
+Создаем источник данных `myMemory`
+
+```js
 schema.defineDatasource({
   name: 'myMemory', // название источника
   adapter: 'memory', // выбранный адаптер
 });
+```
 
-// объявляем модель "user"
+Создаем модель пользователя `user`
+
+```js
 schema.defineModel({
   name: 'user', // название модели
   adapter: 'myMemory', // выбранный источник
@@ -42,11 +49,17 @@ schema.defineModel({
     age: 'number',
   },
 });
+```
 
-// получаем репозиторий модели "user"
+Получаем репозиторий модели `user`
+
+```js
 const userRep = schema.getRepository('user');
+```
 
-// добавляем новую запись методом "create"
+Добавляем новую запись методом `create`
+
+```js
 let fedor = await userRep.create({
   name: 'Fedor',
   age: 24,
@@ -57,8 +70,11 @@ console.log(fedor);
 //   name: 'Fedor',
 //   age: 24,
 // }
+```
 
-// изменяем данные методом "patchById"
+Изменяем данные методом `patchById`
+
+```js
 fedor = await userRep.patchById(
   fedor.id,
   {age: 30},
@@ -69,9 +85,12 @@ console.log(fedor);
 //   name: 'Fedor',
 //   age: 30,
 // }
+```
 
-// удаляем методом "deleteById"
-await userRep.deleteById(fedor.id);
+Удаляем по идентификатору методом `deleteById`
+
+```js
+await userRep.deleteById(fedor.id); // true
 ```
 
 ## Репозиторий
