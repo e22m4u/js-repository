@@ -1,40 +1,8 @@
 import {Service} from '../service/index.js';
 import {AdapterRegistry} from '../adapter/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
-import {RepositoryEvent} from './repository-observer.js';
 import {DefinitionRegistry} from '../definition/index.js';
 import {ModelDefinitionUtils} from '../definition/index.js';
-import {RepositoryObserver} from './repository-observer.js';
-
-/**
- * Repository method.
- *
- * @type {{
- *   DELETE: string,
- *   DELETE_BY_ID: string,
- *   CREATE: string,
- *   EXISTS: string,
- *   PATCH_BY_ID: string,
- *   FIND: string,
- *   FIND_BY_ID: string,
- *   COUNT: string,
- *   REPLACE_BY_ID: string,
- *   REPLACE_OR_CREATE: string,
- * }}
- */
-export const RepositoryMethod = {
-  CREATE: 'create',
-  REPLACE_BY_ID: 'replaceById',
-  REPLACE_OR_CREATE: 'replaceOrCreate',
-  PATCH_BY_ID: 'patchById',
-  FIND: 'find',
-  FIND_ONE: 'findOne',
-  FIND_BY_ID: 'findById',
-  DELETE: 'delete',
-  DELETE_BY_ID: 'deleteById',
-  EXISTS: 'exists',
-  COUNT: 'count',
-};
 
 /**
  * Repository.
@@ -90,7 +58,7 @@ export class Repository extends Service {
   /**
    * Get adapter.
    *
-   * @return {Promise<Object>}
+   * @return {Promise<Adapter>}
    */
   async getAdapter() {
     return this.get(AdapterRegistry).getAdapter(this.datasourceName);
@@ -104,22 +72,8 @@ export class Repository extends Service {
    * @return {Promise<object>}
    */
   async create(data, filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_CREATE,
-      RepositoryMethod.CREATE,
-      {data, filter},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.create(this.modelName, data, filter);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_CREATE,
-      RepositoryMethod.CREATE,
-      {data, filter, result},
-    );
-    return result;
+    return adapter.create(this.modelName, data, filter);
   }
 
   /**
@@ -131,22 +85,8 @@ export class Repository extends Service {
    * @return {Promise<object>}
    */
   async replaceById(id, data, filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_UPDATE,
-      RepositoryMethod.REPLACE_BY_ID,
-      {id, data, filter},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.replaceById(this.modelName, id, data, filter);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_UPDATE,
-      RepositoryMethod.REPLACE_BY_ID,
-      {id, data, filter, result},
-    );
-    return result;
+    return adapter.replaceById(this.modelName, id, data, filter);
   }
 
   /**
@@ -174,22 +114,8 @@ export class Repository extends Service {
    * @return {Promise<object>}
    */
   async patchById(id, data, filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_UPDATE,
-      RepositoryMethod.PATCH_BY_ID,
-      {id, data, filter},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.patchById(this.modelName, id, data, filter);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_UPDATE,
-      RepositoryMethod.PATCH_BY_ID,
-      {id, data, filter, result},
-    );
-    return result;
+    return adapter.patchById(this.modelName, id, data, filter);
   }
 
   /**
@@ -199,22 +125,8 @@ export class Repository extends Service {
    * @return {Promise<object[]>}
    */
   async find(filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_READ,
-      RepositoryMethod.FIND,
-      {filter},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.find(this.modelName, filter);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_READ,
-      RepositoryMethod.FIND,
-      {filter, result},
-    );
-    return result;
+    return adapter.find(this.modelName, filter);
   }
 
   /**
@@ -224,25 +136,11 @@ export class Repository extends Service {
    * @return {Promise<object|undefined>}
    */
   async findOne(filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_READ,
-      RepositoryMethod.FIND_ONE,
-      {filter},
-    );
     const adapter = await this.getAdapter();
     filter = filter ?? {};
     filter.limit = 1;
-    const resultArray = await adapter.find(this.modelName, filter);
-    const result = resultArray.length ? resultArray[0] : undefined;
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_READ,
-      RepositoryMethod.FIND_ONE,
-      {filter, result},
-    );
-    return result;
+    const result = await adapter.find(this.modelName, filter);
+    return result.length ? result[0] : undefined;
   }
 
   /**
@@ -253,22 +151,8 @@ export class Repository extends Service {
    * @return {Promise<object>}
    */
   async findById(id, filter = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_READ,
-      RepositoryMethod.FIND_BY_ID,
-      {id, filter},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.findById(this.modelName, id, filter);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_READ,
-      RepositoryMethod.FIND_BY_ID,
-      {id, filter, result},
-    );
-    return result;
+    return adapter.findById(this.modelName, id, filter);
   }
 
   /**
@@ -278,22 +162,8 @@ export class Repository extends Service {
    * @return {Promise<number>}
    */
   async delete(where = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_DELETE,
-      RepositoryMethod.DELETE,
-      {where},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.delete(this.modelName, where);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_DELETE,
-      RepositoryMethod.DELETE,
-      {where, result},
-    );
-    return result;
+    return adapter.delete(this.modelName, where);
   }
 
   /**
@@ -303,22 +173,8 @@ export class Repository extends Service {
    * @return {Promise<boolean>}
    */
   async deleteById(id) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_DELETE,
-      RepositoryMethod.DELETE_BY_ID,
-      {id},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.deleteById(this.modelName, id);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_DELETE,
-      RepositoryMethod.DELETE_BY_ID,
-      {id, result},
-    );
-    return result;
+    return adapter.deleteById(this.modelName, id);
   }
 
   /**
@@ -328,22 +184,8 @@ export class Repository extends Service {
    * @return {Promise<boolean>}
    */
   async exists(id) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_READ,
-      RepositoryMethod.EXISTS,
-      {id},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.exists(this.modelName, id);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_READ,
-      RepositoryMethod.EXISTS,
-      {id, result},
-    );
-    return result;
+    return adapter.exists(this.modelName, id);
   }
 
   /**
@@ -353,21 +195,7 @@ export class Repository extends Service {
    * @return {Promise<number>}
    */
   async count(where = undefined) {
-    const observer = this.get(RepositoryObserver);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.BEFORE_READ,
-      RepositoryMethod.COUNT,
-      {where},
-    );
     const adapter = await this.getAdapter();
-    const result = await adapter.count(this.modelName, where);
-    await observer.emit(
-      this.modelName,
-      RepositoryEvent.AFTER_READ,
-      RepositoryMethod.COUNT,
-      {where, result},
-    );
-    return result;
+    return adapter.count(this.modelName, where);
   }
 }
