@@ -37,6 +37,10 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'user', // название модели
   adapter: 'myMemory', // выбранный источник
+  properties: { // поля модели
+    name: 'string',
+    age: 'number',
+  },
 });
 
 // получаем репозиторий модели "user"
