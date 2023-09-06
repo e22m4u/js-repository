@@ -27,6 +27,29 @@ describe('Repository', function () {
     });
   });
 
+  describe('replaceOrCreate', function () {
+    it('creates a new item from the given data', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const data = {foo: 'bar'};
+      const rep = schema.getRepository('model');
+      const result = await rep.replaceOrCreate(data);
+      expect(result).to.be.eql({[DEF_PK]: result[DEF_PK], ...data});
+    });
+
+    it('replaces an existing item', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = schema.getRepository('model');
+      const created = await rep.create({foo: 'bar'});
+      const replacer = {[DEF_PK]: created[DEF_PK], bar: 'qux'};
+      const result = await rep.replaceOrCreate(replacer);
+      expect(result).to.be.eql(replacer);
+    });
+  });
+
   describe('patchById', function () {
     it('patches an item by the given id', async function () {
       const schema = new Schema();

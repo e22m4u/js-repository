@@ -101,7 +101,7 @@ export class Repository extends Service {
       ModelDefinitionUtils,
     ).getPrimaryKeyAsPropertyName(this.modelName);
     const pkValue = data[pkPropName];
-    if (pkPropName == null) return this.create(data, filter);
+    if (pkValue == null) return this.create(data, filter);
     return this.replaceById(pkValue, data, filter);
   }
 
