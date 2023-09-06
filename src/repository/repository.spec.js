@@ -84,6 +84,32 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeCreate" and "afterCreate" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_CREATE, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_CREATE, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_CREATE, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_CREATE, handler4);
+      const rep = schema.getRepository('model');
+      await rep.create({});
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('replaceById', function () {
@@ -167,6 +193,34 @@ describe('Repository', function () {
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
+    });
+
+    it('emits "beforeUpdate" and "afterUpdate" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_UPDATE, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_UPDATE, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_UPDATE, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_UPDATE, handler4);
+      const rep = schema.getRepository('model');
+      const data = {foo: 'bar'};
+      const created = await rep.create(data);
+      await rep.replaceById(created[DEF_PK], data);
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
     });
   });
 
@@ -252,6 +306,34 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeUpdate" and "afterUpdate" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_UPDATE, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_UPDATE, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_UPDATE, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_UPDATE, handler4);
+      const rep = schema.getRepository('model');
+      const data = {foo: 'bar'};
+      const created = await rep.create(data);
+      await rep.patchById(created[DEF_PK], data);
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('find', function () {
@@ -330,6 +412,33 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeRead" and "afterRead" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_READ, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_READ, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_READ, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_READ, handler4);
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'bar'});
+      await rep.find();
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('findOne', function () {
@@ -407,6 +516,33 @@ describe('Repository', function () {
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
+    });
+
+    it('emits "beforeRead" and "afterRead" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_READ, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_READ, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_READ, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_READ, handler4);
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'bar'});
+      await rep.findOne();
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
     });
   });
 
@@ -488,6 +624,33 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeRead" and "afterRead" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_READ, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_READ, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_READ, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_READ, handler4);
+      const rep = schema.getRepository('model');
+      const created = await rep.create({foo: 'bar'});
+      await rep.findById(created[DEF_PK]);
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('delete', function () {
@@ -566,6 +729,33 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeDelete" and "afterDelete" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_DELETE, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_DELETE, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_DELETE, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_DELETE, handler4);
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'bar'});
+      await rep.delete();
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('deleteById', function () {
@@ -642,6 +832,33 @@ describe('Repository', function () {
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
     });
+
+    it('emits "beforeDelete" and "afterDelete" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_DELETE, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_DELETE, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_DELETE, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_DELETE, handler4);
+      const rep = schema.getRepository('model');
+      const created = await rep.create({foo: 'bar'});
+      await rep.deleteById(created[DEF_PK]);
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
+    });
   });
 
   describe('exists', function () {
@@ -717,6 +934,33 @@ describe('Repository', function () {
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
+    });
+
+    it('emits "beforeRead" and "afterRead" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_READ, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_READ, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_READ, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_READ, handler4);
+      const rep = schema.getRepository('model');
+      const created = await rep.create({foo: 'bar'});
+      await rep.exists(created[DEF_PK]);
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
     });
   });
 
@@ -795,6 +1039,32 @@ describe('Repository', function () {
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
       expect(result).to.be.eq(modelHandlerResult);
+    });
+
+    it('emits "beforeRead" and "afterRead" in order', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const order = [];
+      const handler1 = () => order.push(handler1);
+      const handler2 = () => order.push(handler2);
+      const handler3 = () => order.push(handler3);
+      const handler4 = () => order.push(handler4);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_READ, handler1);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_READ, handler2);
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_READ, handler3);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_READ, handler4);
+      const rep = schema.getRepository('model');
+      await rep.count();
+      expect(order).to.be.eql([handler1, handler2, handler3, handler4]);
     });
   });
 });
