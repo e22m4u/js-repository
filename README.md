@@ -60,10 +60,11 @@ const userRep = schema.getRepository('user');
 Добавляем новую запись методом `create`
 
 ```js
-let fedor = await userRep.create({
+const fedor = await userRep.create({
   name: 'Fedor',
   age: 24,
 });
+
 console.log(fedor);
 // {
 //   id: 1,
@@ -75,11 +76,12 @@ console.log(fedor);
 Изменяем данные методом `patchById`
 
 ```js
-fedor = await userRep.patchById(
+const result = await userRep.patchById(
   fedor.id,
   {age: 30},
 );
-console.log(fedor);
+
+console.log(result);
 // {
 //   id: 1,
 //   name: 'Fedor',
