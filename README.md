@@ -21,143 +21,155 @@ npm install @e22m4u/repository-mongodb-adapter
 
 ## Пример
 
-Создаем экземпляр класса `Schema`
+```js
+import {Schema} from '@e22m4u/repository';
+
+// создаем экземпляр класса Schema
+const schema = new Schema();
+
+// объявляем источник данных "myMemory"
+schema.defineDatasource({
+  name: 'myMemory', // название источника
+  adapter: 'memory', // выбранный адаптер
+});
+
+// объявляем модель "user"
+schema.defineModel({
+  name: 'user', // название модели
+  adapter: 'myMemory', // выбранный источник
+});
+
+// получаем репозиторий модели "user"
+const userRep = schema.getRepository('user');
+
+// добавляем новую запись методом "create"
+let fedor = await userRep.create({
+  name: 'Fedor',
+  age: 24,
+});
+console.log(fedor);
+// {
+//   id: 1,
+//   name: 'Fedor',
+//   age: 24,
+// }
+
+// изменяем данные методом "patchById"
+fedor = await userRep.patchById(
+  fedor.id,
+  {age: 30},
+);
+console.log(fedor);
+// {
+//   id: 1,
+//   name: 'Fedor',
+//   age: 30,
+// }
+
+// удаляем методом "deleteById"
+await userRep.deleteById(fedor.id);
+```
+
+## Репозиторий
+
+Выполняет операции чтения и записи определенной коллекции.
+
+Методы:
+
+- `create(data, filter = undefined)`
+- `replaceById(id, data, filter = undefined)`
+- `replaceOrCreate(data, filter = undefined)`
+- `patchById(id, data, filter = undefined)`
+- `find(filter = undefined)`
+- `findOne(filter = undefined)`
+- `findById(id, filter = undefined)`
+- `delete(where = undefined)`
+- `deleteById(id)`
+- `exists(id)`
+- `count(where = undefined)`
+
+Получение репозитория модели:
 
 ```js
 import {Schema} from '@e22m4u/repository';
 
 const schema = new Schema();
+// создаем источник
+schema.defineDatasource({name: 'myDatasource', adapter: 'memory'});
+// создаем модель
+schema.defineModel({name: 'myModel', datasource: 'myDatasource'});
+// получаем репозиторий по названию модели
+const repositorty = schema.getRepository('myModel');
 ```
 
-Объявляем источник данных `myDatasource`
+Переопределение конструктора:
 
 ```js
-schema.defineDatasource({
-  name: 'myDatasource', // название источника
-  adapter: 'memory', // выбранный адаптер
-});
+import {Schema} from '@e22m4u/repository';
+import {Repository} from '@e22m4u/repository';
+import {RepositoryRegistry} from '@e22m4u/repository';
+
+class MyRepository extends Repository {
+  /*...*/
+}
+
+const schema = new Schema();
+schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
+// теперь schema.getRepository(modelName) будет возвращать
+// экземпляр класса MyRepository
 ```
 
-Объявляем модель заказа `order`
+### Filter
 
-```js
-schema.defineModel({
-  name: 'order', // название модели
-  datasource: 'myDatasource', // используемый источник
-  properties: { // поля модели
-    cost: 'number', // поле "cost" типа "number"
-  },
-  relations: { // связи с другими моделями
-    customer: { // название связи
-      type: 'belongsTo', // хранить идентификатор цели у себя
-      model: 'customer', // название целевой модели
-      foreignKey: 'customerId', // в каком поле хранить идентификатор цели
-    },
-  },
-});
-```
+Большинство методов репозитория принимают объект `filter` для
+фильтрации возвращаемого ответа. Описание параметров объекта:
 
-Объявляем модель покупателя `customer`
+- **where** *(условия выборки данных из базы)*  
+  примеры:  
+  `where: {foo: 'bar'}` поиск по значению поля `foo`  
+  `where: {foo: {eq: 'bar'}}` оператор равенства `eq`  
+  `where: {foo: {neq: 'bar'}}` оператор неравенства `neq`  
+  `where: {foo: {gt: 5}}` оператор "больше" `gt`  
+  `where: {foo: {lt: 10}}` оператор "меньше" `lt`  
+  `where: {foo: {gte: 5}}` оператор "больше или равно" `gte`  
+  `where: {foo: {lte: 10}}` оператор "меньше или равно" `lte`  
+  `where: {foo: {inq: ['bar', 'baz']}}` равенство одного из значений `inq`  
+  `where: {foo: {nin: ['bar', 'baz']}}` исключение значений массива `nin`  
+  `where: {foo: {between: [5, 10]}}` оператор диапазона `between`  
+  `where: {foo: {exists: true}}` оператор наличия значения `exists`  
+  `where: {foo: {like: 'bar'}}` оператор поиска подстроки `like`  
+  `where: {foo: {ilike: 'BaR'}}` регистронезависимая версия `ilike`  
+  `where: {foo: {nlike: 'bar'}}` оператор исключения подстроки `nlike`  
+  `where: {foo: {nilike: 'BaR'}}` регистронезависимая версия `nilike`  
+  `where: {foo: {regexp: 'ba.+'}}` оператор регулярного выражения `regexp`  
+  `where: {foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения
 
-```js
-schema.defineModel({
-  name: 'customer', // название модели
-  datasource: 'myDatasource', // используемый источник
-  properties: { // поля модели
-    name: { // название поля
-      type: 'string', // тип поля
-      required: true, // сделать поле обязательным
-    },
-  },
-  relations: { // связи с другими моделями
-    orders: { // название связи
-      type: 'hasMany', // искать свой идентификатор в целевой модели
-      model: 'order', // целевая модель
-      foreignKey: 'customerId', // в каком поле искать идентификатор
-    },
-  },
-});
-```
 
-Получаем репозитории для моделей `customer` и `order`
+- **order** *(упорядочить записи по полю)*  
+  примеры:  
+  `order: 'foo'` порядок по полю `foo`  
+  `order: 'foo ASC'` явное указание порядка  
+  `order: 'foo DESC'` инвертировать порядок  
+  `order: ['foo', 'bar ASC', 'baz DESC']` по нескольким полям
 
-```js
-const customerRep = schema.getRepository('customer');
-const orderRep = schema.getRepository('order')
-```
 
-Создаем покупателя `fedor` и его заказы
+- **limit** *(не более N записей)*  
+  примеры:  
+  `limit: 0` не ограничивать  
+  `limit: 14` не более 14-и
 
-```js
-// создаем покупателя
-const fedor = await customerRep.create({name: 'Fedor'});
 
-// и заказы
-await orderRep.create({cost: 150, customerId: fedor.id});
-await orderRep.create({cost: 250, customerId: fedor.id});
-```
+- **skip** *(пропуск первых N записей)*  
+  примеры:  
+  `skip: 0` выборка без пропуска  
+  `skip: 10` пропустить 10 объектов выборки
 
-Получаем покупателя методом `findById`, включая связь с заказами
 
-```js
-const fedorWithOrders = await customerRep.findById(
-  fedor.id, // искомый идентификатор
-  {include: ['orders']}, // имена включаемых связей
-);
-// {
-//   id: 1,
-//   name: 'Fedor',
-//   orders: [
-//     {id: 1: cost: 150, customerId: 1},
-//     {id: 2: cost: 250, customerId: 1},
-//   ],
-// }
-```
-
-Получаем заказы и их покупателей методом `find`
-
-```js
-const ordersWithCustomers = await orderRep.find({
-  // опциональные параметры
-  where: {customerId: fedor.id}, // фильтрация
-  order: ['id DESC'], // сортировка результата
-  limit: 10, // ограничение количества
-  skip: 0, // пропуск записей
-  fields: ['cost', 'customerId'], // запрашиваемые поля
-  include: ['customer'], // включаемые связи
-});
-console.log(ordersWithCustomers);
-// [
-//   {
-//     id: 1,
-//     cost: 150,
-//     customerId: 1,
-//     customer: {
-//       id: 1,
-//       name: 'Fedor',
-//     },
-//   },
-//   {
-//     id: 2,
-//     cost: 250,
-//     customerId: 1,
-//     customer: {
-//       id: 1,
-//       name: 'Fedor',
-//     },
-//   },
-// ]
-```
-
-Удаляем данные методами `deleteById` и `delete`
-
-```js
-// удаляем покупателя по идентификатору
-await customerRep.deleteById(fedor.id); // true
-
-// удаляем заказы по условию
-await orderRep.delete({customerId: fedor.id}); // 2
-```
+- **include** *(включение связанных данных в результат)*  
+  примеры:  
+  `include: 'foo'` включение связи `foo`  
+  `include: ['foo', 'bar']` включение `foo` и `bar`  
+  `include: {foo: 'bar'}` включение вложенной связи `foo`
 
 ## Источник данных
 
@@ -474,107 +486,6 @@ schema.defineModel({
   },
 });
 ```
-
-## Репозиторий
-
-Выполняет операции чтения и записи определенной коллекции.
-
-Методы:
-
-- `create(data, filter = undefined)`
-- `replaceById(id, data, filter = undefined)`
-- `replaceOrCreate(data, filter = undefined)`
-- `patchById(id, data, filter = undefined)`
-- `find(filter = undefined)`
-- `findOne(filter = undefined)`
-- `findById(id, filter = undefined)`
-- `delete(where = undefined)`
-- `deleteById(id)`
-- `exists(id)`
-- `count(where = undefined)`
-
-Получение репозитория модели:
-
-```js
-import {Schema} from '@e22m4u/repository';
-
-const schema = new Schema();
-// создаем источник
-schema.defineDatasource({name: 'myDatasource', adapter: 'memory'});
-// создаем модель
-schema.defineModel({name: 'myModel', datasource: 'myDatasource'});
-// получаем репозиторий по названию модели
-const repositorty = schema.getRepository('myModel');
-```
-
-Переопределение конструктора:
-
-```js
-import {Schema} from '@e22m4u/repository';
-import {Repository} from '@e22m4u/repository';
-import {RepositoryRegistry} from '@e22m4u/repository';
-
-class MyRepository extends Repository {
-  /*...*/
-}
-
-const schema = new Schema();
-schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
-// теперь schema.getRepository(modelName) будет возвращать
-// экземпляр класса MyRepository
-```
-
-### Filter
-
-Большинство методов репозитория принимают объект `filter` для
-фильтрации возвращаемого ответа. Описание параметров объекта:
-
-- **where** *(условия выборки данных из базы)*  
-  примеры:  
-  `where: {foo: 'bar'}` поиск по значению поля `foo`  
-  `where: {foo: {eq: 'bar'}}` оператор равенства `eq`  
-  `where: {foo: {neq: 'bar'}}` оператор неравенства `neq`  
-  `where: {foo: {gt: 5}}` оператор "больше" `gt`  
-  `where: {foo: {lt: 10}}` оператор "меньше" `lt`  
-  `where: {foo: {gte: 5}}` оператор "больше или равно" `gte`  
-  `where: {foo: {lte: 10}}` оператор "меньше или равно" `lte`  
-  `where: {foo: {inq: ['bar', 'baz']}}` равенство одного из значений `inq`  
-  `where: {foo: {nin: ['bar', 'baz']}}` исключение значений массива `nin`  
-  `where: {foo: {between: [5, 10]}}` оператор диапазона `between`  
-  `where: {foo: {exists: true}}` оператор наличия значения `exists`  
-  `where: {foo: {like: 'bar'}}` оператор поиска подстроки `like`  
-  `where: {foo: {ilike: 'BaR'}}` регистронезависимая версия `ilike`  
-  `where: {foo: {nlike: 'bar'}}` оператор исключения подстроки `nlike`  
-  `where: {foo: {nilike: 'BaR'}}` регистронезависимая версия `nilike`  
-  `where: {foo: {regexp: 'ba.+'}}` оператор регулярного выражения `regexp`  
-  `where: {foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения  
-
-
-- **order** *(упорядочить записи по полю)*  
-  примеры:  
-  `order: 'foo'` порядок по полю `foo`  
-  `order: 'foo ASC'` явное указание порядка  
-  `order: 'foo DESC'` инвертировать порядок  
-  `order: ['foo', 'bar ASC', 'baz DESC']` по нескольким полям  
-
-
-- **limit** *(не более N записей)*  
-  примеры:  
-  `limit: 0` не ограничивать  
-  `limit: 14` не более 14-и  
-
-
-- **skip** *(пропуск первых N записей)*  
-  примеры:  
-  `skip: 0` выборка без пропуска  
-  `skip: 10` пропустить 10 объектов выборки  
-
-
-- **include** *(включение связанных данных в результат)*  
-  примеры:  
-  `include: 'foo'` включение связи `foo`  
-  `include: ['foo', 'bar']` включение `foo` и `bar`  
-  `include: {foo: 'bar'}` включение вложенной связи `foo`  
 
 ## Тесты
 
