@@ -234,7 +234,7 @@ export class Repository extends Service {
     const adapter = await this.getAdapter();
     filter = filter ?? {};
     filter.limit = 1;
-    const resultArray = adapter.find(this.modelName, filter);
+    const resultArray = await adapter.find(this.modelName, filter);
     const result = resultArray.length ? resultArray[0] : undefined;
     await observer.emit(
       this.modelName,

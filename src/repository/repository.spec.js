@@ -37,7 +37,8 @@ describe('Repository', function () {
         .get(RepositoryObserver)
         .observe('model', RepositoryEvent.BEFORE_CREATE, modelHandler);
       const rep = schema.getRepository('model');
-      await rep.create(data, filter);
+      const result = await rep.create(data, filter);
+      expect(result).to.containSubset(data);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -77,6 +78,7 @@ describe('Repository', function () {
         .observe('model', RepositoryEvent.AFTER_CREATE, modelHandler);
       const rep = schema.getRepository('model');
       const result = await rep.create(data, filter);
+      expect(result).to.containSubset(data);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
@@ -117,7 +119,8 @@ describe('Repository', function () {
         data,
         filter,
       };
-      await rep.replaceById(context.id, data, filter);
+      const result = await rep.replaceById(context.id, data, filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -159,6 +162,7 @@ describe('Repository', function () {
       const created = await rep.create(data);
       context.id = created[DEF_PK];
       const result = await rep.replaceById(context.id, data, filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
@@ -199,7 +203,8 @@ describe('Repository', function () {
         data,
         filter,
       };
-      await rep.patchById(context.id, data, filter);
+      const result = await rep.patchById(context.id, data, filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -241,6 +246,7 @@ describe('Repository', function () {
       const created = await rep.create(data);
       context.id = created[DEF_PK];
       const result = await rep.patchById(context.id, data, filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
@@ -271,14 +277,15 @@ describe('Repository', function () {
         .get(RepositoryObserver)
         .observe('model', RepositoryEvent.BEFORE_READ, modelHandler);
       const rep = schema.getRepository('model');
-      await rep.create({foo: 'bar'});
+      const created = await rep.create({foo: 'bar'});
       const context = {
         modelName: 'model',
         methodName: RepositoryMethod.FIND,
         eventName: RepositoryEvent.BEFORE_READ,
         filter,
       };
-      await rep.find(filter);
+      const result = await rep.find(filter);
+      expect(result).to.be.eql([created]);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -315,8 +322,9 @@ describe('Repository', function () {
         .get(RepositoryObserver)
         .observe('model', RepositoryEvent.AFTER_READ, modelHandler);
       const rep = schema.getRepository('model');
-      await rep.create({foo: 'bar'});
+      const created = await rep.create({foo: 'bar'});
       const result = await rep.find(filter);
+      expect(result).to.be.eql([created]);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
@@ -347,14 +355,15 @@ describe('Repository', function () {
         .get(RepositoryObserver)
         .observe('model', RepositoryEvent.BEFORE_READ, modelHandler);
       const rep = schema.getRepository('model');
-      await rep.create({foo: 'bar'});
+      const created = await rep.create({foo: 'bar'});
       const context = {
         modelName: 'model',
         methodName: RepositoryMethod.FIND_ONE,
         eventName: RepositoryEvent.BEFORE_READ,
         filter,
       };
-      await rep.findOne(filter);
+      const result = await rep.findOne(filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -391,8 +400,9 @@ describe('Repository', function () {
         .get(RepositoryObserver)
         .observe('model', RepositoryEvent.AFTER_READ, modelHandler);
       const rep = schema.getRepository('model');
-      await rep.create({foo: 'bar'});
+      const created = await rep.create({foo: 'bar'});
       const result = await rep.findOne(filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
@@ -431,7 +441,8 @@ describe('Repository', function () {
         id: created[DEF_PK],
         filter,
       };
-      await rep.findById(context[DEF_PK], filter);
+      const result = await rep.findById(context[DEF_PK], filter);
+      expect(result).to.be.eql(created);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
     });
@@ -471,6 +482,85 @@ describe('Repository', function () {
       const created = await rep.create({foo: 'bar'});
       context.id = created[DEF_PK];
       const result = await rep.findById(context.id, filter);
+      expect(result).to.be.eql(created);
+      expect(rootHandlerExecuted).to.be.true;
+      expect(modelHandlerExecuted).to.be.true;
+      expect(result).to.be.eq(rootHandlerResult);
+      expect(result).to.be.eq(modelHandlerResult);
+    });
+  });
+
+  describe('delete', function () {
+    it('emits the "beforeDelete" event with specific context', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      let rootHandlerExecuted = false;
+      let modelHandlerExecuted = false;
+      const where = {};
+      const rootHandler = ctx => {
+        expect(ctx).to.be.eql(context);
+        rootHandlerExecuted = true;
+      };
+      const modelHandler = ctx => {
+        expect(ctx).to.be.eql(context);
+        modelHandlerExecuted = true;
+      };
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.BEFORE_DELETE, rootHandler);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.BEFORE_DELETE, modelHandler);
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'bar'});
+      const context = {
+        modelName: 'model',
+        methodName: RepositoryMethod.DELETE,
+        eventName: RepositoryEvent.BEFORE_DELETE,
+        where,
+      };
+      const result = await rep.delete(where);
+      expect(result).to.be.eq(1);
+      expect(rootHandlerExecuted).to.be.true;
+      expect(modelHandlerExecuted).to.be.true;
+    });
+
+    it('emits the "afterRead" event with specific context', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      let rootHandlerExecuted = false;
+      let modelHandlerExecuted = false;
+      const where = {};
+      let rootHandlerResult;
+      let modelHandlerResult;
+      const context = {
+        modelName: 'model',
+        methodName: RepositoryMethod.DELETE,
+        eventName: RepositoryEvent.AFTER_DELETE,
+        where,
+      };
+      const rootHandler = ctx => {
+        expect(ctx).to.containSubset(context);
+        rootHandlerResult = ctx.result;
+        rootHandlerExecuted = true;
+      };
+      const modelHandler = ctx => {
+        expect(ctx).to.containSubset(context);
+        modelHandlerResult = ctx.result;
+        modelHandlerExecuted = true;
+      };
+      schema
+        .get(RepositoryObserver)
+        .observe(RepositoryEvent.AFTER_DELETE, rootHandler);
+      schema
+        .get(RepositoryObserver)
+        .observe('model', RepositoryEvent.AFTER_DELETE, modelHandler);
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'bar'});
+      const result = await rep.delete(where);
+      expect(result).to.be.eq(1);
       expect(rootHandlerExecuted).to.be.true;
       expect(modelHandlerExecuted).to.be.true;
       expect(result).to.be.eq(rootHandlerResult);
