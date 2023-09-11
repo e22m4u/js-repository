@@ -19,7 +19,7 @@ export class ModelDataValidator extends Service {
   validate(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
-        'The data of the model %s must be an Object, but %s given.',
+        'The data of the model %v must be an Object, but %v given.',
         modelName,
         modelData,
       );
@@ -55,7 +55,7 @@ export class ModelDataValidator extends Service {
         typeof propDef === 'string' ? false : Boolean(propDef.required);
       if (!isRequired) return;
       throw new InvalidArgumentError(
-        'The property %s of the model %s is required, but %s given.',
+        'The property %v of the model %v is required, but %v given.',
         propName,
         modelName,
         propValue,
@@ -94,16 +94,15 @@ export class ModelDataValidator extends Service {
 
     const createError = expected => {
       const pattern = isArrayValue
-        ? 'The array property %s of the model %s must have %s element, but %s given.'
-        : 'The property %s of the model %s must have %s, but %s given.';
-      const expectedStr = new String(expected);
+        ? 'The array property %v of the model %v must have %s element, but %s given.'
+        : 'The property %v of the model %v must have %s, but %s given.';
       const ctorName = getCtorName(propValue);
-      const givenStr = new String(ctorName ?? typeof propValue);
+      const givenStr = ctorName ?? typeof propValue;
       return new InvalidArgumentError(
         pattern,
         propName,
         modelName,
-        expectedStr,
+        expected,
         givenStr,
       );
     };

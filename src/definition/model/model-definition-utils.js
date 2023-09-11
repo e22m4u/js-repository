@@ -34,7 +34,7 @@ export class ModelDefinitionUtils extends Service {
       );
       if (isDefaultPrimaryKeyAlreadyInUse)
         throw new InvalidArgumentError(
-          'The property name %s of the model %s is defined as a regular property. ' +
+          'The property name %v of the model %v is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
@@ -84,7 +84,7 @@ export class ModelDefinitionUtils extends Service {
     const propDef = propDefs[propertyName];
     if (!propDef)
       throw new InvalidArgumentError(
-        'The model %s does not have the property %s.',
+        'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -105,7 +105,7 @@ export class ModelDefinitionUtils extends Service {
     const propDef = propDefs[propertyName];
     if (!propDef)
       throw new InvalidArgumentError(
-        'The model %s does not have the property %s.',
+        'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -208,7 +208,7 @@ export class ModelDefinitionUtils extends Service {
       const pkPropName = this.getPrimaryKeyAsPropertyName(modelName);
       if (pkPropName === propertyName) return DataType.ANY;
       throw new InvalidArgumentError(
-        'The model %s does not have the property %s.',
+        'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -261,7 +261,7 @@ export class ModelDefinitionUtils extends Service {
     const recursion = (currModelName, prevModelName = undefined) => {
       if (currModelName === prevModelName)
         throw new InvalidArgumentError(
-          'The model %s has a circular inheritance.',
+          'The model %v has a circular inheritance.',
           currModelName,
         );
       if (Object.keys(pkPropDefs).length === 0) {
@@ -301,7 +301,7 @@ export class ModelDefinitionUtils extends Service {
     const recursion = (currModelName, prevModelName = undefined) => {
       if (currModelName === prevModelName)
         throw new InvalidArgumentError(
-          'The model %s has a circular inheritance.',
+          'The model %v has a circular inheritance.',
           currModelName,
         );
       const modelDef = this.get(DefinitionRegistry).getModel(currModelName);
@@ -332,7 +332,7 @@ export class ModelDefinitionUtils extends Service {
     }
     if (!foundDef)
       throw new InvalidArgumentError(
-        'The model %s does not have relation name %s.',
+        'The model %v does not have relation name %v.',
         modelName,
         relationName,
       );
@@ -350,7 +350,7 @@ export class ModelDefinitionUtils extends Service {
     if (!modelData || typeof modelData !== 'object' || Array.isArray(modelData))
       throw new InvalidArgumentError(
         'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-          'must be an Object, but %s given.',
+          'must be an Object, but %v given.',
         modelData,
       );
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);

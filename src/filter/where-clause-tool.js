@@ -39,7 +39,7 @@ export class WhereClauseTool extends Service {
     if (!Array.isArray(entities))
       throw new InvalidArgumentError(
         'A first argument of WhereUtils.filter ' +
-          'should be an Array of Objects, but %s given.',
+          'should be an Array of Objects, but %v given.',
         entities,
       );
     return entities.filter(this._createFilter(where));
@@ -54,7 +54,7 @@ export class WhereClauseTool extends Service {
     if (typeof whereClause === 'function') return whereClause;
     if (typeof whereClause !== 'object')
       throw new InvalidArgumentError(
-        'The provided option "where" should be an Object, but %s given.',
+        'The provided option "where" should be an Object, but %v given.',
         whereClause,
       );
     const keys = Object.keys(whereClause);
@@ -62,7 +62,7 @@ export class WhereClauseTool extends Service {
       if (typeof data !== 'object')
         throw new InvalidArgumentError(
           'A first argument of WhereUtils.filter ' +
-            'should be an Array of Objects, but %s given.',
+            'should be an Array of Objects, but %v given.',
           data,
         );
       return keys.every(key => {
@@ -152,7 +152,7 @@ export class WhereClauseTool extends Service {
     if (!clause) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'The provided option "where" should be an Object, but %s given.',
+        'The provided option "where" should be an Object, but %v given.',
         clause,
       );
   }

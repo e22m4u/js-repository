@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {IncludeClauseTool} from './include-clause-tool.js';
 
 describe('IncludeClauseTool', function () {
@@ -43,11 +43,11 @@ describe('IncludeClauseTool', function () {
       const createError = v =>
         format(
           'The provided option "include" should have a value of ' +
-            'following types: String, Object or Array, but %s given.',
+            'following types: String, Object or Array, but %v given.',
           v,
         );
-      const testFor = (v, s) => {
-        const error = createError(s);
+      const testFor = v => {
+        const error = createError(v);
         const clauses = [
           v,
           // arrays
@@ -72,9 +72,9 @@ describe('IncludeClauseTool', function () {
         ];
         clauses.forEach(c => expect(validate(c)).to.throw(error));
       };
-      testFor(10, '10');
-      testFor(true, 'true');
-      testFor(() => undefined, 'Function');
+      testFor(10);
+      testFor(true);
+      testFor(() => undefined);
     });
 
     it('throws an error for duplicates', function () {
@@ -596,11 +596,11 @@ describe('IncludeClauseTool', function () {
       const createError = v =>
         format(
           'The provided option "include" should have a value of ' +
-            'following types: String, Object or Array, but %s given.',
+            'following types: String, Object or Array, but %v given.',
           v,
         );
-      const testFor = (v, s) => {
-        const error = createError(s);
+      const testFor = v => {
+        const error = createError(v);
         const clauses = [
           v,
           // arrays
@@ -625,9 +625,9 @@ describe('IncludeClauseTool', function () {
         ];
         clauses.forEach(c => expect(validate(c)).to.throw(error));
       };
-      testFor(10, '10');
-      testFor(true, 'true');
-      testFor(() => undefined, 'Function');
+      testFor(10);
+      testFor(true);
+      testFor(() => undefined);
     });
 
     it('throws an error for duplicates', function () {

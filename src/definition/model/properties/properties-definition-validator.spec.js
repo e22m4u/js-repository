@@ -1,8 +1,7 @@
 import chai from 'chai';
-import {format} from 'util';
 import {expect} from 'chai';
+import {format} from '@e22m4u/format';
 import {DataType} from './data-type.js';
-import {arrayToString} from '../../../utils/index.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 import {DefaultValuesDefinitionValidator} from './default-values-definition-validator.js';
@@ -21,17 +20,17 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'A first argument of PropertiesDefinitionValidator.validate ' +
-            'should be a non-empty String, but %s given.',
+            'should be a non-empty String, but %v given.',
           value,
         );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('')).to.throw(error(''));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate('model')();
     });
 
@@ -40,16 +39,16 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "properties" of the model "model" ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate({})();
     });
 
@@ -58,10 +57,10 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The property name of the model "model" should be ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %v given.',
           value,
         );
-      expect(validate({['']: {}})).to.throw(error('""'));
+      expect(validate({['']: {}})).to.throw(error(''));
       validate({foo: DataType.STRING})();
     });
 
@@ -70,11 +69,11 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The property "foo" of the model "model" should have ' +
-            'a property definition, but %s given.',
+            'a property definition, but %v given.',
           value,
         );
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate(DataType.STRING)();
       validate({type: DataType.STRING})();
     });
@@ -84,11 +83,11 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'In case of a short property definition, the property "foo" ' +
-            'of the model "model" should have one of data types: %s, but %s given.',
-          arrayToString(Object.values(DataType)),
+            'of the model "model" should have one of data types: %l, but %v given.',
+          Object.values(DataType),
           value,
         );
-      expect(validate('invalid')).to.throw(error('"invalid"'));
+      expect(validate('invalid')).to.throw(error('invalid'));
       validate(DataType.STRING)();
     });
 
@@ -97,12 +96,12 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'In case of a full property definition, the property "foo" ' +
-            'of the model "model" should be an Object, but %s given.',
+            'of the model "model" should be an Object, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate({type: DataType.STRING})();
     });
 
@@ -111,18 +110,18 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The property "foo" of the model "model" requires the option "type" ' +
-            'to have one of data types: %s, but %s given.',
-          arrayToString(Object.values(DataType)),
+            'to have one of data types: %l, but %v given.',
+          Object.values(DataType),
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate(DataType.STRING)();
     });
 
@@ -134,15 +133,15 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "itemType" of the property "foo" in the model "model" ' +
-            'should have one of data types: %s, but %s given.',
-          arrayToString(Object.values(DataType)),
+            'should have one of data types: %l, but %v given.',
+          Object.values(DataType),
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate(DataType.STRING)();
     });
 
@@ -157,13 +156,13 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "model" of the property "foo" in the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('model')();
     });
 
@@ -178,12 +177,12 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "primaryKey" of the property "foo" in the model "model" ' +
-            'should be a Boolean, but %s given.',
+            'should be a Boolean, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate(true)();
       validate(false)();
     });
@@ -199,13 +198,13 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "columnName" of the property "foo" in the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('columnName')();
     });
 
@@ -220,13 +219,13 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "columnType" of the property "foo" in the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('columnType')();
     });
 
@@ -241,12 +240,12 @@ describe('PropertiesDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "required" of the property "foo" in the model "model" ' +
-            'should be a Boolean, but %s given.',
+            'should be a Boolean, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate(true)();
       validate(false)();
     });

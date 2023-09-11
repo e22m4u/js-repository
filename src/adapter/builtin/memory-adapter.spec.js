@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {Schema} from '../../schema.js';
 import {MemoryAdapter} from './memory-adapter.js';
 import {DataType} from '../../definition/index.js';
@@ -391,7 +391,7 @@ describe('MemoryAdapter', function () {
       const promise = adapter.create('model', created);
       await expect(promise).to.be.rejectedWith(
         format(
-          'The value 1 of the primary key "%s" already exists in the model "model".',
+          'The value 1 of the primary key %v already exists in the model "model".',
           DEF_PK,
         ),
       );
@@ -854,7 +854,7 @@ describe('MemoryAdapter', function () {
       const promise = adapter.replaceById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
-          'The value 1 of the primary key "%s" does not exist in the model "model".',
+          'The value 1 of the primary key %v does not exist in the model "model".',
           DEF_PK,
         ),
       );
@@ -1359,7 +1359,7 @@ describe('MemoryAdapter', function () {
       const promise = adapter.patchById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
-          'The value 1 of the primary key "%s" does not exist in the model "model".',
+          'The value 1 of the primary key %v does not exist in the model "model".',
           DEF_PK,
         ),
       );
@@ -2255,7 +2255,7 @@ describe('MemoryAdapter', function () {
       const promise = adapter.findById('model', 1);
       await expect(promise).to.be.rejectedWith(
         format(
-          'The value 1 of the primary key "%s" does not exist in the model "model".',
+          'The value 1 of the primary key %v does not exist in the model "model".',
           DEF_PK,
         ),
       );

@@ -55,7 +55,7 @@ export class Adapter extends Service {
   create(modelName, modelData, filter = undefined) {
     throw new NotImplementedError(
       '%s.create is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -71,7 +71,7 @@ export class Adapter extends Service {
   replaceById(modelName, id, modelData, filter = undefined) {
     throw new NotImplementedError(
       '%s.replaceById is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -87,7 +87,7 @@ export class Adapter extends Service {
   patchById(modelName, id, modelData, filter = undefined) {
     throw new NotImplementedError(
       '%s.patchById is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -101,7 +101,7 @@ export class Adapter extends Service {
   find(modelName, filter = undefined) {
     throw new NotImplementedError(
       '%s.find is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -116,7 +116,7 @@ export class Adapter extends Service {
   findById(modelName, id, filter = undefined) {
     throw new NotImplementedError(
       '%s.findById is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -130,7 +130,7 @@ export class Adapter extends Service {
   delete(modelName, where = undefined) {
     throw new NotImplementedError(
       '%s.delete is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -144,7 +144,7 @@ export class Adapter extends Service {
   deleteById(modelName, id) {
     throw new NotImplementedError(
       '%s.deleteById is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -158,7 +158,7 @@ export class Adapter extends Service {
   exists(modelName, id) {
     throw new NotImplementedError(
       '%s.exists is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 
@@ -172,7 +172,7 @@ export class Adapter extends Service {
   count(modelName, where = undefined) {
     throw new NotImplementedError(
       '%s.count is not implemented.',
-      new String(this.constructor.name),
+      this.constructor.name,
     );
   }
 }

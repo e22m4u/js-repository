@@ -19,7 +19,7 @@ export class OrderClauseTool extends Service {
       if (typeof key !== 'string')
         throw new InvalidArgumentError(
           'The provided option "order" should be a String ' +
-            'or an Array of String, but %s given.',
+            'or an Array of String, but %v given.',
           key,
         );
       let reverse = 1;
@@ -44,7 +44,7 @@ export class OrderClauseTool extends Service {
       if (!key || typeof key !== 'string')
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %s given.',
+            'or an Array of String, but %v given.',
           key,
         );
     });
@@ -63,7 +63,7 @@ export class OrderClauseTool extends Service {
       if (!key || typeof key !== 'string')
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %s given.',
+            'or an Array of String, but %v given.',
           key,
         );
     });

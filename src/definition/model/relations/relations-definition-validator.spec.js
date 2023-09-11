@@ -1,7 +1,6 @@
-import {format} from 'util';
 import {expect} from 'chai';
+import {format} from '@e22m4u/format';
 import {RelationType} from './relation-type.js';
-import {arrayToString} from '../../../utils/index.js';
 import {RelationsDefinitionValidator} from './relations-definition-validator.js';
 
 const S = new RelationsDefinitionValidator();
@@ -13,17 +12,17 @@ describe('RelationsDefinitionValidator', function () {
       const error = value =>
         format(
           'A first argument of RelationsDefinitionValidator.validate ' +
-            'should be a non-empty String, but %s given.',
+            'should be a non-empty String, but %v given.',
           value,
         );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('')).to.throw(error(''));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate('model')();
     });
 
@@ -32,16 +31,16 @@ describe('RelationsDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "relations" of the model "model" ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate({})();
     });
 
@@ -50,10 +49,10 @@ describe('RelationsDefinitionValidator', function () {
       const error = value =>
         format(
           'The relation name of the model "model" should be ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %v given.',
           value,
         );
-      expect(validate({['']: {}})).to.throw(error('""'));
+      expect(validate({['']: {}})).to.throw(error(''));
       validate({foo: {type: RelationType.BELONGS_TO, model: 'model'}})();
     });
 
@@ -62,16 +61,16 @@ describe('RelationsDefinitionValidator', function () {
       const error = value =>
         format(
           'The relation "foo" of the model "model" should ' +
-            'be an Object, but %s given.',
+            'be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate({type: RelationType.BELONGS_TO, model: 'model'})();
     });
 
@@ -83,18 +82,18 @@ describe('RelationsDefinitionValidator', function () {
       const error = value =>
         format(
           'The relation "foo" of the model "model" requires the option "type" ' +
-            'to have one of relation types: %s, but %s given.',
-          arrayToString(Object.values(RelationType)),
+            'to have one of relation types: %l, but %v given.',
+          Object.values(RelationType),
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate(RelationType.BELONGS_TO)();
     });
 
@@ -108,21 +107,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -135,17 +134,17 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
           validate('foreignKey')();
           validate('')();
           validate(false)();
@@ -182,13 +181,13 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the option "polymorphic" to be a Boolean, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('str')).to.throw(error('"str"'));
-          expect(validate(10)).to.throw(error('10'));
-          expect(validate([])).to.throw(error('Array'));
-          expect(validate({})).to.throw(error('Object'));
+          expect(validate('str')).to.throw(error('str'));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate([])).to.throw(error([]));
+          expect(validate({})).to.throw(error({}));
           validate(true)();
         });
 
@@ -201,17 +200,17 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
           validate('foreignKey')();
           validate('')();
           validate(false)();
@@ -228,17 +227,17 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "discriminator" to be a String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
           validate('discriminator')();
           validate('')();
           validate(false)();
@@ -259,21 +258,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('modelId')();
         });
 
@@ -286,21 +285,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -331,21 +330,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -396,21 +395,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -425,21 +424,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('referenceId')();
         });
 
@@ -454,21 +453,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('referenceType')();
         });
       });
@@ -485,21 +484,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('modelId')();
         });
 
@@ -512,21 +511,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -557,21 +556,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -622,21 +621,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('model')();
         });
 
@@ -651,21 +650,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('referenceId')();
         });
 
@@ -680,21 +679,21 @@ describe('RelationsDefinitionValidator', function () {
             };
             return () => S.validate('model', {foo});
           };
-          const createError = value =>
+          const error = value =>
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %v given.',
               value,
             );
-          expect(validate('')).to.throw(createError('""'));
-          expect(validate(10)).to.throw(createError('10'));
-          expect(validate(true)).to.throw(createError('true'));
-          expect(validate(false)).to.throw(createError('false'));
-          expect(validate({})).to.throw(createError('Object'));
-          expect(validate([])).to.throw(createError('Array'));
-          expect(validate(undefined)).to.throw(createError('undefined'));
-          expect(validate(null)).to.throw(createError('null'));
+          expect(validate('')).to.throw(error(''));
+          expect(validate(10)).to.throw(error(10));
+          expect(validate(true)).to.throw(error(true));
+          expect(validate(false)).to.throw(error(false));
+          expect(validate({})).to.throw(error({}));
+          expect(validate([])).to.throw(error([]));
+          expect(validate(undefined)).to.throw(error(undefined));
+          expect(validate(null)).to.throw(error(null));
           validate('referenceType')();
         });
       });
@@ -709,21 +708,21 @@ describe('RelationsDefinitionValidator', function () {
           };
           return () => S.validate('model', {foo});
         };
-        const createError = value =>
+        const error = value =>
           format(
             'The relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it requires the option "model" to be a non-empty String, ' +
-              'but %s given.',
+              'but %v given.',
             value,
           );
-        expect(validate('')).to.throw(createError('""'));
-        expect(validate(10)).to.throw(createError('10'));
-        expect(validate(true)).to.throw(createError('true'));
-        expect(validate(false)).to.throw(createError('false'));
-        expect(validate({})).to.throw(createError('Object'));
-        expect(validate([])).to.throw(createError('Array'));
-        expect(validate(undefined)).to.throw(createError('undefined'));
-        expect(validate(null)).to.throw(createError('null'));
+        expect(validate('')).to.throw(error(''));
+        expect(validate(10)).to.throw(error(10));
+        expect(validate(true)).to.throw(error(true));
+        expect(validate(false)).to.throw(error(false));
+        expect(validate({})).to.throw(error({}));
+        expect(validate([])).to.throw(error([]));
+        expect(validate(undefined)).to.throw(error(undefined));
+        expect(validate(null)).to.throw(error(null));
         validate('model')();
       });
 
@@ -736,17 +735,17 @@ describe('RelationsDefinitionValidator', function () {
           };
           return () => S.validate('model', {foo});
         };
-        const createError = value =>
+        const error = value =>
           format(
             'The relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it expects the provided option "foreignKey" to be a String, ' +
-              'but %s given.',
+              'but %v given.',
             value,
           );
-        expect(validate(10)).to.throw(createError('10'));
-        expect(validate(true)).to.throw(createError('true'));
-        expect(validate({})).to.throw(createError('Object'));
-        expect(validate([])).to.throw(createError('Array'));
+        expect(validate(10)).to.throw(error(10));
+        expect(validate(true)).to.throw(error(true));
+        expect(validate({})).to.throw(error({}));
+        expect(validate([])).to.throw(error([]));
         validate('foreignKey')();
         validate('')();
         validate(false)();

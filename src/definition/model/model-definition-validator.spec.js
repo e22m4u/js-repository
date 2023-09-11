@@ -1,6 +1,6 @@
 import chai from 'chai';
-import {format} from 'util';
 import {expect} from 'chai';
+import {format} from '@e22m4u/format';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';
 import {ModelDefinitionValidator} from './model-definition-validator.js';
@@ -18,16 +18,16 @@ describe('ModelDefinitionValidator', function () {
       const validate = value => () => S.validate(value);
       const error = value =>
         format(
-          'The model definition should be an Object, but %s given.',
+          'The model definition should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate({name: 'model'})();
     });
 
@@ -36,17 +36,17 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The model definition requires the option "name" ' +
-            'as a non-empty String, but %s given.',
+            'as a non-empty String, but %v given.',
           value,
         );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      expect(validate(null)).to.throw(error('null'));
+      expect(validate('')).to.throw(error(''));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate(false)).to.throw(error(false));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
+      expect(validate(undefined)).to.throw(error(undefined));
+      expect(validate(null)).to.throw(error(null));
       validate('model')();
     });
 
@@ -56,13 +56,13 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "datasource" of the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('datasource')();
     });
 
@@ -71,13 +71,13 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "base" of the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('base')();
     });
 
@@ -87,13 +87,13 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "tableName" of the model "model" ' +
-            'should be a String, but %s given.',
+            'should be a String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      expect(validate({})).to.throw(error('Object'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
+      expect(validate({})).to.throw(error({}));
       validate('tableName')();
     });
 
@@ -103,13 +103,13 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "properties" of the model "model" ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate({})();
     });
 
@@ -119,13 +119,13 @@ describe('ModelDefinitionValidator', function () {
       const error = value =>
         format(
           'The provided option "relations" of the model "model" ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate({})();
     });
 

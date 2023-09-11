@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {SliceClauseTool} from './slice-clause-tool.js';
 
 const S = new SliceClauseTool();
@@ -81,12 +81,12 @@ describe('SliceClauseTool', function () {
         SliceClauseTool.validateSkipClause(clause);
       const error = value =>
         format(
-          'The provided option "skip" should be a Number, but %s given.',
+          'The provided option "skip" should be a Number, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate('');
       validate(false);
       validate(undefined);
@@ -102,12 +102,12 @@ describe('SliceClauseTool', function () {
         SliceClauseTool.validateLimitClause(clause);
       const error = value =>
         format(
-          'The provided option "limit" should be a Number, but %s given.',
+          'The provided option "limit" should be a Number, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate('');
       validate(false);
       validate(undefined);

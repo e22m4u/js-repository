@@ -4,8 +4,6 @@ export * from './clone-deep.js';
 export * from './singularize.js';
 export * from './get-ctor-name.js';
 export * from './is-pure-object.js';
-export * from './value-to-string.js';
-export * from './array-to-string.js';
 export * from './string-to-regexp.js';
 export * from './get-value-by-path.js';
 export * from './select-object-keys.js';

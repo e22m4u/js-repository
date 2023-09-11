@@ -31,37 +31,37 @@ export class HasOneResolver extends Service {
     if (!entities || !Array.isArray(entities))
       throw new InvalidArgumentError(
         'The parameter "entities" of HasOneResolver.includeTo requires ' +
-          'an Array of Object, but %s given.',
+          'an Array of Object, but %v given.',
         entities,
       );
     if (!sourceName || typeof sourceName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         sourceName,
       );
     if (!targetName || typeof targetName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         targetName,
       );
     if (!relationName || typeof relationName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         relationName,
       );
     if (!foreignKey || typeof foreignKey !== 'string')
       throw new InvalidArgumentError(
         'The parameter "foreignKey" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         foreignKey,
       );
     if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasOneResolver.includeTo ' +
-          'should be an Object, but %s given.',
+          'should be an Object, but %v given.',
         scope,
       );
 
@@ -72,7 +72,7 @@ export class HasOneResolver extends Service {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
         throw new InvalidArgumentError(
           'The parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %v given.',
           entity,
         );
       const sourceId = entity[sourcePkPropName];
@@ -129,43 +129,43 @@ export class HasOneResolver extends Service {
     if (!entities || !Array.isArray(entities))
       throw new InvalidArgumentError(
         'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-          'an Array of Object, but %s given.',
+          'an Array of Object, but %v given.',
         entities,
       );
     if (!sourceName || typeof sourceName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         sourceName,
       );
     if (!targetName || typeof targetName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         targetName,
       );
     if (!relationName || typeof relationName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         relationName,
       );
     if (!foreignKey || typeof foreignKey !== 'string')
       throw new InvalidArgumentError(
         'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         foreignKey,
       );
     if (!discriminator || typeof discriminator !== 'string')
       throw new InvalidArgumentError(
         'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         discriminator,
       );
     if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasOneResolver.includePolymorphicTo ' +
-          'should be an Object, but %s given.',
+          'should be an Object, but %v given.',
         scope,
       );
 
@@ -176,7 +176,7 @@ export class HasOneResolver extends Service {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
         throw new InvalidArgumentError(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %v given.',
           entity,
         );
       const sourceId = entity[sourcePkPropName];
@@ -234,37 +234,37 @@ export class HasOneResolver extends Service {
     if (!entities || !Array.isArray(entities))
       throw new InvalidArgumentError(
         'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'an Array of Object, but %s given.',
+          'an Array of Object, but %v given.',
         entities,
       );
     if (!sourceName || typeof sourceName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         sourceName,
       );
     if (!targetName || typeof targetName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         targetName,
       );
     if (!relationName || typeof relationName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         relationName,
       );
     if (!targetRelationName || typeof targetRelationName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         targetRelationName,
       );
     if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName ' +
-          'should be an Object, but %s given.',
+          'should be an Object, but %v given.',
         scope,
       );
 
@@ -273,9 +273,9 @@ export class HasOneResolver extends Service {
     ).getRelationDefinitionByName(targetName, targetRelationName);
     if (targetRelationDef.type !== RelationType.BELONGS_TO)
       throw new InvalidArgumentError(
-        'The relation %s of the model %s is a polymorphic "hasOne" relation, ' +
-          'so it requires the target relation %s to be a polymorphic "belongsTo", ' +
-          'but %s type given.',
+        'The relation %v of the model %v is a polymorphic "hasOne" relation, ' +
+          'so it requires the target relation %v to be a polymorphic "belongsTo", ' +
+          'but %v type given.',
         relationName,
         sourceName,
         targetRelationName,
@@ -283,8 +283,8 @@ export class HasOneResolver extends Service {
       );
     if (!targetRelationDef.polymorphic)
       throw new InvalidArgumentError(
-        'The relation %s of the model %s is a polymorphic "hasOne" relation, ' +
-          'so it requires the target relation %s to be a polymorphic too.',
+        'The relation %v of the model %v is a polymorphic "hasOne" relation, ' +
+          'so it requires the target relation %v to be a polymorphic too.',
         relationName,
         sourceName,
         targetRelationName,

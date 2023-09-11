@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {excludeObjectKeys} from './exclude-object-keys.js';
 
 describe('excludeObjectKeys', function () {
@@ -35,14 +35,15 @@ describe('excludeObjectKeys', function () {
   });
 
   it('throws an error for a non-object values', function () {
-    const message = 'Cannot exclude keys from a non-Object value, %s given.';
-    const from = v => () => excludeObjectKeys(v, 'key');
-    expect(from('string')).to.throw(format(message, '"string"'));
-    expect(from(10)).to.throw(format(message, '10'));
-    expect(from(true)).to.throw(format(message, 'true'));
-    expect(from(false)).to.throw(format(message, 'false'));
-    expect(from([])).to.throw(format(message, 'Array'));
-    expect(from(null)).to.throw(format(message, 'null'));
-    expect(from(undefined)).to.throw(format(message, 'undefined'));
+    const throwable = v => () => excludeObjectKeys(v, 'key');
+    const error = v =>
+      format('Cannot exclude keys from a non-Object value, %v given.', v);
+    expect(throwable('string')).to.throw(error('string'));
+    expect(throwable(10)).to.throw(error(10));
+    expect(throwable(true)).to.throw(error(true));
+    expect(throwable(false)).to.throw(error(false));
+    expect(throwable([])).to.throw(error([]));
+    expect(throwable(null)).to.throw(error(null));
+    expect(throwable(undefined)).to.throw(error(undefined));
   });
 });

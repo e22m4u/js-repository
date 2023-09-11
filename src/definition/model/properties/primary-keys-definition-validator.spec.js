@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {DataType} from './data-type.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
@@ -53,7 +53,7 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name "%s" of the model "model" is defined as a regular property. ' +
+          'The property name %v of the model "model" is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
@@ -70,7 +70,7 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name "%s" of the model "model" is defined as a regular property. ' +
+          'The property name %v of the model "model" is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
@@ -88,7 +88,7 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name "%s" of the model "model" is defined as a regular property. ' +
+          'The property name %v of the model "model" is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
@@ -108,7 +108,7 @@ describe('PrimaryKeysDefinitionValidator', function () {
       expect(throwable).to.throw(
         format(
           'Do not specify a default value for the ' +
-            'primary key "%s" of the model "model".',
+            'primary key %v of the model "model".',
           DEF_PK,
         ),
       );

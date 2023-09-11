@@ -1,6 +1,6 @@
 import chai from 'chai';
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {Schema} from '../../schema.js';
 import {DataType} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
@@ -41,7 +41,7 @@ describe('ModelDefinitionUtils', function () {
       const throwable = () => S.getPrimaryKeyAsPropertyName('model');
       expect(throwable).to.throw(
         format(
-          'The property name "%s" of the model "model" is defined as a regular property. ' +
+          'The property name %v of the model "model" is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
@@ -176,7 +176,7 @@ describe('ModelDefinitionUtils', function () {
       const throwable = () => S.getPrimaryKeyAsColumnName('model');
       expect(throwable).to.throw(
         format(
-          'The property name "%s" of the model "model" is defined as a regular property. ' +
+          'The property name %v of the model "model" is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
@@ -1456,17 +1456,17 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-            'must be an Object, but %s given.',
+            'must be an Object, but %v given.',
           v,
         );
-      expect(throwable('')).to.throw(error('""'));
-      expect(throwable('str')).to.throw(error('"str"'));
-      expect(throwable(10)).to.throw(error('10'));
-      expect(throwable(true)).to.throw(error('true'));
-      expect(throwable(false)).to.throw(error('false'));
-      expect(throwable([])).to.throw(error('Array'));
-      expect(throwable(undefined)).to.throw(error('undefined'));
-      expect(throwable(null)).to.throw(error('null'));
+      expect(throwable('')).to.throw(error(''));
+      expect(throwable('str')).to.throw(error('str'));
+      expect(throwable(10)).to.throw(error(10));
+      expect(throwable(true)).to.throw(error(true));
+      expect(throwable(false)).to.throw(error(false));
+      expect(throwable([])).to.throw(error([]));
+      expect(throwable(undefined)).to.throw(error(undefined));
+      expect(throwable(null)).to.throw(error(null));
       throwable({})();
       throwable({foo: 'bar'})();
     });

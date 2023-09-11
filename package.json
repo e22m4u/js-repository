@@ -32,6 +32,9 @@
   "author": "e22m4u <e22m4u@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/e22m4u/repository",
+  "dependencies": {
+    "@e22m4u/format": "0.0.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",

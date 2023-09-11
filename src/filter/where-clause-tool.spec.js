@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {WhereClauseTool} from './where-clause-tool.js';
 
 const S = new WhereClauseTool();
@@ -264,13 +264,13 @@ describe('WhereClauseTool', function () {
         WhereClauseTool.validateWhereClause(clause);
       const error = value =>
         format(
-          'The provided option "where" should be an Object, but %s given.',
+          'The provided option "where" should be an Object, but %v given.',
           value,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
+      expect(validate('str')).to.throw(error('str'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate([])).to.throw(error([]));
       validate('');
       validate(false);
       validate(undefined);

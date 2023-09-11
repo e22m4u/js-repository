@@ -1,5 +1,4 @@
-import {format} from 'util';
-import {valueToString} from '../utils/index.js';
+import {format} from '@e22m4u/format';
 
 /**
  * Invalid operator value error.
@@ -15,10 +14,10 @@ export class InvalidOperatorValueError extends Error {
   constructor(operator, expected, value) {
     super(
       format(
-        'Condition of {%s: ...} should have %s, %s given.',
+        'Condition of {%s: ...} should have %s, %v given.',
         operator,
         expected,
-        valueToString(value),
+        value,
       ),
     );
   }

@@ -31,37 +31,37 @@ export class ReferencesManyResolver extends Service {
     if (!entities || !Array.isArray(entities))
       throw new InvalidArgumentError(
         'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-          'an Array of Object, but %s given.',
+          'an Array of Object, but %v given.',
         entities,
       );
     if (!sourceName || typeof sourceName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         sourceName,
       );
     if (!targetName || typeof targetName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         targetName,
       );
     if (!relationName || typeof relationName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
-          'a non-empty String, but %s given.',
+          'a non-empty String, but %v given.',
         relationName,
       );
     if (foreignKey && typeof foreignKey !== 'string')
       throw new InvalidArgumentError(
         'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
-          'should be a String, but %s given.',
+          'should be a String, but %v given.',
         foreignKey,
       );
     if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
       throw new InvalidArgumentError(
         'The provided parameter "scope" of ReferencesManyResolver.includeTo ' +
-          'should be an Object, but %s given.',
+          'should be an Object, but %v given.',
         scope,
       );
     if (foreignKey == null) {
@@ -72,7 +72,7 @@ export class ReferencesManyResolver extends Service {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
         throw new InvalidArgumentError(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %v given.',
           entity,
         );
       const ids = entity[foreignKey];

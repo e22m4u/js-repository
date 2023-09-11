@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {Schema} from '../../schema.js';
 import {DataType} from './properties/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
@@ -24,16 +24,16 @@ describe('ModelDataValidator', function () {
       };
       const error = given =>
         format(
-          'The data of the model "model" must be an Object, but %s given.',
+          'The data of the model "model" must be an Object, but %v given.',
           given,
         );
-      expect(throwable('string')).to.throw(error('"string"'));
-      expect(throwable(10)).to.throw(error('10'));
-      expect(throwable(true)).to.throw(error('true'));
-      expect(throwable(false)).to.throw(error('false'));
-      expect(throwable([])).to.throw(error('Array'));
-      expect(throwable(null)).to.throw(error('null'));
-      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable('string')).to.throw(error('string'));
+      expect(throwable(10)).to.throw(error(10));
+      expect(throwable(true)).to.throw(error(true));
+      expect(throwable(false)).to.throw(error(false));
+      expect(throwable([])).to.throw(error([]));
+      expect(throwable(null)).to.throw(error(null));
+      expect(throwable(undefined)).to.throw(error(undefined));
     });
 
     it('uses a base model hierarchy to validate a given data', function () {

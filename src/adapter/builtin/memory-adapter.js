@@ -57,13 +57,13 @@ export class MemoryAdapter extends Adapter {
     if (propType !== DataType.ANY && propType !== DataType.NUMBER)
       throw new InvalidArgumentError(
         'The memory adapter able to generate only Number identifiers, ' +
-          'but the primary key %s of the model %s is defined as %s. ' +
-          'Do provide your own value for the %s property, or change the type ' +
+          'but the primary key %v of the model %v is defined as %s. ' +
+          'Do provide your own value for the %v property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
           'generated automatically.',
         propName,
         modelName,
-        new String(capitalize(propType)),
+        capitalize(propType),
         propName,
       );
     const tableName =
@@ -96,7 +96,7 @@ export class MemoryAdapter extends Adapter {
     const table = this._getTableOrCreate(modelName);
     if (table.has(idValue))
       throw new InvalidArgumentError(
-        'The value %s of the primary key %s already exists in the model %s.',
+        'The value %v of the primary key %v already exists in the model %v.',
         idValue,
         pkPropName,
         modelName,
@@ -133,7 +133,7 @@ export class MemoryAdapter extends Adapter {
       this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(modelName);
     if (!isExists)
       throw new InvalidArgumentError(
-        'The value %s of the primary key %s does not exist in the model %s.',
+        'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
@@ -170,7 +170,7 @@ export class MemoryAdapter extends Adapter {
       this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(modelName);
     if (existingTableData == null)
       throw new InvalidArgumentError(
-        'The value %s of the primary key %s does not exist in the model %s.',
+        'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
@@ -242,7 +242,7 @@ export class MemoryAdapter extends Adapter {
       this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(modelName);
     if (!tableData)
       throw new InvalidArgumentError(
-        'The value %s of the primary key %s does not exist in the model %s.',
+        'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,

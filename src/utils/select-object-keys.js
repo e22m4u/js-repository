@@ -11,20 +11,20 @@ export function selectObjectKeys(obj, keys) {
   if (!obj || typeof obj !== 'object')
     throw new InvalidArgumentError(
       'A first argument of selectObjectKeys ' +
-        'should be an Object, but %s given.',
+        'should be an Object, but %v given.',
       obj,
     );
   if (!Array.isArray(keys))
     throw new InvalidArgumentError(
       'A second argument of selectObjectKeys ' +
-        'should be an Array of String, but %s given.',
+        'should be an Array of String, but %v given.',
       keys,
     );
   keys.forEach(key => {
     if (typeof key !== 'string')
       throw new InvalidArgumentError(
         'A second argument of selectObjectKeys ' +
-          'should be an Array of String, but %s given.',
+          'should be an Array of String, but %v given.',
         key,
       );
   });

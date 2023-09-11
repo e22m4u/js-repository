@@ -148,7 +148,7 @@ export class IncludeClauseTool extends Service {
           break;
         default:
           throw new InvalidArgumentError(
-            'The relation type %s does not have an inclusion resolver.',
+            'The relation type %v does not have an inclusion resolver.',
             relDef.type,
           );
       }
@@ -186,7 +186,7 @@ export class IncludeClauseTool extends Service {
       );
       if (duplicateNames.length)
         throw new InvalidArgumentError(
-          'The provided option "include" has duplicates of %s.',
+          'The provided option "include" has duplicates of %v.',
           duplicateNames[0],
         );
     } else if (typeof clause === 'object') {
@@ -196,7 +196,7 @@ export class IncludeClauseTool extends Service {
         if (!clause.relation || typeof clause.relation !== 'string')
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
-              'a non-empty String, but %s given.',
+              'a non-empty String, but %v given.',
             clause.relation,
           );
         if ('scope' in clause && clause) this.validateScopeClause(clause.scope);
@@ -211,7 +211,7 @@ export class IncludeClauseTool extends Service {
       // unknown.
       throw new InvalidArgumentError(
         'The provided option "include" should have a value of ' +
-          'following types: String, Object or Array, but %s given.',
+          'following types: String, Object or Array, but %v given.',
         clause,
       );
     }
@@ -226,7 +226,7 @@ export class IncludeClauseTool extends Service {
     if (!clause) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'The provided option "scope" should be an Object, but %s given.',
+        'The provided option "scope" should be an Object, but %v given.',
         clause,
       );
     if ('where' in clause && clause.where)
@@ -276,7 +276,7 @@ export class IncludeClauseTool extends Service {
       );
       if (duplicateNames.length)
         throw new InvalidArgumentError(
-          'The provided option "include" has duplicates of %s.',
+          'The provided option "include" has duplicates of %v.',
           duplicateNames[0],
         );
     } else if (typeof clause === 'object') {
@@ -286,7 +286,7 @@ export class IncludeClauseTool extends Service {
         if (!clause.relation || typeof clause.relation !== 'string')
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
-              'a non-empty String, but %s given.',
+              'a non-empty String, but %v given.',
             clause.relation,
           );
         const normalized = {relation: clause.relation};
@@ -307,7 +307,7 @@ export class IncludeClauseTool extends Service {
       // unknown
       throw new InvalidArgumentError(
         'The provided option "include" should have a value of ' +
-          'following types: String, Object or Array, but %s given.',
+          'following types: String, Object or Array, but %v given.',
         clause,
       );
     }
@@ -324,7 +324,7 @@ export class IncludeClauseTool extends Service {
     if (!clause) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'The provided option "scope" should be an Object, but %s given.',
+        'The provided option "scope" should be an Object, but %v given.',
         clause,
       );
     const result = {};

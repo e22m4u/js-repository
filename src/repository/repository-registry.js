@@ -32,7 +32,7 @@ export class RepositoryRegistry extends Service {
     ) {
       throw new InvalidArgumentError(
         'The first argument of RepositoryRegistry.setRepositoryCtor ' +
-          'must inherit from Repository class, but %s given.',
+          'must inherit from Repository class, but %v given.',
         ctor,
       );
     }

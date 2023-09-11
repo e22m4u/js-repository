@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import {format} from '@e22m4u/format';
 import {NotImplementedError} from './not-implemented-error.js';
 
 describe('NotImplementedError', function () {
@@ -13,21 +14,20 @@ describe('NotImplementedError', function () {
   });
 
   it('interpolates a given pattern with variables', function () {
-    const error = new NotImplementedError(
-      '%s, %s, %s, %s, %s, %s, %s, %s, %s and %s',
-      'str',
-      10,
-      true,
-      false,
-      {},
-      [],
-      undefined,
-      null,
-      () => undefined,
-      function () {},
-    );
-    expect(error.message).to.be.eq(
-      '"str", 10, true, false, Object, Array, undefined, null, Function and Function',
-    );
+    const throwable = v => () => {
+      throw new NotImplementedError('%v', v);
+    };
+    const error = v => format('%v', v);
+    expect(throwable('str')).to.throw(error('str'));
+    expect(throwable('')).to.throw(error(''));
+    expect(throwable(10)).to.throw(error(10));
+    expect(throwable(0)).to.throw(error(0));
+    expect(throwable(true)).to.throw(error(true));
+    expect(throwable(false)).to.throw(error(false));
+    expect(throwable({})).to.throw(error({}));
+    expect(throwable([])).to.throw(error([]));
+    expect(throwable(undefined)).to.throw(error(undefined));
+    expect(throwable(null)).to.throw(error(null));
+    expect(throwable(() => undefined)).to.throw(error(() => undefined));
   });
 });

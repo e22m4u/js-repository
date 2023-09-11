@@ -17,13 +17,13 @@ export class ModelDataSanitizer extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The first argument of ModelDataSanitizer.sanitize ' +
-          'must be a string, but %s given.',
+          'must be a string, but %v given.',
         modelName,
       );
     if (!modelData || typeof modelData !== 'object')
       throw new InvalidArgumentError(
         'The second argument of ModelDataSanitizer.sanitize ' +
-          'must be an Object, but %s given.',
+          'must be an Object, but %v given.',
         modelData,
       );
     return this.get(ModelDefinitionUtils).excludeObjectKeysByRelationNames(

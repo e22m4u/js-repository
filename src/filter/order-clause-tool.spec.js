@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from 'util';
+import {format} from '@e22m4u/format';
 import {OrderClauseTool} from './order-clause-tool.js';
 
 const S = new OrderClauseTool();
@@ -383,18 +383,18 @@ describe('OrderClauseTool', function () {
       const error = value =>
         format(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %s given.',
+            'or an Array of String, but %v given.',
           value,
         );
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate({})).to.throw(error('Object'));
-      expect(validate([''])).to.throw(error('""'));
-      expect(validate([10])).to.throw(error('10'));
-      expect(validate([true])).to.throw(error('true'));
-      expect(validate([false])).to.throw(error('false'));
-      expect(validate([undefined])).to.throw(error('undefined'));
-      expect(validate([null])).to.throw(error('null'));
+      expect(validate(10)).to.throw(error(10));
+      expect(validate(true)).to.throw(error(true));
+      expect(validate({})).to.throw(error({}));
+      expect(validate([''])).to.throw(error(''));
+      expect(validate([10])).to.throw(error(10));
+      expect(validate([true])).to.throw(error(true));
+      expect(validate([false])).to.throw(error(false));
+      expect(validate([undefined])).to.throw(error(undefined));
+      expect(validate([null])).to.throw(error(null));
       validate('');
       validate(false);
       validate(undefined);
@@ -416,18 +416,18 @@ describe('OrderClauseTool', function () {
       const error = value =>
         format(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %s given.',
+            'or an Array of String, but %v given.',
           value,
         );
-      expect(fn(10)).to.throw(error('10'));
-      expect(fn(true)).to.throw(error('true'));
-      expect(fn({})).to.throw(error('Object'));
-      expect(fn([''])).to.throw(error('""'));
-      expect(fn([10])).to.throw(error('10'));
-      expect(fn([true])).to.throw(error('true'));
-      expect(fn([false])).to.throw(error('false'));
-      expect(fn([undefined])).to.throw(error('undefined'));
-      expect(fn([null])).to.throw(error('null'));
+      expect(fn(10)).to.throw(error(10));
+      expect(fn(true)).to.throw(error(true));
+      expect(fn({})).to.throw(error({}));
+      expect(fn([''])).to.throw(error(''));
+      expect(fn([10])).to.throw(error(10));
+      expect(fn([true])).to.throw(error(true));
+      expect(fn([false])).to.throw(error(false));
+      expect(fn([undefined])).to.throw(error(undefined));
+      expect(fn([null])).to.throw(error(null));
       expect(fn('')()).to.be.undefined;
       expect(fn(false)()).to.be.undefined;
       expect(fn(undefined)()).to.be.undefined;

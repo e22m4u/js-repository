@@ -13,19 +13,19 @@ export class DatasourceDefinitionValidator extends Service {
   validate(datasourceDef) {
     if (!datasourceDef || typeof datasourceDef !== 'object')
       throw new InvalidArgumentError(
-        'The datasource definition should be an Object, but %s given.',
+        'The datasource definition should be an Object, but %v given.',
         datasourceDef,
       );
     if (!datasourceDef.name || typeof datasourceDef.name !== 'string')
       throw new InvalidArgumentError(
         'The datasource definition requires the option "name" ' +
-          'as a non-empty String, but %s given.',
+          'as a non-empty String, but %v given.',
         datasourceDef.name,
       );
     if (!datasourceDef.adapter || typeof datasourceDef.adapter !== 'string')
       throw new InvalidArgumentError(
-        'The datasource %s requires the option "adapter" ' +
-          'as a non-empty String, but %s given.',
+        'The datasource %v requires the option "adapter" ' +
+          'as a non-empty String, but %v given.',
         datasourceDef.name,
         datasourceDef.adapter,
       );

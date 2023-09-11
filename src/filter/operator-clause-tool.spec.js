@@ -1,5 +1,5 @@
-import {format} from 'util';
 import {expect} from 'chai';
+import {format} from '@e22m4u/format';
 import {OperatorClauseTool} from './operator-clause-tool.js';
 import {InvalidOperatorValueError} from '../errors/index.js';
 
@@ -1049,11 +1049,11 @@ describe('OperatorClauseTool', function () {
       const throwable = v => () =>
         S.testRegexp({regexp: 'Val.+', flags: v}, 'val');
       const error = v =>
-        format('RegExp flags must be a String, but %s given.', v);
-      expect(throwable(10)).to.throw(error('10'));
-      expect(throwable(true)).to.throw(error('true'));
-      expect(throwable([])).to.throw(error('Array'));
-      expect(throwable({})).to.throw(error('Object'));
+        format('RegExp flags must be a String, but %v given.', v);
+      expect(throwable(10)).to.throw(error(10));
+      expect(throwable(true)).to.throw(error(true));
+      expect(throwable([])).to.throw(error([]));
+      expect(throwable({})).to.throw(error({}));
       throwable('')();
       throwable(0)();
       throwable(false)();

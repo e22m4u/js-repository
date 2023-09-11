@@ -16,13 +16,13 @@ export class DefaultValuesDefinitionValidator extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'A first argument of DefaultValuesDefinitionValidator.validate ' +
-          'should be a non-empty String, but %s given.',
+          'should be a non-empty String, but %v given.',
         modelName,
       );
     if (!propDefs || typeof propDefs !== 'object' || Array.isArray(propDefs))
       throw new InvalidArgumentError(
-        'The provided option "properties" of the model %s ' +
-          'should be an Object, but %s given.',
+        'The provided option "properties" of the model %v ' +
+          'should be an Object, but %v given.',
         modelName,
         propDefs,
       );
