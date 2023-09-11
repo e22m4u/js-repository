@@ -260,17 +260,16 @@ describe('WhereClauseTool', function () {
 
   describe('validateWhereClause', function () {
     it('requires an object value or a falsy value', function () {
-      const validate = clause => () =>
-        WhereClauseTool.validateWhereClause(clause);
-      const error = value =>
+      const validate = v => () => WhereClauseTool.validateWhereClause(v);
+      const error = v =>
         format(
-          'The provided option "where" should be an Object, but %v given.',
-          value,
+          'The provided option "where" should be an Object, but %s given.',
+          v,
         );
-      expect(validate('str')).to.throw(error('str'));
-      expect(validate(10)).to.throw(error(10));
-      expect(validate(true)).to.throw(error(true));
-      expect(validate([])).to.throw(error([]));
+      expect(validate('str')).to.throw(error('"str"'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate([])).to.throw(error('Array'));
       validate('');
       validate(false);
       validate(undefined);

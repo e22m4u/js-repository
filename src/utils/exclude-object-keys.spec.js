@@ -37,13 +37,13 @@ describe('excludeObjectKeys', function () {
   it('throws an error for a non-object values', function () {
     const throwable = v => () => excludeObjectKeys(v, 'key');
     const error = v =>
-      format('Cannot exclude keys from a non-Object value, %v given.', v);
-    expect(throwable('string')).to.throw(error('string'));
-    expect(throwable(10)).to.throw(error(10));
-    expect(throwable(true)).to.throw(error(true));
-    expect(throwable(false)).to.throw(error(false));
-    expect(throwable([])).to.throw(error([]));
-    expect(throwable(null)).to.throw(error(null));
-    expect(throwable(undefined)).to.throw(error(undefined));
+      format('Cannot exclude keys from a non-Object value, %s given.', v);
+    expect(throwable('str')).to.throw(error('"str"'));
+    expect(throwable(10)).to.throw(error('10'));
+    expect(throwable(true)).to.throw(error('true'));
+    expect(throwable(false)).to.throw(error('false'));
+    expect(throwable([])).to.throw(error('Array'));
+    expect(throwable(null)).to.throw(error('null'));
+    expect(throwable(undefined)).to.throw(error('undefined'));
   });
 });

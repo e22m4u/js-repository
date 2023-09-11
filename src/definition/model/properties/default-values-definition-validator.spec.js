@@ -8,39 +8,39 @@ const S = new DefaultValuesDefinitionValidator();
 describe('DefaultValuesDefinitionValidator', function () {
   describe('validate', function () {
     it('requires a first argument to be a non-empty string', function () {
-      const validate = value => () => S.validate(value, {});
-      const error = value =>
+      const validate = v => () => S.validate(v, {});
+      const error = v =>
         format(
           'A first argument of DefaultValuesDefinitionValidator.validate ' +
-            'should be a non-empty String, but %v given.',
-          value,
+            'should be a non-empty String, but %s given.',
+          v,
         );
-      expect(validate('')).to.throw(error(''));
-      expect(validate(10)).to.throw(error(10));
-      expect(validate(true)).to.throw(error(true));
-      expect(validate(false)).to.throw(error(false));
-      expect(validate([])).to.throw(error([]));
-      expect(validate({})).to.throw(error({}));
-      expect(validate(undefined)).to.throw(error(undefined));
-      expect(validate(null)).to.throw(error(null));
+      expect(validate('')).to.throw(error('""'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate(false)).to.throw(error('false'));
+      expect(validate([])).to.throw(error('Array'));
+      expect(validate({})).to.throw(error('Object'));
+      expect(validate(undefined)).to.throw(error('undefined'));
+      expect(validate(null)).to.throw(error('null'));
       validate('model')();
     });
 
     it('requires a second argument to be an object', function () {
-      const validate = value => () => S.validate('model', value);
-      const error = value =>
+      const validate = v => () => S.validate('model', v);
+      const error = v =>
         format(
           'The provided option "properties" of the model "model" ' +
-            'should be an Object, but %v given.',
-          value,
+            'should be an Object, but %s given.',
+          v,
         );
-      expect(validate('str')).to.throw(error('str'));
-      expect(validate(10)).to.throw(error(10));
-      expect(validate(true)).to.throw(error(true));
-      expect(validate(false)).to.throw(error(false));
-      expect(validate([])).to.throw(error([]));
-      expect(validate(undefined)).to.throw(error(undefined));
-      expect(validate(null)).to.throw(error(null));
+      expect(validate('str')).to.throw(error('"str"'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate(false)).to.throw(error('false'));
+      expect(validate([])).to.throw(error('Array'));
+      expect(validate(undefined)).to.throw(error('undefined'));
+      expect(validate(null)).to.throw(error('null'));
       validate({})();
     });
 

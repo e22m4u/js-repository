@@ -14,7 +14,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -25,14 +25,14 @@ describe('HasOneResolver', function () {
           'relationName',
           'foreignKey',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
@@ -42,19 +42,19 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
         R.includeTo([v], 'source', 'target', 'relationName', 'foreignKey');
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
@@ -63,19 +63,19 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
         R.includeTo([], v, 'targetName', 'relationName', 'foreignKey');
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
@@ -84,19 +84,19 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
         R.includeTo([], 'sourceName', v, 'relationName', 'foreignKey');
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
@@ -105,19 +105,19 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
         R.includeTo([], 'sourceName', 'targetName', v, 'foreignKey');
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
@@ -126,19 +126,19 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
         R.includeTo([], 'sourceName', 'targetName', 'relationName', v);
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
@@ -147,7 +147,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includeTo ' +
-            'should be an Object, but %v given.',
+            'should be an Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -159,10 +159,10 @@ describe('HasOneResolver', function () {
           'foreignKey',
           v,
         );
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
     });
 
     it('throws an error if a target model is not found', async function () {
@@ -557,7 +557,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -569,14 +569,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
@@ -586,7 +586,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -598,14 +598,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
@@ -614,7 +614,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -626,14 +626,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
@@ -642,7 +642,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -654,14 +654,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
@@ -670,7 +670,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -682,14 +682,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
@@ -698,7 +698,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -710,14 +710,14 @@ describe('HasOneResolver', function () {
           v,
           'discriminator',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "discriminator" parameter to be a non-empty string', async function () {
@@ -726,7 +726,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -738,14 +738,14 @@ describe('HasOneResolver', function () {
           'foreignKey',
           v,
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
@@ -754,7 +754,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includePolymorphicTo ' +
-            'should be an Object, but %v given.',
+            'should be an Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -767,10 +767,10 @@ describe('HasOneResolver', function () {
           'discriminator',
           v,
         );
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
     });
 
     it('throws an error if the given target model is not found', async function () {
@@ -1307,7 +1307,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1318,14 +1318,14 @@ describe('HasOneResolver', function () {
           'relationName',
           'targetRelationName',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
@@ -1344,7 +1344,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1355,14 +1355,14 @@ describe('HasOneResolver', function () {
           'child',
           'parent',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
@@ -1371,7 +1371,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1382,14 +1382,14 @@ describe('HasOneResolver', function () {
           'relationName',
           'targetRelationName',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
@@ -1398,7 +1398,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1409,14 +1409,14 @@ describe('HasOneResolver', function () {
           'relationName',
           'targetRelationName',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
@@ -1425,7 +1425,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1436,14 +1436,14 @@ describe('HasOneResolver', function () {
           v,
           'targetRelationName',
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the "targetRelationName" parameter to be a non-empty string', async function () {
@@ -1452,7 +1452,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %v given.',
+            'a non-empty String, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1463,14 +1463,14 @@ describe('HasOneResolver', function () {
           'relationName',
           v,
         );
-      await expect(throwable('')).to.be.rejectedWith(error(''));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable(false)).to.be.rejectedWith(error(false));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
-      await expect(throwable({})).to.be.rejectedWith(error({}));
-      await expect(throwable(undefined)).to.be.rejectedWith(error(undefined));
-      await expect(throwable(null)).to.be.rejectedWith(error(null));
+      await expect(throwable('')).to.be.rejectedWith(error('""'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable(false)).to.be.rejectedWith(error('false'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
+      await expect(throwable({})).to.be.rejectedWith(error('Object'));
+      await expect(throwable(undefined)).to.be.rejectedWith(error('undefined'));
+      await expect(throwable(null)).to.be.rejectedWith(error('null'));
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
@@ -1479,7 +1479,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName ' +
-            'should be an Object, but %v given.',
+            'should be an Object, but %s given.',
           v,
         );
       const throwable = v =>
@@ -1491,10 +1491,10 @@ describe('HasOneResolver', function () {
           'targetRelationName',
           v,
         );
-      await expect(throwable('str')).to.be.rejectedWith(error('str'));
-      await expect(throwable(10)).to.be.rejectedWith(error(10));
-      await expect(throwable(true)).to.be.rejectedWith(error(true));
-      await expect(throwable([])).to.be.rejectedWith(error([]));
+      await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
+      await expect(throwable(10)).to.be.rejectedWith(error('10'));
+      await expect(throwable(true)).to.be.rejectedWith(error('true'));
+      await expect(throwable([])).to.be.rejectedWith(error('Array'));
     });
 
     it('throws an error if the given target model is not found', async function () {

@@ -1456,17 +1456,17 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-            'must be an Object, but %v given.',
+            'must be an Object, but %s given.',
           v,
         );
-      expect(throwable('')).to.throw(error(''));
-      expect(throwable('str')).to.throw(error('str'));
-      expect(throwable(10)).to.throw(error(10));
-      expect(throwable(true)).to.throw(error(true));
-      expect(throwable(false)).to.throw(error(false));
-      expect(throwable([])).to.throw(error([]));
-      expect(throwable(undefined)).to.throw(error(undefined));
-      expect(throwable(null)).to.throw(error(null));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
       throwable({})();
       throwable({foo: 'bar'})();
     });

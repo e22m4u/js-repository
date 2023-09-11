@@ -77,16 +77,15 @@ describe('SliceClauseTool', function () {
 
   describe('validateSkipClause', function () {
     it('requires a number value or a falsy value', function () {
-      const validate = clause => () =>
-        SliceClauseTool.validateSkipClause(clause);
-      const error = value =>
+      const validate = v => () => SliceClauseTool.validateSkipClause(v);
+      const error = v =>
         format(
-          'The provided option "skip" should be a Number, but %v given.',
-          value,
+          'The provided option "skip" should be a Number, but %s given.',
+          v,
         );
-      expect(validate('str')).to.throw(error('str'));
-      expect(validate(true)).to.throw(error(true));
-      expect(validate([])).to.throw(error([]));
+      expect(validate('str')).to.throw(error('"str"'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate([])).to.throw(error('Array'));
       validate('');
       validate(false);
       validate(undefined);
@@ -98,16 +97,15 @@ describe('SliceClauseTool', function () {
 
   describe('validateLimitClause', function () {
     it('requires a number value or a falsy value', function () {
-      const validate = clause => () =>
-        SliceClauseTool.validateLimitClause(clause);
-      const error = value =>
+      const validate = v => () => SliceClauseTool.validateLimitClause(v);
+      const error = v =>
         format(
-          'The provided option "limit" should be a Number, but %v given.',
-          value,
+          'The provided option "limit" should be a Number, but %s given.',
+          v,
         );
-      expect(validate('str')).to.throw(error('str'));
-      expect(validate(true)).to.throw(error(true));
-      expect(validate([])).to.throw(error([]));
+      expect(validate('str')).to.throw(error('"str"'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate([])).to.throw(error('Array'));
       validate('');
       validate(false);
       validate(undefined);
