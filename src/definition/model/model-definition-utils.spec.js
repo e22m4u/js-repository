@@ -22,14 +22,14 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eq(DEF_PK);
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
       const schema = new Schema();
-      const S = schema.get(ModelDefinitionUtils);
+      const S = schema.getService(ModelDefinitionUtils);
       sandbox.on(
         S,
         'getPropertiesDefinitionInBaseModelHierarchy',
@@ -62,7 +62,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eql('myId');
     });
@@ -82,7 +82,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eq('foo');
     });
@@ -103,7 +103,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('modelB');
       expect(result).to.be.eq('foo');
     });
@@ -125,7 +125,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq('foo');
     });
@@ -146,7 +146,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq('fooColumn');
     });
@@ -157,14 +157,14 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq(DEF_PK);
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
       const schema = new Schema();
-      const S = schema.get(ModelDefinitionUtils);
+      const S = schema.getService(ModelDefinitionUtils);
       sandbox.on(
         S,
         'getPropertiesDefinitionInBaseModelHierarchy',
@@ -197,7 +197,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eql('myId');
     });
@@ -218,7 +218,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('modelB');
       expect(result).to.be.eq('foo');
     });
@@ -231,7 +231,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getTableNameByModelName('model');
       expect(result).to.be.eq('model');
     });
@@ -243,7 +243,7 @@ describe('ModelDefinitionUtils', function () {
         tableName: 'table',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getTableNameByModelName('model');
       expect(result).to.be.eq('table');
     });
@@ -259,7 +259,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('model', 'foo');
       expect(result).to.be.eq('foo');
     });
@@ -276,7 +276,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('model', 'foo');
       expect(result).to.be.eq('bar');
     });
@@ -288,7 +288,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getColumnNameByPropertyName('model', 'foo');
       expect(throwable).to.throw(InvalidArgumentError);
     });
@@ -309,7 +309,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('modelB', 'foo');
       expect(result).to.be.eq('fooColumn');
     });
@@ -325,7 +325,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.undefined;
     });
@@ -342,7 +342,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.eq('default');
     });
@@ -359,7 +359,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.eq('default');
     });
@@ -371,7 +371,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getDefaultPropertyValue('model', 'foo');
       expect(throwable).to.throw(InvalidArgumentError);
     });
@@ -392,7 +392,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('modelB', 'foo');
       expect(result).to.be.eq('default');
     });
@@ -405,7 +405,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -420,7 +420,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -437,7 +437,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -454,7 +454,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: undefined});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -471,7 +471,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: null});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -500,7 +500,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {});
       expect(result).to.be.eql({
         foo: 'string',
@@ -534,7 +534,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('modelB', {});
       expect(result).to.be.eql({
         foo: 'string',
@@ -556,7 +556,7 @@ describe('ModelDefinitionUtils', function () {
           },
         });
         const result = schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {}, true);
         expect(result).to.be.eql({});
       });
@@ -573,7 +573,7 @@ describe('ModelDefinitionUtils', function () {
           },
         });
         const result = schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {foo: undefined}, true);
         expect(result).to.be.eql({foo: 'string'});
       });
@@ -590,7 +590,7 @@ describe('ModelDefinitionUtils', function () {
           },
         });
         const result = schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {foo: null}, true);
         expect(result).to.be.eql({foo: 'string'});
       });
@@ -604,7 +604,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -619,7 +619,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -640,7 +640,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({fooColumn: 'string'});
     });
@@ -665,7 +665,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('modelB', {foo: 'string'});
       expect(result).to.be.eql({fooColumn: 'string'});
     });
@@ -678,7 +678,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -693,7 +693,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -714,7 +714,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {fooColumn: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -739,7 +739,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('modelA', {fooColumn: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
@@ -755,7 +755,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('model', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
@@ -771,7 +771,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('model', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
@@ -783,7 +783,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getDataTypeByPropertyName('model', 'property');
       expect(throwable).to.throw(InvalidArgumentError);
     });
@@ -801,7 +801,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('modelB', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
@@ -821,7 +821,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('modelB', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
@@ -834,7 +834,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('model');
       expect(result).to.be.eql({});
     });
@@ -853,7 +853,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('model');
       expect(result).to.be.eql({
         foo: DataType.STRING,
@@ -886,7 +886,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('modelB');
       expect(result).to.be.eql({
         foo: DataType.NUMBER,
@@ -901,7 +901,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('model');
       expect(result).to.be.eql({});
     });
@@ -920,7 +920,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('model');
       expect(result).to.be.eql({
         id: {
@@ -955,7 +955,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('modelB');
       expect(result).to.be.eql({
         id: {
@@ -973,7 +973,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({});
     });
@@ -992,7 +992,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({
         id: {
@@ -1020,7 +1020,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
         foo: DataType.STRING,
@@ -1053,7 +1053,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
         id: {
@@ -1089,7 +1089,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
         id2: {
@@ -1109,7 +1109,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(throwable).to.throw(
         'The model "model" has a circular inheritance.',
@@ -1124,7 +1124,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('model');
       expect(result).to.be.eql({});
     });
@@ -1141,7 +1141,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('model');
       expect(result).to.be.eql({
         foo: {
@@ -1173,7 +1173,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('modelB');
       expect(result).to.be.eql({
         bar: {
@@ -1191,7 +1191,7 @@ describe('ModelDefinitionUtils', function () {
         name: 'model',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({});
     });
@@ -1212,7 +1212,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({
         foo: {
@@ -1248,7 +1248,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
         foo: {
@@ -1288,7 +1288,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
         foo: {
@@ -1310,7 +1310,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(throwable).to.throw(
         'The model "model" has a circular inheritance.',
@@ -1323,7 +1323,7 @@ describe('ModelDefinitionUtils', function () {
       const schema = new Schema();
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
       expect(throwable).to.throw('The model "model" is not defined.');
     });
@@ -1335,7 +1335,7 @@ describe('ModelDefinitionUtils', function () {
       });
       const throwable = () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
       expect(throwable).to.throw(
         'The model "model" does not have relation name "myRelation".',
@@ -1354,7 +1354,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('model', 'myRelation');
       expect(result).to.be.eql({
         type: RelationType.BELONGS_TO,
@@ -1384,7 +1384,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('modelB', 'myRelation');
       expect(result).to.be.eql({
         type: RelationType.REFERENCES_MANY,
@@ -1408,7 +1408,7 @@ describe('ModelDefinitionUtils', function () {
         base: 'modelA',
       });
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('modelB', 'myRelation');
       expect(result).to.be.eql({
         type: RelationType.BELONGS_TO,
@@ -1440,7 +1440,7 @@ describe('ModelDefinitionUtils', function () {
         qux: {val: 'quxVal'},
       };
       const result = schema
-        .get(ModelDefinitionUtils)
+        .getService(ModelDefinitionUtils)
         .excludeObjectKeysByRelationNames('model', input);
       expect(result).to.be.eql({foo: 'fooVal', bar: {val: 'barVal'}});
       expect(result).to.be.not.eq(input);
@@ -1451,7 +1451,7 @@ describe('ModelDefinitionUtils', function () {
       schema.defineModel({name: 'model'});
       const throwable = v => () =>
         schema
-          .get(ModelDefinitionUtils)
+          .getService(ModelDefinitionUtils)
           .excludeObjectKeysByRelationNames('model', v);
       const error = v =>
         format(

@@ -46,8 +46,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.get(TestAdapter);
-const T = S.get(IncludeClauseTool);
+const A = S.getService(TestAdapter);
+const T = S.getService(IncludeClauseTool);
 const sandbox = chai.spy.sandbox();
 
 describe('InclusionDecorator', function () {

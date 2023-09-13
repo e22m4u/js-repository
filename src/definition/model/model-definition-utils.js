@@ -1,4 +1,4 @@
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {DataType} from './properties/index.js';
 import {cloneDeep} from '../../utils/index.js';
 import {excludeObjectKeys} from '../../utils/index.js';
@@ -68,7 +68,7 @@ export class ModelDefinitionUtils extends Service {
    * @param modelName
    */
   getTableNameByModelName(modelName) {
-    const modelDef = this.get(DefinitionRegistry).getModel(modelName);
+    const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     return modelDef.tableName ?? modelName;
   }
 
@@ -224,7 +224,7 @@ export class ModelDefinitionUtils extends Service {
    * @return {Record<string, {}>}
    */
   getOwnPropertiesDefinitionOfPrimaryKeys(modelName) {
-    const modelDef = this.get(DefinitionRegistry).getModel(modelName);
+    const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     const propDefs = modelDef.properties ?? {};
     const pkPropNames = Object.keys(propDefs).filter(propName => {
       const propDef = propDefs[propName];
@@ -240,7 +240,7 @@ export class ModelDefinitionUtils extends Service {
    * @return {Record<string, {}>}
    */
   getOwnPropertiesDefinitionWithoutPrimaryKeys(modelName) {
-    const modelDef = this.get(DefinitionRegistry).getModel(modelName);
+    const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     const propDefs = modelDef.properties ?? {};
     return Object.keys(propDefs).reduce((result, propName) => {
       const propDef = propDefs[propName];
@@ -272,7 +272,8 @@ export class ModelDefinitionUtils extends Service {
       const regularPropDefs =
         this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName);
       result = {...regularPropDefs, ...result};
-      const modelDef = this.get(DefinitionRegistry).getModel(currModelName);
+      const modelDef =
+        this.getService(DefinitionRegistry).getModel(currModelName);
       if (modelDef.base) recursion(modelDef.base, currModelName);
     };
     recursion(modelName);
@@ -286,7 +287,7 @@ export class ModelDefinitionUtils extends Service {
    * @return {Record<string, {}>}
    */
   getOwnRelationsDefinition(modelName) {
-    const modelDef = this.get(DefinitionRegistry).getModel(modelName);
+    const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     return modelDef.relations ?? {};
   }
 
@@ -304,7 +305,8 @@ export class ModelDefinitionUtils extends Service {
           'The model %v has a circular inheritance.',
           currModelName,
         );
-      const modelDef = this.get(DefinitionRegistry).getModel(currModelName);
+      const modelDef =
+        this.getService(DefinitionRegistry).getModel(currModelName);
       const ownRelDefs = modelDef.relations ?? {};
       result = {...ownRelDefs, ...result};
       if (modelDef.base) recursion(modelDef.base, currModelName);

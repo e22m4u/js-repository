@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDataSanitizer} from '../../definition/index.js';
 
@@ -20,7 +20,7 @@ export class DataSanitizingDecorator extends Service {
         adapter,
       );
 
-    const sanitizer = adapter.get(ModelDataSanitizer);
+    const sanitizer = adapter.getService(ModelDataSanitizer);
     const sanitize = (...args) => sanitizer.sanitize(...args);
 
     const create = adapter.create;

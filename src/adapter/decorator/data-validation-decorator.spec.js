@@ -24,8 +24,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.get(TestAdapter);
-const V = S.get(ModelDataValidator);
+const A = S.getService(TestAdapter);
+const V = S.getService(ModelDataValidator);
 const sandbox = chai.spy.sandbox();
 
 describe('DataValidationDecorator', function () {

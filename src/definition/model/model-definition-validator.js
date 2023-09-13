@@ -1,4 +1,4 @@
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';
@@ -57,7 +57,7 @@ export class ModelDefinitionValidator extends Service {
           modelDef.properties,
         );
       }
-      this.get(PropertiesDefinitionValidator).validate(
+      this.getService(PropertiesDefinitionValidator).validate(
         modelDef.name,
         modelDef.properties,
       );
@@ -74,7 +74,7 @@ export class ModelDefinitionValidator extends Service {
           modelDef.relations,
         );
       }
-      this.get(RelationsDefinitionValidator).validate(
+      this.getService(RelationsDefinitionValidator).validate(
         modelDef.name,
         modelDef.relations,
       );

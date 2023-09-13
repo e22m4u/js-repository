@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {cloneDeep} from '../utils/index.js';
 import {RelationType} from '../definition/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
@@ -66,7 +66,9 @@ export class HasOneResolver extends Service {
       );
 
     const sourcePkPropName =
-      this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(sourceName);
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        sourceName,
+      );
     const sourceIds = [];
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
@@ -82,7 +84,7 @@ export class HasOneResolver extends Service {
 
     const promises = [];
     const targetRepository =
-      this.get(RepositoryRegistry).getRepository(targetName);
+      this.getService(RepositoryRegistry).getRepository(targetName);
     scope = scope ? cloneDeep(scope) : {};
     const targetBySourceId = new Map();
     sourceIds.forEach(sourceId => {
@@ -170,7 +172,9 @@ export class HasOneResolver extends Service {
       );
 
     const sourcePkPropName =
-      this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(sourceName);
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        sourceName,
+      );
     const sourceIds = [];
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
@@ -186,7 +190,7 @@ export class HasOneResolver extends Service {
 
     const promises = [];
     const targetRepository =
-      this.get(RepositoryRegistry).getRepository(targetName);
+      this.getService(RepositoryRegistry).getRepository(targetName);
     scope = scope ? cloneDeep(scope) : {};
     const targetBySourceId = new Map();
     sourceIds.forEach(sourceId => {
@@ -268,7 +272,7 @@ export class HasOneResolver extends Service {
         scope,
       );
 
-    const targetRelationDef = this.get(
+    const targetRelationDef = this.getService(
       ModelDefinitionUtils,
     ).getRelationDefinitionByName(targetName, targetRelationName);
     if (targetRelationDef.type !== RelationType.BELONGS_TO)

@@ -10,7 +10,7 @@ describe('RepositoryRegistry', function () {
       const schema = new Schema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
-      const registry = schema.get(RepositoryRegistry);
+      const registry = schema.getService(RepositoryRegistry);
       registry.setRepositoryCtor(MyRepository);
       const rep = registry.getRepository('model');
       expect(rep).to.be.instanceof(Repository);
@@ -24,7 +24,7 @@ describe('RepositoryRegistry', function () {
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'modelA', datasource: 'datasource'});
       schema.defineModel({name: 'modelB', datasource: 'datasource'});
-      const registry = schema.get(RepositoryRegistry);
+      const registry = schema.getService(RepositoryRegistry);
       const repA1 = registry.getRepository('modelA');
       const repA2 = registry.getRepository('modelA');
       const repB1 = registry.getRepository('modelB');

@@ -1,5 +1,5 @@
 import {Adapter} from './adapter.js';
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../errors/index.js';
 
 /**
@@ -40,7 +40,7 @@ export class AdapterLoader extends Service {
         'The adapter %v is not found.',
         adapterName,
       );
-    return new adapterCtor(this._services, settings);
+    return new adapterCtor(this.container, settings);
   }
 }
 

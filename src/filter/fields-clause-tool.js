@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {selectObjectKeys} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {ModelDefinitionUtils} from '../definition/index.js';
@@ -38,7 +38,9 @@ export class FieldsClauseTool extends Service {
     });
 
     const pkPropName =
-      this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(modelName);
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        modelName,
+      );
     if (fields.indexOf(pkPropName) === -1) fields.push(pkPropName);
 
     entities = entities.map(entity => selectObjectKeys(entity, fields));

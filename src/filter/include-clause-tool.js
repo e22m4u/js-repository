@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {RelationType} from '../definition/index.js';
 import {HasOneResolver} from '../relations/index.js';
 import {HasManyResolver} from '../relations/index.js';
@@ -27,16 +27,15 @@ export class IncludeClauseTool extends Service {
     clause = IncludeClauseTool.normalizeIncludeClause(clause);
     const promises = [];
     clause.forEach(inclusion => {
-      const relDef = this.get(ModelDefinitionUtils).getRelationDefinitionByName(
-        modelName,
-        inclusion.relation,
-      );
+      const relDef = this.getService(
+        ModelDefinitionUtils,
+      ).getRelationDefinitionByName(modelName, inclusion.relation);
       switch (relDef.type) {
         // BELONGS_TO
         case RelationType.BELONGS_TO:
           if (relDef.polymorphic) {
             promises.push(
-              this.get(BelongsToResolver).includePolymorphicTo(
+              this.getService(BelongsToResolver).includePolymorphicTo(
                 entities,
                 modelName,
                 inclusion.relation,
@@ -47,7 +46,7 @@ export class IncludeClauseTool extends Service {
             );
           } else {
             promises.push(
-              this.get(BelongsToResolver).includeTo(
+              this.getService(BelongsToResolver).includeTo(
                 entities,
                 modelName,
                 relDef.model,
@@ -62,7 +61,7 @@ export class IncludeClauseTool extends Service {
         case RelationType.HAS_ONE:
           if (relDef.polymorphic && typeof relDef.polymorphic === 'string') {
             promises.push(
-              this.get(HasOneResolver).includePolymorphicByRelationName(
+              this.getService(HasOneResolver).includePolymorphicByRelationName(
                 entities,
                 modelName,
                 relDef.model,
@@ -73,7 +72,7 @@ export class IncludeClauseTool extends Service {
             );
           } else if (relDef.polymorphic) {
             promises.push(
-              this.get(HasOneResolver).includePolymorphicTo(
+              this.getService(HasOneResolver).includePolymorphicTo(
                 entities,
                 modelName,
                 relDef.model,
@@ -85,7 +84,7 @@ export class IncludeClauseTool extends Service {
             );
           } else {
             promises.push(
-              this.get(HasOneResolver).includeTo(
+              this.getService(HasOneResolver).includeTo(
                 entities,
                 modelName,
                 relDef.model,
@@ -100,7 +99,7 @@ export class IncludeClauseTool extends Service {
         case RelationType.HAS_MANY:
           if (relDef.polymorphic && typeof relDef.polymorphic === 'string') {
             promises.push(
-              this.get(HasManyResolver).includePolymorphicByRelationName(
+              this.getService(HasManyResolver).includePolymorphicByRelationName(
                 entities,
                 modelName,
                 relDef.model,
@@ -111,7 +110,7 @@ export class IncludeClauseTool extends Service {
             );
           } else if (relDef.polymorphic) {
             promises.push(
-              this.get(HasManyResolver).includePolymorphicTo(
+              this.getService(HasManyResolver).includePolymorphicTo(
                 entities,
                 modelName,
                 relDef.model,
@@ -123,7 +122,7 @@ export class IncludeClauseTool extends Service {
             );
           } else {
             promises.push(
-              this.get(HasManyResolver).includeTo(
+              this.getService(HasManyResolver).includeTo(
                 entities,
                 modelName,
                 relDef.model,
@@ -136,7 +135,7 @@ export class IncludeClauseTool extends Service {
           break;
         case RelationType.REFERENCES_MANY:
           promises.push(
-            this.get(ReferencesManyResolver).includeTo(
+            this.getService(ReferencesManyResolver).includeTo(
               entities,
               modelName,
               relDef.model,

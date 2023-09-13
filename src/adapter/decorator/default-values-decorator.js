@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from '../../definition/index.js';
 
@@ -20,7 +20,7 @@ export class DefaultValuesDecorator extends Service {
         adapter,
       );
 
-    const utils = adapter.get(ModelDefinitionUtils);
+    const utils = adapter.getService(ModelDefinitionUtils);
     const setDefaults = (...args) =>
       utils.setDefaultValuesToEmptyProperties(...args);
 

@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {AdapterLoader} from './adapter-loader.js';
 import {DefinitionRegistry} from '../definition/index.js';
 
@@ -23,9 +23,12 @@ export class AdapterRegistry extends Service {
     let adapter = this._adapters[datasourceName];
     if (adapter) return adapter;
     const datasource =
-      this.get(DefinitionRegistry).getDatasource(datasourceName);
+      this.getService(DefinitionRegistry).getDatasource(datasourceName);
     const adapterName = datasource.adapter;
-    adapter = await this.get(AdapterLoader).loadByName(adapterName, datasource);
+    adapter = await this.getService(AdapterLoader).loadByName(
+      adapterName,
+      datasource,
+    );
     this._adapters[datasourceName] = adapter;
     return adapter;
   }

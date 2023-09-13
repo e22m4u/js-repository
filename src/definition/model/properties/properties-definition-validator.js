@@ -1,5 +1,5 @@
+import {Service} from '@e22m4u/service';
 import {DataType as Type} from './data-type.js';
-import {Service} from '../../../service/index.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 import {DefaultValuesDefinitionValidator} from './default-values-definition-validator.js';
@@ -34,8 +34,14 @@ export class PropertiesDefinitionValidator extends Service {
       const propDef = propDefs[propName];
       this._validateProperty(modelName, propName, propDef);
     });
-    this.get(PrimaryKeysDefinitionValidator).validate(modelName, propDefs);
-    this.get(DefaultValuesDefinitionValidator).validate(modelName, propDefs);
+    this.getService(PrimaryKeysDefinitionValidator).validate(
+      modelName,
+      propDefs,
+    );
+    this.getService(DefaultValuesDefinitionValidator).validate(
+      modelName,
+      propDefs,
+    );
   }
 
   /**

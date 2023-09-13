@@ -1,4 +1,4 @@
-import {Service} from '../../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
 

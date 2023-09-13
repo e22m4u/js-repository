@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {FieldsClauseTool} from '../../filter/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 
@@ -20,7 +20,7 @@ export class FieldsFilteringDecorator extends Service {
         adapter,
       );
 
-    const tool = adapter.get(FieldsClauseTool);
+    const tool = adapter.getService(FieldsClauseTool);
     const selectFields = (...args) => tool.filter(...args);
 
     const create = adapter.create;

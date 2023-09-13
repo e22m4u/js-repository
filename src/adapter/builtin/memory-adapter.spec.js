@@ -10,7 +10,7 @@ describe('MemoryAdapter', function () {
     it('returns an existing table or creates a new', function () {
       const S = new Schema();
       S.defineModel({name: 'model'});
-      const A = S.get(MemoryAdapter);
+      const A = S.getService(MemoryAdapter);
       const table = A._getTableOrCreate('model');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._getTableOrCreate('model');
@@ -23,7 +23,7 @@ describe('MemoryAdapter', function () {
         name: 'myModel',
         tableName: 'myTable',
       });
-      const A = S.get(MemoryAdapter);
+      const A = S.getService(MemoryAdapter);
       const table = A._getTableOrCreate('myModel');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._getTableOrCreate('myModel');
@@ -36,7 +36,7 @@ describe('MemoryAdapter', function () {
         name: 'myModel',
         tableName: 'myTable',
       });
-      const A = S.get(MemoryAdapter);
+      const A = S.getService(MemoryAdapter);
       const table = A._getTableOrCreate('myModel');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._tables.get('myTable');
@@ -48,7 +48,7 @@ describe('MemoryAdapter', function () {
     it('returns an unique number identifier', function () {
       const S = new Schema();
       S.defineModel({name: 'model'});
-      const A = S.get(MemoryAdapter);
+      const A = S.getService(MemoryAdapter);
       const id1 = A._genNextIdValue('model', DEF_PK);
       const id2 = A._genNextIdValue('model', DEF_PK);
       const id3 = A._genNextIdValue('model', DEF_PK);
@@ -69,7 +69,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {[DEF_PK]: 3});
@@ -96,7 +96,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {myId: 3});
@@ -121,7 +121,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10};
       const created = await adapter.create('model', input);
       const idValue = created[DEF_PK];
@@ -145,7 +145,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {
         [DEF_PK]: undefined,
         foo: 'string',
@@ -173,7 +173,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {
         [DEF_PK]: null,
         foo: 'string',
@@ -203,7 +203,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {});
@@ -228,7 +228,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {});
@@ -253,7 +253,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -280,7 +280,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -308,7 +308,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -335,7 +335,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -360,7 +360,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const idValue = 5;
       const input = {foo: 'string', bar: 10};
       const created = await adapter.create('model', {
@@ -386,7 +386,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {foo: 'string'});
       const promise = adapter.create('model', created);
       await expect(promise).to.be.rejectedWith(
@@ -417,7 +417,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 10, bar: 'string'};
@@ -447,7 +447,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {foo: undefined});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -477,7 +477,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {foo: null});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -504,7 +504,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       expect(created).to.be.eql({foo: created.foo});
       const table = adapter._getTableOrCreate('model');
@@ -528,7 +528,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {foo: 10});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -554,7 +554,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -577,7 +577,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10};
       const filter = {fields: 'foo'};
       const result = await adapter.create('model', input, filter);
@@ -599,7 +599,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.create('model', input, filter);
@@ -634,7 +634,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.create('model', input, filter);
@@ -661,7 +661,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 1, bar: 2};
       const created = await adapter.create('model', input);
       const idValue = created[DEF_PK];
@@ -683,7 +683,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {[DEF_PK]: 10});
       expect(createdModelData).to.be.eql({[DEF_PK]: 10});
       const table = adapter._getTableOrCreate('model');
@@ -713,7 +713,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {myId: 10});
       expect(createdModelData).to.be.eql({myId: 10});
       const table = adapter._getTableOrCreate('model');
@@ -747,7 +747,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -788,7 +788,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -822,7 +822,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -850,7 +850,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.replaceById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
@@ -879,7 +879,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {bar: 1, baz: 2};
       const createdModelData = await adapter.create('model', input);
       expect(createdModelData).to.be.eql({
@@ -926,7 +926,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -973,7 +973,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1018,7 +1018,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1052,7 +1052,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1099,7 +1099,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1148,7 +1148,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1188,7 +1188,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1221,7 +1221,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const idValue = 10;
       const createdModelData = await adapter.create('model', {
         [DEF_PK]: idValue,
@@ -1254,7 +1254,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const idValue = 10;
       const createdModelData = await adapter.create('model', {myId: idValue});
       expect(createdModelData).to.be.eql({myId: idValue});
@@ -1289,7 +1289,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1325,7 +1325,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1355,7 +1355,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.patchById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
@@ -1384,7 +1384,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {bar: 1, baz: 2};
       const createdModelData = await adapter.create('model', input);
       expect(createdModelData).to.be.eql({foo: createdModelData.foo, ...input});
@@ -1427,7 +1427,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1479,7 +1479,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1524,7 +1524,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1561,7 +1561,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1608,7 +1608,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1653,7 +1653,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result = await adapter.find('model');
       expect(result).to.be.instanceof(Array);
       expect(result).to.be.empty;
@@ -1669,7 +1669,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -1697,7 +1697,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1});
       table.set(2, {[DEF_PK]: 2});
@@ -1731,7 +1731,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});
@@ -1765,7 +1765,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: null});
       table.set(2, {[DEF_PK]: 2, foo: null});
@@ -1797,7 +1797,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string1', bar: 10};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -1831,7 +1831,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string1', bar: 10, baz: true};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -1886,7 +1886,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -1931,7 +1931,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -1966,7 +1966,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {foo: 2, bar: 20});
       await adapter.create('model', {foo: 2, bar: 10});
       await adapter.create('model', {foo: 1, bar: 15});
@@ -2016,7 +2016,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput1 = {fooCol: 2, barCol: 20};
       const tableInput2 = {fooCol: 2, barCol: 10};
@@ -2065,7 +2065,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input1 = {foo: 20, bar: true, baz: 'abc'};
       const input2 = {foo: 10, bar: true, baz: 'abc'};
       const input3 = {foo: 15, bar: false, baz: 'abe'};
@@ -2111,7 +2111,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput1 = {fooCol: 20, barCol: true, bazCol: 'abc'};
       const tableInput2 = {fooCol: 10, barCol: true, bazCol: 'abc'};
@@ -2160,7 +2160,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});
@@ -2190,7 +2190,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -2221,7 +2221,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -2251,7 +2251,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const promise = adapter.findById('model', 1);
       await expect(promise).to.be.rejectedWith(
         format(
@@ -2277,7 +2277,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {[DEF_PK]: idValue});
@@ -2303,7 +2303,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: undefined};
@@ -2330,7 +2330,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: null};
@@ -2360,7 +2360,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const input = {bar: 1, baz: 2};
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
@@ -2386,7 +2386,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: 1, bar: 2};
@@ -2420,7 +2420,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {[DEF_PK]: idValue});
@@ -2443,7 +2443,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const input = {foo: 'string', bar: 10};
       const idValue = 1;
@@ -2467,7 +2467,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const input = {foo: 'string', bar: 10, baz: true};
       const idValue = 1;
@@ -2505,7 +2505,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput = {fooCol: 'string', barCol: 10, bazCol: true};
       const idValue = 1;
@@ -2534,7 +2534,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1});
       table.set(2, {[DEF_PK]: 2});
@@ -2555,7 +2555,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result = await adapter.delete('model');
       expect(result).to.be.eq(0);
     });
@@ -2573,7 +2573,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -2601,7 +2601,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, fooCol: 20});
       table.set(2, {[DEF_PK]: 2, fooCol: 10});
@@ -2628,7 +2628,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const input1 = {[DEF_PK]: 1, foo: undefined};
       const input2 = {[DEF_PK]: 2, foo: undefined};
@@ -2666,7 +2666,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result = await adapter.deleteById('model', 1);
       expect(result).to.be.false;
     });
@@ -2681,7 +2681,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const result = await adapter.deleteById('model', idValue);
@@ -2706,7 +2706,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {qux: idValue, bar: 10});
@@ -2728,7 +2728,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result = await adapter.exists('model', 1);
       expect(result).to.be.false;
     });
@@ -2743,7 +2743,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {});
       const result = await adapter.exists('model', 1);
       expect(result).to.be.true;
@@ -2766,7 +2766,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {qux: idValue});
@@ -2786,7 +2786,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const result = await adapter.count('model');
       expect(result).to.be.eq(0);
     });
@@ -2804,7 +2804,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -2828,7 +2828,7 @@ describe('MemoryAdapter', function () {
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -2849,7 +2849,7 @@ describe('MemoryAdapter', function () {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -2879,7 +2879,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, fooCol: 20});
       table.set(2, {[DEF_PK]: 2, fooCol: 10});
@@ -2909,7 +2909,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema._services, {});
+      const adapter = new MemoryAdapter(schema.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});

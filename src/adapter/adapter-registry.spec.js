@@ -8,7 +8,7 @@ describe('AdapterRegistry', function () {
     it('instantiates a new or returns an existing adapter by a given datasource name', async function () {
       const S = new Schema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      const R = S.get(AdapterRegistry);
+      const R = S.getService(AdapterRegistry);
       const adapter = await R.getAdapter('datasource');
       expect(adapter).to.be.instanceof(MemoryAdapter);
       const sameAdapter = await R.getAdapter('datasource');
@@ -26,7 +26,7 @@ describe('AdapterRegistry', function () {
     it('throws an error if an adapter is not exists', async function () {
       const S = new Schema();
       S.defineDatasource({name: 'datasource', adapter: 'unknown'});
-      const R = S.get(AdapterRegistry);
+      const R = S.getService(AdapterRegistry);
       const promise = R.getAdapter('datasource');
       await expect(promise).to.be.rejectedWith(
         'The adapter "unknown" is not found.',

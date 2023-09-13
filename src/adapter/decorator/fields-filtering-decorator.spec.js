@@ -48,8 +48,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.get(TestAdapter);
-const T = S.get(FieldsClauseTool);
+const A = S.getService(TestAdapter);
+const T = S.getService(FieldsClauseTool);
 const sandbox = chai.spy.sandbox();
 
 describe('FieldsFilteringDecorator', function () {

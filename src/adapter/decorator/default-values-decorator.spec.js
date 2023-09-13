@@ -45,8 +45,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.get(TestAdapter);
-const U = S.get(ModelDefinitionUtils);
+const A = S.getService(TestAdapter);
+const U = S.getService(ModelDefinitionUtils);
 const sandbox = chai.spy.sandbox();
 
 describe('DefaultValuesDecorator', function () {

@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDataValidator} from '../../definition/index.js';
 
@@ -22,19 +22,19 @@ export class DataValidationDecorator extends Service {
 
     const create = adapter.create;
     adapter.create = function (modelName, modelData, filter) {
-      this.get(ModelDataValidator).validate(modelName, modelData);
+      this.getService(ModelDataValidator).validate(modelName, modelData);
       return create.call(this, modelName, modelData, filter);
     };
 
     const replaceById = adapter.replaceById;
     adapter.replaceById = function (modelName, id, modelData, filter) {
-      this.get(ModelDataValidator).validate(modelName, modelData);
+      this.getService(ModelDataValidator).validate(modelName, modelData);
       return replaceById.call(this, modelName, id, modelData, filter);
     };
 
     const patchById = adapter.patchById;
     adapter.patchById = function (modelName, id, modelData, filter) {
-      this.get(ModelDataValidator).validate(modelName, modelData, true);
+      this.getService(ModelDataValidator).validate(modelName, modelData, true);
       return patchById.call(this, modelName, id, modelData, filter);
     };
   }

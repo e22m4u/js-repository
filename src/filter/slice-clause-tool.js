@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../errors/index.js';
 
 /**

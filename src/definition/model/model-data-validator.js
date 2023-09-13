@@ -1,4 +1,4 @@
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {DataType} from './properties/index.js';
 import {getCtorName} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';
@@ -24,7 +24,7 @@ export class ModelDataValidator extends Service {
         modelData,
       );
     const propDefs =
-      this.get(
+      this.getService(
         ModelDefinitionUtils,
       ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propNames = Object.keys(isPartial ? modelData : propDefs);

@@ -10,7 +10,7 @@ describe('ReferencesManyResolver', function () {
   describe('includeTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
@@ -31,7 +31,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
@@ -52,7 +52,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
@@ -72,7 +72,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
@@ -92,7 +92,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
@@ -112,7 +112,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires the provided parameter "foreignKey" to be a string', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
@@ -129,7 +129,7 @@ describe('ReferencesManyResolver', function () {
 
     it('requires the provided parameter "scope" to be an object', async function () {
       const S = new Schema();
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of ReferencesManyResolver.includeTo ' +
@@ -154,7 +154,7 @@ describe('ReferencesManyResolver', function () {
     it('throws an error if the given target model is not found', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
       await expect(promise).to.be.rejectedWith(
         'The model "target" is not defined',
@@ -164,7 +164,7 @@ describe('ReferencesManyResolver', function () {
     it('throws an error if the given target model does not have a datasource', async function () {
       const S = new Schema();
       S.defineModel({name: 'target'});
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
       await expect(promise).to.be.rejectedWith(
         'The model "target" does not have a specified datasource.',
@@ -178,7 +178,7 @@ describe('ReferencesManyResolver', function () {
       S.defineModel({name: 'target', datasource: 'datasource'});
       const sourceRel = S.getRepository('source');
       const source = await sourceRel.create({parentIds: [10, 20]});
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -207,7 +207,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1[DEF_PK], target2[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -245,7 +245,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1.myId, target2.myId],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -283,7 +283,7 @@ describe('ReferencesManyResolver', function () {
         myId: source.myId,
         parentIds: [target1[DEF_PK], target2[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents');
       expect(source).to.be.eql({
         myId: source.myId,
@@ -312,7 +312,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1[DEF_PK], target2[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'relations', 'parentIds');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -341,7 +341,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1[DEF_PK], target2[DEF_PK], target3[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents', undefined, {
         where: {featured: false},
       });
@@ -393,7 +393,7 @@ describe('ReferencesManyResolver', function () {
           target4[DEF_PK],
         ],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents', undefined, {
         skip: 1,
         limit: 2,
@@ -446,7 +446,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1[DEF_PK], target2[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents', undefined, {
         fields: [DEF_PK, 'bar'],
       });
@@ -557,7 +557,7 @@ describe('ReferencesManyResolver', function () {
         source: 'modelC',
         parentIds: [b1.id, b2.id],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([c], 'modelC', 'modelB', 'parents', undefined, {
         include: 'parent',
       });
@@ -608,7 +608,7 @@ describe('ReferencesManyResolver', function () {
         [DEF_PK]: source[DEF_PK],
         parentIds: [target1[DEF_PK], target2[DEF_PK], target3[DEF_PK]],
       });
-      const R = S.get(ReferencesManyResolver);
+      const R = S.getService(ReferencesManyResolver);
       await R.includeTo([source], 'source', 'target', 'parents', undefined, {
         where: {and: [{featured: false}]},
       });

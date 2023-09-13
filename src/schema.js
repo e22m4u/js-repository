@@ -1,4 +1,4 @@
-import {Service} from './service/index.js';
+import {Service} from '@e22m4u/service';
 import {DefinitionRegistry} from './definition/index.js';
 import {RepositoryRegistry} from './repository/index.js';
 
@@ -12,7 +12,7 @@ export class Schema extends Service {
    * @param datasourceDef
    */
   defineDatasource(datasourceDef) {
-    this.get(DefinitionRegistry).addDatasource(datasourceDef);
+    this.getService(DefinitionRegistry).addDatasource(datasourceDef);
     return this;
   }
 
@@ -22,7 +22,7 @@ export class Schema extends Service {
    * @param modelDef
    */
   defineModel(modelDef) {
-    this.get(DefinitionRegistry).addModel(modelDef);
+    this.getService(DefinitionRegistry).addModel(modelDef);
     return this;
   }
 
@@ -32,6 +32,6 @@ export class Schema extends Service {
    * @param modelName
    */
   getRepository(modelName) {
-    return this.get(RepositoryRegistry).getRepository(modelName);
+    return this.getService(RepositoryRegistry).getRepository(modelName);
   }
 }

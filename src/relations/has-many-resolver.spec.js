@@ -10,7 +10,7 @@ describe('HasManyResolver', function () {
   describe('includeTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
@@ -38,7 +38,7 @@ describe('HasManyResolver', function () {
     it('requires elements of the "entities" parameter to be an Object', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
@@ -59,7 +59,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includeTo requires ' +
@@ -80,7 +80,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includeTo requires ' +
@@ -101,7 +101,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includeTo requires ' +
@@ -122,7 +122,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includeTo requires ' +
@@ -143,7 +143,7 @@ describe('HasManyResolver', function () {
 
     it('requires the provided parameter "scope" to be an object', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includeTo ' +
@@ -168,7 +168,7 @@ describe('HasManyResolver', function () {
     it('throws an error if a target model is not found', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const promise = R.includeTo(
         [],
         'source',
@@ -185,7 +185,7 @@ describe('HasManyResolver', function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const promise = R.includeTo(
         [],
         'source',
@@ -205,7 +205,7 @@ describe('HasManyResolver', function () {
       S.defineModel({name: 'target', datasource: 'datasource'});
       const sourceRel = S.getRepository('source');
       const source = await sourceRel.create({});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -237,7 +237,7 @@ describe('HasManyResolver', function () {
         [DEF_PK]: target3[DEF_PK],
         parentId: -1,
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -287,7 +287,7 @@ describe('HasManyResolver', function () {
         [DEF_PK]: target3[DEF_PK],
         parentId: -1,
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         myId: source.myId,
@@ -337,7 +337,7 @@ describe('HasManyResolver', function () {
         myId: target3.myId,
         parentId: -1,
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -390,7 +390,7 @@ describe('HasManyResolver', function () {
         featured: true,
         parentId: source[DEF_PK],
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         where: {featured: false},
       });
@@ -468,7 +468,7 @@ describe('HasManyResolver', function () {
         bar: 'barVal3',
         parentId: -1,
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         fields: [DEF_PK, 'bar'],
       });
@@ -599,7 +599,7 @@ describe('HasManyResolver', function () {
         source: 'modelC',
         parentId: b2.id,
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([a], 'modelA', 'modelB', 'children', 'parentId', {
         include: 'children',
       });
@@ -683,7 +683,7 @@ describe('HasManyResolver', function () {
         featured: true,
         parentId: source[DEF_PK],
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         where: {and: [{featured: false}]},
       });
@@ -722,7 +722,7 @@ describe('HasManyResolver', function () {
   describe('includePolymorphicTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -751,7 +751,7 @@ describe('HasManyResolver', function () {
     it('requires elements of the "entities" parameter to be an Object', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -779,7 +779,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -807,7 +807,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -835,7 +835,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -863,7 +863,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
@@ -891,7 +891,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "discriminator" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
@@ -919,7 +919,7 @@ describe('HasManyResolver', function () {
 
     it('requires the provided parameter "scope" to be an object', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicTo ' +
@@ -945,7 +945,7 @@ describe('HasManyResolver', function () {
     it('throws an error if the given target model is not found', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicTo(
         [entity],
@@ -964,7 +964,7 @@ describe('HasManyResolver', function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicTo(
         [entity],
@@ -989,7 +989,7 @@ describe('HasManyResolver', function () {
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1024,7 +1024,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'unknown',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1075,7 +1075,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1146,7 +1146,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1217,7 +1217,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1285,7 +1285,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1384,7 +1384,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1525,7 +1525,7 @@ describe('HasManyResolver', function () {
         parentId: b2.id,
         parentType: 'modelB',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [a],
         'modelA',
@@ -1627,7 +1627,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1681,7 +1681,7 @@ describe('HasManyResolver', function () {
   describe('includePolymorphicByRelationName', function () {
     it('requires the "entities" parameter to be an array', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1718,7 +1718,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -1745,7 +1745,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1772,7 +1772,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1799,7 +1799,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1826,7 +1826,7 @@ describe('HasManyResolver', function () {
 
     it('requires the "targetRelationName" parameter to be a non-empty string', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1853,7 +1853,7 @@ describe('HasManyResolver', function () {
 
     it('requires the provided parameter "scope" to be an object', async function () {
       const S = new Schema();
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
@@ -1878,7 +1878,7 @@ describe('HasManyResolver', function () {
     it('throws an error if the given target model is not found', async function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1896,7 +1896,7 @@ describe('HasManyResolver', function () {
       const S = new Schema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1922,7 +1922,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1950,7 +1950,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1978,7 +1978,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -2011,7 +2011,7 @@ describe('HasManyResolver', function () {
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2054,7 +2054,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'unknown',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2113,7 +2113,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2192,7 +2192,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2268,7 +2268,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2345,7 +2345,7 @@ describe('HasManyResolver', function () {
         relationId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2422,7 +2422,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         relationType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2498,7 +2498,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2604,7 +2604,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2750,7 +2750,7 @@ describe('HasManyResolver', function () {
         parentId: b2.id,
         parentType: 'modelB',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [a],
         'modelA',
@@ -2860,7 +2860,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.get(HasManyResolver);
+      const R = S.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',

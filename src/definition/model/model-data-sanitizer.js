@@ -1,4 +1,4 @@
-import {Service} from '../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
 
@@ -26,9 +26,8 @@ export class ModelDataSanitizer extends Service {
           'must be an Object, but %v given.',
         modelData,
       );
-    return this.get(ModelDefinitionUtils).excludeObjectKeysByRelationNames(
-      modelName,
-      modelData,
-    );
+    return this.getService(
+      ModelDefinitionUtils,
+    ).excludeObjectKeysByRelationNames(modelName, modelData);
   }
 }

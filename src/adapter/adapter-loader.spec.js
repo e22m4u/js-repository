@@ -23,9 +23,8 @@ describe('AdapterLoader', function () {
     it('returns an adapter instance that is loaded from "builtin" folder', async function () {
       const settings = {};
       const adapter = await S.loadByName('memory', settings);
-      const services = S._services;
       expect(adapter).to.be.instanceof(Adapter);
-      expect(adapter._services).to.be.eq(services);
+      expect(adapter.container).to.be.eq(S.container);
       expect(adapter.settings).to.be.eq(settings);
     });
   });

@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {AdapterRegistry} from '../adapter/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {DefinitionRegistry} from '../definition/index.js';
@@ -39,13 +39,13 @@ export class Repository extends Service {
   /**
    * Constructor.
    *
-   * @param services
+   * @param container
    * @param modelName
    */
-  constructor(services, modelName) {
-    super(services);
+  constructor(container, modelName) {
+    super(container);
     this._modelName = modelName;
-    const modelDef = this.get(DefinitionRegistry).getModel(modelName);
+    const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     const datasourceName = modelDef.datasource;
     if (!datasourceName)
       throw new InvalidArgumentError(
@@ -61,7 +61,7 @@ export class Repository extends Service {
    * @return {Promise<Adapter>}
    */
   async getAdapter() {
-    return this.get(AdapterRegistry).getAdapter(this.datasourceName);
+    return this.getService(AdapterRegistry).getAdapter(this.datasourceName);
   }
 
   /**
@@ -97,7 +97,7 @@ export class Repository extends Service {
    * @return {Promise<object>}
    */
   async replaceOrCreate(data, filter = undefined) {
-    const pkPropName = this.get(
+    const pkPropName = this.getService(
       ModelDefinitionUtils,
     ).getPrimaryKeyAsPropertyName(this.modelName);
     const pkValue = data[pkPropName];

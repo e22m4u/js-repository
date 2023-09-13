@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {cloneDeep} from '../utils/index.js';
 import {singularize} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
@@ -85,9 +85,11 @@ export class ReferencesManyResolver extends Service {
     }, []);
 
     const targetRepository =
-      this.get(RepositoryRegistry).getRepository(targetName);
+      this.getService(RepositoryRegistry).getRepository(targetName);
     const targetPkPropName =
-      this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(targetName);
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        targetName,
+      );
     scope = scope ? cloneDeep(scope) : {};
     const filter = cloneDeep(scope);
     filter.where = {

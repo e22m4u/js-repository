@@ -24,8 +24,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.get(TestAdapter);
-const V = S.get(ModelDataSanitizer);
+const A = S.getService(TestAdapter);
+const V = S.getService(ModelDataSanitizer);
 const sandbox = chai.spy.sandbox();
 
 describe('DataSanitizingDecorator', function () {

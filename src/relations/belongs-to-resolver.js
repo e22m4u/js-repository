@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {cloneDeep} from '../utils/index.js';
 import {singularize} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
@@ -76,9 +76,11 @@ export class BelongsToResolver extends Service {
       return targetId != null ? [...acc, targetId] : acc;
     }, []);
     const targetRepository =
-      this.get(RepositoryRegistry).getRepository(targetName);
+      this.getService(RepositoryRegistry).getRepository(targetName);
     const targetPkPropName =
-      this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(targetName);
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        targetName,
+      );
     scope = scope ? cloneDeep(scope) : {};
     const filter = cloneDeep(scope);
     filter.where = {
@@ -183,7 +185,7 @@ export class BelongsToResolver extends Service {
       let targetRepository;
       try {
         targetRepository =
-          this.get(RepositoryRegistry).getRepository(targetName);
+          this.getService(RepositoryRegistry).getRepository(targetName);
       } catch (error) {
         if (error instanceof InvalidArgumentError) {
           if (
@@ -198,7 +200,9 @@ export class BelongsToResolver extends Service {
         }
       }
       const targetPkPropName =
-        this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(targetName);
+        this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          targetName,
+        );
       const targetFilter = cloneDeep(scope);
       const targetIds = targetIdsByTargetName[targetName];
       targetFilter.where = {
@@ -228,7 +232,9 @@ export class BelongsToResolver extends Service {
       }
       const targetEntities = targetEntitiesByTargetNames[targetName] ?? [];
       const targetPkPropName =
-        this.get(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(targetName);
+        this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          targetName,
+        );
       const target = targetEntities.find(e => e[targetPkPropName] === targetId);
       if (target) entity[relationName] = target;
     });

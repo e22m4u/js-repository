@@ -9,7 +9,7 @@ describe('ModelDataValidator', function () {
     it('does not throw an error if a model does not have a property of a given data', function () {
       const schema = new Schema();
       schema.defineModel({name: 'model'});
-      schema.get(ModelDataValidator).validate('model', {foo: 'bar'});
+      schema.getService(ModelDataValidator).validate('model', {foo: 'bar'});
     });
 
     it('throws an error if a given data is not a pure object', function () {
@@ -20,7 +20,7 @@ describe('ModelDataValidator', function () {
           datasource: 'datasource',
         });
         return () =>
-          schema.get(ModelDataValidator).validate('model', modelData);
+          schema.getService(ModelDataValidator).validate('model', modelData);
       };
       const error = given =>
         format(
@@ -49,7 +49,7 @@ describe('ModelDataValidator', function () {
         base: 'modelA',
       });
       const throwable = () =>
-        schema.get(ModelDataValidator).validate('modelB', {foo: 10});
+        schema.getService(ModelDataValidator).validate('modelB', {foo: 10});
       expect(throwable).to.throw(
         'The property "foo" of the model "modelB" must ' +
           'have a String, but Number given.',
@@ -68,7 +68,7 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema.get(ModelDataValidator).validate('model', {});
+        schema.getService(ModelDataValidator).validate('model', {});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" ' +
           'is required, but undefined given.',
@@ -87,7 +87,9 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema.get(ModelDataValidator).validate('model', {foo: undefined});
+        schema
+          .getService(ModelDataValidator)
+          .validate('model', {foo: undefined});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" is required, but undefined given.',
       );
@@ -105,7 +107,7 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema.get(ModelDataValidator).validate('model', {foo: null});
+        schema.getService(ModelDataValidator).validate('model', {foo: null});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" is required, but null given.',
       );
@@ -123,7 +125,7 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        schema.get(ModelDataValidator).validate('model', {}, true);
+        schema.getService(ModelDataValidator).validate('model', {}, true);
       });
 
       it('throws an error if a required property is undefined', function () {
@@ -139,7 +141,7 @@ describe('ModelDataValidator', function () {
         });
         const throwable = () =>
           schema
-            .get(ModelDataValidator)
+            .getService(ModelDataValidator)
             .validate('model', {foo: undefined}, true);
         expect(throwable).to.throw(
           'The property "foo" of the model "model" ' +
@@ -159,7 +161,9 @@ describe('ModelDataValidator', function () {
           },
         });
         const throwable = () =>
-          schema.get(ModelDataValidator).validate('model', {foo: null}, true);
+          schema
+            .getService(ModelDataValidator)
+            .validate('model', {foo: null}, true);
         expect(throwable).to.throw(
           'The property "foo" of the model "model" is required, but null given.',
         );
@@ -177,7 +181,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -191,7 +195,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -205,7 +209,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 'bar',
           });
         });
@@ -219,7 +223,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 10,
           });
         });
@@ -233,7 +237,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: true,
           });
         });
@@ -247,7 +251,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: false,
           });
         });
@@ -261,7 +265,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: [],
           });
         });
@@ -275,7 +279,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ANY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: {},
           });
         });
@@ -293,7 +297,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -309,7 +313,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -325,7 +329,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 'bar',
           });
         });
@@ -341,7 +345,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 10,
           });
         });
@@ -357,7 +361,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: true,
           });
         });
@@ -373,7 +377,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: false,
           });
         });
@@ -389,7 +393,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: [],
           });
         });
@@ -405,7 +409,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: {},
           });
         });
@@ -423,7 +427,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.STRING,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -437,7 +441,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.STRING,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -451,7 +455,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.STRING,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 'bar',
           });
         });
@@ -466,7 +470,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -485,7 +489,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -504,7 +508,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -523,7 +527,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -542,7 +546,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -564,7 +568,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -580,7 +584,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -596,7 +600,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 'bar',
           });
         });
@@ -613,7 +617,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -634,7 +638,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -655,7 +659,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -676,7 +680,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -697,7 +701,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -719,7 +723,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.NUMBER,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -733,7 +737,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.NUMBER,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -748,7 +752,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -766,7 +770,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.NUMBER,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 10,
           });
         });
@@ -781,7 +785,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -800,7 +804,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -819,7 +823,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -838,7 +842,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -860,7 +864,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -876,7 +880,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -893,7 +897,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -913,7 +917,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: 10,
           });
         });
@@ -930,7 +934,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -951,7 +955,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -972,7 +976,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -993,7 +997,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -1015,7 +1019,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.BOOLEAN,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1029,7 +1033,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.BOOLEAN,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1044,7 +1048,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1063,7 +1067,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1081,7 +1085,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.BOOLEAN,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: true,
           });
         });
@@ -1095,7 +1099,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.BOOLEAN,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: false,
           });
         });
@@ -1110,7 +1114,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -1129,7 +1133,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -1151,7 +1155,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1167,7 +1171,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1184,7 +1188,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1205,7 +1209,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1225,7 +1229,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: true,
           });
         });
@@ -1241,7 +1245,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: false,
           });
         });
@@ -1258,7 +1262,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -1279,7 +1283,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -1301,7 +1305,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ARRAY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1315,7 +1319,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ARRAY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1330,7 +1334,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1349,7 +1353,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1368,7 +1372,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -1387,7 +1391,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -1405,7 +1409,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.ARRAY,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: [],
           });
         });
@@ -1420,7 +1424,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -1442,7 +1446,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1458,7 +1462,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1475,7 +1479,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1496,7 +1500,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1517,7 +1521,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -1538,7 +1542,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -1558,7 +1562,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: [],
           });
         });
@@ -1575,7 +1579,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           expect(throwable).to.throw(
@@ -1597,7 +1601,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.OBJECT,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1611,7 +1615,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.OBJECT,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1626,7 +1630,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1645,7 +1649,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1664,7 +1668,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -1683,7 +1687,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -1702,7 +1706,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -1720,7 +1724,7 @@ describe('ModelDataValidator', function () {
               foo: DataType.OBJECT,
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: {},
           });
         });
@@ -1738,7 +1742,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: undefined,
           });
         });
@@ -1754,7 +1758,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: null,
           });
         });
@@ -1771,7 +1775,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           expect(throwable).to.throw(
@@ -1792,7 +1796,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           expect(throwable).to.throw(
@@ -1813,7 +1817,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           expect(throwable).to.throw(
@@ -1834,7 +1838,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           expect(throwable).to.throw(
@@ -1855,7 +1859,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.get(ModelDataValidator).validate('model', {
+            S.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           expect(throwable).to.throw(
@@ -1875,7 +1879,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.get(ModelDataValidator).validate('model', {
+          S.getService(ModelDataValidator).validate('model', {
             foo: {},
           });
         });

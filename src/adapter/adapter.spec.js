@@ -2,12 +2,13 @@ import chai from 'chai';
 import {expect} from 'chai';
 import {Schema} from '../schema.js';
 import {Adapter} from './adapter.js';
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
 import {DataValidationDecorator} from './decorator/index.js';
 import {DataSanitizingDecorator} from './decorator/index.js';
 import {FieldsFilteringDecorator} from './decorator/index.js';
+import {ServiceContainer} from '@e22m4u/service';
 
 const sandbox = chai.spy.sandbox();
 
@@ -22,21 +23,21 @@ describe('Adapter', function () {
       expect(adapter).to.be.instanceof(Service);
     });
 
-    it('sets given services an settings', function () {
-      const services = new Map();
+    it('sets given service container and settings', function () {
+      const container = new ServiceContainer();
       const settings = {};
-      const adapter = new Adapter(services, settings);
-      expect(adapter._services).to.be.eq(services);
+      const adapter = new Adapter(container, settings);
+      expect(adapter.container).to.be.eq(container);
       expect(adapter._settings).to.be.eq(settings);
     });
 
     it('decorates only extended adapter', function () {
       const schema = new Schema();
-      const dec1 = schema.get(DataValidationDecorator);
-      const dec2 = schema.get(DataSanitizingDecorator);
-      const dec3 = schema.get(DefaultValuesDecorator);
-      const dec4 = schema.get(FieldsFilteringDecorator);
-      const dec5 = schema.get(InclusionDecorator);
+      const dec1 = schema.getService(DataValidationDecorator);
+      const dec2 = schema.getService(DataSanitizingDecorator);
+      const dec3 = schema.getService(DefaultValuesDecorator);
+      const dec4 = schema.getService(FieldsFilteringDecorator);
+      const dec5 = schema.getService(InclusionDecorator);
       const order = [];
       const decorate = function (ctx) {
         expect(ctx).to.be.instanceof(Adapter);
@@ -47,7 +48,7 @@ describe('Adapter', function () {
       sandbox.on(dec3, 'decorate', decorate);
       sandbox.on(dec4, 'decorate', decorate);
       sandbox.on(dec5, 'decorate', decorate);
-      new Adapter(schema._services);
+      new Adapter(schema.container);
       expect(order).to.be.empty;
       expect(dec1.decorate).to.be.not.called;
       expect(dec2.decorate).to.be.not.called;
@@ -55,7 +56,7 @@ describe('Adapter', function () {
       expect(dec4.decorate).to.be.not.called;
       expect(dec5.decorate).to.be.not.called;
       class ExtendedAdapter extends Adapter {}
-      new ExtendedAdapter(schema._services);
+      new ExtendedAdapter(schema.container);
       expect(order[0]).to.be.eql(dec1);
       expect(order[1]).to.be.eql(dec2);
       expect(order[2]).to.be.eql(dec3);

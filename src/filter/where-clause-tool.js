@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {getValueByPath} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {OperatorClauseTool} from './operator-clause-tool.js';
@@ -133,7 +133,7 @@ export class WhereClauseTool extends Service {
     }
     // Operator clause.
     if (typeof example === 'object') {
-      const operatorsTest = this.get(OperatorClauseTool).testAll(
+      const operatorsTest = this.getService(OperatorClauseTool).testAll(
         example,
         value,
       );

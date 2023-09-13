@@ -353,7 +353,7 @@ describe('PropertiesDefinitionValidator', function () {
     });
 
     it('uses PrimaryKeysDefinitionValidator to validate primary keys', function () {
-      const V = S.get(PrimaryKeysDefinitionValidator);
+      const V = S.getService(PrimaryKeysDefinitionValidator);
       sandbox.on(V, 'validate');
       const propDefs = {};
       S.validate('model', propDefs);
@@ -362,7 +362,7 @@ describe('PropertiesDefinitionValidator', function () {
     });
 
     it('uses DefaultValuesDefinitionValidator to validate default values', function () {
-      const V = S.get(DefaultValuesDefinitionValidator);
+      const V = S.getService(DefaultValuesDefinitionValidator);
       sandbox.on(V, 'validate');
       const propDefs = {};
       S.validate('model', propDefs);

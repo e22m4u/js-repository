@@ -1,4 +1,4 @@
-import {Service} from '../../../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {ModelDataValidator} from '../model-data-validator.js';
 
@@ -35,7 +35,7 @@ export class DefaultValuesDefinitionValidator extends Service {
           ? propDef.default()
           : propDef.default;
       try {
-        this.get(ModelDataValidator).validatePropertyValue(
+        this.getService(ModelDataValidator).validatePropertyValue(
           modelName,
           propName,
           propDef,

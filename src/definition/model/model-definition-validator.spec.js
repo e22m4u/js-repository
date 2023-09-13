@@ -123,7 +123,7 @@ describe('ModelDefinitionValidator', function () {
     });
 
     it('uses PropertiesDefinitionValidator service to validate model properties', function () {
-      const V = S.get(PropertiesDefinitionValidator);
+      const V = S.getService(PropertiesDefinitionValidator);
       sandbox.on(V, 'validate');
       const properties = {};
       S.validate({name: 'model', properties});
@@ -132,7 +132,7 @@ describe('ModelDefinitionValidator', function () {
     });
 
     it('uses RelationsDefinitionValidator service to validate model relations', function () {
-      const V = S.get(RelationsDefinitionValidator);
+      const V = S.getService(RelationsDefinitionValidator);
       sandbox.on(V, 'validate');
       const relations = {};
       S.validate({name: 'model', relations});

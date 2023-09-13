@@ -7,7 +7,7 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.j
 const S = new Schema();
 const MODEL_NAME = 'model';
 S.defineModel({name: MODEL_NAME});
-const T = S.get(FieldsClauseTool);
+const T = S.getService(FieldsClauseTool);
 
 describe('FieldsClauseTool', function () {
   describe('filter', function () {

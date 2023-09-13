@@ -39,7 +39,7 @@ describe('DefinitionRegistry', function () {
   });
 
   it('uses DatasourceDefinitionValidator to validate a given datasource', function () {
-    const V = S.get(DatasourceDefinitionValidator);
+    const V = S.getService(DatasourceDefinitionValidator);
     sandbox.on(V, 'validate');
     const datasource = {name: 'datasource', adapter: 'adapter'};
     S.addDatasource(datasource);
@@ -68,7 +68,7 @@ describe('DefinitionRegistry', function () {
   });
 
   it('uses ModelDefinitionValidator to validate a given model', function () {
-    const V = S.get(ModelDefinitionValidator);
+    const V = S.getService(ModelDefinitionValidator);
     sandbox.on(V, 'validate');
     const model = {name: 'model'};
     S.addModel(model);

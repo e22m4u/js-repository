@@ -1,5 +1,5 @@
+import {Service} from '@e22m4u/service';
 import {Repository} from './repository.js';
-import {Service} from '../service/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 
 /**
@@ -47,7 +47,7 @@ export class RepositoryRegistry extends Service {
   getRepository(modelName) {
     let repository = this._repositories[modelName];
     if (repository) return repository;
-    repository = new this._repositoryCtor(this._services, modelName);
+    repository = new this._repositoryCtor(this.container, modelName);
     this._repositories[modelName] = repository;
     return repository;
   }

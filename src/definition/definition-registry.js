@@ -1,4 +1,4 @@
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {InvalidArgumentError} from '../errors/index.js';
 import {ModelDefinitionValidator} from './model/index.js';
 import {DatasourceDefinitionValidator} from '../definition/index.js';
@@ -27,7 +27,7 @@ export class DefinitionRegistry extends Service {
    * @param datasourceDef
    */
   addDatasource(datasourceDef) {
-    this.get(DatasourceDefinitionValidator).validate(datasourceDef);
+    this.getService(DatasourceDefinitionValidator).validate(datasourceDef);
     const name = datasourceDef.name;
     if (name in this._datasources)
       throw new InvalidArgumentError(
@@ -66,7 +66,7 @@ export class DefinitionRegistry extends Service {
    * @param modelDef
    */
   addModel(modelDef) {
-    this.get(ModelDefinitionValidator).validate(modelDef);
+    this.getService(ModelDefinitionValidator).validate(modelDef);
     const name = modelDef.name;
     if (name in this._models)
       throw new InvalidArgumentError('The model %v is already defined.', name);

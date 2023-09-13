@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import {Service} from '../service/index.js';
+import {Service} from '@e22m4u/service';
 import {NotImplementedError} from '../errors/index.js';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
@@ -28,19 +28,19 @@ export class Adapter extends Service {
   /**
    * Constructor.
    *
-   * @param services
+   * @param container
    * @param settings
    */
-  constructor(services = undefined, settings = undefined) {
-    super(services);
+  constructor(container = undefined, settings = undefined) {
+    super(container);
     this._settings = settings;
     // decorate only extended classes
     if (this.constructor !== Adapter) {
-      this.get(DataValidationDecorator).decorate(this);
-      this.get(DataSanitizingDecorator).decorate(this);
-      this.get(DefaultValuesDecorator).decorate(this);
-      this.get(FieldsFilteringDecorator).decorate(this);
-      this.get(InclusionDecorator).decorate(this);
+      this.getService(DataValidationDecorator).decorate(this);
+      this.getService(DataSanitizingDecorator).decorate(this);
+      this.getService(DefaultValuesDecorator).decorate(this);
+      this.getService(FieldsFilteringDecorator).decorate(this);
+      this.getService(InclusionDecorator).decorate(this);
     }
   }
 
