@@ -34,7 +34,7 @@
   "homepage": "https://github.com/e22m4u/repository",
   "dependencies": {
     "@e22m4u/format": "0.0.3",
-    "@e22m4u/service": "0.0.2"
+    "@e22m4u/service": "0.0.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
