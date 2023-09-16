@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Repository} from './repository.js';
-import {RepositoriesSchema} from '../repository/index.js';
+import {RepositoriesSchema} from '../schema/index.js';
 import {RepositoryRegistry} from './repository-registry.js';
 
 describe('RepositoryRegistry', function () {

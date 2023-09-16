@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {format} from '@e22m4u/format';
 import {DataType} from './properties/index.js';
-import {RepositoriesSchema} from '../../repository/index.js';
+import {RepositoriesSchema} from '../../schema/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
 
 describe('ModelDataValidator', function () {

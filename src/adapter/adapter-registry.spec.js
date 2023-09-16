@@ -1,7 +1,7 @@
 import {expect} from 'chai';
+import {RepositoriesSchema} from '../schema/index.js';
 import {AdapterRegistry} from './adapter-registry.js';
 import {MemoryAdapter} from './builtin/memory-adapter.js';
-import {RepositoriesSchema} from '../repository/index.js';
 
 describe('AdapterRegistry', function () {
   describe('getAdapter', function () {

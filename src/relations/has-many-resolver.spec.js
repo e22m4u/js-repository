@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {format} from '@e22m4u/format';
 import {DataType} from '../definition/index.js';
 import {RelationType} from '../definition/index.js';
+import {RepositoriesSchema} from '../schema/index.js';
 import {HasManyResolver} from './has-many-resolver.js';
-import {RepositoriesSchema} from '../repository/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.js';
 
 describe('HasManyResolver', function () {

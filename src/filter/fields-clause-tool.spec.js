@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {format} from '@e22m4u/format';
+import {RepositoriesSchema} from '../schema/index.js';
 import {FieldsClauseTool} from './fields-clause-tool.js';
-import {RepositoriesSchema} from '../repository/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.js';
 
 const S = new RepositoriesSchema();

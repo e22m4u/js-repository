@@ -2,7 +2,7 @@ import chai from 'chai';
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
 import {IncludeClauseTool} from '../../filter/index.js';
-import {RepositoriesSchema} from '../../repository/index.js';
+import {RepositoriesSchema} from '../../schema/index.js';
 
 const S = new RepositoriesSchema();
 S.defineModel({name: 'model'});
