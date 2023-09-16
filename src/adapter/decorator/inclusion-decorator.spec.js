@@ -1,10 +1,10 @@
 import chai from 'chai';
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
-import {Schema} from '../../schema.js';
 import {IncludeClauseTool} from '../../filter/index.js';
+import {RepositoriesSchema} from '../../repository/index.js';
 
-const S = new Schema();
+const S = new RepositoriesSchema();
 S.defineModel({name: 'model'});
 const FILTER = {include: 'parent'};
 

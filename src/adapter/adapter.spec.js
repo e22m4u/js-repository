@@ -1,14 +1,14 @@
 import chai from 'chai';
 import {expect} from 'chai';
-import {Schema} from '../schema.js';
 import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/service';
+import {ServiceContainer} from '@e22m4u/service';
 import {InclusionDecorator} from './decorator/index.js';
+import {RepositoriesSchema} from '../repository/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
 import {DataValidationDecorator} from './decorator/index.js';
 import {DataSanitizingDecorator} from './decorator/index.js';
 import {FieldsFilteringDecorator} from './decorator/index.js';
-import {ServiceContainer} from '@e22m4u/service';
 
 const sandbox = chai.spy.sandbox();
 
@@ -32,7 +32,7 @@ describe('Adapter', function () {
     });
 
     it('decorates only extended adapter', function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       const dec1 = schema.getService(DataValidationDecorator);
       const dec2 = schema.getService(DataSanitizingDecorator);
       const dec3 = schema.getService(DefaultValuesDecorator);

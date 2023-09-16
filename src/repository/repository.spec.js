@@ -1,11 +1,11 @@
 import {expect} from 'chai';
-import {Schema} from '../schema.js';
+import {RepositoriesSchema} from '../repository/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.js';
 
 describe('Repository', function () {
   describe('create', function () {
     it('creates a new item from the given data', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const data = {foo: 'bar'};
@@ -17,7 +17,7 @@ describe('Repository', function () {
 
   describe('replaceById', function () {
     it('replaces an item by the given id', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -29,7 +29,7 @@ describe('Repository', function () {
 
   describe('replaceOrCreate', function () {
     it('creates a new item from the given data', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const data = {foo: 'bar'};
@@ -39,7 +39,7 @@ describe('Repository', function () {
     });
 
     it('replaces an existing item', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -52,7 +52,7 @@ describe('Repository', function () {
 
   describe('patchById', function () {
     it('patches an item by the given id', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -68,7 +68,7 @@ describe('Repository', function () {
 
   describe('find', function () {
     it('returns all items', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -79,7 +79,7 @@ describe('Repository', function () {
     });
 
     it('returns found items by the "where" clause', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -92,7 +92,7 @@ describe('Repository', function () {
 
   describe('findOne', function () {
     it('returns a first item', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -103,7 +103,7 @@ describe('Repository', function () {
     });
 
     it('returns a found item by the "where" clause', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -116,7 +116,7 @@ describe('Repository', function () {
 
   describe('findById', function () {
     it('returns an item by the given id', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -128,7 +128,7 @@ describe('Repository', function () {
 
   describe('delete', function () {
     it('removes all items', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -139,7 +139,7 @@ describe('Repository', function () {
     });
 
     it('removes found items by the "where" clause', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -153,7 +153,7 @@ describe('Repository', function () {
 
   describe('deleteById', function () {
     it('removes an item by the given id', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -165,7 +165,7 @@ describe('Repository', function () {
 
   describe('exists', function () {
     it('returns true if the given id exists', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -177,7 +177,7 @@ describe('Repository', function () {
 
   describe('count', function () {
     it('counts all items', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');
@@ -188,7 +188,7 @@ describe('Repository', function () {
     });
 
     it('counts found items by the "where" clause', async function () {
-      const schema = new Schema();
+      const schema = new RepositoriesSchema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const rep = schema.getRepository('model');

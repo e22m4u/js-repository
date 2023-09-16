@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import {AdapterRegistry} from './adapter-registry.js';
 import {MemoryAdapter} from './builtin/memory-adapter.js';
-import {Schema} from '../schema.js';
+import {RepositoriesSchema} from '../repository/index.js';
 
 describe('AdapterRegistry', function () {
   describe('getAdapter', function () {
     it('instantiates a new or returns an existing adapter by a given datasource name', async function () {
-      const S = new Schema();
+      const S = new RepositoriesSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       const R = S.getService(AdapterRegistry);
       const adapter = await R.getAdapter('datasource');
@@ -24,7 +24,7 @@ describe('AdapterRegistry', function () {
     });
 
     it('throws an error if an adapter is not exists', async function () {
-      const S = new Schema();
+      const S = new RepositoriesSchema();
       S.defineDatasource({name: 'datasource', adapter: 'unknown'});
       const R = S.getService(AdapterRegistry);
       const promise = R.getAdapter('datasource');
