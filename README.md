@@ -21,12 +21,12 @@ npm install @e22m4u/repository-mongodb-adapter
 
 ## Пример
 
-Создаем экземпляр класса `RepositoriesSchema`
+Создаем экземпляр класса `Schema`
 
 ```js
-import {RepositoriesSchema} from '@e22m4u/repository';
+import {Schema} from '@e22m4u/repository';
 
-const schema = new RepositoriesSchema();
+const schema = new Schema();
 ```
 
 Создаем источник данных `myMemory`
@@ -116,9 +116,9 @@ await userRep.deleteById(fedor.id); // true
 Получение репозитория модели:
 
 ```js
-import {RepositoriesSchema} from '@e22m4u/repository';
+import {Schema} from '@e22m4u/repository';
 
-const schema = new RepositoriesSchema();
+const schema = new Schema();
 // создаем источник
 schema.defineDatasource({name: 'myDatasource', adapter: 'memory'});
 // создаем модель
@@ -130,15 +130,15 @@ const repositorty = schema.getRepository('myModel');
 Переопределение конструктора:
 
 ```js
+import {Schema} from '@e22m4u/repository';
 import {Repository} from '@e22m4u/repository';
-import {RepositoriesSchema} from '@e22m4u/repository';
 import {RepositoryRegistry} from '@e22m4u/repository';
 
 class MyRepository extends Repository {
   /*...*/
 }
 
-const schema = new RepositoriesSchema();
+const schema = new Schema();
 schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
 // теперь schema.getRepository(modelName) будет возвращать
 // экземпляр класса MyRepository

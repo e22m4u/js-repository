@@ -1,13 +1,13 @@
 import {expect} from 'chai';
+import {Schema} from '../schema.js';
 import {Repository} from './repository.js';
-import {RepositoriesSchema} from '../schema/index.js';
 import {RepositoryRegistry} from './repository-registry.js';
 
 describe('RepositoryRegistry', function () {
   describe('setRepositoryCtor', function () {
     it('sets a given class as the repository constructor', function () {
       class MyRepository extends Repository {}
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
       const registry = schema.getService(RepositoryRegistry);
@@ -20,7 +20,7 @@ describe('RepositoryRegistry', function () {
 
   describe('getRepository', function () {
     it('uses a given model name to return an existing repository or create the new', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'modelA', datasource: 'datasource'});
       schema.defineModel({name: 'modelB', datasource: 'datasource'});

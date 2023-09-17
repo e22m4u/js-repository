@@ -1,20 +1,20 @@
 import {expect} from 'chai';
 import {format} from '@e22m4u/format';
+import {Schema} from '../../schema.js';
 import {DataType} from './properties/index.js';
-import {RepositoriesSchema} from '../../schema/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
 
 describe('ModelDataValidator', function () {
   describe('validate', function () {
     it('does not throw an error if a model does not have a property of a given data', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineModel({name: 'model'});
       schema.getService(ModelDataValidator).validate('model', {foo: 'bar'});
     });
 
     it('throws an error if a given data is not a pure object', function () {
       const throwable = modelData => {
-        const schema = new RepositoriesSchema();
+        const schema = new Schema();
         schema.defineModel({
           name: 'model',
           datasource: 'datasource',
@@ -37,7 +37,7 @@ describe('ModelDataValidator', function () {
     });
 
     it('uses a base model hierarchy to validate a given data', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -57,7 +57,7 @@ describe('ModelDataValidator', function () {
     });
 
     it('throws an error if a given data does not have a required property', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -76,7 +76,7 @@ describe('ModelDataValidator', function () {
     });
 
     it('throws an error if a required property is undefined', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -96,7 +96,7 @@ describe('ModelDataValidator', function () {
     });
 
     it('throws an error if a required property is null', function () {
-      const schema = new RepositoriesSchema();
+      const schema = new Schema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -115,7 +115,7 @@ describe('ModelDataValidator', function () {
 
     describe('an option "isPartial" is true', function () {
       it('does not throw an error if a given data does not have a required property', function () {
-        const schema = new RepositoriesSchema();
+        const schema = new Schema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -129,7 +129,7 @@ describe('ModelDataValidator', function () {
       });
 
       it('throws an error if a required property is undefined', function () {
-        const schema = new RepositoriesSchema();
+        const schema = new Schema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -150,7 +150,7 @@ describe('ModelDataValidator', function () {
       });
 
       it('throws an error if a required property is null', function () {
-        const schema = new RepositoriesSchema();
+        const schema = new Schema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -173,7 +173,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.ANY', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -187,7 +187,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -201,7 +201,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -215,7 +215,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -229,7 +229,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -243,7 +243,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -257,7 +257,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -271,7 +271,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -287,7 +287,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -303,7 +303,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -319,7 +319,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -335,7 +335,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -351,7 +351,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -367,7 +367,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -383,7 +383,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -399,7 +399,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -419,7 +419,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.STRING', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -433,7 +433,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -447,7 +447,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -461,7 +461,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -480,7 +480,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -499,7 +499,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -518,7 +518,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -537,7 +537,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -558,7 +558,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -574,7 +574,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -590,7 +590,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -606,7 +606,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -627,7 +627,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -648,7 +648,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -669,7 +669,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -690,7 +690,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -715,7 +715,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.NUMBER', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -729,7 +729,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -743,7 +743,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -762,7 +762,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -776,7 +776,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -795,7 +795,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -814,7 +814,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -833,7 +833,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -854,7 +854,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -870,7 +870,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -886,7 +886,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -907,7 +907,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -923,7 +923,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -944,7 +944,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -965,7 +965,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -986,7 +986,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1011,7 +1011,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.BOOLEAN', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1025,7 +1025,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1039,7 +1039,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1058,7 +1058,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1077,7 +1077,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1091,7 +1091,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1105,7 +1105,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1124,7 +1124,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1145,7 +1145,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1161,7 +1161,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1177,7 +1177,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1198,7 +1198,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1219,7 +1219,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1235,7 +1235,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1251,7 +1251,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1272,7 +1272,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1297,7 +1297,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.ARRAY', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1311,7 +1311,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1325,7 +1325,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1344,7 +1344,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1363,7 +1363,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1382,7 +1382,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1401,7 +1401,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1415,7 +1415,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1436,7 +1436,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1452,7 +1452,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1468,7 +1468,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1489,7 +1489,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1510,7 +1510,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1531,7 +1531,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1552,7 +1552,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1568,7 +1568,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1593,7 +1593,7 @@ describe('ModelDataValidator', function () {
     describe('DataType.OBJECT', function () {
       describe('ShortPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1607,7 +1607,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1621,7 +1621,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1640,7 +1640,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1659,7 +1659,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1678,7 +1678,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1697,7 +1697,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1716,7 +1716,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1732,7 +1732,7 @@ describe('ModelDataValidator', function () {
 
       describe('FullPropertyDefinition', function () {
         it('does not throw an error if an undefined given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1748,7 +1748,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if a null given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1764,7 +1764,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a string given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1785,7 +1785,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if a number given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1806,7 +1806,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if true given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1827,7 +1827,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if false given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1848,7 +1848,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('throws an error if an array given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',
@@ -1869,7 +1869,7 @@ describe('ModelDataValidator', function () {
         });
 
         it('does not throw an error if an object given', function () {
-          const S = new RepositoriesSchema();
+          const S = new Schema();
           S.defineModel({
             name: 'model',
             datasource: 'datasource',

@@ -1,10 +1,10 @@
 import chai from 'chai';
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
-import {RepositoriesSchema} from '../../schema/index.js';
+import {Schema} from '../../schema.js';
 import {ModelDataValidator} from '../../definition/index.js';
 
-const S = new RepositoriesSchema();
+const S = new Schema();
 S.defineModel({name: 'model'});
 
 class TestAdapter extends Adapter {

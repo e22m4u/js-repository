@@ -1,11 +1,11 @@
 import chai from 'chai';
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
+import {Schema} from '../../schema.js';
 import {DataType} from '../../definition/index.js';
-import {RepositoriesSchema} from '../../schema/index.js';
 import {ModelDefinitionUtils} from '../../definition/index.js';
 
-const S = new RepositoriesSchema();
+const S = new Schema();
 S.defineModel({
   name: 'model',
   properties: {

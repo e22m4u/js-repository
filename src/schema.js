@@ -1,11 +1,11 @@
 import {Service} from '@e22m4u/service';
-import {RepositoryRegistry} from '../repository/index.js';
-import {DefinitionRegistry} from '../definition/index.js';
+import {DefinitionRegistry} from './definition/index.js';
+import {RepositoryRegistry} from './repository/index.js';
 
 /**
- * Repositories schema.
+ * Schema.
  */
-export class RepositoriesSchema extends Service {
+export class Schema extends Service {
   /**
    * Define datasource.
    *

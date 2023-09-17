@@ -1,10 +1,10 @@
 import chai from 'chai';
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
+import {Schema} from '../../schema.js';
 import {FieldsClauseTool} from '../../filter/index.js';
-import {RepositoriesSchema} from '../../schema/index.js';
 
-const S = new RepositoriesSchema();
+const S = new Schema();
 const MODEL_NAME = 'model';
 S.defineModel({name: MODEL_NAME});
 
