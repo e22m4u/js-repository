@@ -29,7 +29,7 @@ export class AdapterLoader extends Service {
     if (!adapterCtor)
       try {
         const module = await import(
-          `@e22m4u/repository-${adapterName}-adapter`
+          `@e22m4u/node-repository-${adapterName}-adapter`
         );
         adapterCtor = findAdapterCtorInModule(module);
       } catch (e) {

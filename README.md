@@ -1,22 +1,22 @@
-## @e22m4u/repository
+## @e22m4u/node-repository
 
 Абстракция для работы с базами данных для Node.js
-  
-| адаптер | описание                                                                                                                                     |
-|---------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| memory  | хранение данных в памяти процесса Node.js для разработки и тестирования                                                                      |
-| mongodb | MongoDB - система управления NoSQL базами данных (*[требует установки](https://www.npmjs.com/package/@e22m4u/repository-mongodb-adapter))* |
+
+| адаптер | описание                                                                                                                                        |
+|---------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| memory  | работа с данными в памяти процесса (для разработки и тестирования)                                                                              |
+| mongodb | MongoDB - система управления NoSQL базами данных (*[требует установки](https://www.npmjs.com/package/@e22m4u/node-repository-mongodb-adapter))* |
 
 ## Установка
 
 ```bash
-npm install @e22m4u/repository
+npm install @e22m4u/node-repository
 ```
 
-Опционально устанавливаем адаптер, например [mongodb](https://www.npmjs.com/package/@e22m4u/repository-mongodb-adapter)
+Опционально устанавливаем адаптер, например [mongodb](https://www.npmjs.com/package/@e22m4u/node-repository-mongodb-adapter)
 
 ```bash
-npm install @e22m4u/repository-mongodb-adapter
+npm install @e22m4u/node-repository-mongodb-adapter
 ```
 
 ## Пример
@@ -24,7 +24,7 @@ npm install @e22m4u/repository-mongodb-adapter
 Создаем экземпляр класса `Schema`
 
 ```js
-import {Schema} from '@e22m4u/repository';
+import {Schema} from '@e22m4u/node-repository';
 
 const schema = new Schema();
 ```
@@ -116,7 +116,7 @@ await userRep.deleteById(fedor.id); // true
 Получение репозитория модели:
 
 ```js
-import {Schema} from '@e22m4u/repository';
+import {Schema} from '@e22m4u/node-repository';
 
 const schema = new Schema();
 // создаем источник
@@ -130,9 +130,9 @@ const repositorty = schema.getRepository('myModel');
 Переопределение конструктора:
 
 ```js
-import {Schema} from '@e22m4u/repository';
-import {Repository} from '@e22m4u/repository';
-import {RepositoryRegistry} from '@e22m4u/repository';
+import {Schema} from '@e22m4u/node-repository';
+import {Repository} from '@e22m4u/node-repository';
+import {RepositoryRegistry} from '@e22m4u/node-repository';
 
 class MyRepository extends Repository {
   /*...*/
