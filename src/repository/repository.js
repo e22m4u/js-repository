@@ -10,6 +10,8 @@ import {ModelDefinitionUtils} from '../definition/index.js';
 export class Repository extends Service {
   /**
    * Model name.
+   *
+   * @type {string}
    */
   _modelName;
 
@@ -24,6 +26,8 @@ export class Repository extends Service {
 
   /**
    * Datasource name.
+   *
+   * @type {string}
    */
   _datasourceName;
 
@@ -39,8 +43,9 @@ export class Repository extends Service {
   /**
    * Constructor.
    *
-   * @param container
-   * @param modelName
+   * @typedef {import('@e22m4u/service').ServiceContainer} ServiceContainer
+   * @param {ServiceContainer} container
+   * @param {string} modelName
    */
   constructor(container, modelName) {
     super(container);
@@ -58,7 +63,7 @@ export class Repository extends Service {
   /**
    * Get adapter.
    *
-   * @return {Promise<Adapter>}
+   * @return {Adapter}
    */
   async getAdapter() {
     return this.getService(AdapterRegistry).getAdapter(this.datasourceName);

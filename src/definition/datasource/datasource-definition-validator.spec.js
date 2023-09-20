@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from '@e22m4u/format';
+import {format} from '@e22m4u/util-format';
 import {DatasourceDefinitionValidator} from './datasource-definition-validator.js';
 
 const S = new DatasourceDefinitionValidator();

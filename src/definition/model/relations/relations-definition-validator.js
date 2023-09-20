@@ -101,7 +101,7 @@ export class RelationsDefinitionValidator extends Service {
    *
    * @param {string} modelName
    * @param {string} relName
-   * @param {Record<string, unknown>} relDef
+   * @param {object} relDef
    * @private
    */
   _validateBelongsTo(modelName, relName, relDef) {
@@ -317,7 +317,7 @@ export class RelationsDefinitionValidator extends Service {
    *
    * @param {string} modelName
    * @param {string} relName
-   * @param {Record<string, unknown>} relDef
+   * @param {object} relDef
    * @private
    */
   _validateHasMany(modelName, relName, relDef) {

@@ -9,7 +9,7 @@ export class Schema extends Service {
   /**
    * Define datasource.
    *
-   * @param datasourceDef
+   * @param {object} datasourceDef
    */
   defineDatasource(datasourceDef) {
     this.getService(DefinitionRegistry).addDatasource(datasourceDef);
@@ -19,7 +19,7 @@ export class Schema extends Service {
   /**
    * Define model.
    *
-   * @param modelDef
+   * @param {object} modelDef
    */
   defineModel(modelDef) {
     this.getService(DefinitionRegistry).addModel(modelDef);
@@ -29,7 +29,7 @@ export class Schema extends Service {
   /**
    * Get repository.
    *
-   * @param modelName
+   * @param {Repository} modelName
    */
   getRepository(modelName) {
     return this.getService(RepositoryRegistry).getRepository(modelName);

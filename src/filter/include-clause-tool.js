@@ -18,9 +18,9 @@ export class IncludeClauseTool extends Service {
   /**
    * Include to.
    *
-   * @param {Record<string, unknown>[]} entities
+   * @param {object[]} entities
    * @param {string} modelName
-   * @param {Record<string, unknown>[]} clause
+   * @param {object[]} clause
    * @return {Promise<void>}
    */
   async includeTo(entities, modelName, clause) {

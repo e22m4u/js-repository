@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from '@e22m4u/format';
+import {format} from '@e22m4u/util-format';
 import {InvalidArgumentError} from './invalid-argument-error.js';
 
 describe('InvalidArgumentError', function () {

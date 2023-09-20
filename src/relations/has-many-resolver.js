@@ -12,12 +12,12 @@ export class HasManyResolver extends Service {
   /**
    * Include to.
    *
-   * @param {Record<string, unknown>[]} entities
+   * @param {object[]} entities
    * @param {string} sourceName
    * @param {string} targetName
    * @param {string} relationName
    * @param {string} foreignKey
-   * @param {Record<string, unknown>|undefined} scope
+   * @param {object|undefined} scope
    * @return {Promise<void>}
    */
   async includeTo(
@@ -113,13 +113,13 @@ export class HasManyResolver extends Service {
   /**
    * Include polymorphic to.
    *
-   * @param {Record<string, unknown>[]} entities
+   * @param {object[]} entities
    * @param {string} sourceName
    * @param {string} targetName
    * @param {string} relationName
    * @param {string} foreignKey
    * @param {string} discriminator
-   * @param {Record<string, unknown>|undefined} scope
+   * @param {object|undefined} scope
    * @return {Promise<void>}
    */
   async includePolymorphicTo(
@@ -225,12 +225,12 @@ export class HasManyResolver extends Service {
   /**
    * Include polymorphic by relation name.
    *
-   * @param {Record<string, unknown>[]} entities
+   * @param {object[]} entities
    * @param {string} sourceName
    * @param {string} targetName
    * @param {string} relationName
    * @param {string} targetRelationName
-   * @param {Record<string, unknown>|undefined} scope
+   * @param {object|undefined} scope
    * @return {Promise<void>}
    */
   async includePolymorphicByRelationName(

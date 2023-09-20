@@ -10,8 +10,8 @@ export class OperatorClauseTool extends Service {
   /**
    * Compare.
    *
-   * @param {*} val1 The 1st value
-   * @param {*} val2 The 2nd value
+   * @param {any} val1 The 1st value
+   * @param {any} val2 The 2nd value
    * @returns {number} 0: =, positive: >, negative <
    */
   compare(val1, val2) {

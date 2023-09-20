@@ -220,8 +220,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get own properties definition of primary keys.
    *
-   * @param modelName
-   * @return {Record<string, {}>}
+   * @param {string} modelName
+   * @return {object}
    */
   getOwnPropertiesDefinitionOfPrimaryKeys(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -236,8 +236,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get own properties definition without primary keys.
    *
-   * @param modelName
-   * @return {Record<string, {}>}
+   * @param {string} modelName
+   * @return {object}
    */
   getOwnPropertiesDefinitionWithoutPrimaryKeys(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -252,8 +252,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get properties definition in base model hierarchy.
    *
-   * @param modelName
-   * @return {Record<string, {}>}
+   * @param {string} modelName
+   * @return {object}
    */
   getPropertiesDefinitionInBaseModelHierarchy(modelName) {
     let result = {};
@@ -283,8 +283,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get own relations definition.
    *
-   * @param modelName
-   * @return {Record<string, {}>}
+   * @param {string} modelName
+   * @return {object}
    */
   getOwnRelationsDefinition(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -294,8 +294,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get relations definition in base model hierarchy.
    *
-   * @param modelName
-   * @return {Record<string, {}>}
+   * @param {string} modelName
+   * @return {object}
    */
   getRelationsDefinitionInBaseModelHierarchy(modelName) {
     let result = {};
@@ -318,9 +318,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get relation definition by name.
    *
-   * @param modelName
-   * @param relationName
-   * @return {Record<string, unknown>}
+   * @param {string} modelName
+   * @param {string} relationName
+   * @return {object}
    */
   getRelationDefinitionByName(modelName, relationName) {
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);

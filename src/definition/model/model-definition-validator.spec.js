@@ -1,6 +1,6 @@
 import chai from 'chai';
 import {expect} from 'chai';
-import {format} from '@e22m4u/format';
+import {format} from '@e22m4u/util-format';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';
 import {ModelDefinitionValidator} from './model-definition-validator.js';

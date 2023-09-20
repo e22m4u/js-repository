@@ -12,12 +12,12 @@ export class ReferencesManyResolver extends Service {
   /**
    * Include to.
    *
-   * @param {Record<string, unknown>[]} entities
+   * @param {object[]} entities
    * @param {string} sourceName
    * @param {string} targetName
    * @param {string} relationName
    * @param {string|undefined} foreignKey
-   * @param {Record<string, unknown>|undefined} scope
+   * @param {object|undefined} scope
    * @return {Promise<void>}
    */
   async includeTo(

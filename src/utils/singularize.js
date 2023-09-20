@@ -1,8 +1,8 @@
 /**
  * Singularize.
  *
- * @param word
- * @return {*}
+ * @param {string} word
+ * @return {string}
  */
 export function singularize(word) {
   if (!word || typeof word !== 'string') return word;

@@ -3,8 +3,8 @@ import {InvalidArgumentError} from '../errors/index.js';
 /**
  * Select object keys.
  *
- * @param obj
- * @param keys
+ * @param {object} obj
+ * @param {string[]} keys
  * @return {object}
  */
 export function selectObjectKeys(obj, keys) {

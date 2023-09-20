@@ -1,4 +1,4 @@
-import {format} from '@e22m4u/format';
+import {format} from '@e22m4u/util-format';
 
 /**
  * Invalid operator value error.

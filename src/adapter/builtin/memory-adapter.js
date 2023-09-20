@@ -30,7 +30,7 @@ export class MemoryAdapter extends Adapter {
    * Get table or create.
    *
    * @param {string} modelName
-   * @return {Map<number, Record<string, any>>}
+   * @return {Map<number, object>}
    */
   _getTableOrCreate(modelName) {
     const tableName =
@@ -81,8 +81,8 @@ export class MemoryAdapter extends Adapter {
    * Create
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
@@ -121,8 +121,8 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string|number} id
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
@@ -159,8 +159,8 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string|number} id
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
@@ -236,7 +236,7 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string|number} id
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
@@ -322,7 +322,7 @@ export class MemoryAdapter extends Adapter {
    * Count.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} where
+   * @param {object|undefined} where
    * @return {Promise<number>}
    */
   async count(modelName, where = undefined) {

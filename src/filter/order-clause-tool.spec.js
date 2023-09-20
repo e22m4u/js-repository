@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from '@e22m4u/format';
+import {format} from '@e22m4u/util-format';
 import {OrderClauseTool} from './order-clause-tool.js';
 
 const S = new OrderClauseTool();

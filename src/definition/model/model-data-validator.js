@@ -12,9 +12,9 @@ export class ModelDataValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelName
-   * @param modelData
-   * @param isPartial
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {boolean} isPartial
    */
   validate(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
@@ -43,10 +43,11 @@ export class ModelDataValidator extends Service {
   /**
    * Validate property value.
    *
-   * @param modelName
-   * @param propName
-   * @param propDef
-   * @param propValue
+   * @param {string} modelName
+   * @param {string} propName
+   * @param {string|object} propDef
+   * @param {any} propValue
+   * @return {void}
    */
   validatePropertyValue(modelName, propName, propDef, propValue) {
     // undefined and null
@@ -68,11 +69,12 @@ export class ModelDataValidator extends Service {
   /**
    * Validate value type.
    *
-   * @param modelName
-   * @param propName
-   * @param propDef
-   * @param propValue
-   * @param isArrayValue
+   * @param {string} modelName
+   * @param {string} propName
+   * @param {string|object} propDef
+   * @param {any} propValue
+   * @param {boolean} isArrayValue
+   * @return {void}
    */
   _validatePropertyValueType(
     modelName,

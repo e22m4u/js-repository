@@ -1,8 +1,8 @@
 /**
  * Capitalize.
  *
- * @param string
- * @return {*|string}
+ * @param {string} string
+ * @return {string}
  */
 export function capitalize(string) {
   if (!string || typeof string !== 'string') return string;

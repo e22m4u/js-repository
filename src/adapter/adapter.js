@@ -19,7 +19,7 @@ export class Adapter extends Service {
   /**
    * Settings.
    *
-   * @return {*}
+   * @return {object|undefined}
    */
   get settings() {
     return this._settings;
@@ -28,8 +28,8 @@ export class Adapter extends Service {
   /**
    * Constructor.
    *
-   * @param container
-   * @param settings
+   * @param {object|undefined} container
+   * @param {object|undefined} settings
    */
   constructor(container = undefined, settings = undefined) {
     super(container);
@@ -48,8 +48,8 @@ export class Adapter extends Service {
    * Create.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   create(modelName, modelData, filter = undefined) {
@@ -63,9 +63,9 @@ export class Adapter extends Service {
    * Replace by id.
    *
    * @param {string} modelName
-   * @param {string|number} id
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {number|string} id
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   replaceById(modelName, id, modelData, filter = undefined) {
@@ -79,9 +79,9 @@ export class Adapter extends Service {
    * Patch by id.
    *
    * @param {string} modelName
-   * @param {string|number} id
-   * @param {Record<string, unknown>} modelData
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {number|string} id
+   * @param {object} modelData
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   patchById(modelName, id, modelData, filter = undefined) {
@@ -95,7 +95,7 @@ export class Adapter extends Service {
    * Find.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {object|undefined} filter
    * @return {Promise<object[]>}
    */
   find(modelName, filter = undefined) {
@@ -109,8 +109,8 @@ export class Adapter extends Service {
    * Find by id.
    *
    * @param {string} modelName
-   * @param {string|number} id
-   * @param {Record<string, unknown>|undefined} filter
+   * @param {number|string} id
+   * @param {object|undefined} filter
    * @return {Promise<object>}
    */
   findById(modelName, id, filter = undefined) {
@@ -124,7 +124,7 @@ export class Adapter extends Service {
    * Delete.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} where
+   * @param {object|undefined} where
    * @return {Promise<number>}
    */
   delete(modelName, where = undefined) {
@@ -138,7 +138,7 @@ export class Adapter extends Service {
    * Delete by id.
    *
    * @param {string} modelName
-   * @param {string|number} id
+   * @param {number|string} id
    * @return {Promise<boolean>}
    */
   deleteById(modelName, id) {
@@ -152,7 +152,7 @@ export class Adapter extends Service {
    * Exists.
    *
    * @param {string} modelName
-   * @param {string|number} id
+   * @param {number|string} id
    * @return {Promise<boolean>}
    */
   exists(modelName, id) {
@@ -166,7 +166,7 @@ export class Adapter extends Service {
    * Count.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} where
+   * @param {WhereClause|undefined} where
    * @return {Promise<number>}
    */
   count(modelName, where = undefined) {

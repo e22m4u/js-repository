@@ -41,7 +41,7 @@ export class DefinitionRegistry extends Service {
    * Has datasource.
    *
    * @param name
-   * @return {*}
+   * @return {boolean}
    */
   hasDatasource(name) {
     return Boolean(this._datasources[name]);
@@ -77,7 +77,7 @@ export class DefinitionRegistry extends Service {
    * Has model.
    *
    * @param name
-   * @return {*}
+   * @return {boolean}
    */
   hasModel(name) {
     return Boolean(this._models[name]);
@@ -87,7 +87,7 @@ export class DefinitionRegistry extends Service {
    * Get model.
    *
    * @param name
-   * @return {Object}
+   * @return {object}
    */
   getModel(name) {
     const modelDef = this._models[name];

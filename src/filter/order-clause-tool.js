@@ -53,8 +53,8 @@ export class OrderClauseTool extends Service {
   /**
    * Normalize order clause.
    *
-   * @param clause
-   * @return {undefined|*[]}
+   * @param {string|string[]} clause
+   * @return {string[]|undefined}
    */
   static normalizeOrderClause(clause) {
     if (!clause) return;
