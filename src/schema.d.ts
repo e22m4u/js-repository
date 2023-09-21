@@ -1,3 +1,4 @@
+import {Service} from '@e22m4u/service';
 import {Repository} from './repository';
 import {ModelDefinition} from './definition';
 import {DatasourceDefinition} from './definition';
@@ -5,7 +6,7 @@ import {DatasourceDefinition} from './definition';
 /**
  * Schema.
  */
-export declare class Schema {
+export declare class Schema extends Service {
   /**
    * Define datasource.
    *
