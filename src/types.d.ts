@@ -9,8 +9,20 @@ export declare type AnyObject = {
  * Model data.
  */
 export declare type ModelData = {
-  [property: string]: unknown;
+  [property: string]: PropertyData;
 };
+
+/**
+ * Property data.
+ */
+export type PropertyData =
+  | PropertyData[]
+  | ModelData
+  | string
+  | number
+  | boolean
+  | null
+  | undefined;
 
 /**
  * Identifier.
