@@ -1,8 +1,8 @@
 import {Adapter} from '../adapter';
 import {Filter} from '../../filter';
+import {ModelId} from '../../types';
 import {AnyObject} from '../../types';
 import {ModelData} from '../../types';
-import {Identifier} from '../../types';
 import {ItemFilter} from '../../filter';
 import {WhereClause} from '../../filter';
 import {ServiceContainer} from '@e22m4u/service';
@@ -47,7 +47,7 @@ export declare class MemoryAdapter extends Adapter {
    */
   replaceById(
     modelName: string,
-    id: Identifier,
+    id: ModelId,
     modelData: ModelData,
     filter?: ItemFilter,
   ): Promise<ModelData>;
@@ -62,7 +62,7 @@ export declare class MemoryAdapter extends Adapter {
    */
   patchById(
     modelName: string,
-    id: Identifier,
+    id: ModelId,
     modelData: ModelData,
     filter?: ItemFilter,
   ): Promise<ModelData>;
@@ -82,11 +82,7 @@ export declare class MemoryAdapter extends Adapter {
    * @param id
    * @param filter
    */
-  findById(
-    modelName: string,
-    id: Identifier,
-    filter?: Filter,
-  ): Promise<ModelData>;
+  findById(modelName: string, id: ModelId, filter?: Filter): Promise<ModelData>;
 
   /**
    * Delete.
@@ -102,7 +98,7 @@ export declare class MemoryAdapter extends Adapter {
    * @param modelName
    * @param id
    */
-  deleteById(modelName: string, id: Identifier): Promise<boolean>;
+  deleteById(modelName: string, id: ModelId): Promise<boolean>;
 
   /**
    * Exists.
@@ -110,7 +106,7 @@ export declare class MemoryAdapter extends Adapter {
    * @param modelName
    * @param id
    */
-  exists(modelName: string, id: Identifier): Promise<boolean>;
+  exists(modelName: string, id: ModelId): Promise<boolean>;
 
   /**
    * Count.

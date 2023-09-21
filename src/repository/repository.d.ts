@@ -1,7 +1,7 @@
 import {Filter} from '../filter';
+import {ModelId} from '../types';
 import {Adapter} from '../adapter';
 import {ModelData} from '../types';
-import {Identifier} from '../types';
 import {ItemFilter} from '../filter';
 import {WhereClause} from '../filter';
 import {ServiceContainer} from '@e22m4u/service';
@@ -49,7 +49,7 @@ export declare class Repository {
    * @param filter
    */
   replaceById(
-    id: Identifier,
+    id: ModelId,
     data: ModelData,
     filter?: ItemFilter,
   ): Promise<ModelData>;
@@ -70,7 +70,7 @@ export declare class Repository {
    * @param filter
    */
   patchById(
-    id: Identifier,
+    id: ModelId,
     data: ModelData,
     filter?: ItemFilter,
   ): Promise<ModelData>;
@@ -95,7 +95,7 @@ export declare class Repository {
    * @param id
    * @param filter
    */
-  findById(id: Identifier, filter?: ItemFilter): Promise<ModelData>;
+  findById(id: ModelId, filter?: ItemFilter): Promise<ModelData>;
 
   /**
    * Delete.
@@ -109,14 +109,14 @@ export declare class Repository {
    *
    * @param id
    */
-  deleteById(id: Identifier): Promise<boolean>;
+  deleteById(id: ModelId): Promise<boolean>;
 
   /**
    * Exists.
    *
    * @param id
    */
-  exists(id: Identifier): Promise<boolean>;
+  exists(id: ModelId): Promise<boolean>;
 
   /**
    * Count.

@@ -13,6 +13,6 @@ export declare type ModelData = {
 };
 
 /**
- * Identifier.
+ * Model id.
  */
-export declare type Identifier = unknown;
+export declare type ModelId = unknown;
