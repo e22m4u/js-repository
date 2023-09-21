@@ -8,6 +8,8 @@ import {InvalidArgumentError} from '../errors/index.js';
 export class RepositoryRegistry extends Service {
   /**
    * Repositories.
+   *
+   * @type {object}
    */
   _repositories = {};
 
@@ -22,7 +24,7 @@ export class RepositoryRegistry extends Service {
   /**
    * Set repository ctor.
    *
-   * @param ctor
+   * @param {typeof Repository} ctor
    */
   setRepositoryCtor(ctor) {
     if (
@@ -42,7 +44,8 @@ export class RepositoryRegistry extends Service {
   /**
    * Get repository.
    *
-   * @param modelName
+   * @param {string} modelName
+   * @returns {Repository}
    */
   getRepository(modelName) {
     let repository = this._repositories[modelName];

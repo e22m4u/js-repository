@@ -11,8 +11,8 @@ export class PropertiesDefinitionValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelName
-   * @param propDefs
+   * @param {string} modelName
+   * @param {object} propDefs
    */
   validate(modelName, propDefs) {
     if (!modelName || typeof modelName !== 'string')
@@ -47,9 +47,9 @@ export class PropertiesDefinitionValidator extends Service {
   /**
    * Validate property.
    *
-   * @param modelName
-   * @param propName
-   * @param propDef
+   * @param {string} modelName
+   * @param {string} propName
+   * @param {object} propDef
    */
   _validateProperty(modelName, propName, propDef) {
     if (!modelName || typeof modelName !== 'string')

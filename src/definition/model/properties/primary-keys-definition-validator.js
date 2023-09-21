@@ -9,8 +9,8 @@ export class PrimaryKeysDefinitionValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelName
-   * @param propDefs
+   * @param {string} modelName
+   * @param {object} propDefs
    */
   validate(modelName, propDefs) {
     const propNames = Object.keys(propDefs).filter(propName => {

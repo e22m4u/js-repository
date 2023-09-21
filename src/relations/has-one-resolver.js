@@ -18,7 +18,7 @@ export class HasOneResolver extends Service {
    * @param {string} relationName
    * @param {string} foreignKey
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includeTo(
     entities,
@@ -117,7 +117,7 @@ export class HasOneResolver extends Service {
    * @param {string} foreignKey
    * @param {string} discriminator
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includePolymorphicTo(
     entities,
@@ -225,7 +225,7 @@ export class HasOneResolver extends Service {
    * @param {string} relationName
    * @param {string} targetRelationName
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includePolymorphicByRelationName(
     entities,

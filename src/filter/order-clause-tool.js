@@ -7,12 +7,13 @@ import {InvalidArgumentError} from '../errors/index.js';
  */
 export class OrderClauseTool extends Service {
   /**
-   Sort.
+   * Sort.
    *
-   * @param entities
-   * @param clause
+   * @param {object[]} entities
+   * @param {string|string[]|undefined} clause
    */
   sort(entities, clause) {
+    if (!clause) return;
     if (!Array.isArray(clause)) clause = [clause];
     const mapping = [];
     clause.forEach((key, index) => {
@@ -36,9 +37,10 @@ export class OrderClauseTool extends Service {
   /**
    * Validate order clause.
    *
-   * @param clause
+   * @param {string|string[]|undefined} clause
    */
   static validateOrderClause(clause) {
+    if (!clause) return;
     const tempClause = Array.isArray(clause) ? clause : [clause];
     tempClause.forEach(key => {
       if (!key || typeof key !== 'string')
@@ -53,8 +55,8 @@ export class OrderClauseTool extends Service {
   /**
    * Normalize order clause.
    *
-   * @param {string|string[]} clause
-   * @return {string[]|undefined}
+   * @param {string|string[]|undefined} clause
+   * @returns {string[]|undefined}
    */
   static normalizeOrderClause(clause) {
     if (!clause) return;
@@ -74,8 +76,9 @@ export class OrderClauseTool extends Service {
 /**
  * Compare fn.
  *
- * @param a
- * @param b
+ * @param {*} a
+ * @param {*} b
+ * @returns {number}
  */
 function compareFn(a, b) {
   let undefinedA, undefinedB;

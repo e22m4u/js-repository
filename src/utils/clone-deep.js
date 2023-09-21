@@ -2,7 +2,8 @@
  * Clone deep.
  *
  * @author https://stackoverflow.com/a/4460624
- * @param value
+ * @param {*} value
+ * @returns {*}
  */
 export function cloneDeep(value) {
   if (!value) return value; // null, undefined values check

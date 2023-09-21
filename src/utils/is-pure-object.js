@@ -1,7 +1,8 @@
 /**
  * Is pure object.
  *
- * @param value
+ * @param {*} value
+ * @returns {boolean}
  */
 export function isPureObject(value) {
   return Boolean(

@@ -1,6 +1,6 @@
 import {Service} from '@e22m4u/service';
-import {InvalidArgumentError} from '../../../errors/index.js';
 import {ModelDataValidator} from '../model-data-validator.js';
+import {InvalidArgumentError} from '../../../errors/index.js';
 
 /**
  * Default values definition validator.
@@ -9,8 +9,8 @@ export class DefaultValuesDefinitionValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelName
-   * @param propDefs
+   * @param {string} modelName
+   * @param {object} propDefs
    */
   validate(modelName, propDefs) {
     if (!modelName || typeof modelName !== 'string')

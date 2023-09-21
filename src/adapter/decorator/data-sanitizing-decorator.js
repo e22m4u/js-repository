@@ -10,7 +10,7 @@ export class DataSanitizingDecorator extends Service {
   /**
    * Decorate.
    *
-   * @param adapter
+   * @param {Adapter} adapter
    */
   decorate(adapter) {
     if (!adapter || !(adapter instanceof Adapter))

@@ -5,10 +5,10 @@ import {InvalidArgumentError} from '../errors/index.js';
  *
  * @param {object} obj
  * @param {string[]} keys
- * @return {object}
+ * @returns {object}
  */
 export function selectObjectKeys(obj, keys) {
-  if (!obj || typeof obj !== 'object')
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj))
     throw new InvalidArgumentError(
       'A first argument of selectObjectKeys ' +
         'should be an Object, but %v given.',

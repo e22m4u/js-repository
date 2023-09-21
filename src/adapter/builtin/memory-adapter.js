@@ -30,7 +30,7 @@ export class MemoryAdapter extends Adapter {
    * Get table or create.
    *
    * @param {string} modelName
-   * @return {Map<number, object>}
+   * @returns {Map<number, object>}
    */
   _getTableOrCreate(modelName) {
     const tableName =
@@ -47,7 +47,7 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string} propName
-   * @return {number}
+   * @returns {number}
    */
   _genNextIdValue(modelName, propName) {
     const propType = this.getService(
@@ -83,7 +83,7 @@ export class MemoryAdapter extends Adapter {
    * @param {string} modelName
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
   async create(modelName, modelData, filter = undefined) {
@@ -123,7 +123,7 @@ export class MemoryAdapter extends Adapter {
    * @param {string|number} id
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
   async replaceById(modelName, id, modelData, filter = undefined) {
@@ -161,7 +161,7 @@ export class MemoryAdapter extends Adapter {
    * @param {string|number} id
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
   async patchById(modelName, id, modelData, filter = undefined) {
@@ -200,8 +200,8 @@ export class MemoryAdapter extends Adapter {
    * Find.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} filter
-   * @return {Promise<object[]>}
+   * @param {object|undefined} filter
+   * @returns {Promise<object[]>}
    */
   async find(modelName, filter = undefined) {
     const table = this._getTableOrCreate(modelName);
@@ -237,7 +237,7 @@ export class MemoryAdapter extends Adapter {
    * @param {string} modelName
    * @param {string|number} id
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   // eslint-disable-next-line no-unused-vars
   async findById(modelName, id, filter = undefined) {
@@ -263,8 +263,8 @@ export class MemoryAdapter extends Adapter {
    * Delete.
    *
    * @param {string} modelName
-   * @param {Record<string, unknown>|undefined} where
-   * @return {Promise<number>}
+   * @param {object|undefined} where
+   * @returns {Promise<number>}
    */
   async delete(modelName, where = undefined) {
     const table = this._getTableOrCreate(modelName);
@@ -297,7 +297,7 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string|number} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   async deleteById(modelName, id) {
     const table = this._getTableOrCreate(modelName);
@@ -311,7 +311,7 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {string|number} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   async exists(modelName, id) {
     const table = this._getTableOrCreate(modelName);
@@ -323,7 +323,7 @@ export class MemoryAdapter extends Adapter {
    *
    * @param {string} modelName
    * @param {object|undefined} where
-   * @return {Promise<number>}
+   * @returns {Promise<number>}
    */
   async count(modelName, where = undefined) {
     const table = this._getTableOrCreate(modelName);

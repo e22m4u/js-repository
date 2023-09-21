@@ -1,4 +1,5 @@
 import {Service} from '@e22m4u/service';
+import {Adapter} from '../adapter/index.js';
 import {AdapterRegistry} from '../adapter/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {DefinitionRegistry} from '../definition/index.js';
@@ -18,7 +19,7 @@ export class Repository extends Service {
   /**
    * Model name.
    *
-   * @return {string}
+   * @returns {string}
    */
   get modelName() {
     return this._modelName;
@@ -34,7 +35,7 @@ export class Repository extends Service {
   /**
    * Datasource name.
    *
-   * @return {string}
+   * @returns {string}
    */
   get datasourceName() {
     return this._datasourceName;
@@ -63,7 +64,7 @@ export class Repository extends Service {
   /**
    * Get adapter.
    *
-   * @return {Adapter}
+   * @returns {Adapter}
    */
   async getAdapter() {
     return this.getService(AdapterRegistry).getAdapter(this.datasourceName);
@@ -74,7 +75,7 @@ export class Repository extends Service {
    *
    * @param {object} data
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   async create(data, filter = undefined) {
     const adapter = await this.getAdapter();
@@ -87,7 +88,7 @@ export class Repository extends Service {
    * @param {number|string} id
    * @param {object} data
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   async replaceById(id, data, filter = undefined) {
     const adapter = await this.getAdapter();
@@ -99,7 +100,7 @@ export class Repository extends Service {
    *
    * @param {object} data
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   async replaceOrCreate(data, filter = undefined) {
     const pkPropName = this.getService(
@@ -116,7 +117,7 @@ export class Repository extends Service {
    * @param {number|string} id
    * @param {object} data
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   async patchById(id, data, filter = undefined) {
     const adapter = await this.getAdapter();
@@ -127,7 +128,7 @@ export class Repository extends Service {
    * Find.
    *
    * @param {object|undefined} filter
-   * @return {Promise<object[]>}
+   * @returns {Promise<object[]>}
    */
   async find(filter = undefined) {
     const adapter = await this.getAdapter();
@@ -138,7 +139,7 @@ export class Repository extends Service {
    * Find one.
    *
    * @param {object|undefined} filter
-   * @return {Promise<object|undefined>}
+   * @returns {Promise<object|undefined>}
    */
   async findOne(filter = undefined) {
     const adapter = await this.getAdapter();
@@ -153,7 +154,7 @@ export class Repository extends Service {
    *
    * @param {number|string} id
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   async findById(id, filter = undefined) {
     const adapter = await this.getAdapter();
@@ -164,7 +165,7 @@ export class Repository extends Service {
    * Delete.
    *
    * @param {object|undefined} where
-   * @return {Promise<number>}
+   * @returns {Promise<number>}
    */
   async delete(where = undefined) {
     const adapter = await this.getAdapter();
@@ -175,7 +176,7 @@ export class Repository extends Service {
    * Delete by id.
    *
    * @param {number|string} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   async deleteById(id) {
     const adapter = await this.getAdapter();
@@ -186,7 +187,7 @@ export class Repository extends Service {
    * Exists.
    *
    * @param {number|string} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   async exists(id) {
     const adapter = await this.getAdapter();
@@ -197,7 +198,7 @@ export class Repository extends Service {
    * Count.
    *
    * @param {object|undefined} where
-   * @return {Promise<number>}
+   * @returns {Promise<number>}
    */
   async count(where = undefined) {
     const adapter = await this.getAdapter();

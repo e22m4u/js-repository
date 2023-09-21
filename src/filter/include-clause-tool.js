@@ -13,6 +13,8 @@ import {ReferencesManyResolver} from '../relations/index.js';
 
 /**
  * Include clause tool.
+ *
+ * @typedef {string|string[]|object|object[]} IncludeClause
  */
 export class IncludeClauseTool extends Service {
   /**
@@ -20,8 +22,8 @@ export class IncludeClauseTool extends Service {
    *
    * @param {object[]} entities
    * @param {string} modelName
-   * @param {object[]} clause
-   * @return {Promise<void>}
+   * @param {IncludeClause|undefined} clause
+   * @returns {Promise<void>}
    */
   async includeTo(entities, modelName, clause) {
     clause = IncludeClauseTool.normalizeIncludeClause(clause);
@@ -158,7 +160,7 @@ export class IncludeClauseTool extends Service {
   /**
    * Validate include clause.
    *
-   * @param clause
+   * @param {IncludeClause|undefined} clause
    */
   static validateIncludeClause(clause) {
     if (!clause) {
@@ -219,7 +221,7 @@ export class IncludeClauseTool extends Service {
   /**
    * Validate scope clause.
    *
-   * @param clause
+   * @param {object|undefined} clause
    */
   static validateScopeClause(clause) {
     if (!clause) return;
@@ -245,7 +247,8 @@ export class IncludeClauseTool extends Service {
   /**
    * Normalize include clause.
    *
-   * @param clause
+   * @param {IncludeClause|undefined} clause
+   * @returns {object[]}
    */
   static normalizeIncludeClause(clause) {
     let result = [];
@@ -316,8 +319,8 @@ export class IncludeClauseTool extends Service {
   /**
    * Normalize scope clause.
    *
-   * @param clause
-   * @return {undefined|{}}
+   * @param {object|undefined} clause
+   * @returns {object|undefined}
    */
   static normalizeScopeClause(clause) {
     if (!clause) return;

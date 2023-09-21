@@ -86,12 +86,12 @@ describe('SliceClauseTool', function () {
       expect(validate('str')).to.throw(error('"str"'));
       expect(validate(true)).to.throw(error('true'));
       expect(validate([])).to.throw(error('Array'));
-      validate('');
-      validate(false);
-      validate(undefined);
-      validate(null);
-      validate(10);
-      validate(0);
+      validate('')();
+      validate(false)();
+      validate(undefined)();
+      validate(null)();
+      validate(10)();
+      validate(0)();
     });
   });
 
@@ -106,12 +106,12 @@ describe('SliceClauseTool', function () {
       expect(validate('str')).to.throw(error('"str"'));
       expect(validate(true)).to.throw(error('true'));
       expect(validate([])).to.throw(error('Array'));
-      validate('');
-      validate(false);
-      validate(undefined);
-      validate(null);
-      validate(10);
-      validate(0);
+      validate('')();
+      validate(false)();
+      validate(undefined)();
+      validate(null)();
+      validate(10)();
+      validate(0)();
     });
   });
 });

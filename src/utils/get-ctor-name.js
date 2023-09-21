@@ -1,7 +1,8 @@
 /**
  * Get ctor name.
  *
- * @param value
+ * @param {*} value
+ * @returns {string|undefined}
  */
 export function getCtorName(value) {
   if (value === null) return 'Null';

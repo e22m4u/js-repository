@@ -18,7 +18,7 @@ export class BelongsToResolver extends Service {
    * @param {string} relationName
    * @param {string|undefined} foreignKey
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includeTo(
     entities,
@@ -107,7 +107,7 @@ export class BelongsToResolver extends Service {
    * @param {string|undefined} foreignKey
    * @param {string|undefined} discriminator
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includePolymorphicTo(
     entities,

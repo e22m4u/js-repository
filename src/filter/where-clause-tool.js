@@ -5,6 +5,8 @@ import {OperatorClauseTool} from './operator-clause-tool.js';
 
 /**
  * Where clause tool.
+ *
+ * @typedef {object|Function} WhereClause
  */
 export class WhereClauseTool extends Service {
   /**
@@ -32,23 +34,26 @@ export class WhereClauseTool extends Service {
    *
    * ```
    *
-   * @param entities
-   * @param where
+   * @param {object[]} entities
+   * @param {WhereClause|undefined} where
+   * @returns {object[]}
    */
-  filter(entities, where = {}) {
+  filter(entities, where = undefined) {
     if (!Array.isArray(entities))
       throw new InvalidArgumentError(
         'A first argument of WhereUtils.filter ' +
           'should be an Array of Objects, but %v given.',
         entities,
       );
+    if (!where) return entities;
     return entities.filter(this._createFilter(where));
   }
 
   /**
    * Create where filter.
    *
-   * @param whereClause
+   * @param {WhereClause} whereClause
+   * @returns {Function}
    */
   _createFilter(whereClause) {
     if (typeof whereClause === 'function') return whereClause;
@@ -117,8 +122,9 @@ export class WhereClauseTool extends Service {
   /**
    * Value testing.
    *
-   * @param example
-   * @param value
+   * @param {*} example
+   * @param {*} value
+   * @returns {boolean}
    */
   _test(example, value) {
     // Test null.
@@ -146,7 +152,7 @@ export class WhereClauseTool extends Service {
   /**
    * Validate where clause.
    *
-   * @param clause
+   * @param {WhereClause|undefined} clause
    */
   static validateWhereClause(clause) {
     if (!clause) return;

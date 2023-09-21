@@ -19,7 +19,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get primary key as property name.
    *
-   * @param modelName
+   * @param {string} modelName
+   * @returns {string}
    */
   getPrimaryKeyAsPropertyName(modelName) {
     const propDefs =
@@ -48,7 +49,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get primary key as column name.
    *
-   * @param modelName
+   * @param {string} modelName
+   * @returns {string}
    */
   getPrimaryKeyAsColumnName(modelName) {
     const pkPropName = this.getPrimaryKeyAsPropertyName(modelName);
@@ -65,7 +67,8 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get table name by model name.
    *
-   * @param modelName
+   * @param {string} modelName
+   * @returns {string}
    */
   getTableNameByModelName(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -75,8 +78,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get column name by property name.
    *
-   * @param modelName
-   * @param propertyName
+   * @param {string} modelName
+   * @param {string} propertyName
+   * @returns {string}
    */
   getColumnNameByPropertyName(modelName, propertyName) {
     const propDefs =
@@ -96,8 +100,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get default property value.
    *
-   * @param modelName
-   * @param propertyName
+   * @param {string} modelName
+   * @param {string} propertyName
+   * @returns {*}
    */
   getDefaultPropertyValue(modelName, propertyName) {
     const propDefs =
@@ -118,9 +123,10 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Set default values for empty properties.
    *
-   * @param modelName
-   * @param modelData
-   * @param onlyProvidedProperties
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {boolean|undefined} onlyProvidedProperties
+   * @returns {object}
    */
   setDefaultValuesToEmptyProperties(
     modelName,
@@ -154,8 +160,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Convert property names to column names.
    *
-   * @param modelName
-   * @param modelData
+   * @param {string} modelName
+   * @param {object} modelData
+   * @returns {object}
    */
   convertPropertyNamesToColumnNames(modelName, modelData) {
     const propDefs =
@@ -176,8 +183,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Convert column names to property names.
    *
-   * @param modelName
-   * @param tableData
+   * @param {string} modelName
+   * @param {object} tableData
+   * @returns {object}
    */
   convertColumnNamesToPropertyNames(modelName, tableData) {
     const propDefs =
@@ -197,8 +205,9 @@ export class ModelDefinitionUtils extends Service {
   /**
    * Get data type by property name.
    *
-   * @param modelName
-   * @param propertyName
+   * @param {string} modelName
+   * @param {string} propertyName
+   * @returns {string}
    */
   getDataTypeByPropertyName(modelName, propertyName) {
     const propDefs =
@@ -221,7 +230,7 @@ export class ModelDefinitionUtils extends Service {
    * Get own properties definition of primary keys.
    *
    * @param {string} modelName
-   * @return {object}
+   * @returns {object}
    */
   getOwnPropertiesDefinitionOfPrimaryKeys(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -237,7 +246,7 @@ export class ModelDefinitionUtils extends Service {
    * Get own properties definition without primary keys.
    *
    * @param {string} modelName
-   * @return {object}
+   * @returns {object}
    */
   getOwnPropertiesDefinitionWithoutPrimaryKeys(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -253,7 +262,7 @@ export class ModelDefinitionUtils extends Service {
    * Get properties definition in base model hierarchy.
    *
    * @param {string} modelName
-   * @return {object}
+   * @returns {object}
    */
   getPropertiesDefinitionInBaseModelHierarchy(modelName) {
     let result = {};
@@ -284,7 +293,7 @@ export class ModelDefinitionUtils extends Service {
    * Get own relations definition.
    *
    * @param {string} modelName
-   * @return {object}
+   * @returns {object}
    */
   getOwnRelationsDefinition(modelName) {
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
@@ -295,7 +304,7 @@ export class ModelDefinitionUtils extends Service {
    * Get relations definition in base model hierarchy.
    *
    * @param {string} modelName
-   * @return {object}
+   * @returns {object}
    */
   getRelationsDefinitionInBaseModelHierarchy(modelName) {
     let result = {};
@@ -320,7 +329,7 @@ export class ModelDefinitionUtils extends Service {
    *
    * @param {string} modelName
    * @param {string} relationName
-   * @return {object}
+   * @returns {object}
    */
   getRelationDefinitionByName(modelName, relationName) {
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);
@@ -346,7 +355,7 @@ export class ModelDefinitionUtils extends Service {
    *
    * @param {string} modelName
    * @param {object} modelData
-   * @return {object}
+   * @returns {object}
    */
   excludeObjectKeysByRelationNames(modelName, modelData) {
     if (!modelData || typeof modelData !== 'object' || Array.isArray(modelData))

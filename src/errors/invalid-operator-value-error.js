@@ -7,9 +7,9 @@ export class InvalidOperatorValueError extends Error {
   /**
    * Constructor.
    *
-   * @param operator
-   * @param expected
-   * @param value
+   * @param {string} operator
+   * @param {string} expected
+   * @param {*} value
    */
   constructor(operator, expected, value) {
     super(

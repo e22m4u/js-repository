@@ -1,9 +1,10 @@
 /**
  * Get value by path.
  *
- * @param obj
- * @param path
- * @param orElse
+ * @param {object} obj
+ * @param {string} path
+ * @param {*} orElse
+ * @returns {*}
  */
 export function getValueByPath(obj, path, orElse = undefined) {
   if (!obj || typeof obj !== 'object') return orElse;

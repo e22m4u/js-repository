@@ -1,3 +1,4 @@
+import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/service';
 import {AdapterLoader} from './adapter-loader.js';
 import {DefinitionRegistry} from '../definition/index.js';
@@ -9,15 +10,15 @@ export class AdapterRegistry extends Service {
   /**
    * Adapters.
    *
-   * @type {{[name: string]: object}}
+   * @type {object}
    */
   _adapters = {};
 
   /**
    * Get adapter.
    *
-   * @param datasourceName
-   * @return {Promise<object>}
+   * @param {string} datasourceName
+   * @returns {Promise<Adapter>}
    */
   async getAdapter(datasourceName) {
     let adapter = this._adapters[datasourceName];

@@ -2,15 +2,15 @@
  * Any object.
  */
 export declare type AnyObject = {
-  [property: string]: unknown,
-}
+  [property: string]: unknown;
+};
 
 /**
  * Model data.
  */
 export declare type ModelData = {
-  [property: string]: unknown
-}
+  [property: string]: unknown;
+};
 
 /**
  * Identifier.

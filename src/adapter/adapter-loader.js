@@ -10,8 +10,8 @@ export class AdapterLoader extends Service {
    * Load by name.
    *
    * @param {string} adapterName
-   * @param {object} settings
-   * @return {Promise<any>}
+   * @param {object|undefined} settings
+   * @returns {Promise<Adapter>}
    */
   async loadByName(adapterName, settings = undefined) {
     if (!adapterName || typeof adapterName !== 'string')
@@ -47,8 +47,8 @@ export class AdapterLoader extends Service {
 /**
  * Find adapter ctor in module.
  *
- * @param module
- * @return {*}
+ * @param {object} module
+ * @returns {*}
  */
 function findAdapterCtorInModule(module) {
   let adapterCtor;

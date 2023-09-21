@@ -9,12 +9,19 @@ module.exports = {
   },
   plugins: [
     'mocha',
+    'jsdoc',
     'chai-expect',
   ],
   extends: [
-    'eslint:recommended',
     'prettier',
+    'plugin:jsdoc/recommended',
     'plugin:mocha/recommended',
     'plugin:chai-expect/recommended',
+    'plugin:jsdoc/recommended-error',
   ],
+  rules: {
+    'jsdoc/require-param-description': 0,
+    'jsdoc/require-returns-description': 0,
+    'jsdoc/tag-lines': ['error', 'any', {startLines: 1}],
+  },
 }

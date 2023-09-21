@@ -10,8 +10,8 @@ export class RelationsDefinitionValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelName
-   * @param relDefs
+   * @param {string} modelName
+   * @param {object} relDefs
    */
   validate(modelName, relDefs) {
     if (!modelName || typeof modelName !== 'string')
@@ -37,9 +37,9 @@ export class RelationsDefinitionValidator extends Service {
   /**
    * Validate relation.
    *
-   * @param modelName
-   * @param relName
-   * @param relDef
+   * @param {string} modelName
+   * @param {string} relName
+   * @param {object} relDef
    */
   _validateRelation(modelName, relName, relDef) {
     if (!modelName || typeof modelName !== 'string')
@@ -199,7 +199,7 @@ export class RelationsDefinitionValidator extends Service {
    *
    * @param {string} modelName
    * @param {string} relName
-   * @param {Record<string, unknown>} relDef
+   * @param {object} relDef
    * @private
    */
   _validateHasOne(modelName, relName, relDef) {
@@ -415,7 +415,7 @@ export class RelationsDefinitionValidator extends Service {
    *
    * @param {string} modelName
    * @param {string} relName
-   * @param {Record<string, unknown>} relDef
+   * @param {object} relDef
    * @private
    */
   _validateReferencesMany(modelName, relName, relDef) {

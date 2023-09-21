@@ -10,21 +10,21 @@ export class DefinitionRegistry extends Service {
   /**
    * Datasources.
    *
-   * @type {{[name: string]: object}}
+   * @type {object}
    */
   _datasources = {};
 
   /**
    * Models.
    *
-   * @type {{[name: string]: object}}
+   * @type {object}
    */
   _models = {};
 
   /**
    * Add datasource.
    *
-   * @param datasourceDef
+   * @param {object} datasourceDef
    */
   addDatasource(datasourceDef) {
     this.getService(DatasourceDefinitionValidator).validate(datasourceDef);
@@ -40,8 +40,8 @@ export class DefinitionRegistry extends Service {
   /**
    * Has datasource.
    *
-   * @param name
-   * @return {boolean}
+   * @param {string} name
+   * @returns {boolean}
    */
   hasDatasource(name) {
     return Boolean(this._datasources[name]);
@@ -50,8 +50,8 @@ export class DefinitionRegistry extends Service {
   /**
    * Get datasource.
    *
-   * @param name
-   * @return {Object}
+   * @param {string} name
+   * @returns {object}
    */
   getDatasource(name) {
     const datasourceDef = this._datasources[name];
@@ -63,7 +63,7 @@ export class DefinitionRegistry extends Service {
   /**
    * Add model.
    *
-   * @param modelDef
+   * @param {object} modelDef
    */
   addModel(modelDef) {
     this.getService(ModelDefinitionValidator).validate(modelDef);
@@ -76,8 +76,8 @@ export class DefinitionRegistry extends Service {
   /**
    * Has model.
    *
-   * @param name
-   * @return {boolean}
+   * @param {string} name
+   * @returns {boolean}
    */
   hasModel(name) {
     return Boolean(this._models[name]);
@@ -86,8 +86,8 @@ export class DefinitionRegistry extends Service {
   /**
    * Get model.
    *
-   * @param name
-   * @return {object}
+   * @param {string} name
+   * @returns {object}
    */
   getModel(name) {
     const modelDef = this._models[name];

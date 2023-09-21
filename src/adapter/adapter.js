@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: 0 */
+/* eslint jsdoc/require-returns-check: 0 */
 import {Service} from '@e22m4u/service';
 import {NotImplementedError} from '../errors/index.js';
 import {InclusionDecorator} from './decorator/index.js';
@@ -13,13 +14,15 @@ import {FieldsFilteringDecorator} from './decorator/index.js';
 export class Adapter extends Service {
   /**
    * Settings.
+   *
+   * @type {object|undefined}
    */
   _settings;
 
   /**
    * Settings.
    *
-   * @return {object|undefined}
+   * @returns {object|undefined}
    */
   get settings() {
     return this._settings;
@@ -50,7 +53,7 @@ export class Adapter extends Service {
    * @param {string} modelName
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   create(modelName, modelData, filter = undefined) {
     throw new NotImplementedError(
@@ -66,7 +69,7 @@ export class Adapter extends Service {
    * @param {number|string} id
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   replaceById(modelName, id, modelData, filter = undefined) {
     throw new NotImplementedError(
@@ -82,7 +85,7 @@ export class Adapter extends Service {
    * @param {number|string} id
    * @param {object} modelData
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   patchById(modelName, id, modelData, filter = undefined) {
     throw new NotImplementedError(
@@ -96,7 +99,7 @@ export class Adapter extends Service {
    *
    * @param {string} modelName
    * @param {object|undefined} filter
-   * @return {Promise<object[]>}
+   * @returns {Promise<object[]>}
    */
   find(modelName, filter = undefined) {
     throw new NotImplementedError(
@@ -111,7 +114,7 @@ export class Adapter extends Service {
    * @param {string} modelName
    * @param {number|string} id
    * @param {object|undefined} filter
-   * @return {Promise<object>}
+   * @returns {Promise<object>}
    */
   findById(modelName, id, filter = undefined) {
     throw new NotImplementedError(
@@ -125,7 +128,7 @@ export class Adapter extends Service {
    *
    * @param {string} modelName
    * @param {object|undefined} where
-   * @return {Promise<number>}
+   * @returns {Promise<number>}
    */
   delete(modelName, where = undefined) {
     throw new NotImplementedError(
@@ -139,7 +142,7 @@ export class Adapter extends Service {
    *
    * @param {string} modelName
    * @param {number|string} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   deleteById(modelName, id) {
     throw new NotImplementedError(
@@ -153,7 +156,7 @@ export class Adapter extends Service {
    *
    * @param {string} modelName
    * @param {number|string} id
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   exists(modelName, id) {
     throw new NotImplementedError(
@@ -166,8 +169,8 @@ export class Adapter extends Service {
    * Count.
    *
    * @param {string} modelName
-   * @param {WhereClause|undefined} where
-   * @return {Promise<number>}
+   * @param {object|undefined} where
+   * @returns {Promise<number>}
    */
   count(modelName, where = undefined) {
     throw new NotImplementedError(

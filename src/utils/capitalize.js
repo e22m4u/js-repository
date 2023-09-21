@@ -2,7 +2,7 @@
  * Capitalize.
  *
  * @param {string} string
- * @return {string}
+ * @returns {string}
  */
 export function capitalize(string) {
   if (!string || typeof string !== 'string') return string;

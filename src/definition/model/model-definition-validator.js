@@ -10,7 +10,7 @@ export class ModelDefinitionValidator extends Service {
   /**
    * Validate.
    *
-   * @param modelDef
+   * @param {object} modelDef
    */
   validate(modelDef) {
     if (!modelDef || typeof modelDef !== 'object' || Array.isArray(modelDef))

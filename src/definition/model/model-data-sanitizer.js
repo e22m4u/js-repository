@@ -11,7 +11,7 @@ export class ModelDataSanitizer extends Service {
    *
    * @param {string} modelName
    * @param {object} modelData
-   * @return {object}
+   * @returns {object}
    */
   sanitize(modelName, modelData) {
     if (!modelName || typeof modelName !== 'string')

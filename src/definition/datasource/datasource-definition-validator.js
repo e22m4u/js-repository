@@ -9,7 +9,6 @@ export class DatasourceDefinitionValidator extends Service {
    * Validate.
    *
    * @param {object} datasourceDef
-   * @return {void}
    */
   validate(datasourceDef) {
     if (!datasourceDef || typeof datasourceDef !== 'object')

@@ -89,12 +89,12 @@ describe('FieldsClauseTool', function () {
       expect(validate([false])).to.throw(error('false'));
       expect(validate([undefined])).to.throw(error('undefined'));
       expect(validate([null])).to.throw(error('null'));
-      validate('');
-      validate(false);
-      validate(undefined);
-      validate(null);
-      validate('foo');
-      validate(['foo']);
+      validate('')();
+      validate(false)();
+      validate(undefined)();
+      validate(null)();
+      validate('foo')();
+      validate(['foo'])();
     });
   });
 

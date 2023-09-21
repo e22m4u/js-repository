@@ -18,7 +18,7 @@ export class ReferencesManyResolver extends Service {
    * @param {string} relationName
    * @param {string|undefined} foreignKey
    * @param {object|undefined} scope
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async includeTo(
     entities,

@@ -4,18 +4,16 @@ import {DataType} from './data-type';
  * Full property definition.
  */
 export declare type FullPropertyDefinition = {
-  type: DataType,
-  itemType?: DataType,
-  model?: string,
-  primaryKey?: boolean,
-  columnName?: string,
-  columnType?: string,
-  required?: boolean,
-}
+  type: DataType;
+  itemType?: DataType;
+  model?: string;
+  primaryKey?: boolean;
+  columnName?: string;
+  columnType?: string;
+  required?: boolean;
+};
 
 /**
  * Property definition.
  */
-declare type PropertyDefinition =
-  | DataType
-  | FullPropertyDefinition;
+declare type PropertyDefinition = DataType | FullPropertyDefinition;

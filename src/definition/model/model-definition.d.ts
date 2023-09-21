@@ -5,15 +5,15 @@ import {PropertyDefinition} from './properties';
  * Property definition map.
  */
 export declare type PropertyDefinitionMap = {
-  [name: string]: PropertyDefinition,
-}
+  [name: string]: PropertyDefinition;
+};
 
 /**
  * Relation definition map.
  */
 export declare type RelationDefinitionMap = {
-  [name: string]: RelationDefinition,
-}
+  [name: string]: RelationDefinition;
+};
 
 /**
  * Model definition.
@@ -23,6 +23,6 @@ export declare type ModelDefinition = {
   datasource?: string;
   base?: string;
   tableName?: string;
-  properties?: PropertyDefinitionMap,
-  relations?: RelationDefinitionMap,
-}
+  properties?: PropertyDefinitionMap;
+  relations?: RelationDefinitionMap;
+};

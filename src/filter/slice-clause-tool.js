@@ -8,11 +8,12 @@ export class SliceClauseTool extends Service {
   /**
    * Filter.
    *
-   * @param entities
-   * @param skip
-   * @param limit
+   * @param {object[]} entities
+   * @param {number|undefined} skip
+   * @param {number|undefined} limit
+   * @returns {object[]}
    */
-  slice(entities, skip, limit) {
+  slice(entities, skip = undefined, limit = undefined) {
     if (!Array.isArray(entities))
       throw new InvalidArgumentError(
         'A first argument of SliceClauseTool.slice ' +
@@ -37,7 +38,7 @@ export class SliceClauseTool extends Service {
   /**
    * Validate skip clause.
    *
-   * @param skip
+   * @param {number|undefined} skip
    */
   static validateSkipClause(skip) {
     if (!skip) return;
@@ -51,7 +52,7 @@ export class SliceClauseTool extends Service {
   /**
    * Validate limit clause.
    *
-   * @param limit
+   * @param {number|undefined} limit
    */
   static validateLimitClause(limit) {
     if (!limit) return;

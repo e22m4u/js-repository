@@ -1,7 +1,7 @@
 /**
  * Is ctor.
  *
- * @param value
+ * @param {*} value
  * @returns {boolean}
  */
 export function isCtor(value) {

@@ -235,7 +235,7 @@ describe('WhereClauseTool', function () {
     });
 
     it('throws an error if a first argument is not an Array', function () {
-      const throwable = () => S.filter(10);
+      const throwable = () => S.filter(10, {});
       expect(throwable).to.throw(
         'A first argument of WhereUtils.filter ' +
           'should be an Array of Objects, but 10 given.',
@@ -243,7 +243,7 @@ describe('WhereClauseTool', function () {
     });
 
     it('throws an error if elements of a first argument is not an Object', function () {
-      const throwable = () => S.filter([10]);
+      const throwable = () => S.filter([10], {});
       expect(throwable).to.throw(
         'A first argument of WhereUtils.filter ' +
           'should be an Array of Objects, but 10 given.',
@@ -270,11 +270,11 @@ describe('WhereClauseTool', function () {
       expect(validate(10)).to.throw(error('10'));
       expect(validate(true)).to.throw(error('true'));
       expect(validate([])).to.throw(error('Array'));
-      validate('');
-      validate(false);
-      validate(undefined);
-      validate(null);
-      validate({});
+      validate('')();
+      validate(false)();
+      validate(undefined)();
+      validate(null)();
+      validate({})();
     });
   });
 });

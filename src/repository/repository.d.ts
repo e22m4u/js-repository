@@ -26,10 +26,7 @@ export declare class Repository {
    * @param container
    * @param modelName
    */
-  constructor(
-    container: ServiceContainer,
-    modelName: string,
-  );
+  constructor(container: ServiceContainer, modelName: string);
 
   /**
    * Get adapter.
@@ -42,10 +39,7 @@ export declare class Repository {
    * @param data
    * @param filter
    */
-  create(
-    data: ModelData,
-    filter?: ItemFilter,
-  ): Promise<ModelData>;
+  create(data: ModelData, filter?: ItemFilter): Promise<ModelData>;
 
   /**
    * Replace by id.
@@ -66,10 +60,7 @@ export declare class Repository {
    * @param data
    * @param filter
    */
-  replaceOrCreate(
-    data: ModelData,
-    filter?: ItemFilter,
-  ): Promise<ModelData>;
+  replaceOrCreate(data: ModelData, filter?: ItemFilter): Promise<ModelData>;
 
   /**
    * Patch by id.
@@ -96,9 +87,7 @@ export declare class Repository {
    *
    * @param filter
    */
-  findOne(
-    filter?: ItemFilter,
-  ): Promise<ModelData | undefined>;
+  findOne(filter?: ItemFilter): Promise<ModelData | undefined>;
 
   /**
    * Find by id.
@@ -106,10 +95,7 @@ export declare class Repository {
    * @param id
    * @param filter
    */
-  findById(
-    id: Identifier,
-    filter?: ItemFilter,
-  ): Promise<ModelData>;
+  findById(id: Identifier, filter?: ItemFilter): Promise<ModelData>;
 
   /**
    * Delete.

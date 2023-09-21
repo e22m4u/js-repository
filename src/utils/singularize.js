@@ -1,11 +1,11 @@
 /**
  * Singularize.
  *
- * @param {string} word
- * @return {string}
+ * @param {string} noun
+ * @returns {string}
  */
-export function singularize(word) {
-  if (!word || typeof word !== 'string') return word;
+export function singularize(noun) {
+  if (!noun || typeof noun !== 'string') return noun;
   const endings = {
     ves: 'fe',
     ies: 'y',
@@ -15,7 +15,7 @@ export function singularize(word) {
     es: 'e',
     s: '',
   };
-  return word.replace(
+  return noun.replace(
     new RegExp(`(${Object.keys(endings).join('|')})$`),
     r => endings[r],
   );

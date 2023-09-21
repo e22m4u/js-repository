@@ -12,8 +12,8 @@ export class FieldsClauseTool extends Service {
    *
    * @param {object|object[]} entities
    * @param {string} modelName
-   * @param {string|string[]} clause
-   * @return {object|object[]}
+   * @param {string|string[]|undefined} clause
+   * @returns {object|object[]}
    */
   filter(entities, modelName, clause) {
     const isArray = Array.isArray(entities);
@@ -27,6 +27,7 @@ export class FieldsClauseTool extends Service {
         );
     });
 
+    if (!clause) return entities;
     const fields = Array.isArray(clause) ? clause.slice() : [clause];
     fields.forEach(field => {
       if (!field || typeof field !== 'string')
@@ -50,7 +51,7 @@ export class FieldsClauseTool extends Service {
   /**
    * Validate fields clause.
    *
-   * @param clause
+   * @param {string|string[]|undefined} clause
    */
   static validateFieldsClause(clause) {
     if (!clause) return;
@@ -68,7 +69,8 @@ export class FieldsClauseTool extends Service {
   /**
    * Normalize fields clause.
    *
-   * @param clause
+   * @param {string|string[]|undefined} clause
+   * @returns {string[]|undefined}
    */
   static normalizeFieldsClause(clause) {
     if (!clause) return;

@@ -22,10 +22,7 @@ export declare class Adapter extends Service {
    * @param container
    * @param settings
    */
-  constructor(
-    container?: ServiceContainer,
-    settings?: AnyObject,
-  );
+  constructor(container?: ServiceContainer, settings?: AnyObject);
 
   /**
    * Create.
@@ -76,10 +73,7 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param filter
    */
-  find(
-    modelName: string,
-    filter?: Filter,
-  ): Promise<ModelData[]>;
+  find(modelName: string, filter?: Filter): Promise<ModelData[]>;
 
   /**
    * Find by id.
@@ -100,10 +94,7 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param where
    */
-  delete(
-    modelName: string,
-    where?: WhereClause,
-  ): Promise<number>;
+  delete(modelName: string, where?: WhereClause): Promise<number>;
 
   /**
    * Delete by id.
@@ -111,10 +102,7 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param id
    */
-  deleteById(
-    modelName: string,
-    id: Identifier,
-  ): Promise<boolean>;
+  deleteById(modelName: string, id: Identifier): Promise<boolean>;
 
   /**
    * Exists.
@@ -122,10 +110,7 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param id
    */
-  exists(
-    modelName: string,
-    id: Identifier,
-  ): Promise<boolean>;
+  exists(modelName: string, id: Identifier): Promise<boolean>;
 
   /**
    * Count.
@@ -133,8 +118,5 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param where
    */
-  count(
-    modelName: string,
-    where?: WhereClause,
-  ): Promise<number>;
+  count(modelName: string, where?: WhereClause): Promise<number>;
 }

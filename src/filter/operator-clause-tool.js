@@ -10,8 +10,8 @@ export class OperatorClauseTool extends Service {
   /**
    * Compare.
    *
-   * @param {any} val1 The 1st value
-   * @param {any} val2 The 2nd value
+   * @param {*} val1 The 1st value
+   * @param {*} val2 The 2nd value
    * @returns {number} 0: =, positive: >, negative <
    */
   compare(val1, val2) {
@@ -51,11 +51,12 @@ export class OperatorClauseTool extends Service {
   /**
    * Test all operators.
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testAll(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'A first argument of OperatorUtils.testAll ' +
           'should be an Object, but %v given.',
@@ -128,8 +129,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testEqNeq(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -173,8 +175,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testGtLt(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -199,8 +202,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testInq(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -234,8 +238,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testNin(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -269,8 +274,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testBetween(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -304,8 +310,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testExists(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -336,8 +343,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testLike(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -363,8 +371,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testNlike(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -394,8 +403,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testIlike(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -425,8 +435,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testNilike(clause, value) {
     if (!clause || typeof clause !== 'object')
@@ -468,8 +479,9 @@ export class OperatorClauseTool extends Service {
    * }
    * ```
    *
-   * @param clause
-   * @param value
+   * @param {object} clause
+   * @param {*} value
+   * @returns {boolean|undefined}
    */
   testRegexp(clause, value) {
     if (!clause || typeof clause !== 'object')

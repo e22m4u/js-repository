@@ -8,6 +8,7 @@ describe('isConstructor', function () {
     expect(isCtor(String)).to.be.true;
     class MyClass {}
     expect(isCtor(MyClass)).to.be.true;
+    // eslint-disable-next-line jsdoc/require-jsdoc
     function FunctionCtor() {}
     expect(isCtor(FunctionCtor)).to.be.true;
   });

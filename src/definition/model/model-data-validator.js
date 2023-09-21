@@ -46,8 +46,7 @@ export class ModelDataValidator extends Service {
    * @param {string} modelName
    * @param {string} propName
    * @param {string|object} propDef
-   * @param {any} propValue
-   * @return {void}
+   * @param {*} propValue
    */
   validatePropertyValue(modelName, propName, propDef, propValue) {
     // undefined and null
@@ -72,9 +71,9 @@ export class ModelDataValidator extends Service {
    * @param {string} modelName
    * @param {string} propName
    * @param {string|object} propDef
-   * @param {any} propValue
+   * @param {*} propValue
    * @param {boolean} isArrayValue
-   * @return {void}
+   * @returns {void}
    */
   _validatePropertyValueType(
     modelName,
