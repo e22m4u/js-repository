@@ -49,7 +49,7 @@ export declare class Repository<
   create(
     data: OptionalUnlessRequiredId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<ModelData>;
+  ): Promise<Data>;
 
   /**
    * Replace by id.
