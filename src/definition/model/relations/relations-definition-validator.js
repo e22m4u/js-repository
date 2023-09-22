@@ -78,9 +78,9 @@ export class RelationsDefinitionValidator extends Service {
   }
 
   /**
-   * Validate belongs to.
+   * Validate "belongsTo".
    *
-   * @example A regular "belongsTo" relation.
+   * @example The regular "belongsTo" relation.
    * ```
    * {
    *   type: RelationType.BELONGS_TO,
@@ -89,7 +89,7 @@ export class RelationsDefinitionValidator extends Service {
    * }
    * ```
    *
-   * @example A polymorphic "belongsTo" relation.
+   * @example The polymorphic "belongsTo" relation.
    * ```
    * {
    *   type: RelationType.BELONGS_TO,
@@ -166,9 +166,9 @@ export class RelationsDefinitionValidator extends Service {
   }
 
   /**
-   * Validate has one.
+   * Validate "hasOne".
    *
-   * @example A regular "hasOne" relation.
+   * @example The regular "hasOne" relation.
    * ```
    * {
    *   type: RelationType.HAS_ONE,
@@ -177,7 +177,7 @@ export class RelationsDefinitionValidator extends Service {
    * }
    * ```
    *
-   * @example A polymorphic "hasOne" relation with a target relation name.
+   * @example The polymorphic "hasOne" relation with a target relation name.
    * ```
    * {
    *   type: RelationType.HAS_ONE,
@@ -186,7 +186,7 @@ export class RelationsDefinitionValidator extends Service {
    * }
    * ```
    *
-   * @example A polymorphic "hasOne" relation with target relation keys.
+   * @example The polymorphic "hasOne" relation with target relation keys.
    * ```
    * {
    *   type: RelationType.HAS_ONE,
@@ -284,9 +284,9 @@ export class RelationsDefinitionValidator extends Service {
   }
 
   /**
-   * Validate has one.
+   * Validate "hasMany".
    *
-   * @example A regular "hasMany" relation.
+   * @example The regular "hasMany" relation.
    * ```
    * {
    *   type: RelationType.HAS_MANY,
@@ -295,7 +295,7 @@ export class RelationsDefinitionValidator extends Service {
    * }
    * ```
    *
-   * @example A polymorphic "hasMany" relation with a target relation name.
+   * @example The polymorphic "hasMany" relation with a target relation name.
    * ```
    * {
    *   type: RelationType.HAS_MANY,
@@ -304,7 +304,7 @@ export class RelationsDefinitionValidator extends Service {
    * }
    * ```
    *
-   * @example A polymorphic "hasMany" relation with target relation keys.
+   * @example The polymorphic "hasMany" relation with target relation keys.
    * ```
    * {
    *   type: RelationType.HAS_MANY,
@@ -402,7 +402,7 @@ export class RelationsDefinitionValidator extends Service {
   }
 
   /**
-   * Validate references many.
+   * Validate "referencesMany".
    *
    * @example
    * ```
