@@ -122,6 +122,7 @@ export declare type OperatorClause = {
   ilike?: string | RegExp;
   nilike?: string | RegExp;
   regexp?: string | RegExp;
+  flags?: string;
 };
 
 /**
