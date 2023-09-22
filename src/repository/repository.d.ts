@@ -2,14 +2,21 @@ import {Filter} from '../filter';
 import {ModelId} from '../types';
 import {Adapter} from '../adapter';
 import {ModelData} from '../types';
+import {PartialBy} from '../types';
 import {ItemFilter} from '../filter';
 import {WhereClause} from '../filter';
+import {Service} from '@e22m4u/service';
 import {ServiceContainer} from '@e22m4u/service';
+import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition';
 
 /**
  * Repository.
  */
-export declare class Repository {
+export declare class Repository<
+  Data extends ModelData = ModelData,
+  IdType extends ModelId = ModelId,
+  IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
+> extends Service {
   /**
    * Model name.
    */
@@ -39,7 +46,10 @@ export declare class Repository {
    * @param data
    * @param filter
    */
-  create(data: ModelData, filter?: ItemFilter): Promise<ModelData>;
+  create(
+    data: OptionalUnlessRequiredId<IdName, Data>,
+    filter?: ItemFilter,
+  ): Promise<ModelData>;
 
   /**
    * Replace by id.
@@ -49,10 +59,10 @@ export declare class Repository {
    * @param filter
    */
   replaceById(
-    id: ModelId,
-    data: ModelData,
+    id: IdType,
+    data: Omit<Data, IdName>,
     filter?: ItemFilter,
-  ): Promise<ModelData>;
+  ): Promise<Data>;
 
   /**
    * Replace or create.
@@ -60,7 +70,10 @@ export declare class Repository {
    * @param data
    * @param filter
    */
-  replaceOrCreate(data: ModelData, filter?: ItemFilter): Promise<ModelData>;
+  replaceOrCreate(
+    data: OptionalUnlessRequiredId<IdName, Data>,
+    filter?: ItemFilter,
+  ): Promise<Data>;
 
   /**
    * Patch by id.
@@ -70,24 +83,24 @@ export declare class Repository {
    * @param filter
    */
   patchById(
-    id: ModelId,
-    data: ModelData,
+    id: IdType,
+    data: PartialWithoutId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<ModelData>;
+  ): Promise<Data>;
 
   /**
    * Find.
    *
    * @param filter
    */
-  find(filter?: Filter): Promise<ModelData[]>;
+  find(filter?: Filter): Promise<Data[]>;
 
   /**
    * Find one.
    *
    * @param filter
    */
-  findOne(filter?: ItemFilter): Promise<ModelData | undefined>;
+  findOne(filter?: ItemFilter): Promise<Data | undefined>;
 
   /**
    * Find by id.
@@ -95,7 +108,7 @@ export declare class Repository {
    * @param id
    * @param filter
    */
-  findById(id: ModelId, filter?: ItemFilter): Promise<ModelData>;
+  findById(id: IdType, filter?: ItemFilter): Promise<Data>;
 
   /**
    * Delete.
@@ -109,14 +122,14 @@ export declare class Repository {
    *
    * @param id
    */
-  deleteById(id: ModelId): Promise<boolean>;
+  deleteById(id: IdType): Promise<boolean>;
 
   /**
    * Exists.
    *
    * @param id
    */
-  exists(id: ModelId): Promise<boolean>;
+  exists(id: IdType): Promise<boolean>;
 
   /**
    * Count.
@@ -125,3 +138,19 @@ export declare class Repository {
    */
   count(where?: WhereClause): Promise<number>;
 }
+
+/**
+ * Makes fields as optional and remove id field.
+ */
+type PartialWithoutId<IdName extends string, Data> = Partial<
+  Omit<Data, IdName>
+>;
+
+/**
+ * Makes the given id field as optional.
+ */
+type OptionalUnlessRequiredId<IdName extends string, Data> = Data extends {
+  [K in IdName]: any;
+}
+  ? PartialBy<Data, IdName>
+  : Data;

@@ -1,9 +1,15 @@
 /**
- * Any object.
+ * Free-form object with open properties.
  */
 export declare type AnyObject = {
   [property: string]: unknown;
 };
+
+/**
+ * Makes specific field as optional.
+ */
+export declare type PartialBy<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
 
 /**
  * Model data.
