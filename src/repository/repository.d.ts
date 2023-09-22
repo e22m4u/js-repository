@@ -142,7 +142,7 @@ export declare class Repository<
 }
 
 /**
- * Remove id field.
+ * Removes id field.
  */
 type WithoutId<IdName extends string, Data extends ModelData> = Flatten<
   Omit<Data, IdName>
@@ -156,7 +156,7 @@ type PartialWithoutId<IdName extends string, Data extends ModelData> = Flatten<
 >;
 
 /**
- * Makes the given id field as optional.
+ * Makes the required id field as optional.
  */
 type OptionalUnlessRequiredId<
   IdName extends string,
