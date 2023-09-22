@@ -1,6 +1,0 @@
-{
-  "compilerOptions": {
-    "rootDir": "src",
-    "noEmit": true
-  }
-}

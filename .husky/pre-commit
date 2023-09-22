@@ -5,6 +5,5 @@ npm run lint:fix
 npm run format
 
 npm run test
-npm run build
 
 git add -A

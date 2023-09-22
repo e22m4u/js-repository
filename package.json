@@ -3,19 +3,16 @@
   "version": "0.0.30",
   "description": "Абстракция для работы с базами данных для Node.js",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "src/index.js",
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "build": "npm run build:cjs && npm run build:dts",
-    "build:cjs": "npx webpack --config webpack.config.cjs",
-    "build:dts": "npx dts-bundle-generator -o ./dist/main.d.ts ./src/index.d.ts",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write \"./src/**/*.{js,ts}\"",
-    "test": "npm run lint && c8 --reporter=text-summary mocha",
-    "test:coverage": "npm run lint && c8 --reporter=text mocha",
+    "test": "eslint . && c8 --reporter=text-summary mocha",
+    "test:coverage": "eslint . && c8 --reporter=text mocha",
     "prepare": "npx husky install"
   },
   "repository": {
@@ -47,7 +44,6 @@
     "chai-as-promised": "^7.1.1",
     "chai-spies": "^1.0.0",
     "chai-subset": "^1.6.0",
-    "dts-bundle-generator": "^8.0.1",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-chai-expect": "^3.0.0",
@@ -55,8 +51,6 @@
     "eslint-plugin-mocha": "^10.1.0",
     "husky": "^8.0.3",
     "mocha": "^10.2.0",
-    "prettier": "^3.0.1",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "prettier": "^3.0.1"
   }
 }
