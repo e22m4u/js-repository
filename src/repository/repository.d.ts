@@ -17,6 +17,7 @@ export declare class Repository<
   Data extends ModelData = ModelData,
   IdType extends ModelId = ModelId,
   IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
+  FlatData extends ModelData = Flatten<Data>,
 > extends Service {
   /**
    * Model name.
@@ -48,9 +49,9 @@ export declare class Repository<
    * @param filter
    */
   create(
-    data: OptionalUnlessRequiredId<IdName, Data>,
+    data: OptionalUnlessRequiredId<IdName, FlatData>,
     filter?: ItemFilter,
-  ): Promise<Flatten<Data>>;
+  ): Promise<FlatData>;
 
   /**
    * Replace by id.
@@ -61,9 +62,9 @@ export declare class Repository<
    */
   replaceById(
     id: IdType,
-    data: Omit<Data, IdName>,
+    data: WithoutId<IdName, FlatData>,
     filter?: ItemFilter,
-  ): Promise<Flatten<Data>>;
+  ): Promise<FlatData>;
 
   /**
    * Replace or create.
@@ -74,7 +75,7 @@ export declare class Repository<
   replaceOrCreate(
     data: OptionalUnlessRequiredId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<Flatten<Data>>;
+  ): Promise<FlatData>;
 
   /**
    * Patch by id.
@@ -87,21 +88,21 @@ export declare class Repository<
     id: IdType,
     data: PartialWithoutId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<Flatten<Data>>;
+  ): Promise<FlatData>;
 
   /**
    * Find.
    *
    * @param filter
    */
-  find(filter?: Filter): Promise<Flatten<Data>[]>;
+  find(filter?: Filter): Promise<FlatData[]>;
 
   /**
    * Find one.
    *
    * @param filter
    */
-  findOne(filter?: ItemFilter): Promise<Flatten<Data> | undefined>;
+  findOne(filter?: ItemFilter): Promise<FlatData | undefined>;
 
   /**
    * Find by id.
@@ -109,7 +110,7 @@ export declare class Repository<
    * @param id
    * @param filter
    */
-  findById(id: IdType, filter?: ItemFilter): Promise<Flatten<Data>>;
+  findById(id: IdType, filter?: ItemFilter): Promise<FlatData>;
 
   /**
    * Delete.
@@ -141,15 +142,23 @@ export declare class Repository<
 }
 
 /**
+ * Remove id field.
+ */
+type WithoutId<IdName extends string, Data extends ModelData> = Flatten<
+  Omit<Data, IdName>
+>;
+
+/**
  * Makes fields as optional and remove id field.
  */
-type PartialWithoutId<IdName extends string, Data> = Flatten<
+type PartialWithoutId<IdName extends string, Data extends ModelData> = Flatten<
   Partial<Omit<Data, IdName>>
 >;
 
 /**
  * Makes the given id field as optional.
  */
-type OptionalUnlessRequiredId<IdName extends string, Data> = Flatten<
-  Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data
->;
+type OptionalUnlessRequiredId<
+  IdName extends string,
+  Data extends ModelData,
+> = Flatten<Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data>;
