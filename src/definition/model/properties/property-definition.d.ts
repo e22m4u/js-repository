@@ -11,6 +11,7 @@ export declare type FullPropertyDefinition = {
   columnName?: string;
   columnType?: string;
   required?: boolean;
+  default?: unknown;
 };
 
 /**
