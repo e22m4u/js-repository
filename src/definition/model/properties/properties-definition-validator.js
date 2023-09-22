@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {DataType as Type} from './data-type.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';

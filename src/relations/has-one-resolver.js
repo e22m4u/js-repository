@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../utils/index.js';
 import {RelationType} from '../definition/index.js';
 import {InvalidArgumentError} from '../errors/index.js';

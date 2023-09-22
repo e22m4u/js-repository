@@ -1,5 +1,5 @@
-import {Service} from '@e22m4u/service';
-import {ModelDefinition} from './model-definition';
+import {Service} from '@e22m4u/js-service';
+import {ModelDefinition} from './model-definition.js';
 
 /**
  * Model definition validator.

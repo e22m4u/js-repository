@@ -1,6 +1,6 @@
-import {Service} from '@e22m4u/service';
-import {ModelData} from '../../types';
-import {PropertyDefinition} from './properties';
+import {ModelData} from '../../types.js';
+import {Service} from '@e22m4u/js-service';
+import {PropertyDefinition} from './properties/index.js';
 
 /**
  * Model data validator.

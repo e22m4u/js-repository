@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDataValidator} from '../../definition/index.js';
 

@@ -1,3 +1,3 @@
-export * from './relation-type';
-export * from './relation-definition';
-export * from './relations-definition-validator';
+export * from './relation-type.js';
+export * from './relation-definition.js';
+export * from './relations-definition-validator.js';

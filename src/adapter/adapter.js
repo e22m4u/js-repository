@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: 0 */
 /* eslint jsdoc/require-returns-check: 0 */
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {NotImplementedError} from '../errors/index.js';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';

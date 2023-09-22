@@ -1,6 +1,6 @@
-import {Service} from '@e22m4u/service';
-import {ModelDefinition} from './model';
-import {DatasourceDefinition} from './datasource';
+import {Service} from '@e22m4u/js-service';
+import {ModelDefinition} from './model/index.js';
+import {DatasourceDefinition} from './datasource/index.js';
 
 /**
  * Definition registry.

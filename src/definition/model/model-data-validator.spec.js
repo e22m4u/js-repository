@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Schema} from '../../schema.js';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
 

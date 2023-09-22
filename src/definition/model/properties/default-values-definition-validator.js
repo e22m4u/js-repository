@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {ModelDataValidator} from '../model-data-validator.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 

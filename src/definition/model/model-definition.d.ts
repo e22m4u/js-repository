@@ -1,5 +1,5 @@
-import {RelationDefinition} from './relations';
-import {PropertyDefinition} from './properties';
+import {RelationDefinition} from './relations/index.js';
+import {PropertyDefinition} from './properties/index.js';
 
 /**
  * Property definition map.

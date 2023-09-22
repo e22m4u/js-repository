@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';

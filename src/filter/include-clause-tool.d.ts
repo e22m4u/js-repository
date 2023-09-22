@@ -1,8 +1,8 @@
-import {Filter} from './filter';
-import {ModelData} from '../types';
-import {IncludeClause} from './filter';
-import {Service} from '@e22m4u/service';
-import {NormalizedIncludeClause} from './filter';
+import {Filter} from './filter.js';
+import {ModelData} from '../types.js';
+import {IncludeClause} from './filter.js';
+import {Service} from '@e22m4u/js-service';
+import {NormalizedIncludeClause} from './filter.js';
 
 /**
  * Include clause tool.

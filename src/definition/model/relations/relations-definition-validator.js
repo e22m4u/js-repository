@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {RelationType} from './relation-type.js';
 import {RelationType as Type} from './relation-type.js';
 import {InvalidArgumentError} from '../../../errors/index.js';

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {IncludeClauseTool} from './include-clause-tool.js';
 
 describe('IncludeClauseTool', function () {

@@ -1,5 +1,5 @@
-import {Adapter} from './adapter';
-import {Service} from '@e22m4u/service';
+import {Adapter} from './adapter.js';
+import {Service} from '@e22m4u/js-service';
 
 /**
  * Adapter registry.

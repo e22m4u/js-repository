@@ -1,11 +1,11 @@
-import {Filter} from '../filter';
-import {ModelId} from '../types';
-import {AnyObject} from '../types';
-import {ModelData} from '../types';
-import {ItemFilter} from '../filter';
-import {WhereClause} from '../filter';
-import {Service} from '@e22m4u/service';
-import {ServiceContainer} from '@e22m4u/service';
+import {ModelId} from '../types.js';
+import {AnyObject} from '../types.js';
+import {ModelData} from '../types.js';
+import {Filter} from '../filter/index.js';
+import {Service} from '@e22m4u/js-service';
+import {ItemFilter} from '../filter/index.js';
+import {WhereClause} from '../filter/index.js';
+import {ServiceContainer} from '@e22m4u/js-service';
 
 /**
  * Adapter.

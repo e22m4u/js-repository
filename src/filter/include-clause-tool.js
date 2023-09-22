@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {RelationType} from '../definition/index.js';
 import {HasOneResolver} from '../relations/index.js';
 import {HasManyResolver} from '../relations/index.js';

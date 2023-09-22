@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {Repository} from './repository/index.js';
 import {DefinitionRegistry} from './definition/index.js';
 import {RepositoryRegistry} from './repository/index.js';

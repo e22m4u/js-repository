@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {cloneDeep} from '../../utils/index.js';
 import {excludeObjectKeys} from '../../utils/index.js';

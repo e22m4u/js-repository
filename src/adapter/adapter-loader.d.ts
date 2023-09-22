@@ -1,6 +1,6 @@
-import {Adapter} from './adapter';
-import {AnyObject} from '../types';
-import {Service} from '@e22m4u/service';
+import {Adapter} from './adapter.js';
+import {AnyObject} from '../types.js';
+import {Service} from '@e22m4u/js-service';
 
 /**
  * Adapter loader.

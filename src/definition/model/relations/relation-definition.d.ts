@@ -1,4 +1,4 @@
-import {RelationType} from './relation-type';
+import {RelationType} from './relation-type.js';
 
 /**
  * Relation definition.

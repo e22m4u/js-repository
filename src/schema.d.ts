@@ -1,10 +1,10 @@
-import {ModelId} from './types';
-import {ModelData} from './types';
-import {Service} from '@e22m4u/service';
-import {Repository} from './repository';
-import {ModelDefinition} from './definition';
-import {DatasourceDefinition} from './definition';
-import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from './definition';
+import {ModelId} from './types.js';
+import {ModelData} from './types.js';
+import {Service} from '@e22m4u/js-service';
+import {Repository} from './repository/index.js';
+import {ModelDefinition} from './definition/index.js';
+import {DatasourceDefinition} from './definition/index.js';
+import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from './definition/index.js';
 
 /**
  * Schema.

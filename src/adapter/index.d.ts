@@ -1,3 +1,3 @@
-export * from './adapter';
-export * from './adapter-loader';
-export * from './adapter-registry';
+export * from './adapter.js';
+export * from './adapter-loader.js';
+export * from './adapter-registry.js';

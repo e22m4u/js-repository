@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {Adapter} from '../adapter/index.js';
 import {AdapterRegistry} from '../adapter/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
@@ -44,7 +44,7 @@ export class Repository extends Service {
   /**
    * Constructor.
    *
-   * @typedef {import('@e22m4u/service').ServiceContainer} ServiceContainer
+   * @typedef {import('@e22m4u/js-service').ServiceContainer} ServiceContainer
    * @param {ServiceContainer} container
    * @param {string} modelName
    */

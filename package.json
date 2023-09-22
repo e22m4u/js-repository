@@ -1,5 +1,5 @@
 {
-  "name": "@e22m4u/node-repository",
+  "name": "@e22m4u/js-repository",
   "version": "0.0.30",
   "description": "Абстракция для работы с базами данных для Node.js",
   "type": "module",
@@ -8,16 +8,16 @@
     "node": ">=14"
   },
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"./src/**/*.{js,ts}\"",
-    "test": "eslint . && c8 --reporter=text-summary mocha",
-    "test:coverage": "eslint . && c8 --reporter=text mocha",
+    "lint": "tsc && eslint .",
+    "lint:fix": "tsc && eslint . --fix",
+    "format": "prettier --write \"./src/**/*.js\"",
+    "test": "npm run lint && c8 --reporter=text-summary mocha",
+    "test:coverage": "npm run lint && c8 --reporter=text mocha",
     "prepare": "npx husky install"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/e22m4u/node-repository.git"
+    "url": "https://github.com/e22m4u/js-repository.git"
   },
   "keywords": [
     "Repository",
@@ -31,10 +31,10 @@
   ],
   "author": "e22m4u <e22m4u@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/e22m4u/node-repository",
+  "homepage": "https://github.com/e22m4u/js-repository",
   "dependencies": {
-    "@e22m4u/service": "0.0.6",
-    "@e22m4u/util-format": "0.0.6"
+    "@e22m4u/js-service": "0.0.7",
+    "@e22m4u/js-format": "0.0.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
@@ -51,6 +51,7 @@
     "eslint-plugin-mocha": "^10.1.0",
     "husky": "^8.0.3",
     "mocha": "^10.2.0",
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.1",
+    "typescript": "^5.2.2"
   }
 }

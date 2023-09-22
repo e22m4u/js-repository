@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
 

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {DefaultValuesDefinitionValidator} from './default-values-definition-validator.js';
 
 const S = new DefaultValuesDefinitionValidator();

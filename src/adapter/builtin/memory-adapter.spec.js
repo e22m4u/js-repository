@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Schema} from '../../schema.js';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {MemoryAdapter} from './memory-adapter.js';
 import {DataType} from '../../definition/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../../definition/index.js';

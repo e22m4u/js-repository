@@ -2,13 +2,13 @@ import chai from 'chai';
 import {expect} from 'chai';
 import {Schema} from '../schema.js';
 import {Adapter} from './adapter.js';
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
+import {ServiceContainer} from '@e22m4u/js-service';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
 import {DataValidationDecorator} from './decorator/index.js';
 import {DataSanitizingDecorator} from './decorator/index.js';
 import {FieldsFilteringDecorator} from './decorator/index.js';
-import {ServiceContainer} from '@e22m4u/service';
 
 const sandbox = chai.spy.sandbox();
 

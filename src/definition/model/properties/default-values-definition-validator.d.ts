@@ -1,5 +1,5 @@
-import {Service} from '@e22m4u/service';
-import {PropertyDefinitionMap} from '../model-definition';
+import {Service} from '@e22m4u/js-service';
+import {PropertyDefinitionMap} from '../model-definition.js';
 
 /**
  * Default values definition validator.

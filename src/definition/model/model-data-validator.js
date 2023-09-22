@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {getCtorName} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';

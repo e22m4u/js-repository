@@ -1,6 +1,6 @@
-import {Filter} from '../filter';
-import {ModelData} from '../types';
-import {Service} from '@e22m4u/service';
+import {ModelData} from '../types.js';
+import {Filter} from '../filter/index.js';
+import {Service} from '@e22m4u/js-service';
 
 /**
  * Has many resolver.

@@ -1,4 +1,4 @@
-import {ModelData} from '../types';
+import {ModelData} from '../types.js';
 
 /**
  * Filter.

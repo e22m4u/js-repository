@@ -1,5 +1,5 @@
 import {Adapter} from './adapter.js';
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {InvalidArgumentError} from '../errors/index.js';
 
 /**
@@ -29,7 +29,7 @@ export class AdapterLoader extends Service {
     if (!adapterCtor)
       try {
         const module = await import(
-          `@e22m4u/node-repository-${adapterName}-adapter`
+          `@e22m4u/js-repository-${adapterName}-adapter`
         );
         adapterCtor = findAdapterCtorInModule(module);
       } catch (e) {

@@ -1,5 +1,5 @@
 import {Adapter} from '../adapter.js';
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {FieldsClauseTool} from '../../filter/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 

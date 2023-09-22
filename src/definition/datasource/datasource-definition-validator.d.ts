@@ -1,5 +1,5 @@
-import {Service} from '@e22m4u/service';
-import {DatasourceDefinition} from './datasource-definition';
+import {Service} from '@e22m4u/js-service';
+import {DatasourceDefinition} from './datasource-definition.js';
 
 /**
  * Datasource definition validator.

@@ -1,5 +1,5 @@
-import {Service} from '@e22m4u/service';
-import {RelationDefinitionMap} from '../model-definition';
+import {Service} from '@e22m4u/js-service';
+import {RelationDefinitionMap} from '../model-definition.js';
 
 /**
  * Relations definition validator.

@@ -1,14 +1,14 @@
-import {Filter} from '../filter';
-import {ModelId} from '../types';
-import {Flatten} from '../types';
-import {Adapter} from '../adapter';
-import {ModelData} from '../types';
-import {PartialBy} from '../types';
-import {ItemFilter} from '../filter';
-import {WhereClause} from '../filter';
-import {Service} from '@e22m4u/service';
-import {ServiceContainer} from '@e22m4u/service';
-import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition';
+import {ModelId} from '../types.js';
+import {Flatten} from '../types.js';
+import {ModelData} from '../types.js';
+import {PartialBy} from '../types.js';
+import {Filter} from '../filter/index.js';
+import {Service} from '@e22m4u/js-service';
+import {Adapter} from '../adapter/index.js';
+import {ItemFilter} from '../filter/index.js';
+import {WhereClause} from '../filter/index.js';
+import {ServiceContainer} from '@e22m4u/js-service';
+import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition/index.js';
 
 /**
  * Repository.

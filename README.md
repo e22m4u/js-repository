@@ -1,22 +1,22 @@
-## @e22m4u/node-repository
+## @e22m4u/js-repository
 
 Абстракция для работы с базами данных для Node.js
 
 | адаптер | описание                                                                                                                                        |
 |---------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | memory  | виртуальная база в памяти процесса (для разработки и тестирования)                                                                              |
-| mongodb | MongoDB - система управления NoSQL базами данных (*[требует установки](https://www.npmjs.com/package/@e22m4u/node-repository-mongodb-adapter))* |
+| mongodb | MongoDB - система управления NoSQL базами данных (*[требует установки](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
 
 ## Установка
 
 ```bash
-npm install @e22m4u/node-repository
+npm install @e22m4u/js-repository
 ```
 
-Опционально устанавливаем адаптер, например [mongodb](https://www.npmjs.com/package/@e22m4u/node-repository-mongodb-adapter)
+Опционально устанавливаем адаптер, например [mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
 
 ```bash
-npm install @e22m4u/node-repository-mongodb-adapter
+npm install @e22m4u/js-repository-mongodb-adapter
 ```
 
 ## Пример
@@ -24,7 +24,7 @@ npm install @e22m4u/node-repository-mongodb-adapter
 Создаем экземпляр класса `Schema`
 
 ```js
-import {Schema} from '@e22m4u/node-repository';
+import {Schema} from '@e22m4u/js-repository';
 
 const schema = new Schema();
 ```
@@ -116,7 +116,7 @@ await userRep.deleteById(fedor.id); // true
 Получение репозитория модели:
 
 ```js
-import {Schema} from '@e22m4u/node-repository';
+import {Schema} from '@e22m4u/js-repository';
 
 const schema = new Schema();
 // создаем источник
@@ -130,9 +130,9 @@ const repositorty = schema.getRepository('myModel');
 Переопределение конструктора:
 
 ```js
-import {Schema} from '@e22m4u/node-repository';
-import {Repository} from '@e22m4u/node-repository';
-import {RepositoryRegistry} from '@e22m4u/node-repository';
+import {Schema} from '@e22m4u/js-repository';
+import {Repository} from '@e22m4u/js-repository';
+import {RepositoryRegistry} from '@e22m4u/js-repository';
 
 class MyRepository extends Repository {
   /*...*/

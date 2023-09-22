@@ -1,9 +1,9 @@
-import {ModelId} from '../types';
-import {ModelData} from '../types';
-import {Service} from '@e22m4u/service';
-import {Repository} from './repository';
-import {Constructor} from '@e22m4u/service';
-import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition';
+import {ModelId} from '../types.js';
+import {ModelData} from '../types.js';
+import {Service} from '@e22m4u/js-service';
+import {Repository} from './repository.js';
+import {Constructor} from '@e22m4u/js-service';
+import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition/index.js';
 
 /**
  * Repository registry.

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {OperatorClauseTool} from './operator-clause-tool.js';
 import {InvalidOperatorValueError} from '../errors/index.js';
 

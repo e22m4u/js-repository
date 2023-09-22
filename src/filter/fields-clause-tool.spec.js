@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Schema} from '../schema.js';
-import {format} from '@e22m4u/util-format';
+import {format} from '@e22m4u/js-format';
 import {FieldsClauseTool} from './fields-clause-tool.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.js';
 

@@ -1,4 +1,4 @@
-import {Service} from '@e22m4u/service';
+import {Service} from '@e22m4u/js-service';
 import {getValueByPath} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {OperatorClauseTool} from './operator-clause-tool.js';

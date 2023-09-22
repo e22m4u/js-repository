@@ -1,9 +1,9 @@
-import {DataType} from './properties';
-import {ModelData} from '../../types';
-import {Service} from '@e22m4u/service';
-import {RelationDefinition} from './relations';
-import {PropertyDefinitionMap} from './model-definition';
-import {RelationDefinitionMap} from './model-definition';
+import {ModelData} from '../../types.js';
+import {Service} from '@e22m4u/js-service';
+import {DataType} from './properties/index.js';
+import {RelationDefinition} from './relations/index.js';
+import {PropertyDefinitionMap} from './model-definition.js';
+import {RelationDefinitionMap} from './model-definition.js';
 
 /**
  * Default primary key property name.
