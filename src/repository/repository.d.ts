@@ -1,5 +1,6 @@
 import {Filter} from '../filter';
 import {ModelId} from '../types';
+import {Flatten} from '../types';
 import {Adapter} from '../adapter';
 import {ModelData} from '../types';
 import {PartialBy} from '../types';
@@ -49,7 +50,7 @@ export declare class Repository<
   create(
     data: OptionalUnlessRequiredId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<Data>;
+  ): Promise<Flatten<Data>>;
 
   /**
    * Replace by id.
@@ -62,7 +63,7 @@ export declare class Repository<
     id: IdType,
     data: Omit<Data, IdName>,
     filter?: ItemFilter,
-  ): Promise<Data>;
+  ): Promise<Flatten<Data>>;
 
   /**
    * Replace or create.
@@ -73,7 +74,7 @@ export declare class Repository<
   replaceOrCreate(
     data: OptionalUnlessRequiredId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<Data>;
+  ): Promise<Flatten<Data>>;
 
   /**
    * Patch by id.
@@ -86,21 +87,21 @@ export declare class Repository<
     id: IdType,
     data: PartialWithoutId<IdName, Data>,
     filter?: ItemFilter,
-  ): Promise<Data>;
+  ): Promise<Flatten<Data>>;
 
   /**
    * Find.
    *
    * @param filter
    */
-  find(filter?: Filter): Promise<Data[]>;
+  find(filter?: Filter): Promise<Flatten<Data>[]>;
 
   /**
    * Find one.
    *
    * @param filter
    */
-  findOne(filter?: ItemFilter): Promise<Data | undefined>;
+  findOne(filter?: ItemFilter): Promise<Flatten<Data> | undefined>;
 
   /**
    * Find by id.
@@ -108,7 +109,7 @@ export declare class Repository<
    * @param id
    * @param filter
    */
-  findById(id: IdType, filter?: ItemFilter): Promise<Data>;
+  findById(id: IdType, filter?: ItemFilter): Promise<Flatten<Data>>;
 
   /**
    * Delete.
@@ -142,15 +143,13 @@ export declare class Repository<
 /**
  * Makes fields as optional and remove id field.
  */
-type PartialWithoutId<IdName extends string, Data> = Partial<
-  Omit<Data, IdName>
+type PartialWithoutId<IdName extends string, Data> = Flatten<
+  Partial<Omit<Data, IdName>>
 >;
 
 /**
  * Makes the given id field as optional.
  */
-type OptionalUnlessRequiredId<IdName extends string, Data> = Data extends {
-  [K in IdName]: any;
-}
-  ? PartialBy<Data, IdName>
-  : Data;
+type OptionalUnlessRequiredId<IdName extends string, Data> = Flatten<
+  Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data
+>;

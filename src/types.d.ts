@@ -22,3 +22,9 @@ export declare type ModelData = {
  * Model id.
  */
 export declare type ModelId = unknown;
+
+/**
+ * Flatten.
+ */
+type Identity<T> = T;
+export declare type Flatten<T> = Identity<{[k in keyof T]: T[k]}>;
