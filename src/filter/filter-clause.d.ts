@@ -45,20 +45,20 @@ export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
  * ```
  */
 export declare type WhereClause =
-  | FunctionClause
+  | PredicateClause
   | PropertiesClause
   | AndClause
   | OrClause;
 
 /**
- * Function clause.
+ * Predicate clause.
  *
  * @example
  * ```ts
  * (value) => value.featured === true;
  * ```
  */
-export type FunctionClause = (value: ModelData) => boolean;
+export type PredicateClause = (value: ModelData) => boolean;
 
 /**
  * Properties clause.
