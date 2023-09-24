@@ -1,8 +1,8 @@
-import {Filter} from './filter.js';
 import {ModelData} from '../types.js';
-import {IncludeClause} from './filter.js';
 import {Service} from '@e22m4u/js-service';
-import {NormalizedIncludeClause} from './filter.js';
+import {FilterClause} from './filter-clause.js';
+import {IncludeClause} from './filter-clause.js';
+import {NormalizedIncludeClause} from './filter-clause.js';
 
 /**
  * Include clause tool.
@@ -33,7 +33,7 @@ export declare class IncludeClauseTool extends Service {
    *
    * @param clause
    */
-  static validateScopeClause(clause: Filter | undefined): void;
+  static validateScopeClause(clause: FilterClause | undefined): void;
 
   /**
    * Normalize include clause.
@@ -49,5 +49,7 @@ export declare class IncludeClauseTool extends Service {
    *
    * @param clause
    */
-  static normalizeScopeClause(clause: Filter | undefined): Filter | undefined;
+  static normalizeScopeClause(
+    clause: FilterClause | undefined,
+  ): FilterClause | undefined;
 }

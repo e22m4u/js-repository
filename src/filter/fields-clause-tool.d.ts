@@ -1,7 +1,7 @@
 import {ModelData} from '../types.js';
-import {FieldsClause} from './filter.js';
 import {Service} from '@e22m4u/js-service';
-import {NormalizedFieldsClause} from './filter.js';
+import {FieldsClause} from './filter-clause.js';
+import {NormalizedFieldsClause} from './filter-clause.js';
 
 /**
  * Field clause tool.

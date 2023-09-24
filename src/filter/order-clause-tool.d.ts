@@ -1,6 +1,6 @@
 import {ModelData} from '../types.js';
-import {OrderClause} from './filter.js';
 import {Service} from '@e22m4u/js-service';
+import {OrderClause} from './filter-clause.js';
 
 /**
  * Order clause tool.

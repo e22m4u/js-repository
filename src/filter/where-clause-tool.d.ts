@@ -1,6 +1,6 @@
 import {ModelData} from '../types.js';
-import {WhereClause} from './filter.js';
 import {Service} from '@e22m4u/js-service';
+import {WhereClause} from './filter-clause.js';
 
 /**
  * Where clause tool.

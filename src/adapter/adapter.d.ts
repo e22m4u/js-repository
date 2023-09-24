@@ -1,10 +1,10 @@
 import {ModelId} from '../types.js';
 import {AnyObject} from '../types.js';
 import {ModelData} from '../types.js';
-import {Filter} from '../filter/index.js';
 import {Service} from '@e22m4u/js-service';
-import {ItemFilter} from '../filter/index.js';
 import {WhereClause} from '../filter/index.js';
+import {FilterClause} from '../filter/index.js';
+import {ItemFilterClause} from '../filter/index.js';
 import {ServiceContainer} from '@e22m4u/js-service';
 
 /**
@@ -34,7 +34,7 @@ export declare class Adapter extends Service {
   create(
     modelName: string,
     modelData: ModelData,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<ModelData>;
 
   /**
@@ -49,7 +49,7 @@ export declare class Adapter extends Service {
     modelName: string,
     id: ModelId,
     modelData: ModelData,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<ModelData>;
 
   /**
@@ -64,7 +64,7 @@ export declare class Adapter extends Service {
     modelName: string,
     id: ModelId,
     modelData: ModelData,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<ModelData>;
 
   /**
@@ -73,7 +73,7 @@ export declare class Adapter extends Service {
    * @param modelName
    * @param filter
    */
-  find(modelName: string, filter?: Filter): Promise<ModelData[]>;
+  find(modelName: string, filter?: FilterClause): Promise<ModelData[]>;
 
   /**
    * Find by id.
@@ -82,7 +82,11 @@ export declare class Adapter extends Service {
    * @param id
    * @param filter
    */
-  findById(modelName: string, id: ModelId, filter?: Filter): Promise<ModelData>;
+  findById(
+    modelName: string,
+    id: ModelId,
+    filter?: ItemFilterClause,
+  ): Promise<ModelData>;
 
   /**
    * Delete.

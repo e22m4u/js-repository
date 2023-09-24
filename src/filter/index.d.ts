@@ -1,4 +1,4 @@
-export * from './filter.js';
+export * from './filter-clause.js';
 export * from './slice-clause-tool.js';
 export * from './order-clause-tool.js';
 export * from './where-clause-tool.js';

@@ -1,6 +1,6 @@
 import {ModelData} from '../types.js';
-import {Filter} from '../filter/index.js';
 import {Service} from '@e22m4u/js-service';
+import {FilterClause} from '../filter/index.js';
 
 /**
  * Has one resolver.
@@ -22,7 +22,7 @@ export declare class HasOneResolver extends Service {
     targetName: string,
     relationName: string,
     foreignKey: string,
-    scope?: Filter,
+    scope?: FilterClause,
   ): Promise<void>;
 
   /**
@@ -43,7 +43,7 @@ export declare class HasOneResolver extends Service {
     relationName: string,
     foreignKey: string,
     discriminator: string,
-    scope?: Filter,
+    scope?: FilterClause,
   ): Promise<void>;
 
   /**
@@ -62,6 +62,6 @@ export declare class HasOneResolver extends Service {
     targetName: string,
     relationName: string,
     targetRelationName: string,
-    scope?: Filter,
+    scope?: FilterClause,
   ): Promise<void>;
 }

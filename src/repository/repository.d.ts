@@ -2,11 +2,11 @@ import {ModelId} from '../types.js';
 import {Flatten} from '../types.js';
 import {ModelData} from '../types.js';
 import {PartialBy} from '../types.js';
-import {Filter} from '../filter/index.js';
 import {Service} from '@e22m4u/js-service';
 import {Adapter} from '../adapter/index.js';
-import {ItemFilter} from '../filter/index.js';
 import {WhereClause} from '../filter/index.js';
+import {FilterClause} from '../filter/index.js';
+import {ItemFilterClause} from '../filter/index.js';
 import {ServiceContainer} from '@e22m4u/js-service';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition/index.js';
 
@@ -50,7 +50,7 @@ export declare class Repository<
    */
   create(
     data: OptionalUnlessRequiredId<IdName, FlatData>,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
   /**
@@ -63,7 +63,7 @@ export declare class Repository<
   replaceById(
     id: IdType,
     data: WithoutId<IdName, FlatData>,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
   /**
@@ -74,7 +74,7 @@ export declare class Repository<
    */
   replaceOrCreate(
     data: OptionalUnlessRequiredId<IdName, Data>,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
   /**
@@ -87,7 +87,7 @@ export declare class Repository<
   patchById(
     id: IdType,
     data: PartialWithoutId<IdName, Data>,
-    filter?: ItemFilter,
+    filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
   /**
@@ -95,14 +95,14 @@ export declare class Repository<
    *
    * @param filter
    */
-  find(filter?: Filter): Promise<FlatData[]>;
+  find(filter?: FilterClause): Promise<FlatData[]>;
 
   /**
    * Find one.
    *
    * @param filter
    */
-  findOne(filter?: ItemFilter): Promise<FlatData | undefined>;
+  findOne(filter?: FilterClause): Promise<FlatData | undefined>;
 
   /**
    * Find by id.
@@ -110,7 +110,7 @@ export declare class Repository<
    * @param id
    * @param filter
    */
-  findById(id: IdType, filter?: ItemFilter): Promise<FlatData>;
+  findById(id: IdType, filter?: ItemFilterClause): Promise<FlatData>;
 
   /**
    * Delete.

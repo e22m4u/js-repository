@@ -1,6 +1,6 @@
 import {ModelData} from '../types.js';
-import {Filter} from '../filter/index.js';
 import {Service} from '@e22m4u/js-service';
+import {FilterClause} from '../filter/index.js';
 
 /**
  * Belongs to resolver.
@@ -22,7 +22,7 @@ export declare class BelongsToResolver extends Service {
     targetName: string,
     relationName: string,
     foreignKey?: string,
-    scope?: Filter,
+    scope?: FilterClause,
   ): Promise<void>;
 
   /**
@@ -41,6 +41,6 @@ export declare class BelongsToResolver extends Service {
     relationName: string,
     foreignKey?: string,
     discriminator?: string,
-    scope?: Filter,
+    scope?: FilterClause,
   ): Promise<void>;
 }

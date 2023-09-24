@@ -6,7 +6,7 @@ import {InvalidArgumentError} from '../errors/index.js';
  */
 export class SliceClauseTool extends Service {
   /**
-   * Filter.
+   * Slice.
    *
    * @param {object[]} entities
    * @param {number|undefined} skip

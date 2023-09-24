@@ -1,9 +1,9 @@
 import {ModelData} from '../types.js';
 
 /**
- * Filter.
+ * Filter clause.
  */
-export declare type Filter = {
+export declare type FilterClause = {
   where?: WhereClause;
   order?: OrderClause;
   limit?: number;
@@ -13,9 +13,9 @@ export declare type Filter = {
 };
 
 /**
- * Item filter.
+ * Item filter clause.
  */
-export declare type ItemFilter = Pick<Filter, 'fields' | 'include'>;
+export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
 
 /**
  * Where clause.
@@ -331,5 +331,5 @@ export declare type NestedIncludeClause = {
  */
 export declare type NormalizedIncludeClause = {
   relation: string;
-  scope?: Filter;
+  scope?: FilterClause;
 };
