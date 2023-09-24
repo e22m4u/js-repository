@@ -136,7 +136,7 @@ export declare type OperatorClause = {
  * ```
  */
 export interface AndClause {
-  and: WhereClause[];
+  and?: WhereClause[];
 }
 
 /**
@@ -150,7 +150,7 @@ export interface AndClause {
  * ```
  */
 export interface OrClause {
-  or: WhereClause[];
+  or?: WhereClause[];
 }
 
 /**
