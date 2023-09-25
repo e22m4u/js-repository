@@ -13,14 +13,15 @@ export class OrderClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   sort(entities, clause) {
-    if (!clause) return;
-    if (!Array.isArray(clause)) clause = [clause];
+    if (clause == null) return;
+    if (Array.isArray(clause) === false) clause = [clause];
+    if (!clause.length) return;
     const mapping = [];
     clause.forEach((key, index) => {
-      if (typeof key !== 'string')
+      if (!key || typeof key !== 'string')
         throw new InvalidArgumentError(
-          'The provided option "order" should be a String ' +
-            'or an Array of String, but %v given.',
+          'The provided option "order" should be a non-empty String ' +
+            'or an Array of non-empty String, but %v given.',
           key,
         );
       let reverse = 1;
@@ -40,14 +41,15 @@ export class OrderClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   static validateOrderClause(clause) {
-    if (!clause) return;
-    const tempClause = Array.isArray(clause) ? clause : [clause];
-    tempClause.forEach(key => {
-      if (!key || typeof key !== 'string')
+    if (clause == null) return;
+    if (Array.isArray(clause) === false) clause = [clause];
+    if (!clause.length) return;
+    clause.forEach(field => {
+      if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %v given.',
-          key,
+            'or an Array of non-empty String, but %v given.',
+          field,
         );
     });
   }
@@ -59,14 +61,15 @@ export class OrderClauseTool extends Service {
    * @returns {string[]|undefined}
    */
   static normalizeOrderClause(clause) {
-    if (!clause) return;
-    clause = Array.isArray(clause) ? clause : [clause];
-    clause.forEach(key => {
-      if (!key || typeof key !== 'string')
+    if (clause == null) return;
+    if (Array.isArray(clause) === false) clause = [clause];
+    if (!clause.length) return;
+    clause.forEach(field => {
+      if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
-            'or an Array of String, but %v given.',
-          key,
+            'or an Array of non-empty String, but %v given.',
+          field,
         );
     });
     return clause;
