@@ -10,12 +10,12 @@ export declare class FieldsClauseTool extends Service {
   /**
    * Filter.
    *
-   * @param entities
+   * @param input
    * @param modelName
    * @param clause
    */
   filter<T extends ModelData | ModelData[]>(
-    entities: T,
+    input: T,
     modelName: string,
     clause: FieldsClause | undefined,
   ): T;
