@@ -13,6 +13,12 @@ describe('FieldsClauseTool', function () {
   describe('filter', function () {
     describe('object', function () {
       describe('single field', function () {
+        it('does not throw an error if the given field is not exist', function () {
+          const object = {foo: 'a1', bar: 'a2', baz: 'a3'};
+          const res = T.filter(object, MODEL_NAME, 'qux');
+          expect(res).to.be.eql({});
+        });
+
         it('requires the first argument to be an object', function () {
           const throwable = v => () => T.filter(v, MODEL_NAME, 'bar');
           const error = v =>
@@ -86,6 +92,12 @@ describe('FieldsClauseTool', function () {
       });
 
       describe('multiple fields', function () {
+        it('does not throw an error if multiple fields is not exist', function () {
+          const object = {foo: 'a1', bar: 'a2', baz: 'a3'};
+          const res = T.filter(object, MODEL_NAME, ['bar', 'qux']);
+          expect(res).to.be.eql({bar: 'a2'});
+        });
+
         it('requires the first argument to be an object', function () {
           const throwable = v => () => T.filter(v, MODEL_NAME, ['bar', 'baz']);
           const error = v =>
@@ -162,6 +174,16 @@ describe('FieldsClauseTool', function () {
 
     describe('array', function () {
       describe('single field', function () {
+        it('does not throw an error if the given field is not exist', function () {
+          const objects = [
+            {foo: 'a1', bar: 'a2', baz: 'a3'},
+            {foo: 'b1', bar: 'b2', baz: 'b3'},
+            {foo: 'c1', bar: 'c2', baz: 'c3'},
+          ];
+          const res = T.filter(objects, MODEL_NAME, 'qux');
+          expect(res).to.be.eql([{}, {}, {}]);
+        });
+
         it('requires the first argument to be an array of objects', function () {
           const throwable = v => () => T.filter(v, MODEL_NAME, 'bar');
           const error = v =>
@@ -267,6 +289,18 @@ describe('FieldsClauseTool', function () {
       });
 
       describe('multiple fields', function () {
+        it('does not throw an error if multiple fields is not exist', function () {
+          const object = [
+            {foo: 'a1', bar: 'a2', baz: 'a3'},
+            {foo: 'b1', bar: 'b2', baz: 'b3'},
+            {foo: 'c1', bar: 'c2', baz: 'c3'},
+          ];
+          const res = T.filter(object, MODEL_NAME, ['bar', 'qux']);
+          expect(res[0]).to.be.eql({bar: 'a2'});
+          expect(res[1]).to.be.eql({bar: 'b2'});
+          expect(res[2]).to.be.eql({bar: 'c2'});
+        });
+
         it('requires the first argument to be an array of objects', function () {
           const throwable = v => () => T.filter(v, MODEL_NAME, ['bar', 'baz']);
           const error = v =>

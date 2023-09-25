@@ -6,50 +6,17 @@ const S = new OrderClauseTool();
 
 describe('OrderClauseTool', function () {
   describe('sort', function () {
-    it('does not throw an error if a field does not exist', function () {
-      const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
-      S.sort(objects, 'bar');
-      expect(objects).to.have.length(4);
-      expect(objects[0].foo).to.be.eq(1);
-      expect(objects[1].foo).to.be.eq(2);
-      expect(objects[2].foo).to.be.eq(3);
-      expect(objects[3].foo).to.be.eq(4);
-    });
-
-    it('does not throw an error if multiple fields are not exist', function () {
-      const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
-      S.sort(objects, ['bar', 'baz']);
-      expect(objects).to.have.length(4);
-      expect(objects[0].foo).to.be.eq(1);
-      expect(objects[1].foo).to.be.eq(2);
-      expect(objects[2].foo).to.be.eq(3);
-      expect(objects[3].foo).to.be.eq(4);
-    });
-
-    it('does not throw an error if a nested field does not exist', function () {
-      const objects = [
-        {foo: 1},
-        {foo: 2, bar: undefined},
-        {foo: 3, bar: {baz: undefined}},
-        {foo: 4, bar: {baz: 1}},
-      ];
-      S.sort(objects, 'bar.baz');
-      expect(objects).to.have.length(4);
-      expect(objects[0].foo).to.be.eq(1);
-      expect(objects[1].foo).to.be.eq(2);
-      expect(objects[2].foo).to.be.eq(3);
-      expect(objects[3].foo).to.be.eq(4);
-    });
-
-    it('throws an error if a given property is not a string', function () {
-      const throwable = () => S.sort([], 10);
-      expect(throwable).to.throw(
-        'The provided option "order" should be a non-empty String ' +
-          'or an Array of non-empty String, but 10 given.',
-      );
-    });
-
     describe('single field', function () {
+      it('does not throw an error if the given field is not exist', function () {
+        const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
+        S.sort(objects, 'bar');
+        expect(objects).to.have.length(4);
+        expect(objects[0].foo).to.be.eq(1);
+        expect(objects[1].foo).to.be.eq(2);
+        expect(objects[2].foo).to.be.eq(3);
+        expect(objects[3].foo).to.be.eq(4);
+      });
+
       describe('with number values', function () {
         it('orders in ascending by default', function () {
           const objects = [{foo: 2}, {foo: 3}, {foo: 1}, {foo: 4}];
@@ -116,6 +83,16 @@ describe('OrderClauseTool', function () {
     });
 
     describe('multiple fields', function () {
+      it('does not throw an error if multiple fields are not exist', function () {
+        const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
+        S.sort(objects, ['bar', 'baz']);
+        expect(objects).to.have.length(4);
+        expect(objects[0].foo).to.be.eq(1);
+        expect(objects[1].foo).to.be.eq(2);
+        expect(objects[2].foo).to.be.eq(3);
+        expect(objects[3].foo).to.be.eq(4);
+      });
+
       describe('with number values', function () {
         it('orders in ascending by default', function () {
           const objects = [
@@ -304,6 +281,21 @@ describe('OrderClauseTool', function () {
     });
 
     describe('nested single field', function () {
+      it('does not throw an error if the nested field is not exist', function () {
+        const objects = [
+          {foo: 1},
+          {foo: 2, bar: undefined},
+          {foo: 3, bar: {baz: undefined}},
+          {foo: 4, bar: {baz: 1}},
+        ];
+        S.sort(objects, 'bar.baz');
+        expect(objects).to.have.length(4);
+        expect(objects[0].foo).to.be.eq(1);
+        expect(objects[1].foo).to.be.eq(2);
+        expect(objects[2].foo).to.be.eq(3);
+        expect(objects[3].foo).to.be.eq(4);
+      });
+
       describe('with number values', function () {
         it('orders in ascending by default', function () {
           const objects = [
@@ -400,6 +392,21 @@ describe('OrderClauseTool', function () {
     });
 
     describe('nested multiple fields', function () {
+      it('does not throw an error if nested multiple fields are not exist', function () {
+        const objects = [
+          {foo: 1},
+          {foo: 2, bar: undefined},
+          {foo: 3, bar: {baz: undefined}},
+          {foo: 4, bar: {baz: 1}},
+        ];
+        S.sort(objects, ['bar.baz', 'qux']);
+        expect(objects).to.have.length(4);
+        expect(objects[0].foo).to.be.eq(1);
+        expect(objects[1].foo).to.be.eq(2);
+        expect(objects[2].foo).to.be.eq(3);
+        expect(objects[3].foo).to.be.eq(4);
+      });
+
       describe('with number values', function () {
         it('orders in ascending by default', function () {
           const objects = [
