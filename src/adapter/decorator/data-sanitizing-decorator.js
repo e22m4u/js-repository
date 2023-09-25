@@ -15,7 +15,7 @@ export class DataSanitizingDecorator extends Service {
   decorate(adapter) {
     if (!adapter || !(adapter instanceof Adapter))
       throw new InvalidArgumentError(
-        'A first argument of DataSanitizingDecorator.decorate must be ' +
+        'A first argument of DataSanitizingDecorator.decorate should be ' +
           'an Adapter instance, but %v given.',
         adapter,
       );

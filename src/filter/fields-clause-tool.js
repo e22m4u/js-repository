@@ -10,30 +10,39 @@ export class FieldsClauseTool extends Service {
   /**
    * Filter.
    *
-   * @param {object|object[]} entities
+   * @param {object|object[]} input
    * @param {string} modelName
    * @param {string|string[]|undefined} clause
    * @returns {object|object[]}
    */
-  filter(entities, modelName, clause) {
-    const isArray = Array.isArray(entities);
-    entities = isArray ? entities : [entities];
+  filter(input, modelName, clause) {
+    const isArray = Array.isArray(input);
+    let entities = isArray ? input : [input];
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
         throw new InvalidArgumentError(
-          'A first argument of FieldClauseTool.filter should be an Object or ' +
+          'The first argument of FieldsClauseTool.filter should be an Object or ' +
             'an Array of Object, but %v given.',
           entity,
         );
     });
 
-    if (!clause) return entities;
+    if (!modelName || typeof modelName !== 'string')
+      throw new InvalidArgumentError(
+        'The second argument of FieldsClauseTool.filter should be ' +
+          'a non-empty String, but %v given.',
+        modelName,
+      );
+
+    if (clause == null) return input;
     const fields = Array.isArray(clause) ? clause.slice() : [clause];
+    if (!fields.length) return input;
+
     fields.forEach(field => {
       if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
-          'The provided option "fields" should be a String ' +
-            'or an Array of String, but %v given.',
+          'The provided option "fields" should be a non-empty String ' +
+            'or an Array of non-empty String, but %v given.',
           field,
         );
     });
@@ -54,14 +63,15 @@ export class FieldsClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   static validateFieldsClause(clause) {
-    if (!clause) return;
-    const tempClause = Array.isArray(clause) ? clause : [clause];
-    tempClause.forEach(key => {
-      if (!key || typeof key !== 'string')
+    if (clause == null) return;
+    const fields = Array.isArray(clause) ? clause : [clause];
+    if (!fields.length) return;
+    fields.forEach(field => {
+      if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "fields" should be a non-empty String ' +
-            'or an Array of String, but %v given.',
-          key,
+            'or an Array of non-empty String, but %v given.',
+          field,
         );
     });
   }
@@ -73,16 +83,17 @@ export class FieldsClauseTool extends Service {
    * @returns {string[]|undefined}
    */
   static normalizeFieldsClause(clause) {
-    if (!clause) return;
-    clause = Array.isArray(clause) ? clause : [clause];
-    clause.forEach(key => {
-      if (!key || typeof key !== 'string')
+    if (clause == null) return;
+    const fields = Array.isArray(clause) ? clause : [clause];
+    if (!fields.length) return;
+    fields.forEach(field => {
+      if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "fields" should be a non-empty String ' +
-            'or an Array of String, but %v given.',
-          key,
+            'or an Array of non-empty String, but %v given.',
+          field,
         );
     });
-    return clause;
+    return fields;
   }
 }

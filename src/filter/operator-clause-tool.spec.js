@@ -1049,7 +1049,7 @@ describe('OperatorClauseTool', function () {
       const throwable = v => () =>
         S.testRegexp({regexp: 'Val.+', flags: v}, 'val');
       const error = v =>
-        format('RegExp flags must be a String, but %s given.', v);
+        format('RegExp flags should be a String, but %s given.', v);
       expect(throwable(10)).to.throw(error('10'));
       expect(throwable(true)).to.throw(error('true'));
       expect(throwable([])).to.throw(error('Array'));

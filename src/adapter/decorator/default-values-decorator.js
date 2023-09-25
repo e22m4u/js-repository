@@ -15,7 +15,7 @@ export class DefaultValuesDecorator extends Service {
   decorate(adapter) {
     if (!adapter || !(adapter instanceof Adapter))
       throw new InvalidArgumentError(
-        'A first argument of DefaultValuesDecorator.decorate must be ' +
+        'A first argument of DefaultValuesDecorator.decorate should be ' +
           'an Adapter instance, but %v given.',
         adapter,
       );

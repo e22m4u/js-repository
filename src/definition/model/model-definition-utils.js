@@ -361,7 +361,7 @@ export class ModelDefinitionUtils extends Service {
     if (!modelData || typeof modelData !== 'object' || Array.isArray(modelData))
       throw new InvalidArgumentError(
         'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-          'must be an Object, but %v given.',
+          'should be an Object, but %v given.',
         modelData,
       );
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);

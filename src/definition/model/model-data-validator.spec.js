@@ -24,7 +24,7 @@ describe('ModelDataValidator', function () {
       };
       const error = given =>
         format(
-          'The data of the model "model" must be an Object, but %s given.',
+          'The data of the model "model" should be an Object, but %s given.',
           given,
         );
       expect(throwable('str')).to.throw(error('"str"'));

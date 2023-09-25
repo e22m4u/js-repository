@@ -504,7 +504,7 @@ export class OperatorClauseTool extends Service {
       const flags = clause.flags || undefined;
       if (flags && typeof flags !== 'string')
         throw new InvalidArgumentError(
-          'RegExp flags must be a String, but %v given.',
+          'RegExp flags should be a String, but %v given.',
           clause.flags,
         );
       if (!value || typeof value !== 'string') return false;

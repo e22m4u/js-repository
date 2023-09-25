@@ -19,7 +19,7 @@ export class ModelDataValidator extends Service {
   validate(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
-        'The data of the model %v must be an Object, but %v given.',
+        'The data of the model %v should be an Object, but %v given.',
         modelName,
         modelData,
       );

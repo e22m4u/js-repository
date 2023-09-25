@@ -1456,7 +1456,7 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-            'must be an Object, but %s given.',
+            'should be an Object, but %s given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));

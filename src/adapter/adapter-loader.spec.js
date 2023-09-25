@@ -9,7 +9,7 @@ describe('AdapterLoader', function () {
     it('requires an adapter name as a non-empty string', async function () {
       const promise = S.loadByName('');
       await expect(promise).to.be.rejectedWith(
-        'The adapter name must be a non-empty String, but "" given.',
+        'The adapter name should be a non-empty String, but "" given.',
       );
     });
 
