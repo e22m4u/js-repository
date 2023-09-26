@@ -155,7 +155,7 @@ export class WhereClauseTool extends Service {
    * @param {WhereClause|undefined} clause
    */
   static validateWhereClause(clause) {
-    if (!clause) return;
+    if (clause == null || typeof clause === 'function') return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The provided option "where" should be an Object, but %v given.',

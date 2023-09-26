@@ -66,8 +66,7 @@ describe('WhereClauseTool', function () {
     });
 
     it('requires the second argument to be an object', function () {
-      const input = [{foo: 'a1'}, {foo: 'a2'}, {foo: 'a3'}];
-      const throwable = v => () => S.filter(input, v);
+      const throwable = v => () => S.filter(OBJECTS, v);
       const error = v =>
         format(
           'The provided option "where" should be an Object, but %s given.',
@@ -80,13 +79,18 @@ describe('WhereClauseTool', function () {
       expect(throwable(true)).to.throw(error('true'));
       expect(throwable(false)).to.throw(error('false'));
       expect(throwable([])).to.throw(error('Array'));
-      expect(throwable({})()).to.be.eql(input);
-      expect(throwable(undefined)()).to.be.eql(input);
-      expect(throwable(null)()).to.be.eql(input);
+      expect(throwable({})()).to.be.eql(OBJECTS);
+      expect(throwable(undefined)()).to.be.eql(OBJECTS);
+      expect(throwable(null)()).to.be.eql(OBJECTS);
     });
 
     it('returns the same array if no given condition', function () {
       const result = S.filter(OBJECTS);
+      expect(result).to.be.eql(OBJECTS);
+    });
+
+    it('returns the same array if the given clause object is empty', function () {
+      const result = S.filter(OBJECTS, {});
       expect(result).to.be.eql(OBJECTS);
     });
 
@@ -97,7 +101,7 @@ describe('WhereClauseTool', function () {
       expect(result[1]).to.be.eql(OBJECTS[2]);
     });
 
-    it('the and operator requires each given condition to be met', function () {
+    it('the "and" operator requires each given condition to be met', function () {
       const result = S.filter(OBJECTS, {
         and: [{name: 'James'}, {age: 21}],
       });
@@ -105,7 +109,7 @@ describe('WhereClauseTool', function () {
       expect(result[0]).to.be.eql(OBJECTS[2]);
     });
 
-    it('the or operator requires one of a given condition to be met', function () {
+    it('the "or" operator requires one of a given condition to be met', function () {
       const result = S.filter(OBJECTS, {
         or: [{name: 'James'}, {age: 21}],
       });
@@ -142,13 +146,13 @@ describe('WhereClauseTool', function () {
       expect(result).to.be.empty;
     });
 
-    it('uses an "eq" operator to match equality', function () {
+    it('uses the "eq" operator to match equality', function () {
       const result = S.filter(OBJECTS, {name: {eq: 'John'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[0]);
     });
 
-    it('uses a "neq" operator to match non-equality', function () {
+    it('uses the "neq" operator to match non-equality', function () {
       const result = S.filter(OBJECTS, {name: {neq: 'John'}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[1]);
@@ -156,21 +160,21 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "neq" operator to match an empty array', function () {
+    it('uses the "neq" operator to match an empty array', function () {
       const result = S.filter(OBJECTS, {hobbies: {neq: 'bicycle'}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a "gt" operator to compare values', function () {
+    it('uses the "gt" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {gt: 2}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[2]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "gte" operator to compare values', function () {
+    it('uses the "gte" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {gte: 2}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[1]);
@@ -178,14 +182,14 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "lt" operator to compare values', function () {
+    it('uses the "lt" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {lt: 3}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[1]);
     });
 
-    it('uses a "lte" operator to compare values', function () {
+    it('uses the "lte" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {lte: 3}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
@@ -193,28 +197,28 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a "inq" operator to compare values', function () {
+    it('uses the "inq" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {inq: [2, 3]}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a "nin" operator to compare values', function () {
+    it('uses the "nin" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {nin: [2, 3]}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "between" operator to compare values', function () {
+    it('uses the "between" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {between: [2, 3]}});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses an "exists" operator to check existence', function () {
+    it('uses the "exists" operator to check existence', function () {
       const result = S.filter(OBJECTS, {nickname: {exists: true}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
@@ -222,19 +226,19 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses an "exists" operator to check non-existence', function () {
+    it('uses the "exists" operator to check non-existence', function () {
       const result = S.filter(OBJECTS, {nickname: {exists: false}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "like" operator to match by a substring', function () {
+    it('uses the "like" operator to match by a substring', function () {
       const result = S.filter(OBJECTS, {name: {like: 'liv'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "nlike" operator to exclude by a substring', function () {
+    it('uses the "nlike" operator to exclude by a substring', function () {
       const result = S.filter(OBJECTS, {name: {nlike: 'liv'}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
@@ -242,13 +246,13 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a "ilike" operator to case-insensitively matching by a substring', function () {
+    it('uses the "ilike" operator to case-insensitively matching by a substring', function () {
       const result = S.filter(OBJECTS, {name: {ilike: 'LIV'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a "nilike" operator to exclude case-insensitively by a substring', function () {
+    it('uses the "nilike" operator to exclude case-insensitively by a substring', function () {
       const result = S.filter(OBJECTS, {name: {nilike: 'LIV'}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
@@ -256,20 +260,20 @@ describe('WhereClauseTool', function () {
       expect(result[2]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a "regexp" operator to compare values', function () {
+    it('uses the "regexp" operator to compare values', function () {
       const result = S.filter(OBJECTS, {name: {regexp: '^Jam.*'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses a null to match an undefined and null value', function () {
+    it('uses null to match an undefined and null value', function () {
       const result = S.filter(OBJECTS, {nickname: null});
       expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[2]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
     });
 
-    it('uses a given function to filter values', function () {
+    it('uses the given function to filter values', function () {
       const result = S.filter(OBJECTS, v => v.nickname === 'Flower');
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[1]);
@@ -277,22 +281,24 @@ describe('WhereClauseTool', function () {
   });
 
   describe('validateWhereClause', function () {
-    it('requires an object value or a falsy value', function () {
-      const validate = v => () => WhereClauseTool.validateWhereClause(v);
+    it('requires the first argument to be an object or a function', function () {
+      const throwable = v => () => WhereClauseTool.validateWhereClause(v);
       const error = v =>
         format(
           'The provided option "where" should be an Object, but %s given.',
           v,
         );
-      expect(validate('str')).to.throw(error('"str"'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate([])).to.throw(error('Array'));
-      validate('')();
-      validate(false)();
-      validate(undefined)();
-      validate(null)();
-      validate({})();
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      throwable({foo: 'bar'})();
+      throwable({})();
+      throwable(undefined)();
+      throwable(null)();
     });
   });
 });
