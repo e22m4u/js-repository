@@ -44,6 +44,47 @@ const OBJECTS = [
 
 describe('WhereClauseTool', function () {
   describe('filter', function () {
+    it('requires the first argument to be an array of objects', function () {
+      const throwable = v => () => S.filter(v, {});
+      const error = v =>
+        format(
+          'The first argument of WhereClauseTool.filter should be ' +
+            'an Array of Object, but %s given.',
+          v,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      expect(throwable([{foo: 'bar'}])()).to.be.eql([{foo: 'bar'}]);
+      expect(throwable([])()).to.be.eql([]);
+    });
+
+    it('requires the second argument to be an object', function () {
+      const input = [{foo: 'a1'}, {foo: 'a2'}, {foo: 'a3'}];
+      const throwable = v => () => S.filter(input, v);
+      const error = v =>
+        format(
+          'The provided option "where" should be an Object, but %s given.',
+          v,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable({})()).to.be.eql(input);
+      expect(throwable(undefined)()).to.be.eql(input);
+      expect(throwable(null)()).to.be.eql(input);
+    });
+
     it('returns the same array if no given condition', function () {
       const result = S.filter(OBJECTS);
       expect(result).to.be.eql(OBJECTS);
@@ -232,29 +273,6 @@ describe('WhereClauseTool', function () {
       const result = S.filter(OBJECTS, v => v.nickname === 'Flower');
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[1]);
-    });
-
-    it('throws an error if a first argument is not an Array', function () {
-      const throwable = () => S.filter(10, {});
-      expect(throwable).to.throw(
-        'A first argument of WhereUtils.filter ' +
-          'should be an Array of Objects, but 10 given.',
-      );
-    });
-
-    it('throws an error if elements of a first argument is not an Object', function () {
-      const throwable = () => S.filter([10], {});
-      expect(throwable).to.throw(
-        'A first argument of WhereUtils.filter ' +
-          'should be an Array of Objects, but 10 given.',
-      );
-    });
-
-    it('throws an error if a provided second argument is not an Object', function () {
-      const throwable = () => S.filter([], 10);
-      expect(throwable).to.throw(
-        'The provided option "where" should be an Object, but 10 given.',
-      );
     });
   });
 
