@@ -163,12 +163,12 @@ export class IncludeClauseTool extends Service {
    * @param {IncludeClause|undefined} clause
    */
   static validateIncludeClause(clause) {
-    if (!clause) {
-      // empty
-    } else if (typeof clause === 'string') {
-      // string
+    if (clause == null) {
+      // allows undefined and null
+    } else if (clause && typeof clause === 'string') {
+      // allows non-empty string
     } else if (Array.isArray(clause)) {
-      // array
+      // validate array
       const relNames = [];
       clause.flat().forEach(el => {
         this.validateIncludeClause(el);
@@ -191,7 +191,7 @@ export class IncludeClauseTool extends Service {
           duplicateNames[0],
         );
     } else if (typeof clause === 'object') {
-      // object
+      // validate object
       if ('relation' in clause) {
         // {relation: 'name', scope: {}}
         if (!clause.relation || typeof clause.relation !== 'string')
@@ -205,14 +205,15 @@ export class IncludeClauseTool extends Service {
         // {foo: 'bar', 'baz': ['qux'], ...}
         Object.keys(clause).forEach(key => {
           if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+          this.validateIncludeClause(key);
           this.validateIncludeClause(clause[key]);
         });
       }
     } else {
-      // unknown.
+      // unsupported
       throw new InvalidArgumentError(
-        'The provided option "include" should have a value of ' +
-          'following types: String, Object or Array, but %v given.',
+        'The provided option "include" should have a non-empty String, ' +
+          'an Object or an Array, but %v given.',
         clause,
       );
     }
@@ -224,24 +225,30 @@ export class IncludeClauseTool extends Service {
    * @param {object|undefined} clause
    */
   static validateScopeClause(clause) {
-    if (!clause) return;
+    if (clause == null) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The provided option "scope" should be an Object, but %v given.',
         clause,
       );
-    if ('where' in clause && clause.where)
+    if (clause.where != null) {
       WhereClauseTool.validateWhereClause(clause.where);
-    if ('order' in clause && clause.order)
+    }
+    if (clause.order != null) {
       OrderClauseTool.validateOrderClause(clause.order);
-    if ('skip' in clause && clause.skip)
+    }
+    if (clause.skip != null) {
       SliceClauseTool.validateSkipClause(clause.skip);
-    if ('limit' in clause && clause.limit)
+    }
+    if (clause.limit != null) {
       SliceClauseTool.validateLimitClause(clause.limit);
-    if ('fields' in clause && clause.fields)
+    }
+    if (clause.fields != null) {
       FieldsClauseTool.validateFieldsClause(clause.fields);
-    if ('include' in clause && clause.include)
+    }
+    if (clause.include != null) {
       IncludeClauseTool.validateIncludeClause(clause.include);
+    }
   }
 
   /**
@@ -252,14 +259,14 @@ export class IncludeClauseTool extends Service {
    */
   static normalizeIncludeClause(clause) {
     let result = [];
-    if (!clause) {
-      // empty
+    if (clause == null) {
+      // allows undefined and null
       return result;
-    } else if (typeof clause === 'string') {
-      // string
+    } else if (clause && typeof clause === 'string') {
+      // allows non-empty string
       result.push({relation: clause});
     } else if (Array.isArray(clause)) {
-      // array
+      // normalize array
       clause.flat().forEach(el => {
         if (Array.isArray(el)) {
           el = el
@@ -282,7 +289,7 @@ export class IncludeClauseTool extends Service {
           duplicateNames[0],
         );
     } else if (typeof clause === 'object') {
-      // object
+      // normalize object
       if ('relation' in clause) {
         // {relation: 'name', scope: {...}}
         if (!clause.relation || typeof clause.relation !== 'string')
@@ -299,6 +306,7 @@ export class IncludeClauseTool extends Service {
         // {foo: 'bar', baz: ['qux'], ...}
         Object.keys(clause).forEach(key => {
           if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+          this.validateIncludeClause(key);
           const normalized = {relation: key};
           const include = this.normalizeIncludeClause(clause[key]);
           if (include.length) normalized.scope = {include};
@@ -306,10 +314,10 @@ export class IncludeClauseTool extends Service {
         });
       }
     } else {
-      // unknown
+      // unsupported
       throw new InvalidArgumentError(
-        'The provided option "include" should have a value of ' +
-          'following types: String, Object or Array, but %v given.',
+        'The provided option "include" should have a non-empty String, ' +
+          'an Object or an Array, but %v given.',
         clause,
       );
     }
@@ -323,7 +331,7 @@ export class IncludeClauseTool extends Service {
    * @returns {object|undefined}
    */
   static normalizeScopeClause(clause) {
-    if (!clause) return;
+    if (clause == null) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The provided option "scope" should be an Object, but %v given.',
@@ -331,33 +339,34 @@ export class IncludeClauseTool extends Service {
       );
     const result = {};
     // {where: ...}
-    if ('where' in clause && clause.where) {
+    if (clause.where != null) {
       WhereClauseTool.validateWhereClause(clause.where);
       result.where = clause.where;
     }
     // {order: ...}
-    if ('order' in clause && clause.order) {
+    if (clause.order != null) {
       OrderClauseTool.validateOrderClause(clause.order);
       result.order = clause.order;
     }
     // {skip: ...}
-    if ('skip' in clause && clause.skip) {
+    if (clause.skip != null) {
       SliceClauseTool.validateSkipClause(clause.skip);
       result.skip = clause.skip;
     }
     // {limit: ...}
-    if ('limit' in clause && clause.limit) {
+    if (clause.limit != null) {
       SliceClauseTool.validateLimitClause(clause.limit);
       result.limit = clause.limit;
     }
     // {fields: ...}
-    if ('fields' in clause && clause.fields) {
+    if (clause.fields != null) {
       FieldsClauseTool.validateFieldsClause(clause.fields);
       result.fields = clause.fields;
     }
     // {include: ...}
-    if ('include' in clause && clause.include)
+    if (clause.include != null) {
       result.include = this.normalizeIncludeClause(clause.include);
+    }
     if (Object.keys(result).length) return result;
     return undefined;
   }
