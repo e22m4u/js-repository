@@ -55,7 +55,7 @@ describe('SliceClauseTool', function () {
     it('throws an error if a first argument is not an array', function () {
       const throwable = () => S.slice(10);
       expect(throwable).to.throw(
-        'A first argument of SliceClauseTool.slice ' +
+        'The first argument of SliceClauseTool.slice ' +
           'should be an Array, but 10 given.',
       );
     });

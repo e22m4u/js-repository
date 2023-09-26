@@ -16,7 +16,7 @@ export class SliceClauseTool extends Service {
   slice(entities, skip = undefined, limit = undefined) {
     if (!Array.isArray(entities))
       throw new InvalidArgumentError(
-        'A first argument of SliceClauseTool.slice ' +
+        'The first argument of SliceClauseTool.slice ' +
           'should be an Array, but %v given.',
         entities,
       );

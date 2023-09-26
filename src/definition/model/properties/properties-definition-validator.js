@@ -17,7 +17,7 @@ export class PropertiesDefinitionValidator extends Service {
   validate(modelName, propDefs) {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
-        'A first argument of PropertiesDefinitionValidator.validate ' +
+        'The first argument of PropertiesDefinitionValidator.validate ' +
           'should be a non-empty String, but %v given.',
         modelName,
       );
@@ -54,7 +54,7 @@ export class PropertiesDefinitionValidator extends Service {
   _validateProperty(modelName, propName, propDef) {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
-        'A first argument of PropertiesDefinitionValidator._validateProperty ' +
+        'The first argument of PropertiesDefinitionValidator._validateProperty ' +
           'should be a non-empty String, but %v given.',
         modelName,
       );

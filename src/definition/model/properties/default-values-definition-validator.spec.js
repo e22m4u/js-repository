@@ -11,7 +11,7 @@ describe('DefaultValuesDefinitionValidator', function () {
       const validate = v => () => S.validate(v, {});
       const error = v =>
         format(
-          'A first argument of DefaultValuesDefinitionValidator.validate ' +
+          'The first argument of DefaultValuesDefinitionValidator.validate ' +
             'should be a non-empty String, but %s given.',
           v,
         );

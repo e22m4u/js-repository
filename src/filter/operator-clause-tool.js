@@ -58,7 +58,7 @@ export class OperatorClauseTool extends Service {
   testAll(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testAll ' +
+        'The first argument of OperatorUtils.testAll ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -136,7 +136,7 @@ export class OperatorClauseTool extends Service {
   testEqNeq(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testEqNeq ' +
+        'The first argument of OperatorUtils.testEqNeq ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -182,7 +182,7 @@ export class OperatorClauseTool extends Service {
   testGtLt(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testGtLt ' +
+        'The first argument of OperatorUtils.testGtLt ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -209,7 +209,7 @@ export class OperatorClauseTool extends Service {
   testInq(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testInq ' +
+        'The first argument of OperatorUtils.testInq ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -245,7 +245,7 @@ export class OperatorClauseTool extends Service {
   testNin(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testNin ' +
+        'The first argument of OperatorUtils.testNin ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -281,7 +281,7 @@ export class OperatorClauseTool extends Service {
   testBetween(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testBetween ' +
+        'The first argument of OperatorUtils.testBetween ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -317,7 +317,7 @@ export class OperatorClauseTool extends Service {
   testExists(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testExists ' +
+        'The first argument of OperatorUtils.testExists ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -350,7 +350,7 @@ export class OperatorClauseTool extends Service {
   testLike(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testLike ' +
+        'The first argument of OperatorUtils.testLike ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -378,7 +378,7 @@ export class OperatorClauseTool extends Service {
   testNlike(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testNlike ' +
+        'The first argument of OperatorUtils.testNlike ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -410,7 +410,7 @@ export class OperatorClauseTool extends Service {
   testIlike(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testIlike ' +
+        'The first argument of OperatorUtils.testIlike ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -442,7 +442,7 @@ export class OperatorClauseTool extends Service {
   testNilike(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testNilike ' +
+        'The first argument of OperatorUtils.testNilike ' +
           'should be an Object, but %v given.',
         clause,
       );
@@ -486,7 +486,7 @@ export class OperatorClauseTool extends Service {
   testRegexp(clause, value) {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
-        'A first argument of OperatorUtils.testRegexp ' +
+        'The first argument of OperatorUtils.testRegexp ' +
           'should be an Object, but %v given.',
         clause,
       );

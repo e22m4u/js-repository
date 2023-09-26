@@ -16,7 +16,7 @@ export class RelationsDefinitionValidator extends Service {
   validate(modelName, relDefs) {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
-        'A first argument of RelationsDefinitionValidator.validate ' +
+        'The first argument of RelationsDefinitionValidator.validate ' +
           'should be a non-empty String, but %v given.',
         modelName,
       );
@@ -44,7 +44,7 @@ export class RelationsDefinitionValidator extends Service {
   _validateRelation(modelName, relName, relDef) {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
-        'A first argument of RelationsDefinitionValidator._validateRelation ' +
+        'The first argument of RelationsDefinitionValidator._validateRelation ' +
           'should be a non-empty String, but %v given.',
         modelName,
       );

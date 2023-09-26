@@ -15,7 +15,7 @@ export class DefaultValuesDefinitionValidator extends Service {
   validate(modelName, propDefs) {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
-        'A first argument of DefaultValuesDefinitionValidator.validate ' +
+        'The first argument of DefaultValuesDefinitionValidator.validate ' +
           'should be a non-empty String, but %v given.',
         modelName,
       );

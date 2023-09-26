@@ -17,7 +17,7 @@ describe('selectObjectKeys', function () {
   it('throws an error if a given value is not an Object', function () {
     const throwable = () => selectObjectKeys(10, ['key']);
     expect(throwable).to.throw(
-      'A first argument of selectObjectKeys ' +
+      'The first argument of selectObjectKeys ' +
         'should be an Object, but 10 given.',
     );
   });
@@ -25,7 +25,7 @@ describe('selectObjectKeys', function () {
   it('throws an error if a given keys is not an Array', function () {
     const throwable = () => selectObjectKeys({});
     expect(throwable).to.throw(
-      'A second argument of selectObjectKeys ' +
+      'The second argument of selectObjectKeys ' +
         'should be an Array of String, but undefined given.',
     );
   });
@@ -33,7 +33,7 @@ describe('selectObjectKeys', function () {
   it('throws an error if a given keys is not an String', function () {
     const throwable = () => selectObjectKeys({}, [10]);
     expect(throwable).to.throw(
-      'A second argument of selectObjectKeys ' +
+      'The second argument of selectObjectKeys ' +
         'should be an Array of String, but 10 given.',
     );
   });

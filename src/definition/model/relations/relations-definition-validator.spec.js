@@ -11,7 +11,7 @@ describe('RelationsDefinitionValidator', function () {
       const validate = v => () => S.validate(v, {});
       const error = v =>
         format(
-          'A first argument of RelationsDefinitionValidator.validate ' +
+          'The first argument of RelationsDefinitionValidator.validate ' +
             'should be a non-empty String, but %s given.',
           v,
         );

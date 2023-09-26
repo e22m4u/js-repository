@@ -115,7 +115,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testAll(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testAll ' +
+        'The first argument of OperatorUtils.testAll ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -130,7 +130,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testEqNeq(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testEqNeq ' +
+        'The first argument of OperatorUtils.testEqNeq ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -215,7 +215,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testGtLt(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testGtLt ' +
+        'The first argument of OperatorUtils.testGtLt ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -390,7 +390,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testInq(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testInq ' +
+        'The first argument of OperatorUtils.testInq ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -445,7 +445,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testNin(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testNin ' +
+        'The first argument of OperatorUtils.testNin ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -514,7 +514,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testBetween(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testBetween ' +
+        'The first argument of OperatorUtils.testBetween ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -571,7 +571,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testExists(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testExists ' +
+        'The first argument of OperatorUtils.testExists ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -694,7 +694,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testLike(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testLike ' +
+        'The first argument of OperatorUtils.testLike ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -773,7 +773,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testNlike(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testNlike ' +
+        'The first argument of OperatorUtils.testNlike ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -852,7 +852,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testIlike(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testIlike ' +
+        'The first argument of OperatorUtils.testIlike ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -931,7 +931,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testNilike(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testNilike ' +
+        'The first argument of OperatorUtils.testNilike ' +
           'should be an Object, but 10 given.',
       );
     });
@@ -1022,7 +1022,7 @@ describe('OperatorClauseTool', function () {
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testRegexp(10);
       expect(throwable).to.throw(
-        'A first argument of OperatorUtils.testRegexp ' +
+        'The first argument of OperatorUtils.testRegexp ' +
           'should be an Object, but 10 given.',
       );
     });

@@ -15,7 +15,7 @@ export class DataValidationDecorator extends Service {
   decorate(adapter) {
     if (!adapter || !(adapter instanceof Adapter))
       throw new InvalidArgumentError(
-        'A first argument of DataValidationDecorator.decorate should be ' +
+        'The first argument of DataValidationDecorator.decorate should be ' +
           'an Adapter instance, but %v given.',
         adapter,
       );
