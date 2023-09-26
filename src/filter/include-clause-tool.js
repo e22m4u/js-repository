@@ -231,21 +231,27 @@ export class IncludeClauseTool extends Service {
         'The provided option "scope" should be an Object, but %v given.',
         clause,
       );
+    // {where: ...}
     if (clause.where != null) {
       WhereClauseTool.validateWhereClause(clause.where);
     }
+    // {order: ...}
     if (clause.order != null) {
       OrderClauseTool.validateOrderClause(clause.order);
     }
+    // {skip: ...}
     if (clause.skip != null) {
       SliceClauseTool.validateSkipClause(clause.skip);
     }
+    // {limit: ...}
     if (clause.limit != null) {
       SliceClauseTool.validateLimitClause(clause.limit);
     }
+    // {fields: ...}
     if (clause.fields != null) {
       FieldsClauseTool.validateFieldsClause(clause.fields);
     }
+    // {include: ...}
     if (clause.include != null) {
       IncludeClauseTool.validateIncludeClause(clause.include);
     }
