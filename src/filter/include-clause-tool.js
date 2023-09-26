@@ -170,7 +170,7 @@ export class IncludeClauseTool extends Service {
     } else if (Array.isArray(clause)) {
       // validate array
       const relNames = [];
-      clause.flat().forEach(el => {
+      clause.flat(Infinity).forEach(el => {
         this.validateIncludeClause(el);
         if (typeof el === 'string') {
           relNames.push(el);
@@ -269,19 +269,12 @@ export class IncludeClauseTool extends Service {
       // allows undefined and null
       return result;
     } else if (clause && typeof clause === 'string') {
-      // allows non-empty string
+      // normalize non-empty string
       result.push({relation: clause});
     } else if (Array.isArray(clause)) {
       // normalize array
-      clause.flat().forEach(el => {
-        if (Array.isArray(el)) {
-          el = el
-            .flat()
-            .map(v => this.normalizeIncludeClause(v))
-            .flat();
-        } else {
-          el = this.normalizeIncludeClause(el);
-        }
+      clause.flat(Infinity).forEach(el => {
+        el = this.normalizeIncludeClause(el);
         result = [...result, ...el];
       });
       // duplicates checking
