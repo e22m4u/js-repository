@@ -20,12 +20,12 @@ export class SliceClauseTool extends Service {
           'should be an Array, but %v given.',
         entities,
       );
-    if (skip && typeof skip !== 'number')
+    if (skip != null && typeof skip !== 'number')
       throw new InvalidArgumentError(
         'The provided option "skip" should be a Number, but %v given.',
         skip,
       );
-    if (limit && typeof limit !== 'number')
+    if (limit != null && typeof limit !== 'number')
       throw new InvalidArgumentError(
         'The provided option "limit" should be a Number, but %v given.',
         limit,
@@ -41,7 +41,7 @@ export class SliceClauseTool extends Service {
    * @param {number|undefined} skip
    */
   static validateSkipClause(skip) {
-    if (!skip) return;
+    if (skip == null) return;
     if (typeof skip !== 'number')
       throw new InvalidArgumentError(
         'The provided option "skip" should be a Number, but %v given.',
@@ -55,7 +55,7 @@ export class SliceClauseTool extends Service {
    * @param {number|undefined} limit
    */
   static validateLimitClause(limit) {
-    if (!limit) return;
+    if (limit == null) return;
     if (typeof limit !== 'number')
       throw new InvalidArgumentError(
         'The provided option "limit" should be a Number, but %v given.',
