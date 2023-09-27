@@ -56,7 +56,6 @@ export class WhereClauseTool extends Service {
    * @returns {Function}
    */
   _createFilter(whereClause) {
-    if (typeof whereClause === 'function') return whereClause;
     if (typeof whereClause !== 'object' || Array.isArray(whereClause))
       throw new InvalidArgumentError(
         'The provided option "where" should be an Object, but %v given.',

@@ -272,12 +272,6 @@ describe('WhereClauseTool', function () {
       expect(result[0]).to.be.eql(OBJECTS[2]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
     });
-
-    it('uses the given function to filter values', function () {
-      const result = S.filter(OBJECTS, v => v.nickname === 'Flower');
-      expect(result).to.have.length(1);
-      expect(result[0]).to.be.eql(OBJECTS[1]);
-    });
   });
 
   describe('validateWhereClause', function () {

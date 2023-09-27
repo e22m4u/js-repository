@@ -1,5 +1,3 @@
-import {ModelData} from '../types.js';
-
 /**
  * Filter clause.
  */
@@ -45,20 +43,9 @@ export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
  * ```
  */
 export declare type WhereClause =
-  | PredicateClause
   | PropertiesClause
   | AndClause
   | OrClause;
-
-/**
- * Predicate clause.
- *
- * @example
- * ```ts
- * (value) => value.featured === true;
- * ```
- */
-export type PredicateClause = (value: ModelData) => boolean;
 
 /**
  * Properties clause.
