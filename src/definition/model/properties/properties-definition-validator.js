@@ -1,5 +1,6 @@
 import {Service} from '@e22m4u/js-service';
 import {DataType as Type} from './data-type.js';
+import {capitalize} from '../../../utils/index.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
@@ -177,13 +178,30 @@ export class PropertiesDefinitionValidator extends Service {
         modelName,
         propDef.type,
       );
-    if (propDef.model && propDef.type !== Type.OBJECT)
-      throw new InvalidArgumentError(
-        'The property %v of the model %v has the non-object type, ' +
-          'so it should not have the option "model" to be provided.',
-        propName,
-        modelName,
-        propDef.type,
-      );
+    if (
+      propDef.model &&
+      propDef.type !== Type.OBJECT &&
+      propDef.itemType !== Type.OBJECT
+    ) {
+      if (propDef.type !== Type.ARRAY) {
+        throw new InvalidArgumentError(
+          'The option "model" is not supported for %s property type, ' +
+            'so the property %v of the model %v should not have ' +
+            'the option "model" to be provided.',
+          capitalize(propDef.type),
+          propName,
+          modelName,
+        );
+      } else {
+        throw new InvalidArgumentError(
+          'The option "model" is not supported for Array property type of %s, ' +
+            'so the property %v of the model %v should not have ' +
+            'the option "model" to be provided.',
+          capitalize(propDef.itemType),
+          propName,
+          modelName,
+        );
+      }
+    }
   }
 }

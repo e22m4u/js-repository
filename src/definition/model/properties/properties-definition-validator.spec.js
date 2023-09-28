@@ -332,7 +332,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(DataType.ARRAY);
     });
 
-    it('expects a non-object property should not have the option "model" to be provided', function () {
+    it('the option "model" requires the "object" property type', function () {
       const validate = v => () => {
         const foo = {
           type: v,
@@ -340,15 +340,42 @@ describe('PropertiesDefinitionValidator', function () {
         };
         S.validate('model', {foo});
       };
-      const error =
-        'The property "foo" of the model "model" has the non-object type, ' +
-        'so it should not have the option "model" to be provided.';
-      expect(validate(DataType.ANY)).to.throw(error);
-      expect(validate(DataType.STRING)).to.throw(error);
-      expect(validate(DataType.NUMBER)).to.throw(error);
-      expect(validate(DataType.BOOLEAN)).to.throw(error);
-      expect(validate(DataType.ARRAY)).to.throw(error);
-      validate(DataType.OBJECT);
+      const error = v =>
+        format(
+          'The option "model" is not supported for %s property type, ' +
+            'so the property "foo" of the model "model" should not have ' +
+            'the option "model" to be provided.',
+          v,
+        );
+      expect(validate(DataType.ANY)).to.throw(error('Any'));
+      expect(validate(DataType.STRING)).to.throw(error('String'));
+      expect(validate(DataType.NUMBER)).to.throw(error('Number'));
+      expect(validate(DataType.BOOLEAN)).to.throw(error('Boolean'));
+      validate(DataType.OBJECT)();
+    });
+
+    it('the option "model" requires the "object" item type', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ARRAY,
+          itemType: v,
+          model: 'model',
+        };
+        S.validate('model', {foo});
+      };
+      const error = v =>
+        format(
+          'The option "model" is not supported for Array property type of %s, ' +
+            'so the property "foo" of the model "model" should not have ' +
+            'the option "model" to be provided.',
+          v,
+        );
+      expect(validate(DataType.ANY)).to.throw(error('Any'));
+      expect(validate(DataType.STRING)).to.throw(error('String'));
+      expect(validate(DataType.NUMBER)).to.throw(error('Number'));
+      expect(validate(DataType.BOOLEAN)).to.throw(error('Boolean'));
+      expect(validate(DataType.ARRAY)).to.throw(error('Array'));
+      validate(DataType.OBJECT)();
     });
 
     it('uses PrimaryKeysDefinitionValidator to validate primary keys', function () {
