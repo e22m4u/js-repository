@@ -1587,6 +1587,61 @@ describe('ModelDataValidator', function () {
               'an Array, but Object given.',
           );
         });
+
+        describe('the "model" option', function () {
+          it('throws an error when the given object element has an invalid model', function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'modelA',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            S.defineModel({
+              name: 'modelB',
+              datasource: 'datasource',
+              properties: {
+                bar: {
+                  type: DataType.ARRAY,
+                  itemType: DataType.OBJECT,
+                  model: 'modelA',
+                },
+              },
+            });
+            const throwable = () =>
+              S.getService(ModelDataValidator).validate('modelB', {
+                bar: [{foo: 10}],
+              });
+            expect(throwable).to.throw(
+              'The property "foo" of the model "modelA" must have ' +
+                'a String, but Number given.',
+            );
+          });
+
+          it('does not throw an error when the given object element has a valid model', function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'modelA',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            S.defineModel({
+              name: 'modelB',
+              datasource: 'datasource',
+              properties: {
+                bar: {
+                  type: DataType.ARRAY,
+                  itemType: DataType.OBJECT,
+                  model: 'modelA',
+                },
+              },
+            });
+            S.getService(ModelDataValidator).validate('modelB', {
+              bar: [{foo: '10'}],
+            });
+          });
+        });
       });
     });
 
@@ -1881,6 +1936,59 @@ describe('ModelDataValidator', function () {
           });
           S.getService(ModelDataValidator).validate('model', {
             foo: {},
+          });
+        });
+
+        describe('the "model" option', function () {
+          it('throws an error when the given object has an invalid model', function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'modelA',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            S.defineModel({
+              name: 'modelB',
+              datasource: 'datasource',
+              properties: {
+                bar: {
+                  type: DataType.OBJECT,
+                  model: 'modelA',
+                },
+              },
+            });
+            const throwable = () =>
+              S.getService(ModelDataValidator).validate('modelB', {
+                bar: {foo: 10},
+              });
+            expect(throwable).to.throw(
+              'The property "foo" of the model "modelA" must have ' +
+                'a String, but Number given.',
+            );
+          });
+
+          it('does not throw an error when the given object has a valid model', function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'modelA',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            S.defineModel({
+              name: 'modelB',
+              datasource: 'datasource',
+              properties: {
+                bar: {
+                  type: DataType.OBJECT,
+                  model: 'modelA',
+                },
+              },
+            });
+            S.getService(ModelDataValidator).validate('modelB', {
+              bar: {foo: '10'},
+            });
           });
         });
       });
