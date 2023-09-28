@@ -33,9 +33,9 @@ describe('Adapter', function () {
 
     it('decorates only extended adapter', function () {
       const schema = new Schema();
-      const dec1 = schema.getService(DataValidationDecorator);
-      const dec2 = schema.getService(DataSanitizingDecorator);
-      const dec3 = schema.getService(DefaultValuesDecorator);
+      const dec1 = schema.getService(DataSanitizingDecorator);
+      const dec2 = schema.getService(DefaultValuesDecorator);
+      const dec3 = schema.getService(DataValidationDecorator);
       const dec4 = schema.getService(FieldsFilteringDecorator);
       const dec5 = schema.getService(InclusionDecorator);
       const order = [];

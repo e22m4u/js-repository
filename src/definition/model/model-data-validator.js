@@ -31,7 +31,7 @@ export class ModelDataValidator extends Service {
     propNames.forEach(propName => {
       const propDef = propDefs[propName];
       if (!propDef) return;
-      this.validatePropertyValue(
+      this._validatePropertyValue(
         modelName,
         propName,
         propDef,
@@ -48,7 +48,7 @@ export class ModelDataValidator extends Service {
    * @param {string|object} propDef
    * @param {*} propValue
    */
-  validatePropertyValue(modelName, propName, propDef, propValue) {
+  _validatePropertyValue(modelName, propName, propDef, propValue) {
     // undefined and null
     if (propValue == null) {
       const isRequired =

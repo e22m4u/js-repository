@@ -39,9 +39,9 @@ export class Adapter extends Service {
     this._settings = settings;
     // decorate only extended classes
     if (this.constructor !== Adapter) {
-      this.getService(DataValidationDecorator).decorate(this);
       this.getService(DataSanitizingDecorator).decorate(this);
       this.getService(DefaultValuesDecorator).decorate(this);
+      this.getService(DataValidationDecorator).decorate(this);
       this.getService(FieldsFilteringDecorator).decorate(this);
       this.getService(InclusionDecorator).decorate(this);
     }

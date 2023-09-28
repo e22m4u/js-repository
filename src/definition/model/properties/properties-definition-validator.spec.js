@@ -4,7 +4,6 @@ import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
-import {DefaultValuesDefinitionValidator} from './default-values-definition-validator.js';
 
 const S = new PropertiesDefinitionValidator();
 const sandbox = chai.spy.sandbox();
@@ -354,15 +353,6 @@ describe('PropertiesDefinitionValidator', function () {
 
     it('uses PrimaryKeysDefinitionValidator to validate primary keys', function () {
       const V = S.getService(PrimaryKeysDefinitionValidator);
-      sandbox.on(V, 'validate');
-      const propDefs = {};
-      S.validate('model', propDefs);
-      expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly('model', propDefs);
-    });
-
-    it('uses DefaultValuesDefinitionValidator to validate default values', function () {
-      const V = S.getService(DefaultValuesDefinitionValidator);
       sandbox.on(V, 'validate');
       const propDefs = {};
       S.validate('model', propDefs);
