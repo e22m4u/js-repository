@@ -46,13 +46,11 @@ import {Schema} from '@e22m4u/js-repository';
 const schema = new Schema();
 ```
 
-Интерфейс экземпляра `Schema` содержит три основных метода, два из которых
-позволяют определить источник данных и модель, а третий возвращает репозиторий
-по названию модели.
+Интерфейс экземпляра `Schema` содержит три основных метода:
 
-- `defineDatasource(datasourceDef: object): this`
-- `defineModel(modelDef: object): this`
-- `getRepository(modelName: string): Repository`
+- `defineDatasource(datasourceDef: object): this` - добавить источник
+- `defineModel(modelDef: object): this` - добавить модель
+- `getRepository(modelName: string): Repository` - получить репозиторий
 
 #### Источник данных
 
