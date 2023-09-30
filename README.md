@@ -34,13 +34,22 @@ A[Datasource]-->B[Model]-->С[Repository];
 
 ## Пример
 
-Создаем экземпляр класса `Schema`
+Определения источников и моделей хранятся в экземпляре класса `Schema`,
+и первым шагом в проектировании системы будет создание данного экземпляра.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
 
 const schema = new Schema();
 ```
+
+Интерфейс экземпляра `Schema` содержит три основных метода, два из которых
+позволяют определить источник и модель, а третий возвращает репозиторий по
+названию модели.
+
+- `defineDatasource(datasourceDef: object): this`
+- `defineModel(modelDef: object): this`
+- `getRepository(modelName: string): Repository`
 
 Создаем источник данных `myMemory`
 
