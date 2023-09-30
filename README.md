@@ -51,7 +51,31 @@ const schema = new Schema();
 - `defineModel(modelDef: object): this`
 - `getRepository(modelName: string): Repository`
 
-Создаем источник данных `myMemory`
+Источник данных описывает способ подключения к базе, и используемый адаптер.
+Например, если нашей базой является *MongoDB*, то для подключения к ней потребуется
+добавить [пакет адаптера mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) как зависимость нашего проекта.
+
+```bash
+npm install @e22m4u/js-repository-mongodb-adapter
+```
+
+Если адаптер имеет настройки, то они передаются в объекте определения
+источника методом `defineDatasource`, как это показано ниже.
+
+```js
+schema.defineDatasource({
+  name: 'myMongo', // название нового источника данных
+  adapter: 'mongodb', // название выбранного адаптера
+  // настройки адаптера mongodb
+  host: '127.0.0.1',
+  port: 27017,
+  database: 'data'
+});
+```
+
+При желании можно использовать встроенный адаптер `memory`, который хранит
+данные в памяти процесса. У него нет специальных настроек, и он отлично
+подходит для тестов и прототипирования.
 
 ```js
 schema.defineDatasource({
