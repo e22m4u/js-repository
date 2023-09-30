@@ -53,7 +53,8 @@ const schema = new Schema();
 
 Источник данных описывает способ подключения к базе, и используемый адаптер.
 Например, если нашей базой является *MongoDB*, то для подключения к ней потребуется
-добавить [пакет адаптера mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) как зависимость нашего проекта.
+добавить [пакет адаптера mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
+как зависимость разрабатываемого проекта.
 
 ```bash
 npm install @e22m4u/js-repository-mongodb-adapter
