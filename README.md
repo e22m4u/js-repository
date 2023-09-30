@@ -13,7 +13,10 @@
 npm install @e22m4u/js-repository
 ```
 
-Опционально устанавливаем адаптер, например [mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
+Опционально устанавливаем адаптер. Например, если нашей базой
+является *MongoDB*, то для подключения к ней потребуется добавить
+[пакет адаптера mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
+как отдельную зависимость.
 
 ```bash
 npm install @e22m4u/js-repository-mongodb-adapter
@@ -52,14 +55,6 @@ const schema = new Schema();
 - `getRepository(modelName: string): Repository`
 
 Источник данных описывает способ подключения к базе, и используемый адаптер.
-Например, если нашей базой является *MongoDB*, то для подключения к ней потребуется
-добавить [пакет адаптера mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
-как зависимость разрабатываемого проекта.
-
-```bash
-npm install @e22m4u/js-repository-mongodb-adapter
-```
-
 Если адаптер имеет настройки, то они передаются в объекте определения
 источника методом `defineDatasource`, как это показано ниже.
 
