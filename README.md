@@ -175,6 +175,17 @@ schema.defineModel({
 });
 ```
 
+Параметры поля:
+
+- `type: string` тип допустимого значения
+- `itemType: string` тип элемента массива (для `type: 'array'`)
+- `model: string` модель объекта (для `type: 'object'`)
+- `primaryKey: boolean` объявить поле первичным ключом
+- `columnName: string` переопределение названия колонки
+- `columnType: string` тип колонки (определяется адаптером)
+- `required: boolean` объявить поле обязательным
+- `default: any` значение по умолчанию
+
 #### Репозиторий
 
 В отличие от `latLng`, модель `place` имеет источник данных с названием
