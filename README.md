@@ -133,14 +133,12 @@ schema.defineModel({
 
 Типы данных:
 
-| используя enum     | или значение |
-|--------------------|--------------|
-| `DataType.ANY`     | `"any"`      |
-| `DataType.STRING`  | `"string"`   |
-| `DataType.NUMBER`  | `"number"`   |
-| `DataType.BOOLEAN` | `"boolean"`  |
-| `DataType.ARRAY`   | `"array"`    |
-| `DataType.OBJECT`  | `"object"`   |
+- `DataType.ANY`
+- `DataType.STRING`
+- `DataType.NUMBER`
+- `DataType.BOOLEAN`
+- `DataType.ARRAY`
+- `DataType.OBJECT`
 
 Модель `latLng` всего лишь описывает структуру объекта координат, тогда
 как торговая точка должна иметь реальную таблицу в базе. По аналогии с
