@@ -187,7 +187,7 @@ schema.defineModel({
 
 Параметры поля:
 
-- `type: string` тип допустимого значения
+- `type: string` тип допустимого значения (обязательно)
 - `itemType: string` тип элемента массива (для `type: 'array'`)
 - `model: string` модель объекта (для `type: 'object'`)
 - `primaryKey: boolean` объявить поле первичным ключом
