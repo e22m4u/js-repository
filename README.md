@@ -111,7 +111,7 @@ schema.defineModel({
 
 Параметры модели:
 
-- `name: string` уникальное название модели (обязательно)
+- `name: string` уникальное название (обязательно)
 - `datasource: string` выбранный источник данных
 - `properties: object` определения полей модели
 - `relations: object` определения связей модели
