@@ -43,9 +43,9 @@ export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
  * ```
  */
 export declare type WhereClause =
-  & PropertiesClause
-  & AndClause
-  & OrClause;
+  | AndClause
+  | OrClause
+  | PropertiesClause;
 
 /**
  * Properties clause.
