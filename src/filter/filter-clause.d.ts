@@ -237,11 +237,9 @@ export type NormalizedFieldsClause = string[];
  */
 export declare type IncludeClause =
   | string
-  | string[]
   | NestedIncludeClause
-  | NestedIncludeClause[]
   | NormalizedIncludeClause
-  | NormalizedIncludeClause[];
+  | IncludeClause[];
 
 /**
  * Nested include clause.
