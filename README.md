@@ -214,7 +214,7 @@ const rep = schema.getRepository('place');
 идентификатор.
 
 ```js
-const burgerKing = await rep.create({
+const place = await rep.create({
   "name": "Burger King at Avenue Mall",
   "location": {
     "lat": 32.412891,
@@ -222,7 +222,7 @@ const burgerKing = await rep.create({
   },
 });
 
-console.log(burgerKing);
+console.log(place);
 // {
 //   "id": 1,
 //   "name": "Burger King at Avenue Mall",
