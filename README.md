@@ -247,6 +247,26 @@ console.log(place);
 // }
 ```
 
+#### replaceById(id, data, filter = undefined)
+
+Добавленный в базу документ можно полностью заменить зная его идентификатор.
+Воспользуемся методом `replaceById`, который перезапишет данные по значению
+первичного ключа.
+
+```js
+const replacedPlace = rep.replaceById(place.id, {
+  name: 'Terminal 21 Shopping Mall',
+  address: 'Sukhumvit 19 Alley'
+});
+
+console.log(replacedPlace);
+// {
+//   "id": 1,
+//   "name": "Terminal 21 Shopping Mall",
+//   "address": "Sukhumvit 19 Alley"
+// }
+```
+
 ## Пример
 
 Создаем модель `user`
