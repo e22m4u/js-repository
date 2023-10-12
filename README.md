@@ -207,6 +207,31 @@ schema.defineModel({
 const rep = schema.getRepository('place');
 ```
 
+#### create(data, filter = undefined)
+
+Создадим новую торговую точку методом `create` используя репозиторий
+из примера выше. Метод возвращает документ, который был записан в базу.
+
+```js
+const burgerKing = await rep.create({
+  "name": "Burger King at Avenue Mall",
+  "location": {
+    "lat": 32.412891,
+    "lng": 34.7660061
+  },
+});
+
+console.log(burgerKing);
+// {
+//   "id": 1,
+//   "name": "Burger King at Avenue Mall",
+//   "location": {
+//     "lat": 32.412891,
+//     "lng": 34.7660061
+//   }
+// }
+```
+
 ## Пример
 
 Создаем модель `user`
