@@ -254,6 +254,14 @@ console.log(place);
 первичного ключа.
 
 ```js
+// {
+//   "id": 1,
+//   "name": "Burger King at Avenue Mall",
+//   "location": {
+//     "lat": 32.412891,
+//     "lng": 34.7660061
+//   }
+// }
 const replacedPlace = rep.replaceById(place.id, {
   name: 'Terminal 21 Shopping Mall',
   address: 'Sukhumvit 19 Alley'
