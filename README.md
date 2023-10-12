@@ -288,16 +288,14 @@ console.log(result);
 //   "address": "Sukhumvit 19 Alley"
 // }
 const result = rep.patchById(place.id, {
-  address: 'Moo 6 Na Kluea',
-  city: 'Pattaya',
+  address: 'Moo 6'
 });
 
 console.log(result);
 // {
 //   "id": 1,
 //   "name": "Terminal 21 Shopping Mall",
-//   "address": "Moo 6 Na Kluea",
-//   "city": "Pattaya"
+//   "address": "Moo 6"
 // }
 ```
 
