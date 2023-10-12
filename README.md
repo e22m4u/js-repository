@@ -207,6 +207,20 @@ schema.defineModel({
 const rep = schema.getRepository('place');
 ```
 
+**Методы:**
+
+- `create(data, filter = undefined)`
+- `replaceById(id, data, filter = undefined)`
+- `replaceOrCreate(data, filter = undefined)`
+- `patchById(id, data, filter = undefined)`
+- `find(filter = undefined)`
+- `findOne(filter = undefined)`
+- `findById(id, filter = undefined)`
+- `delete(where = undefined)`
+- `deleteById(id)`
+- `exists(id)`
+- `count(where = undefined)`
+
 #### create(data, filter = undefined)
 
 Создадим торговую точку методом `create` используя репозиторий из примера
