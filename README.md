@@ -262,16 +262,41 @@ console.log(place);
 //     "lng": 34.7660061
 //   }
 // }
-const replacedPlace = rep.replaceById(place.id, {
+const result = rep.replaceById(place.id, {
   name: 'Terminal 21 Shopping Mall',
   address: 'Sukhumvit 19 Alley'
 });
 
-console.log(replacedPlace);
+console.log(result);
 // {
 //   "id": 1,
 //   "name": "Terminal 21 Shopping Mall",
 //   "address": "Sukhumvit 19 Alley"
+// }
+```
+
+#### patchById(id, data, filter = undefined)
+
+В отличие от `replaceById`, метод `patchById` не удаляет поля, которые
+не были переданы, что позволяет обновлять только часть документа.
+
+```js
+// {
+//   "id": 1,
+//   "name": "Terminal 21 Shopping Mall",
+//   "address": "Sukhumvit 19 Alley"
+// }
+const result = rep.patchById(place.id, {
+  address: 'Moo 6 Na Kluea',
+  city: 'Pattaya',
+});
+
+console.log(result);
+// {
+//   "id": 1,
+//   "name": "Terminal 21 Shopping Mall",
+//   "address": "Moo 6 Na Kluea",
+//   "city": "Pattaya"
 // }
 ```
 
