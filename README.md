@@ -212,6 +212,7 @@ const rep = schema.getRepository('place');
 - `create(data, filter = undefined)`
 - `replaceById(id, data, filter = undefined)`
 - `replaceOrCreate(data, filter = undefined)`
+- `patch(data, where = undefined)`
 - `patchById(id, data, filter = undefined)`
 - `find(filter = undefined)`
 - `findOne(filter = undefined)`
@@ -369,6 +370,7 @@ await userRep.deleteById(fedor.id); // true
 - `create(data, filter = undefined)`
 - `replaceById(id, data, filter = undefined)`
 - `replaceOrCreate(data, filter = undefined)`
+- `patch(data, where = undefined)`
 - `patchById(id, data, filter = undefined)`
 - `find(filter = undefined)`
 - `findOne(filter = undefined)`
