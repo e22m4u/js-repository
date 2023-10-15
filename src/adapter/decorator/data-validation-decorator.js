@@ -32,6 +32,12 @@ export class DataValidationDecorator extends Service {
       return replaceById.call(this, modelName, id, modelData, filter);
     };
 
+    const patch = adapter.patch;
+    adapter.patch = function (modelName, modelData, where) {
+      this.getService(ModelDataValidator).validate(modelName, modelData, true);
+      return patch.call(this, modelName, modelData, where);
+    };
+
     const patchById = adapter.patchById;
     adapter.patchById = function (modelName, id, modelData, filter) {
       this.getService(ModelDataValidator).validate(modelName, modelData, true);

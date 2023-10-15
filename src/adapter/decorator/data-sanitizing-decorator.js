@@ -35,6 +35,12 @@ export class DataSanitizingDecorator extends Service {
       return replaceById.call(this, modelName, id, modelData, filter);
     };
 
+    const patch = adapter.patch;
+    adapter.patch = async function (modelName, modelData, where) {
+      modelData = sanitize(modelName, modelData);
+      return patch.call(this, modelName, modelData, where);
+    };
+
     const patchById = adapter.patchById;
     adapter.patchById = async function (modelName, id, modelData, filter) {
       modelData = sanitize(modelName, modelData);

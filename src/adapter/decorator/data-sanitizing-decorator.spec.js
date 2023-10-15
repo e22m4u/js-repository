@@ -19,6 +19,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  patch(modelName, modelData, where = undefined) {
+    return Promise.resolve(1);
+  }
+
+  // eslint-disable-next-line no-unused-vars
   patchById(modelName, id, modelData, filter = undefined) {
     return Promise.resolve({});
   }
@@ -45,6 +50,14 @@ describe('DataSanitizingDecorator', function () {
     sandbox.on(V, 'sanitize');
     const data = {};
     await A.replaceById('model', 1, data);
+    expect(V.sanitize).to.be.called.once;
+    expect(V.sanitize).to.be.called.with.exactly('model', data);
+  });
+
+  it('overrides the "patch" method and sanitizes a given data', async function () {
+    sandbox.on(V, 'sanitize');
+    const data = {};
+    await A.patch('model', data);
     expect(V.sanitize).to.be.called.once;
     expect(V.sanitize).to.be.called.with.exactly('model', data);
   });

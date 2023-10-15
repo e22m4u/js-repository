@@ -78,6 +78,17 @@ export declare class Repository<
   ): Promise<FlatData>;
 
   /**
+   * Patch.
+   *
+   * @param data
+   * @param where
+   */
+  patch(
+    data: PartialWithoutId<IdName, Data>,
+    where?: WhereClause,
+  ): Promise<number>;
+
+  /**
    * Patch by id.
    *
    * @param id

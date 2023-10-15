@@ -266,11 +266,16 @@ describe('WhereClauseTool', function () {
       expect(result[0]).to.be.eql(OBJECTS[2]);
     });
 
-    it('uses null to match an undefined and null value', function () {
+    it('does not use null to match an undefined value', function () {
       const result = S.filter(OBJECTS, {nickname: null});
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[2]);
-      expect(result[1]).to.be.eql(OBJECTS[3]);
+    });
+
+    it('does not use undefined to match a null value', function () {
+      const result = S.filter(OBJECTS, {nickname: undefined});
+      expect(result).to.have.length(1);
+      expect(result[0]).to.be.eql(OBJECTS[3]);
     });
   });
 

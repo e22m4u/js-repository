@@ -79,6 +79,21 @@ export class Adapter extends Service {
   }
 
   /**
+   * Patch.
+   *
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {object|undefined} where
+   * @returns {Promise<number>}
+   */
+  patch(modelName, modelData, where = undefined) {
+    throw new NotImplementedError(
+      '%s.patch is not implemented.',
+      this.constructor.name,
+    );
+  }
+
+  /**
    * Patch by id.
    *
    * @param {string} modelName

@@ -50,6 +50,32 @@ describe('Repository', function () {
     });
   });
 
+  describe('patch', function () {
+    it('patches all items', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'a1', bar: 'b1'});
+      await rep.create({foo: 'a2', bar: 'b2'});
+      await rep.create({foo: 'a3', bar: 'b3'});
+      const result = await rep.patch({foo: 'test'});
+      expect(result).to.be.eq(3);
+    });
+
+    it('patches found items by the "where" clause', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = schema.getRepository('model');
+      await rep.create({foo: 'a', bar: '1'});
+      await rep.create({foo: 'b', bar: '2'});
+      await rep.create({foo: 'c', bar: '2'});
+      const result = await rep.patch({foo: 'test'}, {bar: '2'});
+      expect(result).to.be.eq(2);
+    });
+  });
+
   describe('patchById', function () {
     it('patches an item by the given id', async function () {
       const schema = new Schema();

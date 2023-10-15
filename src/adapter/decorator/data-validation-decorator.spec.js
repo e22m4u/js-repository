@@ -19,6 +19,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  patch(modelName, modelData, where = undefined) {
+    return Promise.resolve(1);
+  }
+
+  // eslint-disable-next-line no-unused-vars
   patchById(modelName, id, modelData, filter = undefined) {
     return Promise.resolve({});
   }

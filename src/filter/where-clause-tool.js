@@ -127,8 +127,12 @@ export class WhereClauseTool extends Service {
    */
   _test(example, value) {
     // Test null.
-    if (example == null) {
-      return value == null;
+    if (example === null) {
+      return value === null;
+    }
+    // Test undefined.
+    if (example === undefined) {
+      return value === undefined;
     }
     // Test RegExp.
     // noinspection ALL

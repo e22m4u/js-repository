@@ -53,6 +53,19 @@ export declare class Adapter extends Service {
   ): Promise<ModelData>;
 
   /**
+   * Patch.
+   *
+   * @param modelName
+   * @param modelData
+   * @param where
+   */
+  patch(
+    modelName: string,
+    modelData: ModelData,
+    where?: WhereClause,
+  ): Promise<number>;
+
+  /**
    * Patch by id.
    *
    * @param modelName

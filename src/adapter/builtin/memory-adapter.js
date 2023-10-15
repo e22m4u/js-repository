@@ -155,6 +155,47 @@ export class MemoryAdapter extends Adapter {
   }
 
   /**
+   * Patch.
+   *
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {object|undefined} where
+   * @returns {Promise<number>}
+   */
+  async patch(modelName, modelData, where = undefined) {
+    const table = this._getTableOrCreate(modelName);
+    const tableItems = Array.from(table.values());
+    if (!tableItems.length) return 0;
+    let modelItems = tableItems.map(tableItem =>
+      this.getService(ModelDefinitionUtils).convertColumnNamesToPropertyNames(
+        modelName,
+        tableItem,
+      ),
+    );
+
+    if (where && typeof where === 'object')
+      modelItems = this.getService(WhereClauseTool).filter(modelItems, where);
+    const size = modelItems.length;
+
+    const pkPropName =
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        modelName,
+      );
+    modelData = cloneDeep(modelData);
+    delete modelData[pkPropName];
+
+    modelItems.forEach(existingModelData => {
+      const mergedModelData = Object.assign({}, existingModelData, modelData);
+      const mergedTableData = this.getService(
+        ModelDefinitionUtils,
+      ).convertPropertyNamesToColumnNames(modelName, mergedModelData);
+      const idValue = existingModelData[pkPropName];
+      table.set(idValue, mergedTableData);
+    });
+    return size;
+  }
+
+  /**
    * Patch by id.
    *
    * @param {string} modelName

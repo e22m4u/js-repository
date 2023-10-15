@@ -112,6 +112,18 @@ export class Repository extends Service {
   }
 
   /**
+   * Patch.
+   *
+   * @param {object} data
+   * @param {object|undefined} where
+   * @returns {Promise<number>}
+   */
+  async patch(data, where = undefined) {
+    const adapter = await this.getAdapter();
+    return adapter.patch(this.modelName, data, where);
+  }
+
+  /**
    * Patch by id.
    *
    * @param {number|string} id

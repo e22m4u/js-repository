@@ -1133,6 +1133,574 @@ describe('MemoryAdapter', function () {
     });
   });
 
+  describe('patch', function () {
+    it('updates only provided properties for all items and returns their number', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.STRING,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: 'd1'});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'd1', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'd1', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'd1', bar: 'c2'},
+      ]);
+    });
+
+    it('does not throw an error if a partial data does not have required property', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: {
+            type: DataType.STRING,
+            required: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: 'd1'});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'd1', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'd1', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'd1', bar: 'c2'},
+      ]);
+    });
+
+    it('ignores identifier value in a given data in case of a default primary key', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.STRING,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {[DEF_PK]: 100, foo: 'd1'});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'd1', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'd1', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'd1', bar: 'c2'},
+      ]);
+    });
+
+    it('ignores identifier value in a given data in case of a specified primary key', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.NUMBER,
+            primaryKey: true,
+          },
+          foo: DataType.STRING,
+          bar: DataType.STRING,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1.myId;
+      const id2 = created2.myId;
+      const id3 = created3.myId;
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {myId: id1, ...input1},
+        {myId: id2, ...input2},
+        {myId: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {myId: 100, foo: 'd1'});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {myId: id1, foo: 'd1', bar: 'a2'},
+        {myId: id2, foo: 'd1', bar: 'b2'},
+        {myId: id3, foo: 'd1', bar: 'c2'},
+      ]);
+    });
+
+    it('sets a default values for patched properties with an undefined value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            default: 'fooVal',
+          },
+          bar: {
+            type: DataType.STRING,
+            default: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: undefined});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'fooVal', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'fooVal', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'fooVal', bar: 'c2'},
+      ]);
+    });
+
+    it('sets a default values for patched properties with a null value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            default: 'fooVal',
+          },
+          bar: {
+            type: DataType.STRING,
+            default: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: null});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'fooVal', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'fooVal', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'fooVal', bar: 'c2'},
+      ]);
+    });
+
+    it('uses a specified column name for a regular property', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            columnName: 'fooCol',
+          },
+          bar: {
+            type: DataType.STRING,
+            columnName: 'barCol',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, fooCol: 'a1', barCol: 'a2'},
+        {[DEF_PK]: id2, fooCol: 'b1', barCol: 'b2'},
+        {[DEF_PK]: id3, fooCol: 'c1', barCol: 'c2'},
+      ]);
+      const result = await adapter.patch('model', {foo: 'd1'});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, fooCol: 'd1', barCol: 'a2'},
+        {[DEF_PK]: id2, fooCol: 'd1', barCol: 'b2'},
+        {[DEF_PK]: id3, fooCol: 'd1', barCol: 'c2'},
+      ]);
+    });
+
+    it('uses a specified column name for a regular property with a default value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            columnName: 'fooCol',
+            default: 'fooVal',
+          },
+          bar: {
+            type: DataType.STRING,
+            columnName: 'barCol',
+            default: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, fooCol: 'a1', barCol: 'a2'},
+        {[DEF_PK]: id2, fooCol: 'b1', barCol: 'b2'},
+        {[DEF_PK]: id3, fooCol: 'c1', barCol: 'c2'},
+      ]);
+      const result = await adapter.patch('model', {foo: undefined});
+      expect(result).to.be.eq(3);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, fooCol: 'fooVal', barCol: 'a2'},
+        {[DEF_PK]: id2, fooCol: 'fooVal', barCol: 'b2'},
+        {[DEF_PK]: id3, fooCol: 'fooVal', barCol: 'c2'},
+      ]);
+    });
+
+    it('returns zero if nothing matched by the "where" clause', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.STRING,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a1', bar: 'a2'};
+      const input2 = {foo: 'b1', bar: 'b2'};
+      const input3 = {foo: 'c1', bar: 'c2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: 'test'}, {baz: 'd3'});
+      expect(result).to.be.eq(0);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'a1', bar: 'a2'},
+        {[DEF_PK]: id2, foo: 'b1', bar: 'b2'},
+        {[DEF_PK]: id3, foo: 'c1', bar: 'c2'},
+      ]);
+    });
+
+    it('uses the "where" clause to patch specific items', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.STRING,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a', bar: '1'};
+      const input2 = {foo: 'b', bar: '2'};
+      const input3 = {foo: 'c', bar: '2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, ...input1},
+        {[DEF_PK]: id2, ...input2},
+        {[DEF_PK]: id3, ...input3},
+      ]);
+      const result = await adapter.patch('model', {foo: 'd'}, {bar: '2'});
+      expect(result).to.be.eq(2);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, foo: 'a', bar: '1'},
+        {[DEF_PK]: id2, foo: 'd', bar: '2'},
+        {[DEF_PK]: id3, foo: 'd', bar: '2'},
+      ]);
+    });
+
+    it('the "where" clause uses property names instead of column names', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            columnName: 'fooVal',
+          },
+          bar: {
+            type: DataType.STRING,
+            columnName: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {foo: 'a', bar: '1'};
+      const input2 = {foo: 'b', bar: '2'};
+      const input3 = {foo: 'c', bar: '2'};
+      const created1 = await adapter.create('model', input1);
+      const created2 = await adapter.create('model', input2);
+      const created3 = await adapter.create('model', input3);
+      const id1 = created1[DEF_PK];
+      const id2 = created2[DEF_PK];
+      const id3 = created3[DEF_PK];
+      const table = adapter._getTableOrCreate('model');
+      const createdItems = Array.from(table.values());
+      expect(createdItems).to.be.eql([
+        {[DEF_PK]: id1, fooVal: 'a', barVal: '1'},
+        {[DEF_PK]: id2, fooVal: 'b', barVal: '2'},
+        {[DEF_PK]: id3, fooVal: 'c', barVal: '2'},
+      ]);
+      const result = await adapter.patch('model', {foo: 'd'}, {bar: '2'});
+      expect(result).to.be.eq(2);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: id1, fooVal: 'a', barVal: '1'},
+        {[DEF_PK]: id2, fooVal: 'd', barVal: '2'},
+        {[DEF_PK]: id3, fooVal: 'd', barVal: '2'},
+      ]);
+    });
+
+    it('the "where" clause uses a persisted data instead of default values in case of undefined', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: {
+            type: DataType.STRING,
+            default: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {[DEF_PK]: 1, foo: 'a', bar: undefined};
+      const input2 = {[DEF_PK]: 2, foo: 'b', bar: undefined};
+      const input3 = {[DEF_PK]: 3, foo: 'c', bar: 10};
+      const input4 = {[DEF_PK]: 4, foo: 'd', bar: null};
+      const table = adapter._getTableOrCreate('model');
+      table.set(input1[DEF_PK], input1);
+      table.set(input2[DEF_PK], input2);
+      table.set(input3[DEF_PK], input3);
+      table.set(input4[DEF_PK], input4);
+      const result = await adapter.patch('model', {foo: 'e'}, {bar: undefined});
+      expect(result).to.be.eq(2);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: 1, foo: 'e', bar: undefined},
+        {[DEF_PK]: 2, foo: 'e', bar: undefined},
+        {[DEF_PK]: 3, foo: 'c', bar: 10},
+        {[DEF_PK]: 4, foo: 'd', bar: null},
+      ]);
+    });
+
+    it('the "where" clause uses a persisted data instead of default values in case of null', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: {
+            type: DataType.STRING,
+            default: 'barVal',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input1 = {[DEF_PK]: 1, foo: 'a', bar: undefined};
+      const input2 = {[DEF_PK]: 2, foo: 'b', bar: undefined};
+      const input3 = {[DEF_PK]: 3, foo: 'c', bar: 10};
+      const input4 = {[DEF_PK]: 4, foo: 'd', bar: null};
+      const table = adapter._getTableOrCreate('model');
+      table.set(input1[DEF_PK], input1);
+      table.set(input2[DEF_PK], input2);
+      table.set(input3[DEF_PK], input3);
+      table.set(input4[DEF_PK], input4);
+      const result = await adapter.patch('model', {foo: 'e'}, {bar: null});
+      expect(result).to.be.eq(1);
+      const patchedItems = Array.from(table.values());
+      expect(patchedItems).to.be.eql([
+        {[DEF_PK]: 1, foo: 'a', bar: undefined},
+        {[DEF_PK]: 2, foo: 'b', bar: undefined},
+        {[DEF_PK]: 3, foo: 'c', bar: 10},
+        {[DEF_PK]: 4, foo: 'e', bar: null},
+      ]);
+    });
+  });
+
   describe('patchById', function () {
     it('updates only provided properties by a given identifier', async function () {
       const schema = new Schema();
@@ -2050,7 +2618,7 @@ describe('MemoryAdapter', function () {
       expect(result4[2]).to.be.eql({[DEF_PK]: 2, foo: 2, bar: 10});
     });
 
-    it('allows to specify a where clause to filter a return value', async function () {
+    it('allows to specify the "where" clause to filter a return value', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2087,7 +2655,7 @@ describe('MemoryAdapter', function () {
       expect(result3[1]).to.be.eql({[DEF_PK]: 2, ...input2});
     });
 
-    it('a where clause uses property names instead of column names', async function () {
+    it('the "where" clause uses property names instead of column names', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2144,7 +2712,7 @@ describe('MemoryAdapter', function () {
       expect(result3[1]).to.be.eql({[DEF_PK]: 2, ...input2});
     });
 
-    it('a where clause uses a persisted data instead of default values', async function () {
+    it('the "where" clause uses a persisted data instead of default values', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2585,7 +3153,7 @@ describe('MemoryAdapter', function () {
       expect(table.get(2)).to.be.eql({[DEF_PK]: 2, foo: 10});
     });
 
-    it('a where clause uses property names instead of column names', async function () {
+    it('the "where" clause uses property names instead of column names', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2612,7 +3180,7 @@ describe('MemoryAdapter', function () {
       expect(table.get(2)).to.be.eql({[DEF_PK]: 2, fooCol: 10});
     });
 
-    it('a where clause uses a persisted data instead of default values', async function () {
+    it('the "where" clause uses a persisted data instead of default values', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2863,7 +3431,7 @@ describe('MemoryAdapter', function () {
       expect(table.get(3)).to.be.eql({[DEF_PK]: 3, foo: 15});
     });
 
-    it('a where clause uses property names instead of column names', async function () {
+    it('the "where" clause uses property names instead of column names', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
@@ -2893,7 +3461,7 @@ describe('MemoryAdapter', function () {
       expect(table.get(3)).to.be.eql({[DEF_PK]: 3, fooCol: 15});
     });
 
-    it('a where clause uses a persisted data instead of default values', async function () {
+    it('the "where" clause uses a persisted data instead of default values', async function () {
       const schema = new Schema();
       schema.defineDatasource({
         name: 'memory',
