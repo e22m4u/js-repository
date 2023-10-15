@@ -1589,11 +1589,11 @@ describe('MemoryAdapter', function () {
         properties: {
           foo: {
             type: DataType.STRING,
-            columnName: 'fooVal',
+            columnName: 'fooCol',
           },
           bar: {
             type: DataType.STRING,
-            columnName: 'barVal',
+            columnName: 'barCol',
           },
         },
       });
@@ -1610,17 +1610,17 @@ describe('MemoryAdapter', function () {
       const table = adapter._getTableOrCreate('model');
       const createdItems = Array.from(table.values());
       expect(createdItems).to.be.eql([
-        {[DEF_PK]: id1, fooVal: 'a', barVal: '1'},
-        {[DEF_PK]: id2, fooVal: 'b', barVal: '2'},
-        {[DEF_PK]: id3, fooVal: 'c', barVal: '2'},
+        {[DEF_PK]: id1, fooCol: 'a', barCol: '1'},
+        {[DEF_PK]: id2, fooCol: 'b', barCol: '2'},
+        {[DEF_PK]: id3, fooCol: 'c', barCol: '2'},
       ]);
       const result = await adapter.patch('model', {foo: 'd'}, {bar: '2'});
       expect(result).to.be.eq(2);
       const patchedItems = Array.from(table.values());
       expect(patchedItems).to.be.eql([
-        {[DEF_PK]: id1, fooVal: 'a', barVal: '1'},
-        {[DEF_PK]: id2, fooVal: 'd', barVal: '2'},
-        {[DEF_PK]: id3, fooVal: 'd', barVal: '2'},
+        {[DEF_PK]: id1, fooCol: 'a', barCol: '1'},
+        {[DEF_PK]: id2, fooCol: 'd', barCol: '2'},
+        {[DEF_PK]: id3, fooCol: 'd', barCol: '2'},
       ]);
     });
 
