@@ -669,7 +669,7 @@ schema.defineModel({
     order: {
       type: 'hasOne',
       model: 'order',
-      foreignKey: 'customerId', // опционально
+      foreignKey: 'customerId', // поле целевой модели
     },
   },
 });
@@ -721,7 +721,7 @@ schema.defineModel({
     orders: {
       type: 'hasMany',
       model: 'order',
-      foreignKey: 'customerId', // опционально
+      foreignKey: 'customerId', // поле целевой модели
     },
   },
 });

@@ -99,8 +99,8 @@ export declare type PolyBelongsToDefinition = {
 export declare type HasOneDefinition = {
   type: RelationType.HAS_ONE;
   model: string;
+  foreignKey: string;
   polymorphic?: false;
-  foreignKey?: string;
   discriminator?: undefined;
 };
 
@@ -127,16 +127,7 @@ export declare type PolyHasOneDefinitionWithTargetRelationName = {
 /**
  * The polymorphic "hasOne" relation with target relation keys.
  *
- * @example Required options only.
- * ```
- * {
- *   type: RelationType.HAS_ONE,
- *   model: 'model',
- *   polymorphic: true,
- * }
- * ```
- *
- * @example Verbose definition.
+ * @example
  * ```
  * {
  *   type: RelationType.HAS_ONE,
@@ -151,8 +142,8 @@ export declare type PolyHasOneDefinitionWithTargetKeys = {
   type: RelationType.HAS_ONE;
   model: string;
   polymorphic: true;
-  foreignKey?: string;
-  discriminator?: string;
+  foreignKey: string;
+  discriminator: string;
 };
 
 /**
@@ -170,8 +161,8 @@ export declare type PolyHasOneDefinitionWithTargetKeys = {
 export declare type HasManyDefinition = {
   type: RelationType.HAS_MANY;
   model: string;
+  foreignKey: string;
   polymorphic?: false;
-  foreignKey?: string;
   discriminator?: undefined;
 };
 
@@ -198,16 +189,7 @@ export declare type PolyHasManyDefinitionWithTargetRelationName = {
 /**
  * The polymorphic "hasMany" relation with target relation keys.
  *
- * @example Required options only.
- * ```
- * {
- *   type: RelationType.HAS_MANY,
- *   model: 'model',
- *   polymorphic: true,
- * }
- * ```
- *
- * @example Verbose definition.
+ * @example
  * ```
  * {
  *   type: RelationType.HAS_MANY,
@@ -222,8 +204,8 @@ export declare type PolyHasManyDefinitionWithTargetKeys = {
   type: RelationType.HAS_MANY;
   model: string;
   polymorphic: true;
-  foreignKey?: string;
-  discriminator?: string;
+  foreignKey: string;
+  discriminator: string;
 };
 
 /**

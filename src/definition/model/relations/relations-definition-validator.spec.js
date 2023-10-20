@@ -253,33 +253,6 @@ describe('RelationsDefinitionValidator', function () {
           const validate = v => {
             const foo = {
               type: RelationType.HAS_ONE,
-              model: 'model',
-              foreignKey: v,
-            };
-            return () => S.validate('model', {foo});
-          };
-          const error = v =>
-            format(
-              'The relation "foo" of the model "model" has the type "hasOne", ' +
-                'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
-              v,
-            );
-          expect(validate('')).to.throw(error('""'));
-          expect(validate(10)).to.throw(error('10'));
-          expect(validate(true)).to.throw(error('true'));
-          expect(validate(false)).to.throw(error('false'));
-          expect(validate({})).to.throw(error('Object'));
-          expect(validate([])).to.throw(error('Array'));
-          expect(validate(undefined)).to.throw(error('undefined'));
-          expect(validate(null)).to.throw(error('null'));
-          validate('modelId')();
-        });
-
-        it('requires the option "foreignKey" to be a string', function () {
-          const validate = v => {
-            const foo = {
-              type: RelationType.HAS_ONE,
               model: v,
               foreignKey: 'modelId',
             };
@@ -301,6 +274,33 @@ describe('RelationsDefinitionValidator', function () {
           expect(validate(undefined)).to.throw(error('undefined'));
           expect(validate(null)).to.throw(error('null'));
           validate('model')();
+        });
+
+        it('requires the option "foreignKey" to be a non-empty string', function () {
+          const validate = v => {
+            const foo = {
+              type: RelationType.HAS_ONE,
+              model: 'model',
+              foreignKey: v,
+            };
+            return () => S.validate('model', {foo});
+          };
+          const error = v =>
+            format(
+              'The relation "foo" of the model "model" has the type "hasOne", ' +
+                'so it requires the option "foreignKey" to be a non-empty String, ' +
+                'but %s given.',
+              v,
+            );
+          expect(validate('')).to.throw(error('""'));
+          expect(validate(10)).to.throw(error('10'));
+          expect(validate(true)).to.throw(error('true'));
+          expect(validate(false)).to.throw(error('false'));
+          expect(validate({})).to.throw(error('Object'));
+          expect(validate([])).to.throw(error('Array'));
+          expect(validate(undefined)).to.throw(error('undefined'));
+          expect(validate(null)).to.throw(error('null'));
+          validate('modelId')();
         });
 
         it('throws an error if the option "discriminator" is provided', function () {
@@ -479,33 +479,6 @@ describe('RelationsDefinitionValidator', function () {
           const validate = v => {
             const foo = {
               type: RelationType.HAS_MANY,
-              model: 'model',
-              foreignKey: v,
-            };
-            return () => S.validate('model', {foo});
-          };
-          const error = v =>
-            format(
-              'The relation "foo" of the model "model" has the type "hasMany", ' +
-                'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
-              v,
-            );
-          expect(validate('')).to.throw(error('""'));
-          expect(validate(10)).to.throw(error('10'));
-          expect(validate(true)).to.throw(error('true'));
-          expect(validate(false)).to.throw(error('false'));
-          expect(validate({})).to.throw(error('Object'));
-          expect(validate([])).to.throw(error('Array'));
-          expect(validate(undefined)).to.throw(error('undefined'));
-          expect(validate(null)).to.throw(error('null'));
-          validate('modelId')();
-        });
-
-        it('requires the option "foreignKey" to be a string', function () {
-          const validate = v => {
-            const foo = {
-              type: RelationType.HAS_MANY,
               model: v,
               foreignKey: 'modelId',
             };
@@ -527,6 +500,33 @@ describe('RelationsDefinitionValidator', function () {
           expect(validate(undefined)).to.throw(error('undefined'));
           expect(validate(null)).to.throw(error('null'));
           validate('model')();
+        });
+
+        it('requires the option "foreignKey" to be a non-empty string', function () {
+          const validate = v => {
+            const foo = {
+              type: RelationType.HAS_MANY,
+              model: 'model',
+              foreignKey: v,
+            };
+            return () => S.validate('model', {foo});
+          };
+          const error = v =>
+            format(
+              'The relation "foo" of the model "model" has the type "hasMany", ' +
+                'so it requires the option "foreignKey" to be a non-empty String, ' +
+                'but %s given.',
+              v,
+            );
+          expect(validate('')).to.throw(error('""'));
+          expect(validate(10)).to.throw(error('10'));
+          expect(validate(true)).to.throw(error('true'));
+          expect(validate(false)).to.throw(error('false'));
+          expect(validate({})).to.throw(error('Object'));
+          expect(validate([])).to.throw(error('Array'));
+          expect(validate(undefined)).to.throw(error('undefined'));
+          expect(validate(null)).to.throw(error('null'));
+          validate('modelId')();
         });
 
         it('throws an error if the option "discriminator" is provided', function () {
