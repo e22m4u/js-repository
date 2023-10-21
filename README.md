@@ -264,14 +264,14 @@ console.log(place);
 //   }
 // }
 const result = rep.replaceById(place.id, {
-  name: '7-Eleven',
+  name: 'Starbucks',
   address: 'Sukhumvit Alley'
 });
 
 console.log(result);
 // {
 //   "id": 1,
-//   "name": "7-Eleven",
+//   "name": "Starbucks",
 //   "address": "Sukhumvit Alley"
 // }
 ```
@@ -288,7 +288,7 @@ console.log(result);
 ```js
 // {
 //   "id": 1,
-//   "name": "7-Eleven",
+//   "name": "Starbucks",
 //   "address": "Sukhumvit Alley"
 // }
 const result = rep.replaceOrCreate({
