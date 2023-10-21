@@ -167,7 +167,7 @@ schema.defineModel({
 ```json
 {
   "id": 1,
-  "name": "Burger King at Avenue Mall",
+  "name": "Burger King",
   "location": {
     "lat": 32.412891,
     "lng": 34.7660061
@@ -230,7 +230,7 @@ const rep = schema.getRepository('place');
 
 ```js
 const place = await rep.create({
-  "name": "Burger King at Avenue Mall",
+  "name": "Burger King",
   "location": {
     "lat": 32.412891,
     "lng": 34.7660061
@@ -240,7 +240,7 @@ const place = await rep.create({
 console.log(place);
 // {
 //   "id": 1,
-//   "name": "Burger King at Avenue Mall",
+//   "name": "Burger King",
 //   "location": {
 //     "lat": 32.412891,
 //     "lng": 34.7660061
@@ -257,22 +257,22 @@ console.log(place);
 ```js
 // {
 //   "id": 1,
-//   "name": "Burger King at Avenue Mall",
+//   "name": "Burger King",
 //   "location": {
 //     "lat": 32.412891,
 //     "lng": 34.7660061
 //   }
 // }
 const result = rep.replaceById(place.id, {
-  name: 'Terminal 21 Shopping Mall',
-  address: 'Sukhumvit 19 Alley'
+  name: '7-Eleven',
+  address: 'Sukhumvit Alley'
 });
 
 console.log(result);
 // {
 //   "id": 1,
-//   "name": "Terminal 21 Shopping Mall",
-//   "address": "Sukhumvit 19 Alley"
+//   "name": "7-Eleven",
+//   "address": "Sukhumvit Alley"
 // }
 ```
 
@@ -288,38 +288,42 @@ console.log(result);
 ```js
 // {
 //   "id": 1,
-//   "name": "Terminal 21 Shopping Mall",
-//   "address": "Sukhumvit 19 Alley"
+//   "name": "7-Eleven",
+//   "address": "Sukhumvit Alley"
 // }
 const result = rep.replaceOrCreate({
   id: 1,
-  name: 'Department of Agriculture',
-  contact: 'Dennis Crow'
+  name: 'Airport',
+  city: 'Antalya',
+  code: 'AYT'
 });
 
 console.log(result);
 // {
 //   "id": 1,
-//   "name": "Department of Agriculture",
-//   "contact": "Dennis Crow"
+//   "name": "Airport",
+//   "city": "Antalya"
+//   "code": "AYT"
 // }
 ```
 
 В примере выше был передан первичный ключ `id` для поиска и
-замены существующего документа. Теперь рассмотрим создание
-нового документа.
+замены существующего документа. Теперь рассмотрим создание 
+документа с новым идентификатором.
 
 ```js
 const result = rep.replaceOrCreate({
-  term: 'Summer',
-  year: 2024,
+  name: 'Airport',
+  city: 'Bangkok',
+  code: 'BKK',
 });
 
 console.log(result);
 // {
 //   "id": 2,
-//   "term": "Summer",
-//   "year": 2024,
+//   "name": "Airport",
+//   "city": "Bangkok",
+//   "code": "BKK"
 // }
 ```
 
@@ -331,21 +335,22 @@ console.log(result);
 
 ```js
 // {
-//   "id": 1,
-//   "name": "Terminal 21 Shopping Mall",
-//   "address": "Sukhumvit 19 Alley"
+//   "id": 2,
+//   "name": "Airport",
+//   "city": "Bangkok",
+//   "code": "BKK"
 // }
 const result = rep.patchById(place.id, {
-  address: 'Moo 6',
-  city: 'Pattaya',
+  city: 'Moscow',
+  code: 'SVO'
 });
 
 console.log(result);
 // {
-//   "id": 1,
-//   "name": "Terminal 21 Shopping Mall",
-//   "address": "Moo 6",
-//   "city": "Pattaya"
+//   "id": 2,
+//   "name": "Airport",
+//   "city": "Moscow",
+//   "code": "SVO"
 // }
 ```
 
