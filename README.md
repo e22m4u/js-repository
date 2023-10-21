@@ -9,7 +9,7 @@ npm install @e22m4u/js-repository
 ```
 
 Опционально устанавливаем адаптер. Например, если используется
-*MongoDB*, то для подключения потребуется добавить
+*MongoDB*, то для подключения потребуется установить
 [адаптер mongodb](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter)
 как отдельную зависимость.
 
