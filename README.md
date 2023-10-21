@@ -276,6 +276,53 @@ console.log(result);
 // }
 ```
 
+#### replaceOrCreate(data, filter = undefined)
+
+Если вы знакомы с методом PUT в архитектуре REST-api, когда документ
+добавляется, если его не существовало, или же обновляется существующий,
+то `replaceOrCreate` работает схожим образом. Если параметр
+`data` передаваемый первым аргументом будет содержать идентификатор,
+то метод будет вести себя как `replaceById`, в противном случае будет
+создан новый документ.
+
+```js
+// {
+//   "id": 1,
+//   "name": "Terminal 21 Shopping Mall",
+//   "address": "Sukhumvit 19 Alley"
+// }
+const result = rep.replaceOrCreate({
+  id: 1,
+  name: 'Department of Agriculture',
+  contact: 'Dennis Crow'
+});
+
+console.log(result);
+// {
+//   "id": 1,
+//   "name": "Department of Agriculture",
+//   "contact": "Dennis Crow"
+// }
+```
+
+В примере выше был передан первичный ключ `id` для поиска и
+замены существующего документа. Теперь рассмотрим создание
+нового документа.
+
+```js
+const result = rep.replaceOrCreate({
+  term: 'Summer',
+  year: 2024,
+});
+
+console.log(result);
+// {
+//   "id": 2,
+//   "term": "Summer",
+//   "year": 2024,
+// }
+```
+
 #### patchById(id, data, filter = undefined)
 
 В отличие от `replaceById`, данный метод не удаляет поля, которые
