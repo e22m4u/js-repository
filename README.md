@@ -354,99 +354,30 @@ console.log(result);
 // }
 ```
 
-## Пример
+### Расширение
 
-Создаем модель `user`
-
-```js
-schema.defineModel({
-  name: 'user', // название модели
-  adapter: 'myMemory', // выбранный источник
-  properties: { // поля модели
-    name: 'string',
-    age: 'number',
-  },
-});
-```
-
-Получаем репозиторий модели `user`
-
-```js
-const userRep = schema.getRepository('user');
-```
-
-Добавляем новую запись методом `create`
-
-```js
-const fedor = await userRep.create({
-  name: 'Fedor',
-  age: 24,
-});
-
-console.log(fedor);
-// {
-//   id: 1,
-//   name: 'Fedor',
-//   age: 24,
-// }
-```
-
-Изменяем данные методом `patchById`
-
-```js
-const result = await userRep.patchById(
-  fedor.id,
-  {age: 30},
-);
-
-console.log(result);
-// {
-//   id: 1,
-//   name: 'Fedor',
-//   age: 30,
-// }
-```
-
-Удаляем по идентификатору методом `deleteById`
-
-```js
-await userRep.deleteById(fedor.id); // true
-```
-
-## Репозиторий
-
-Выполняет операции чтения и записи определенной коллекции.
-
-Методы:
-
-- `create(data, filter = undefined)`
-- `replaceById(id, data, filter = undefined)`
-- `replaceOrCreate(data, filter = undefined)`
-- `patch(data, where = undefined)`
-- `patchById(id, data, filter = undefined)`
-- `find(filter = undefined)`
-- `findOne(filter = undefined)`
-- `findById(id, filter = undefined)`
-- `delete(where = undefined)`
-- `deleteById(id)`
-- `exists(id)`
-- `count(where = undefined)`
-
-Получение репозитория модели:
+При использовании метода `getRepository` выполняется проверка на
+наличие существующего экземпляра репозитория для нужной модели.
+При первичном запросе создается новый экземпляр, который будет
+сохранен для повторных обращений к методу.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
+import {Repository} from '@e22m4u/js-repository';
 
-const schema = new Schema();
-// создаем источник
-schema.defineDatasource({name: 'myDatasource', adapter: 'memory'});
-// создаем модель
-schema.defineModel({name: 'myModel', datasource: 'myDatasource'});
-// получаем репозиторий по названию модели
-const repositorty = schema.getRepository('myModel');
+// const schema = new Schema();
+// schema.defineDatasource ...
+// schema.defineModel ...
+
+const rep1 = schema.getRepository('myModel');
+const rep2 = schema.getRepository('myModel');
+console.log(rep1 === rep2); // true
 ```
 
-Переопределение конструктора:
+Если требуется изменить или расширить поведение репозитория, то
+перед его созданием можно переопределить его конструктор методом
+`setRepositoryCtor`. После чего, все создаваемые репозитории будут
+использовать уже пользовательский конструктор вместо стандартного.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -514,136 +445,6 @@ schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
   `include: 'foo'` включение связи `foo`  
   `include: ['foo', 'bar']` включение `foo` и `bar`  
   `include: {foo: 'bar'}` включение вложенной связи `foo`
-
-## Источник данных
-
-Определяет настройки и способ подключения к базе.
-
-Параметры:
-
-- `name: string` название нового источника
-- `adapter: string` выбранный адаптер базы данных
-
-Пример:
-
-```js
-schema.defineDatasource({
-  name: 'myDatasource',
-  adapter: 'memory',
-});
-```
-
-Адаптер может иметь параметры, которые передаются
-при определении источника.
-
-Пример:
-
-```js
-schema.defineDatasource({
-  name: 'myDatasource',
-  adapter: 'mongodb',
-  // параметры адаптера:
-  host: '127.0.0.1',
-  port: 27017,
-});
-```
-
-## Модель
-
-Описывает набор полей и связей к другим моделям.
-
-Параметры:
-
-- `name: string` название новой модели
-- `datasource: string` выбранный источник данных
-- `properties: object` определения полей модели
-- `relations: object` определения связей модели
-
-Пример:
-
-```js
-schema.defineModel({
-  name: 'myModel',
-  datasource: 'myDatasource',
-  properties: {...}, // см. ниже
-  relations: {...}, // см. ниже
-});
-```
-
-## Поля
-
-Параметр `properties` описывает набор полей и их настройки.
-
-Типы:
-
-- `string`  
-- `number`  
-- `boolean`  
-- `array`  
-- `object`  
-- `any`  
-
-Пример:
-
-```js
-schema.defineModel({
-  // ...
-  properties: {
-    prop1: 'string',
-    prop2: 'number',
-    prop3: 'boolean',
-    prop4: 'array',
-    prop5: 'object',
-    prop6: 'any',
-  },
-});
-```
-
-Расширенные параметры:
-
-- `type: string` тип хранимого значения
-- `itemType: string` тип элемента массива (для `type: 'array'`)
-- `model: string` модель объекта (для `type: 'object'`)
-- `primaryKey: boolean` объявить поле первичным ключом 
-- `columnName: string` переопределение названия колонки
-- `columnType: string` тип колонки (определяется адаптером)
-- `required: boolean` объявить поле обязательным
-- `default: any` значение по умолчанию для `undefined`
-
-Пример:
-
-```js
-schema.defineModel({
-  // ...
-  properties: {
-    prop1: {
-      type: 'string',
-      primaryKey: true,
-    },
-    prop2: {
-      type: 'boolean',
-      required: true,
-    },
-    prop3: {
-      type: 'number',
-      default: 100,
-    },
-    prop3: {
-      type: 'string',
-      // фабричное значение
-      default: () => new Date().toISOString(),
-    },
-    prop4: {
-      type: 'array',
-      itemType: 'string',
-    },
-    prop5: {
-      type: 'object',
-      model: 'objectModel',
-    },
-  },
-});
-```
 
 ## Связи
 
