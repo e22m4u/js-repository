@@ -211,7 +211,6 @@ const rep = schema.getRepository('place');
 
 - `create(data, filter = undefined)`
 - `replaceById(id, data, filter = undefined)`
-- `replaceOrCreate(data, filter = undefined)`
 - `patch(data, where = undefined)`
 - `patchById(id, data, filter = undefined)`
 - `find(filter = undefined)`
@@ -224,132 +223,75 @@ const rep = schema.getRepository('place');
 
 #### create(data, filter = undefined)
 
-Создадим торговую точку методом `create` используя репозиторий из примера
-выше. Метод возвращает документ, который был записан в базу, включая присвоенный
-идентификатор.
+Метод `create` добавляет новый документ в коллекцию и возвращает записанные
+данные. Первый аргумент должен являться объектом и соответствовать модели
+используемого репозитория.
 
-```js
-const place = await rep.create({
-  "name": "Burger King",
-  "location": {
-    "lat": 32.412891,
-    "lng": 34.7660061
-  },
+````js
+const rick = await rep.create({
+  name: 'Rick Sanchez',
+  dimension: 'C-137',
+  age: 67,
 });
 
-console.log(place);
+console.log(rick);
 // {
-//   "id": 1,
-//   "name": "Burger King",
-//   "location": {
-//     "lat": 32.412891,
-//     "lng": 34.7660061
-//   }
+//   id: 1,
+//   name: 'Rick Sanchez',
+//   dimension: 'C-137',
+//   age: 67,
 // }
-```
+````
 
 #### replaceById(id, data, filter = undefined)
 
-Добавленный в базу документ можно полностью заменить зная его идентификатор.
-Воспользуемся методом `replaceById`, который перезапишет данные по значению
-первичного ключа.
+Метод `replaceById` находит документ по идентификатору и перезаписывает
+его данными из второго аргумента. Если существующий документ не найден, 
+то будет выброшено исключение.
 
 ```js
 // {
-//   "id": 1,
-//   "name": "Burger King",
-//   "location": {
-//     "lat": 32.412891,
-//     "lng": 34.7660061
-//   }
+//   id: 1,
+//   name: 'Rick Sanchez',
+//   dimension: 'C-137',
+//   age: 67,
 // }
-const result = rep.replaceById(place.id, {
-  name: 'Starbucks',
-  address: 'Sukhumvit Alley'
+const morty = await rep.replaceById(1, {
+  name: 'Morty Smith',
+  age: 14,
 });
 
-console.log(result);
+console.log(morty);
 // {
-//   "id": 1,
-//   "name": "Starbucks",
-//   "address": "Sukhumvit Alley"
-// }
-```
-
-#### replaceOrCreate(data, filter = undefined)
-
-Если вы знакомы с методом PUT в архитектуре REST, когда документ
-добавляется, если его не существовало, или же обновляется существующий,
-то `replaceOrCreate` работает схожим образом. Если параметр
-`data` передаваемый первым аргументом будет содержать идентификатор,
-то метод будет вести себя как `replaceById`, в противном случае будет
-создан новый документ.
-
-```js
-// {
-//   "id": 1,
-//   "name": "Starbucks",
-//   "address": "Sukhumvit Alley"
-// }
-const result = rep.replaceOrCreate({
-  id: 1,
-  name: 'Airport',
-  city: 'Antalya',
-  code: 'AYT'
-});
-
-console.log(result);
-// {
-//   "id": 1,
-//   "name": "Airport",
-//   "city": "Antalya"
-//   "code": "AYT"
-// }
-```
-
-В примере выше был передан первичный ключ `id` для поиска и
-замены существующего документа. Теперь рассмотрим создание 
-документа с новым идентификатором.
-
-```js
-const result = rep.replaceOrCreate({
-  name: 'Airport',
-  city: 'Bangkok',
-  code: 'BKK',
-});
-
-console.log(result);
-// {
-//   "id": 2,
-//   "name": "Airport",
-//   "city": "Bangkok",
-//   "code": "BKK"
+//   id: 1,
+//   name: 'Morty Smith',
+//   age: 14,
 // }
 ```
 
 #### patchById(id, data, filter = undefined)
 
-В отличие от `replaceById`, данный метод не удаляет поля, которые
-не были переданы, что позволяет обновить только часть документа,
-не затрагивая другие данные.
+Метод `patchById` находит документ по идентификатору и выполняет его частичное
+обновление данными из второго аргумента. В отличие от `replaceById`, данный
+метод не удаляет поля, которые не были переданы.
 
 ```js
 // {
 //   "id": 2,
-//   "name": "Airport",
-//   "city": "Bangkok",
-//   "code": "BKK"
+//   "type": "airport",
+//   "name": "Domodedovo Airport",
+//   "code": "DME"
 // }
-const result = rep.patchById(place.id, {
-  city: 'Moscow',
+const airport = await rep.patchById(2, {
+  name: 'Sheremetyevo Airport',
   code: 'SVO'
 });
 
-console.log(result);
+console.log(airport);
 // {
 //   "id": 2,
-//   "name": "Airport",
-//   "city": "Moscow",
+//   "type": "airport",
+//   "name": "Sheremetyevo Airport",
 //   "code": "SVO"
 // }
 ```
