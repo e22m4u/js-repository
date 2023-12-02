@@ -223,32 +223,29 @@ const rep = schema.getRepository('place');
 
 #### create(data, filter = undefined)
 
-Метод `create` добавляет новый документ в коллекцию и возвращает записанные
-данные. Первый аргумент должен являться объектом и соответствовать модели
-используемого репозитория.
+Добавляет новый документ в коллекцию.  
+Возвращает добавленный документ.  
 
-````js
-const rick = await rep.create({
+```js
+const person = await rep.create({
   name: 'Rick Sanchez',
   dimension: 'C-137',
   age: 67,
 });
 
-console.log(rick);
+console.log(person);
 // {
 //   id: 1,
 //   name: 'Rick Sanchez',
 //   dimension: 'C-137',
-//   age: 67,
+//   age: 67
 // }
-````
+```
 
 #### replaceById(id, data, filter = undefined)
 
-Метод `replaceById` находит документ по идентификатору и перезаписывает
-его данными из второго аргумента. Если указанный идентификатор не найден, 
-то будет выброшено исключение, в противном случае возвращает затронутый
-документ.
+Заменяет существующий документ.  
+Возвращает затронутый документ.  
 
 ```js
 // {
@@ -257,40 +254,85 @@ console.log(rick);
 //   dimension: 'C-137',
 //   age: 67,
 // }
-const morty = await rep.replaceById(1, {
+const person = await rep.replaceById(1, {
   name: 'Morty Smith',
+  kind: 'a young teenage boy',
   age: 14,
 });
 
-console.log(morty);
+console.log(person);
 // {
 //   id: 1,
 //   name: 'Morty Smith',
+//   kind: 'a young teenage boy',
 //   age: 14,
 // }
 ```
 
+#### patch(data, where = undefined)
+
+Частично обновляет документы коллекции.  
+Возвращает число затронутых документов.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "type": null,
+//     "name": "Bangkok"
+//   },
+//   {
+//     "id": 2,
+//     "type": null,
+//     "name": "Moscow"
+//   }
+// ]
+const patched = await rep.patch({
+  type: 'city',
+  updatedAt: new Date().toISOString(),
+});
+
+console.log(patched);
+// 2
+
+const docs = await rep.find();
+console.log(docs);
+// [
+//   {
+//     "id": 1,
+//     "type": "city",
+//     "name": "Bangkok",
+//     "updatedAt": "2023-12-02T14:13:27.649Z"
+//   },
+//   {
+//     "id": 2,
+//     "type": "city",
+//     "name": "Moscow",
+//     "updatedAt": "2023-12-02T14:13:27.649Z"
+//   }
+// ]
+```
+
 #### patchById(id, data, filter = undefined)
 
-Метод `patchById` находит документ по идентификатору и выполняет его частичное
-обновление данными из второго аргумента. В отличие от `replaceById`, данный
-метод не удаляет поля, которые не были переданы.
+Частично обновляет существующий документ.  
+Возвращает затронутый документ.  
 
 ```js
 // {
-//   "id": 2,
+//   "id": 24,
 //   "type": "airport",
 //   "name": "Domodedovo Airport",
 //   "code": "DME"
 // }
-const airport = await rep.patchById(2, {
+const airport = await rep.patchById(24, {
   name: 'Sheremetyevo Airport',
-  code: 'SVO'
+  code: 'SVO',
 });
 
 console.log(airport);
 // {
-//   "id": 2,
+//   "id": 24,
 //   "type": "airport",
 //   "name": "Sheremetyevo Airport",
 //   "code": "SVO"
