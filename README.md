@@ -347,11 +347,30 @@ console.log(result);
 ```js
 // вызов метода `find` без аргументов
 // запрашивает все документы коллекции
-const result1 = await rep.find();
+const result = await rep.find();
+console.log(result);
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+```
 
+Фильтрация результата в параметре `filter`
+
+```js
 // первый аргумент может принимать объект
 // описывающий параметры выборки
-const result2 = await rep.find({
+const result = await rep.find({
   where: {           // фильтрация выборки по условию, где указанные
     type: 'article', // поля документа должны содержать определенные
     published: true, // значения
