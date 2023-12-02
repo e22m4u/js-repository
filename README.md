@@ -383,14 +383,25 @@ console.log(result);
 Возвращает найденный документ или `undefined`  
 
 ```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
 const result = await rep.findOne();
-
 console.log(result);
 // {
 //   "id": 1,
-//   "title": "The Forgotten Ship",
-//   "tags": ['history', 'boat', 'cargo'],
-//   "type": "article"
+//   "title": "The Forgotten Ship"
 // }
 ```
 
