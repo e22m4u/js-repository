@@ -375,20 +375,32 @@ const result = await rep.find({
   // указанные поля документа должны содержать
   // определенные значения
   where: {type: 'article', published: true},
+  where: {description: {like: 'breaking news'}},
+  where: {publishedAt: {lte: '2023-12-02T21:00:00.000Z'}},
+
   // "order" - сортировка по указанному полю может
   // принимать постфикс ASC или DESC указывающий
   // направление порядка (прим. 'id DESC')
-  order: 'id',
+  order: 'foo',
+  order: 'bar DESC',
+  order: ['foo', 'bar DESC'],
+
   // "limit" - ограничение выборки числом документов
   limit: 10,
+
   // "skip" - пропуск указанного числа документов
-  skip: 5,
+  skip: 10,
+
   // "fields" - если определено, то документы выборки
   // будут включать только указанные поля
-  fields: ['type', 'title'],
+  fields: 'title',
+  fields: ['title', 'published'],
+
   // "include" - включить в результат связанные
   // документы по имени связи, которая определена
   // в модели данной коллекции
+  include: 'author',
+  include: {author: 'city'},
   include: ['author', 'categories'],
 });
 ```
