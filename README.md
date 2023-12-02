@@ -252,7 +252,7 @@ console.log(person);
 //   id: 1,
 //   name: 'Rick Sanchez',
 //   dimension: 'C-137',
-//   age: 67,
+//   age: 67
 // }
 const person = await rep.replaceById(1, {
   name: 'Morty Smith',
@@ -265,7 +265,7 @@ console.log(person);
 //   id: 1,
 //   name: 'Morty Smith',
 //   kind: 'a young teenage boy',
-//   age: 14,
+//   age: 14
 // }
 ```
 
@@ -287,12 +287,12 @@ console.log(person);
 //     "name": "Moscow"
 //   }
 // ]
-const patched = await rep.patch({
+const result = await rep.patch({
   type: 'city',
   updatedAt: new Date().toISOString(),
 });
 
-console.log(patched);
+console.log(result);
 // 2
 
 const docs = await rep.find();
@@ -316,7 +316,7 @@ console.log(docs);
 #### patchById(id, data, filter = undefined)
 
 Частично обновляет существующий документ.  
-Возвращает затронутый документ.  
+Возвращает затронутый документ или выбрасывает исключение.  
 
 ```js
 // {
@@ -325,18 +325,223 @@ console.log(docs);
 //   "name": "Domodedovo Airport",
 //   "code": "DME"
 // }
-const airport = await rep.patchById(24, {
+const result = await rep.patchById(24, {
   name: 'Sheremetyevo Airport',
   code: 'SVO',
 });
 
-console.log(airport);
+console.log(result);
 // {
 //   "id": 24,
 //   "type": "airport",
 //   "name": "Sheremetyevo Airport",
 //   "code": "SVO"
 // }
+```
+
+#### find(filter = undefined)
+
+Поиск по коллекции репозитория.  
+Возвращает найденные документы в виде массива.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+const result = await rep.find();
+console.log(result);
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+```
+
+#### findOne(filter = undefined)
+
+Поиск первого документа коллекции.  
+Возвращает найденный документ или `undefined`  
+
+```js
+const result = await rep.findOne();
+
+console.log(result);
+// {
+//   "id": 1,
+//   "title": "The Forgotten Ship",
+//   "tags": ['history', 'boat', 'cargo'],
+//   "type": "article"
+// }
+```
+
+#### findById(id, filter = undefined)
+
+Поиск документа по идентификатору.  
+Возвращает найденный документ или выбрасывает исключение.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+const result = await rep.findById(2);
+console.log(result);
+// {
+//   "id": 2,
+//   "title": "A Giant Bellows"
+// }
+```
+
+#### delete(where = undefined)
+
+Удаляет документы коллекции.  
+Возвращает количество удаленных документов.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+const result = await rep.delete();
+console.log(result);
+// 3
+
+const docs = await rep.find();
+console.log(docs);
+// []
+```
+
+#### deleteById(id)
+
+Удаляет документ по идентификатору.  
+Возвращает `true` в случае успеха или `false` если не найден.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+const result = await rep.deleteById(2);
+console.log(result);
+// true
+
+const docs = await rep.find();
+console.log(docs);
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+```
+
+#### exists(id)
+
+Проверка существования документа по идентификатору.  
+Возвращает `true` если найден, в противном случае `false`.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+
+const result1 = await rep.exists(2);
+console.log(result1);
+// true
+
+const result2 = await rep.exists(10);
+console.log(result2);
+// false
+```
+
+#### count(where = undefined)
+
+Подсчет количества документов.  
+Возвращает число найденных документов.  
+
+```js
+// [
+//   {
+//     "id": 1,
+//     "title": "The Forgotten Ship"
+//   },
+//   {
+//     "id": 2,
+//     "title": "A Giant Bellows"
+//   },
+//   {
+//     "id": 3,
+//     "title": "Hundreds of bottles"
+//   }
+// ]
+const result = await rep.count();
+console.log(result);
+// 3
 ```
 
 ## Расширение
