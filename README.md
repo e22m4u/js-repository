@@ -226,7 +226,7 @@ const rep = schema.getRepository('place');
 Добавляет новый документ в коллекцию и возвращает его.
 
 ```js
-// вызываем метод `create` с передачей
+// вызов метода `create` с передачей
 // нового состава первым параметром
 const person = await rep.create({
   name: 'Rick Sanchez',
@@ -234,7 +234,7 @@ const person = await rep.create({
   age: 67,
 });
 
-// выводим результат
+// вывод результата
 console.log(person);
 // {
 //   id: 1,
@@ -256,7 +256,7 @@ const result = await rep.create(data, {
   fields: ['name', 'age'],
 
   // "include" - включить в результат связанные
-  // документы (см. Связанные документы)
+  // документы (см. Связи)
   include: 'son',
   include: {son: 'hobbies'},
   include: ['son', 'daughter'],
@@ -269,27 +269,27 @@ const result = await rep.create(data, {
 идентификатор не найден, то выбрасывает исключение.
 
 ```js
-// идентификатор 1 имеет следующую
+// идентификатор 12 имеет следующую
 // структуру документа
 // {
-//   id: 1,
+//   id: 12,
 //   name: 'Rick Sanchez',
 //   dimension: 'C-137',
 //   age: 67
 // }
 
-// вызываем метод `replaceById` с передачей
+// вызов метода `replaceById` с передачей
 // идентификатора и нового состава
-const person = await rep.replaceById(1, {
+const person = await rep.replaceById(12, {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
   age: 14,
 });
 
-// выводим результат
+// вывод результата
 console.log(person);
 // {
-//   id: 1,
+//   id: 12,
 //   name: 'Morty Smith', <= значение обновлено
 //   kind: 'a young teenage boy', <= добавлено новое поле
 //   age: 14 <= значение обновлено
@@ -313,16 +313,15 @@ console.log(person);
 //   "code": "DME"
 // }
 
-// вызываем метод `patchById` с передачей
-// идентификатора и новых значений обновляемых
-// полей
+// вызов метода `patchById` с передачей идентификатора
+// и новых значений обновляемых полей
 const result = await rep.patchById(24, {
   name: 'Sheremetyevo Airport',
   code: 'SVO',
   featured: true,
 });
 
-// выводим результат
+// вывод результата
 console.log(result);
 // {
 //   "id": 24,
@@ -354,19 +353,18 @@ console.log(result);
 //   }
 // ]
 
-// вызываем метод `patch` с передачей
+// вызов метода `patch` с передачей
 // значений для обновляемых полей
 const result = await rep.patch({
   type: 'city',
   updatedAt: new Date().toISOString(),
 });
 
-// выводим количество затронутых
-// документов
+// вывод количество затронутых документов
 console.log(result);
 // 2
 
-// методом `find` просматриваем коллекцию
+// просмотр коллекции методом `find`
 // для проверки изменений
 const docs = await rep.find();
 console.log(docs);
@@ -399,7 +397,7 @@ const result = await rep.patch(data, {
   updatedAt: {                      // оператор "lt" проверяет значение поля
     lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
   },                                // чем указана в условии
-  // см. "Фильтрация"
+  // см. Фильтрация
 });
 ```
 
@@ -452,13 +450,13 @@ const result = await rep.find({
   limit: 10,
   skip: 10,
 
-  // "fields" - если определено, то документы выборки
-  // будут включать только указанные поля
+  // "fields" - если определено, то результат
+  // будет включать только указанные поля
   fields: 'title',
   fields: ['title', 'published'],
 
   // "include" - включить в результат связанные
-  // документы (см. Связанные документы)
+  // документы (см. Связи)
   include: 'author',
   include: {author: 'city'},
   include: ['author', 'categories'],
@@ -470,6 +468,7 @@ const result = await rep.find({
 Возвращает первый найденный документ или `undefined`  
 
 ```js
+// коллекция имеет три документа
 // [
 //   {
 //     "id": 1,
@@ -484,6 +483,9 @@ const result = await rep.find({
 //     "title": "Hundreds of bottles"
 //   }
 // ]
+
+// вызов метода `findOne` без аргументов
+// возвращает первый документ коллекции
 const result = await rep.findOne();
 console.log(result);
 // {
@@ -492,12 +494,48 @@ console.log(result);
 // }
 ```
 
+Фильтрация результата (опционально).
+
+```js
+// первый параметр может принимать
+// объект cо следующими настройками
+const result = await rep.findOne({
+  // "where" - фильтрация выборки по условию, где
+  // указанные поля должны содержать определенные
+  // значения (см. Фильтрация)
+  where: {type: 'article', published: true},
+  where: {description: {like: 'breaking news'}},
+  where: {publishedAt: {lte: '2023-12-02T21:00:00.000Z'}},
+
+  // "order" - сортировка по указанному полю может
+  // принимать постфикс DESC для обратного порядка
+  order: 'foo',
+  order: 'bar DESC',
+  order: ['foo', 'bar DESC'],
+
+  // "skip" - пропуск документов
+  skip: 10,
+
+  // "fields" - если определено, то результат
+  // будет включать только указанные поля
+  fields: 'title',
+  fields: ['title', 'published'],
+
+  // "include" - включить в результат связанные
+  // документы (см. Связи)
+  include: 'author',
+  include: {author: 'city'},
+  include: ['author', 'categories'],
+});
+```
+
 #### findById(id, filter = undefined)
 
 Поиск документа по идентификатору.  
 Возвращает найденный документ или выбрасывает исключение.  
 
 ```js
+// коллекция содержит три документа
 // [
 //   {
 //     "id": 1,
@@ -512,6 +550,9 @@ console.log(result);
 //     "title": "Hundreds of bottles"
 //   }
 // ]
+
+// вызов метода `findById` с передачей
+// идентификатора искомого документа
 const result = await rep.findById(2);
 console.log(result);
 // {
@@ -526,6 +567,7 @@ console.log(result);
 Возвращает количество удаленных документов.  
 
 ```js
+// коллекция имеет три документа
 // [
 //   {
 //     "id": 1,
@@ -540,13 +582,35 @@ console.log(result);
 //     "title": "Hundreds of bottles"
 //   }
 // ]
+
+// вызов метода `delete` без аргументов
+// удалит все содержимое коллекции
 const result = await rep.delete();
 console.log(result);
 // 3
 
+// просмотр коллекции методом `find`
+// для проверки изменений
 const docs = await rep.find();
 console.log(docs);
 // []
+```
+
+Условия выборки (опционально).
+
+```js
+// первый параметр метода `delete`
+// принимает условия выборки 
+const result = await rep.delete({
+  type: 'city',          // поле "type" должно иметь значение "city"
+  description: {         // оператор "like" проверяет поле "description"
+    like: 'the capital', // на наличие подстроки "the capital"
+  },
+  updatedAt: {                      // оператор "lt" проверяет значение поля
+    lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
+  },                                // чем указана в условии
+  // см. Фильтрация
+});
 ```
 
 #### deleteById(id)
@@ -555,6 +619,7 @@ console.log(docs);
 Возвращает `true` в случае успеха или `false` если не найден.  
 
 ```js
+// коллекция имеет три документа
 // [
 //   {
 //     "id": 1,
@@ -569,10 +634,17 @@ console.log(docs);
 //     "title": "Hundreds of bottles"
 //   }
 // ]
+
+// вызов метода `deleteById` с передачей
+// идентификатора удаляемого документа
 const result = await rep.deleteById(2);
+
+// вывод результата
 console.log(result);
 // true
 
+// просмотр коллекции методом `find`
+// для проверки изменений
 const docs = await rep.find();
 console.log(docs);
 // [
@@ -593,6 +665,7 @@ console.log(docs);
 Возвращает `true` если найден, в противном случае `false`.  
 
 ```js
+// коллекция имеет три документа
 // [
 //   {
 //     "id": 1,
@@ -608,10 +681,14 @@ console.log(docs);
 //   }
 // ]
 
+// вызов метода `exists` с передачей
+// существующего идентификатора
 const result1 = await rep.exists(2);
 console.log(result1);
 // true
 
+// результат проверки несуществующего
+// идентификатора
 const result2 = await rep.exists(10);
 console.log(result2);
 // false
@@ -623,6 +700,7 @@ console.log(result2);
 Возвращает число найденных документов.  
 
 ```js
+// коллекция имеет три документа
 // [
 //   {
 //     "id": 1,
@@ -637,9 +715,29 @@ console.log(result2);
 //     "title": "Hundreds of bottles"
 //   }
 // ]
+
+// вызов метода `count` без аргументов
+// возвращает общее число документов
 const result = await rep.count();
 console.log(result);
 // 3
+```
+
+Условия выборки (опционально).
+
+```js
+// первый параметр метода `count`
+// принимает условия выборки 
+const result = await rep.count({
+  type: 'city',          // поле "type" должно иметь значение "city"
+  description: {         // оператор "like" проверяет поле "description"
+    like: 'the capital', // на наличие подстроки "the capital"
+  },
+  updatedAt: {                      // оператор "lt" проверяет значение поля
+    lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
+  },                                // чем указана в условии
+  // см. Фильтрация
+});
 ```
 
 ## Расширение
