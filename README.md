@@ -282,7 +282,7 @@ const result = await rep.create(data, {
 
 // вызываем метод `replaceById` с передачей
 // идентификатора заменяемого документа
-// и новым составом
+// и нового состава
 const person = await rep.replaceById(1, {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
@@ -298,7 +298,7 @@ console.log(person);
 //   age: 14 <= значение обновлено
 // }
 // поле "dimension" удалено, так как
-// не содержалось в новом документе
+// не содержалось в новом составе
 ```
 
 #### patch(data, where = undefined)
