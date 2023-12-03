@@ -281,8 +281,7 @@ const result = await rep.create(data, {
 // }
 
 // вызываем метод `replaceById` с передачей
-// идентификатора заменяемого документа
-// и нового состава
+// идентификатора и нового состава
 const person = await rep.replaceById(1, {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
