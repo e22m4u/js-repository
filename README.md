@@ -390,15 +390,16 @@ console.log(docs);
 // второй параметр метода `patch`
 // принимает условия выборки 
 const result = await rep.patch(data, {
-  type: 'city',          // поле "type" должно иметь значение "city"
-  description: {         // оператор "like" проверяет поле "description"
-    like: 'the capital', // на наличие подстроки "the capital"
+  name: 'Moscow',                   // поле "name" должно иметь значение "Moscow"
+  updatedAt: {                      // оператор "lt" проверяет поле "updatedAt"
+    lt: '2023-12-02T21:00:00.000Z', // на наличие более ранней даты
   },
-  updatedAt: {                      // оператор "lt" проверяет значение поля
-    lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
-  },                                // чем указана в условии
   // см. Фильтрация
 });
+
+// вывод результата
+console.log(result);
+// 2
 ```
 
 #### find(filter = undefined)
@@ -602,15 +603,15 @@ console.log(docs);
 // первый параметр метода `delete`
 // принимает условия выборки 
 const result = await rep.delete({
-  type: 'city',          // поле "type" должно иметь значение "city"
-  description: {         // оператор "like" проверяет поле "description"
-    like: 'the capital', // на наличие подстроки "the capital"
+  title: {           // оператор "like" проверяет поле "title"
+    like: 'bellows', // на содержание подстроки "bellows"
   },
-  updatedAt: {                      // оператор "lt" проверяет значение поля
-    lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
-  },                                // чем указана в условии
   // см. Фильтрация
 });
+
+// вывод результата
+console.log(result);
+// 1
 ```
 
 #### deleteById(id)
@@ -703,15 +704,18 @@ console.log(result2);
 // [
 //   {
 //     "id": 1,
-//     "title": "The Forgotten Ship"
+//     "title": "The Forgotten Ship",
+//     "featured": true
 //   },
 //   {
 //     "id": 2,
-//     "title": "A Giant Bellows"
+//     "title": "A Giant Bellows",
+//     "featured": false
 //   },
 //   {
 //     "id": 3,
-//     "title": "Hundreds of bottles"
+//     "title": "Hundreds of bottles",
+//     "featured": false
 //   }
 // ]
 
@@ -728,15 +732,15 @@ console.log(result);
 // первый параметр метода `count`
 // принимает условия выборки 
 const result = await rep.count({
-  type: 'city',          // поле "type" должно иметь значение "city"
-  description: {         // оператор "like" проверяет поле "description"
-    like: 'the capital', // на наличие подстроки "the capital"
-  },
-  updatedAt: {                      // оператор "lt" проверяет значение поля
-    lt: '2023-12-02T21:00:00.000Z', // "updatedAt" на наличие более ранней даты,
-  },                                // чем указана в условии
+  featured: {  // оператор "neq" проверяет поле "featured"
+    neq: true, // на неравенство значению true
+  }
   // см. Фильтрация
 });
+
+// вывод результата
+console.log(result);
+// 2
 ```
 
 ## Расширение
