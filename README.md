@@ -227,12 +227,15 @@ const rep = schema.getRepository('place');
 Возвращает добавленный документ.  
 
 ```js
+// вызываем метод `create` с передачей состава
+// нового документа первым параметром
 const person = await rep.create({
   name: 'Rick Sanchez',
   dimension: 'C-137',
   age: 67,
 });
 
+// выводим добавленный документ
 console.log(person);
 // {
 //   id: 1,
