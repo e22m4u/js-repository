@@ -211,8 +211,8 @@ const rep = schema.getRepository('place');
 
 - `create(data, filter = undefined)`
 - `replaceById(id, data, filter = undefined)`
-- `patch(data, where = undefined)`
 - `patchById(id, data, filter = undefined)`
+- `patch(data, where = undefined)`
 - `find(filter = undefined)`
 - `findOne(filter = undefined)`
 - `findById(id, filter = undefined)`
@@ -298,6 +298,41 @@ console.log(person);
 // не содержалось в новом составе
 ```
 
+#### patchById(id, data, filter = undefined)
+
+Частично обновляет существующий документ по идентификатору и возвращает его.
+Если идентификатор не найден, то выбрасывает исключение.
+
+```js
+// идентификатор 24 имеет следующий
+// состав документа
+// {
+//   "id": 24,
+//   "type": "airport",
+//   "name": "Domodedovo Airport",
+//   "code": "DME"
+// }
+
+// вызываем метод `patchById` с передачей
+// идентификатора и новых значений обновляемых
+// полей
+const result = await rep.patchById(24, {
+  name: 'Sheremetyevo Airport',
+  code: 'SVO',
+  featured: true,
+});
+
+// выводим результат
+console.log(result);
+// {
+//   "id": 24,
+//   "type": "airport",
+//   "name": "Sheremetyevo Airport", <= значение обновлено
+//   "code": "SVO", <= значение обновлено
+//   "featured": true <= добавлено новое поле
+// }
+```
+
 #### patch(data, where = undefined)
 
 Обновляет документы и возвращает их число. Используется для
@@ -366,41 +401,6 @@ const result = await rep.patch(data, {
   },                                // чем указана в условии
   // см. раздел "фильтрация" и "операторы"
 });
-```
-
-#### patchById(id, data, filter = undefined)
-
-Частично обновляет существующий документ по идентификатору и возвращает его.
-Если идентификатор не найден, то выбрасывает исключение.
-
-```js
-// идентификатор 24 имеет следующий
-// состав документа
-// {
-//   "id": 24,
-//   "type": "airport",
-//   "name": "Domodedovo Airport",
-//   "code": "DME"
-// }
-
-// вызываем метод `patchById` с передачей
-// идентификатора и новых значений обновляемых
-// полей
-const result = await rep.patchById(24, {
-  name: 'Sheremetyevo Airport',
-  code: 'SVO',
-  featured: true,
-});
-
-// выводим результат
-console.log(result);
-// {
-//   "id": 24,
-//   "type": "airport",
-//   "name": "Sheremetyevo Airport", <= значение обновлено
-//   "code": "SVO", <= значение обновлено
-//   "featured": true <= добавлено новое поле
-// }
 ```
 
 #### find(filter = undefined)
