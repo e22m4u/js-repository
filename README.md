@@ -237,7 +237,7 @@ const person = await rep.create({
 // вывод результата
 console.log(person);
 // {
-//   id: 1,
+//   id: 1, <= определено базой данных
 //   name: 'Rick Sanchez',
 //   dimension: 'C-137',
 //   age: 67
@@ -257,9 +257,9 @@ const result = await rep.create(data, {
 
   // "include" - включить в результат связанные
   // документы (см. Связи)
-  include: 'son',
-  include: {son: 'hobbies'},
-  include: ['son', 'daughter'],
+  include: 'biography',
+  include: {biography: 'synopsis'},
+  include: ['biography', 'miniature'],
 });
 ```
 
@@ -311,9 +311,9 @@ const result = await rep.replaceById(12, data, {
 
   // "include" - включить в результат связанные
   // документы (см. Связи)
-  include: 'father',
-  include: {father: 'hobbies'},
-  include: ['father', 'mother'],
+  include: 'grandfather',
+  include: {grandfather: 'biography'},
+  include: ['grandfather', 'miniature'],
 });
 ```
 
