@@ -298,6 +298,25 @@ console.log(person);
 // не передавалось с новым составом
 ```
 
+Использование параметра `filter`
+
+```js
+// третий параметр принимает объект настроек
+// возвращаемого результата (опционально)
+const result = await rep.replaceById(12, data, {
+  // "fields" - если определено, то результат
+  // будут включать только указанные поля
+  fields: 'name',
+  fields: ['name', 'age'],
+
+  // "include" - включить в результат связанные
+  // документы (см. Связи)
+  include: 'father',
+  include: {father: 'hobbies'},
+  include: ['father', 'mother'],
+});
+```
+
 #### patchById(id, data, filter = undefined)
 
 Частично обновляет существующий документ по идентификатору и возвращает его.
@@ -330,6 +349,25 @@ console.log(result);
 //   "code": "SVO", <= значение обновлено
 //   "featured": true <= добавлено новое поле
 // }
+```
+
+Использование параметра `filter`
+
+```js
+// третий параметр принимает объект настроек
+// возвращаемого результата (опционально)
+const result = await rep.patchById(24, data, {
+  // "fields" - если определено, то результат
+  // будут включать только указанные поля
+  fields: 'name',
+  fields: ['name', 'code'],
+
+  // "include" - включить в результат связанные
+  // документы (см. Связи)
+  include: 'city',
+  include: {city: 'country'},
+  include: ['city', 'airlines'],
+});
 ```
 
 #### patch(data, where = undefined)
