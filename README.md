@@ -366,7 +366,7 @@ const result = await rep.patchById(24, data, {
   // документы (см. Связи)
   include: 'city',
   include: {city: 'country'},
-  include: ['city', 'airlines'],
+  include: ['city', 'companies'],
 });
 ```
 
@@ -497,7 +497,7 @@ const result = await rep.find({
   // "include" - включить в результат связанные
   // документы (см. Связи)
   include: 'author',
-  include: {author: 'city'},
+  include: {author: 'role'},
   include: ['author', 'categories'],
 });
 ```
@@ -563,7 +563,7 @@ const result = await rep.findOne({
   // "include" - включить в результат связанные
   // документы (см. Связи)
   include: 'author',
-  include: {author: 'city'},
+  include: {author: 'role'},
   include: ['author', 'categories'],
 });
 ```
@@ -578,15 +578,18 @@ const result = await rep.findOne({
 // [
 //   {
 //     "id": 1,
-//     "title": "The Forgotten Ship"
+//     "title": "The Forgotten Ship",
+//     "featured": true
 //   },
 //   {
 //     "id": 2,
-//     "title": "A Giant Bellows"
+//     "title": "A Giant Bellows",
+//     "featured": false
 //   },
 //   {
 //     "id": 3,
-//     "title": "Hundreds of bottles"
+//     "title": "Hundreds of bottles",
+//     "featured": false
 //   }
 // ]
 
@@ -596,8 +599,28 @@ const result = await rep.findById(2);
 console.log(result);
 // {
 //   "id": 2,
-//   "title": "A Giant Bellows"
+//   "title": "A Giant Bellows",
+//   "featured": false
 // }
+```
+
+Использование параметра `filter`
+
+```js
+// второй параметр принимает объект настроек
+// возвращаемого результата (опционально)
+const result = await rep.findById(2, {
+  // "fields" - если определено, то результат
+  // будут включать только указанные поля
+  fields: 'title',
+  fields: ['title', 'featured'],
+
+  // "include" - включить в результат связанные
+  // документы (см. Связи)
+  include: 'author',
+  include: {author: 'role'},
+  include: ['author', 'categories'],
+});
 ```
 
 #### delete(where = undefined)
