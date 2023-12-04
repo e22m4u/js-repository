@@ -258,7 +258,7 @@ const result = await rep.create(data, {
   // "include" - включить в результат связанные
   // документы (см. Связи)
   include: 'biography',
-  include: {biography: 'synopsis'},
+  include: {biography: 'miniature'},
   include: ['biography', 'miniature'],
 });
 ```
@@ -311,9 +311,9 @@ const result = await rep.replaceById(12, data, {
 
   // "include" - включить в результат связанные
   // документы (см. Связи)
-  include: 'grandfather',
-  include: {grandfather: 'biography'},
-  include: ['grandfather', 'miniature'],
+  include: 'biography',
+  include: {biography: 'miniature'},
+  include: ['biography', 'miniature'],
 });
 ```
 
