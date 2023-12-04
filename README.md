@@ -244,11 +244,11 @@ console.log(person);
 // }
 ```
 
-Использование параметра `filter`
+Использование параметра `filter` (опционально).
 
 ```js
-// второй параметр принимает объект настроек
-// возвращаемого результата (опционально)
+// второй параметр метода `create` принимает
+// объект настроек возвращаемого результата 
 const result = await rep.create(data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
@@ -298,11 +298,11 @@ console.log(person);
 // не передавалось с новым составом
 ```
 
-Использование параметра `filter`
+Использование параметра `filter` (опционально).
 
 ```js
-// третий параметр принимает объект настроек
-// возвращаемого результата (опционально)
+// третий параметр метода `replaceById` принимает
+// объект настроек возвращаемого результата 
 const result = await rep.replaceById(12, data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
@@ -351,11 +351,11 @@ console.log(result);
 // }
 ```
 
-Использование параметра `filter`
+Использование параметра `filter` (опционально).
 
 ```js
-// третий параметр принимает объект настроек
-// возвращаемого результата (опционально)
+// третий параметр метода `patchById` принимает
+// объект настроек возвращаемого результата 
 const result = await rep.patchById(24, data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
@@ -426,7 +426,7 @@ console.log(docs);
 
 ```js
 // второй параметр метода `patch`
-// принимает условия выборки 
+// принимает условия выборки
 const result = await rep.patch(data, {
   name: 'Moscow',                   // поле "name" должно иметь значение "Moscow"
   updatedAt: {                      // оператор "lt" проверяет поле "updatedAt"
@@ -446,21 +446,30 @@ console.log(result);
 
 ```js
 // вызов метода `find` без аргументов
-// возвращает всю коллекцию
+// возвращает все документы коллекции
 const result = await rep.find();
 console.log(result);
 // [
 //   {
 //     "id": 1,
-//     "title": "The Forgotten Ship"
+//     "type": "article",
+//     "title": "The Forgotten Ship",
+//     "publishedAt": "2023-12-02T08:00:00.000Z",
+//     "featured": true
 //   },
 //   {
 //     "id": 2,
-//     "title": "A Giant Bellows"
+//     "type": "article",
+//     "title": "A Giant Bellows",
+//     "publishedAt": "2023-12-02T12:00:00.000Z",
+//     "featured": false
 //   },
 //   {
 //     "id": 3,
-//     "title": "Hundreds of bottles"
+//     "type": "letter",
+//     "title": "Hundreds of bottles",
+//     "publishedAt": null,
+//     "featured": false
 //   }
 // ]
 ```
@@ -474,15 +483,15 @@ const result = await rep.find({
   // "where" - фильтрация выборки по условию, где
   // указанные поля должны содержать определенные
   // значения (см. Фильтрация)
-  where: {type: 'article', published: true},
-  where: {description: {like: 'breaking news'}},
+  where: {type: 'article', featured: true},
+  where: {title: {like: 'the forgotten'}},
   where: {publishedAt: {lte: '2023-12-02T21:00:00.000Z'}},
 
   // "order" - сортировка по указанному полю может
   // принимать постфикс DESC для обратного порядка
-  order: 'foo',
-  order: 'bar DESC',
-  order: ['foo', 'bar DESC'],
+  order: 'featured',
+  order: 'publishedAt DESC',
+  order: ['publishedAt DESC', 'featured ASC', 'id'],
 
   // "limit" - ограничение результата
   // "skip" - пропуск документов
@@ -492,7 +501,7 @@ const result = await rep.find({
   // "fields" - если определено, то результат
   // будет включать только указанные поля
   fields: 'title',
-  fields: ['title', 'published'],
+  fields: ['title', 'featured'],
 
   // "include" - включить в результат связанные
   // документы (см. Связи)
@@ -511,15 +520,24 @@ const result = await rep.find({
 // [
 //   {
 //     "id": 1,
-//     "title": "The Forgotten Ship"
+//     "type": "article",
+//     "title": "The Forgotten Ship",
+//     "publishedAt": "2023-12-02T08:00:00.000Z",
+//     "featured": true
 //   },
 //   {
 //     "id": 2,
-//     "title": "A Giant Bellows"
+//     "type": "article",
+//     "title": "A Giant Bellows",
+//     "publishedAt": "2023-12-02T12:00:00.000Z",
+//     "featured": false
 //   },
 //   {
 //     "id": 3,
-//     "title": "Hundreds of bottles"
+//     "type": "letter",
+//     "title": "Hundreds of bottles",
+//     "publishedAt": null,
+//     "featured": false
 //   }
 // ]
 
@@ -529,28 +547,31 @@ const result = await rep.findOne();
 console.log(result);
 // {
 //   "id": 1,
-//   "title": "The Forgotten Ship"
+//   "type": "article",
+//   "title": "The Forgotten Ship",
+//   "publishedAt": "2023-12-02T08:00:00.000Z",
+//   "featured": true
 // }
 ```
 
 Фильтрация результата (опционально).
 
 ```js
-// первый параметр может принимать
-// объект cо следующими настройками
+// первый параметр метода `find` принимает
+// объект настроек возвращаемого результата
 const result = await rep.findOne({
   // "where" - фильтрация выборки по условию, где
   // указанные поля должны содержать определенные
   // значения (см. Фильтрация)
-  where: {type: 'article', published: true},
-  where: {description: {like: 'breaking news'}},
+  where: {type: 'article', featured: true},
+  where: {title: {like: 'the forgotten'}},
   where: {publishedAt: {lte: '2023-12-02T21:00:00.000Z'}},
 
   // "order" - сортировка по указанному полю может
   // принимать постфикс DESC для обратного порядка
-  order: 'foo',
-  order: 'bar DESC',
-  order: ['foo', 'bar DESC'],
+  order: 'featured',
+  order: 'publishedAt DESC',
+  order: ['publishedAt DESC', 'featured ASC', 'id'],
 
   // "skip" - пропуск документов
   skip: 10,
@@ -558,7 +579,7 @@ const result = await rep.findOne({
   // "fields" - если определено, то результат
   // будет включать только указанные поля
   fields: 'title',
-  fields: ['title', 'published'],
+  fields: ['title', 'featured'],
 
   // "include" - включить в результат связанные
   // документы (см. Связи)
@@ -604,11 +625,11 @@ console.log(result);
 // }
 ```
 
-Использование параметра `filter`
+Использование параметра `filter` (опционально).
 
 ```js
-// второй параметр принимает объект настроек
-// возвращаемого результата (опционально)
+// второй параметр метода `findById` принимает
+// объект настроек возвращаемого результата
 const result = await rep.findById(2, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
@@ -633,15 +654,18 @@ const result = await rep.findById(2, {
 // [
 //   {
 //     "id": 1,
-//     "title": "The Forgotten Ship"
+//     "title": "The Forgotten Ship",
+//     "featured": true
 //   },
 //   {
 //     "id": 2,
-//     "title": "A Giant Bellows"
+//     "title": "A Giant Bellows",
+//     "featured": false
 //   },
 //   {
 //     "id": 3,
-//     "title": "Hundreds of bottles"
+//     "title": "Hundreds of bottles",
+//     "featured": false
 //   }
 // ]
 
@@ -664,9 +688,10 @@ console.log(docs);
 // первый параметр метода `delete`
 // принимает условия выборки 
 const result = await rep.delete({
-  title: {           // оператор "like" проверяет поле "title"
-    like: 'bellows', // на содержание подстроки "bellows"
-  },
+  title: {
+    like: 'bellows', // оператор "like" проверяет поле "title"
+  },                 // на содержание подстроки "bellows"
+  featured: false,   // значение поля "featured" должно быть false
   // см. Фильтрация
 });
 
