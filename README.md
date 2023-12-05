@@ -209,17 +209,17 @@ const rep = schema.getRepository('place');
 
 **Методы:**
 
-- `create(data, filter = undefined)`
-- `replaceById(id, data, filter = undefined)`
-- `patchById(id, data, filter = undefined)`
-- `patch(data, where = undefined)`
-- `find(filter = undefined)`
-- `findOne(filter = undefined)`
-- `findById(id, filter = undefined)`
-- `delete(where = undefined)`
-- `deleteById(id)`
-- `exists(id)`
-- `count(where = undefined)`
+- `create(data, filter = undefined)` добавить новый документ
+- `replaceById(id, data, filter = undefined)` заменить весь документ
+- `patchById(id, data, filter = undefined)` частично обновить документ
+- `patch(data, where = undefined)` обновить все документы или по условию
+- `find(filter = undefined)` найти все документы или по условию
+- `findOne(filter = undefined)` найти первый документ или по условию
+- `findById(id, filter = undefined)` найти документ по идентификатору
+- `delete(where = undefined)` удалить все документы или по условию
+- `deleteById(id)` удалить документ по идентификатору
+- `exists(id)` проверить существование по идентификатору
+- `count(where = undefined)` подсчет всех документов или по условию
 
 **Параметры:**
 
