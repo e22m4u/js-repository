@@ -317,14 +317,14 @@ console.log(result);
 
 // вызов метода `replaceById` с передачей
 // идентификатора и нового состава
-const person = await rep.replaceById(12, {
+const result = await rep.replaceById(12, {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
   age: 14,
 });
 
 // вывод результата
-console.log(person);
+console.log(result);
 // {
 //   id: 12,
 //   name: 'Morty Smith', <= значение обновлено
@@ -338,20 +338,57 @@ console.log(person);
 Использование параметра `filter` (опционально).
 
 ```js
+// подготавливаем данные для второго
+// параметра метода `replaceById`
+const data = {
+  name: 'Morty Smith',
+  kind: 'a young teenage boy',
+  age: 14,
+  pictureId: 347,
+  biographyId: 61
+}
+
 // третий параметр метода `replaceById` принимает
-// объект настроек возвращаемого результата 
+// объект настроек возвращаемого результата
 const result = await rep.replaceById(12, data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
-  fields: 'name',
-  fields: ['name', 'age'],
-
-  // "include" - включить в результат связанные
-  // документы (см. Связи)
-  include: 'biography',
-  include: {biography: 'miniature'},
-  include: ['biography', 'miniature'],
+  fields: [
+    'name',
+    'pictureId',
+    'biographyId'
+  ],
+  // "include" - включение в результат
+  // связанных документов (см. Связи)
+  include: [
+    'picture',
+    'biography',
+  ],
 });
+
+// вывод результата
+console.log(result);
+// {
+//   "name": "Morty Smith",
+//   "pictureId": 347,
+//   "picture": {
+//     "id": 347,
+//     "mime": "image/jpeg",
+//     "file": "/uploads/morty.jpg"
+//   },
+//   "biographyId": 61,
+//   "biography": {
+//      "id": 61,
+//      "annotation": "This article is about Morty Smith",
+//      "body": "Currently, Morty is 14 years old ..."
+//   }
+// }
+//
+// поля "age" и "dimension"
+// исключены опцией "fields"
+//
+// документы "picture" и "biography"
+// встроены опцией "include" (см. Связи)
 ```
 
 #### patchById(id, data, filter = undefined)
