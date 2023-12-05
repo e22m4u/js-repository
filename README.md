@@ -588,8 +588,8 @@ const result = await rep.patch(
   },
   // условия выборки
   {
-    type: 'city',
-    hidden: true,
+    type: 'city', // только если "type" равен "city"
+    hidden: true, // и "hidden" имеет значение true
   }
 );
 
