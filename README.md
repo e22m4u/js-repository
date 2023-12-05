@@ -227,7 +227,7 @@ const rep = schema.getRepository('place');
 
 ```js
 // вызов метода `create` с передачей
-// нового состава первым параметром
+// нового документа первым параметром
 const person = await rep.create({
   name: 'Rick Sanchez',
   dimension: 'C-137',
