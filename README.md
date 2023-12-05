@@ -279,13 +279,13 @@ console.log(result);
 // {
 //   "name": "Rick Sanchez",
 //   "pictureId": 345,
-//   "picture": {
+//   "picture": { <= встроено в ответ метода
 //     "id": 345,
 //     "mime": "image/jpeg",
 //     "file": "/uploads/rick.jpg"
 //   },
 //   "biographyId": 59,
-//   "biography": {
+//   "biography": { <= встроено в ответ метода
 //      "id": 59,
 //      "annotation": "This article is about Rick Sanchez",
 //      "body": "He is a genius scientist whose ..."
@@ -369,13 +369,13 @@ console.log(result);
 // {
 //   "name": "Morty Smith",
 //   "pictureId": 347,
-//   "picture": {
+//   "picture": { <= встроено в ответ метода
 //     "id": 347,
 //     "mime": "image/jpeg",
 //     "file": "/uploads/morty.jpg"
 //   },
 //   "biographyId": 61,
-//   "biography": {
+//   "biography": { <= встроено в ответ метода
 //      "id": 61,
 //      "annotation": "This article is about Morty Smith",
 //      "body": "Currently, Morty is 14 years old ..."
