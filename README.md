@@ -154,7 +154,7 @@ schema.defineModel({
     name: DataType.STRING, // поле для названия торговой точки
     location: { // поле для объекта координат
       type: DataType.OBJECT, // допускать только объекты
-      model: 'latLng', // определение модели объекта координат
+      model: 'latLng', // модель для объекта координат
     },
   },
 });
