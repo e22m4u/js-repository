@@ -479,7 +479,7 @@ const result = await rep.patchById(24, data, filter);
 console.log(result);
 // {
 //   "id": 24,
-//   "name": "Sheremetyevo Airport",
+//   "name": "Sheremetyevo Airport", <= обновлено
 //   "cityId": 231, <= новое поле
 //   "city": { <= разрешение связи
 //     "id": 231,
