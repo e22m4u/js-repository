@@ -226,16 +226,16 @@ const rep = schema.getRepository('place');
 Добавляет новый документ в коллекцию и возвращает его.
 
 ```js
-// вызов метода `create` с передачей
+// вызов метода `create` с передачей состава
 // нового документа первым параметром
-const person = await rep.create({
+const result = await rep.create({
   name: 'Rick Sanchez',
   dimension: 'C-137',
   age: 67,
 });
 
 // вывод результата
-console.log(person);
+console.log(result);
 // {
 //   id: 1, <= определено базой данных
 //   name: 'Rick Sanchez',
@@ -247,41 +247,40 @@ console.log(person);
 Использование параметра `filter` (опционально).
 
 ```js
-// подготавливаем данные нового
-// документа
+// подготавливаем данные для первого
+// параметра метода `create`
 const data = {
   name: 'Rick Sanchez',
   dimension: 'C-137',
   age: 67,
-  // связанные идентификаторы
-  miniatureId: 345,
+  pictureId: 345,
   biographyId: 59 
 }
 
 // второй параметр метода `create` принимает
 // объект настроек возвращаемого результата
-const person = await rep.create(data, {
+const result = await rep.create(data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
   fields: [
     'name',
-    'miniatureId',
+    'pictureId',
     'biographyId'
   ],
   // "include" - включение в результат
   // связанных документов (см. Связи)
   include: [
-    'miniature',
+    'picture',
     'biography',
   ],
 });
 
 // вывод результата
-console.log(person);
+console.log(result);
 // {
 //   "name": "Rick Sanchez",
-//   "miniatureId": 345,
-//   "miniature": {
+//   "pictureId": 345,
+//   "picture": {
 //     "id": 345,
 //     "mime": "image/jpeg",
 //     "file": "/uploads/rick.jpg"
@@ -294,10 +293,10 @@ console.log(person);
 //   }
 // }
 //
-// поля "age" и "dimension" исключены
-// опцией "fields"
+// поля "age" и "dimension"
+// исключены опцией "fields"
 //
-// документы "miniature" и "biography"
+// документы "picture" и "biography"
 // встроены опцией "include" (см. Связи)
 ```
 
