@@ -432,6 +432,7 @@ const data = {
   code: 'SVO',
   featured: true,
   cityId: 231,
+  companyIds: [513, 514],
 }
 
 // подготовка параметра `filter`
@@ -441,6 +442,7 @@ const filter = {
   fields: [
     'name',
     'cityId',
+    'companyIds',
   ],
   // "include" - включение в результат
   // связанных документов (см. Связи)
@@ -461,6 +463,7 @@ console.log(result);
 //     "id": 231,
 //     "name": "Moscow"
 //   },
+//   "companyIds": [513, 514],
 //   "companies": [ <= встроено в ответ
 //     {
 //       "id": 513,
@@ -470,7 +473,6 @@ console.log(result);
 //       "id": 514,
 //       "name": "Aeroflot Airlines"
 //     },
-//     ...
 //   ]
 // }
 //
