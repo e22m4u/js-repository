@@ -254,8 +254,8 @@ const data = {
   name: 'Rick Sanchez',
   dimension: 'C-137',
   age: 67,
-  pictureId: 345,
-  biographyId: 59 
+  biographyId: 59,        // связь "biography" (см. belongsTo)
+  pictureIds: [345, 346], // связь "pictures" (см. referencesMany)
 }
 
 // подготовка параметра "filter"
@@ -264,14 +264,14 @@ const filter = {
   // будут включать только указанные поля
   fields: [
     'name',
-    'pictureId',
     'biographyId'
+    'pictureIds',
   ],
   // "include" - включение в результат
   // связанных документов (см. Связи)
   include: [
-    'picture',
     'biography',
+    'pictures',
   ],
 }
 
@@ -280,24 +280,31 @@ const result = await rep.create(data, filter);
 console.log(result);
 // {
 //   "name": "Rick Sanchez",
-//   "pictureId": 345,
-//   "picture": { <= встроено в ответ
-//     "id": 345,
-//     "mime": "image/jpeg",
-//     "file": "/uploads/rick.jpg"
-//   },
 //   "biographyId": 59,
 //   "biography": { <= встроено в ответ
 //      "id": 59,
 //      "annotation": "This article is about Rick Sanchez",
 //      "body": "He is a genius scientist whose ..."
 //   }
+//   "pictureIds": [345, 346],
+//   "pictures": [ <= встроено в ответ
+//     {
+//       "id": 345,
+//       "mime": "image/jpeg",
+//       "file": "/uploads/rick345.jpg"
+//     },
+//     {
+//       "id": 346,
+//       "mime": "image/jpeg",
+//       "file": "/uploads/rick346.jpg"
+//     }
+//   ],
 // }
 //
 // поля "age" и "dimension"
 // исключены опцией "fields"
 //
-// документы "picture" и "biography"
+// документы "biography" и "pictures"
 // встроены опцией "include" (см. Связи)
 ```
 
@@ -332,6 +339,7 @@ console.log(result);
 //   kind: 'a young teenage boy', <= добавлено новое поле
 //   age: 14 <= значение обновлено
 // }
+//
 // поле "dimension" удалено, так как
 // не передавалось с новым составом
 ```
@@ -346,8 +354,8 @@ const data = {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
   age: 14,
-  pictureId: 347,
-  biographyId: 61
+  biographyId: 61,        // связь "biography" (см. belongsTo)
+  pictureIds: [347, 348], // связь "pictures" (см. referencesMany)
 }
 
 // подготовка параметра "filter"
@@ -356,14 +364,14 @@ const filter = {
   // будут включать только указанные поля
   fields: [
     'name',
-    'pictureId',
     'biographyId'
+    'pictureIds',
   ],
   // "include" - включение в результат
   // связанных документов (см. Связи)
   include: [
-    'picture',
     'biography',
+    'pictures',
   ],
 }
 
@@ -372,24 +380,31 @@ const result = await rep.replaceById(12, data, filter);
 console.log(result);
 // {
 //   "name": "Morty Smith",
-//   "pictureId": 347,
-//   "picture": { <= встроено в ответ
-//     "id": 347,
-//     "mime": "image/jpeg",
-//     "file": "/uploads/morty.jpg"
-//   },
 //   "biographyId": 61,
 //   "biography": { <= встроено в ответ
 //      "id": 61,
 //      "annotation": "This article is about Morty Smith",
 //      "body": "Currently, Morty is 14 years old ..."
-//   }
+//   },
+//   "pictureIds": [347, 348],
+//   "picture": [ <= встроено в ответ
+//     {
+//       "id": 347,
+//       "mime": "image/jpeg",
+//       "file": "/uploads/morty347.jpg"
+//     },
+//     {
+//       "id": 348,
+//       "mime": "image/jpeg",
+//       "file": "/uploads/morty348.jpg"
+//     }
+//   ]
 // }
 //
 // поля "age" и "dimension"
 // исключены опцией "fields"
 //
-// документы "picture" и "biography"
+// документы "biography" и "pictures"
 // встроены опцией "include" (см. Связи)
 ```
 
@@ -438,8 +453,8 @@ const data = {
   name: 'Sheremetyevo Airport',
   code: 'SVO',
   featured: true,
-  cityId: 231,
-  companyIds: [513, 514],
+  cityId: 231,            // связь "city" (см. belongsTo)
+  companyIds: [513, 514], // связь "companies" (см. referencesMany)
 }
 
 // подготовка параметра `filter`
@@ -559,7 +574,8 @@ console.log(docs);
 // ]
 ```
 
-Условия выборки (опционально).
+Использование второго параметра `where` метода `patch` позволяет
+определить условия выборки обновляемых документов.
 
 ```js
 // вызов метода `patch` с передачей
