@@ -247,20 +247,58 @@ console.log(person);
 Использование параметра `filter` (опционально).
 
 ```js
+// подготавливаем данные нового
+// документа
+const data = {
+  name: 'Rick Sanchez',
+  dimension: 'C-137',
+  age: 67,
+  // связанные идентификаторы
+  miniatureId: 345,
+  biographyId: 59 
+}
+
 // второй параметр метода `create` принимает
-// объект настроек возвращаемого результата 
-const result = await rep.create(data, {
+// объект настроек возвращаемого результата
+const person = await rep.create(data, {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
-  fields: 'name',
-  fields: ['name', 'age'],
-
-  // "include" - включить в результат связанные
-  // документы (см. Связи)
-  include: 'biography',
-  include: {biography: 'miniature'},
-  include: ['biography', 'miniature'],
+  fields: [
+    'name',
+    'miniatureId',
+    'biographyId'
+  ],
+  // "include" - включение в результат
+  // связанных документов (см. Связи)
+  include: [
+    'miniature',
+    'biography',
+  ],
 });
+
+// вывод результата
+console.log(person);
+// {
+//   "name": "Rick Sanchez",
+//   "miniatureId": 345,
+//   "miniature": {
+//     "id": 345,
+//     "mime": "image/jpeg",
+//     "file": "/uploads/rick.jpg"
+//   },
+//   "biographyId": 59,
+//   "biography": {
+//      "id": 59,
+//      "annotation": "This article is about Rick Sanchez",
+//      "body": "He is a genius scientist whose ..."
+//   }
+// }
+//
+// поля "age" и "dimension" исключены
+// опцией "fields"
+//
+// документы "miniature" и "biography"
+// встроены опцией "include" (см. Связи)
 ```
 
 #### replaceById(id, data, filter = undefined)
