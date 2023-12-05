@@ -301,11 +301,11 @@ console.log(result);
 //   ],
 // }
 //
-// поля "age" и "dimension"
-// исключены опцией "fields"
+// поля "age" и "dimension" исключены
+// из результата опцией "fields"
 //
 // документы "biography" и "pictures"
-// встроены опцией "include" (см. Связи)
+// встроены в результат опцией "include"
 ```
 
 #### replaceById(id, data, filter = undefined)
@@ -405,7 +405,7 @@ console.log(result);
 // но исключены из результата опцией "fields"
 //
 // документы "biography" и "pictures"
-// встроены опцией "include" (см. Связи)
+// встроены в результат опцией "include"
 ```
 
 #### patchById(id, data, filter = undefined)
@@ -502,7 +502,7 @@ console.log(result);
 // но исключены из ответа опцией "fields"
 //
 // документы "city" и "companies"
-// встроены опцией "include" (см. Связи)
+// встроены в результат опцией "include"
 ```
 
 #### patch(data, where = undefined)
