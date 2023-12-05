@@ -494,26 +494,34 @@ console.log(result);
 // [
 //   {
 //     "id": 1,
-//     "type": null,
-//     "name": "Bangkok"
+//     "type": "city",
+//     "name": "Bangkok",
+//     "hidden": false
 //   },
 //   {
 //     "id": 2,
-//     "type": null,
-//     "name": "Moscow"
+//     "type": "country",
+//     "name": "Thailand",
+//     "hidden": true
+//   },
+//   {
+//     "id": 3,
+//     "type": "city",
+//     "name": "Moscow",
+//     "hidden": false
 //   }
 // ]
 
 // вызов метода `patch` с передачей
 // значений для обновляемых полей
 const result = await rep.patch({
-  type: 'city',
+  hidden: false,
   updatedAt: new Date().toISOString(),
 });
 
 // вывод количество затронутых документов
 console.log(result);
-// 2
+// 3
 
 // просмотр коллекции методом `find`
 // для проверки изменений
@@ -522,15 +530,24 @@ console.log(docs);
 // [
 //   {
 //     "id": 1,
-//     "type": "city", <= значение обновлено
+//     "type": "city",
 //     "name": "Bangkok",
-//     "updatedAt": "2023-12-02T14:13:27.649Z" <= добавлено новое поле
+//     "hidden": false,
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
 //   },
 //   {
 //     "id": 2,
-//     "type": "city", <= значение обновлено
+//     "type": "country",
+//     "name": "Thailand",
+//     "hidden": false, <= значение обновлено
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
+//   },
+//   {
+//     "id": 3,
+//     "type": "city",
 //     "name": "Moscow",
-//     "updatedAt": "2023-12-02T14:13:27.649Z" <= добавлено новое поле
+//     "hidden": false,
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
 //   }
 // ]
 ```
@@ -538,19 +555,25 @@ console.log(docs);
 Условия выборки (опционально).
 
 ```js
-// второй параметр метода `patch`
-// принимает условия выборки
-const result = await rep.patch(data, {
-  name: 'Moscow',                   // поле "name" должно иметь значение "Moscow"
-  updatedAt: {
-    lt: '2023-12-02T21:00:00.000Z', // оператор "lt" проверяет поле "updatedAt"
-  },                                // на наличие более ранней даты
-  // см. Фильтрация
-});
+// подготовка новых значений
+const data = {
+  type: 'capital',
+  updatedAt: new Date().toISOString(),
+}
 
-// вывод результата
+// подготовка условий выборки
+const where = {
+  type: 'city',
+  hidden: false,
+}
+
+// вызов метода `patch` и вывод результата
+const result = await rep.patch(data, where);
 console.log(result);
 // 2
+
+// по условиям выборки обновлено
+// только 2 документа из 3-х
 ```
 
 #### find(filter = undefined)
