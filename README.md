@@ -247,8 +247,7 @@ console.log(result);
 Использование параметра `filter` (опционально).
 
 ```js
-// подготавливаем данные для первого
-// параметра метода `create`
+// подготовка состава для нового документа
 const data = {
   name: 'Rick Sanchez',
   dimension: 'C-137',
@@ -257,9 +256,8 @@ const data = {
   biographyId: 59 
 }
 
-// второй параметр метода `create` принимает
-// объект настроек возвращаемого результата
-const result = await rep.create(data, {
+// подготовка параметра "filter"
+const filter = {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
   fields: [
@@ -273,9 +271,10 @@ const result = await rep.create(data, {
     'picture',
     'biography',
   ],
-});
+}
 
-// вывод результата
+// вызов метода `create` и вывод результата
+const result = await rep.create(data, filter);
 console.log(result);
 // {
 //   "name": "Rick Sanchez",
@@ -338,8 +337,7 @@ console.log(result);
 Использование параметра `filter` (опционально).
 
 ```js
-// подготавливаем данные для второго
-// параметра метода `replaceById`
+// подготовка состава для заменяемого документа
 const data = {
   name: 'Morty Smith',
   kind: 'a young teenage boy',
@@ -348,9 +346,8 @@ const data = {
   biographyId: 61
 }
 
-// третий параметр метода `replaceById` принимает
-// объект настроек возвращаемого результата
-const result = await rep.replaceById(12, data, {
+// подготовка параметра "filter"
+const filter = {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
   fields: [
@@ -364,9 +361,10 @@ const result = await rep.replaceById(12, data, {
     'picture',
     'biography',
   ],
-});
+}
 
-// вывод результата
+// вызов метода `replaceById` и вывод результата
+const result = await rep.replaceById(12, data, filter);
 console.log(result);
 // {
 //   "name": "Morty Smith",
