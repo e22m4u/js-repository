@@ -279,13 +279,13 @@ console.log(result);
 // {
 //   "name": "Rick Sanchez",
 //   "pictureId": 345,
-//   "picture": { <= встроено в ответ метода
+//   "picture": { <= встроено в ответ
 //     "id": 345,
 //     "mime": "image/jpeg",
 //     "file": "/uploads/rick.jpg"
 //   },
 //   "biographyId": 59,
-//   "biography": { <= встроено в ответ метода
+//   "biography": { <= встроено в ответ
 //      "id": 59,
 //      "annotation": "This article is about Rick Sanchez",
 //      "body": "He is a genius scientist whose ..."
@@ -369,13 +369,13 @@ console.log(result);
 // {
 //   "name": "Morty Smith",
 //   "pictureId": 347,
-//   "picture": { <= встроено в ответ метода
+//   "picture": { <= встроено в ответ
 //     "id": 347,
 //     "mime": "image/jpeg",
 //     "file": "/uploads/morty.jpg"
 //   },
 //   "biographyId": 61,
-//   "biography": { <= встроено в ответ метода
+//   "biography": { <= встроено в ответ
 //      "id": 61,
 //      "annotation": "This article is about Morty Smith",
 //      "body": "Currently, Morty is 14 years old ..."
@@ -426,20 +426,59 @@ console.log(result);
 Использование параметра `filter` (опционально).
 
 ```js
-// третий параметр метода `patchById` принимает
-// объект настроек возвращаемого результата 
-const result = await rep.patchById(24, data, {
+// подготовка обновляемых данных
+const data = {
+  name: 'Sheremetyevo Airport',
+  code: 'SVO',
+  featured: true,
+  cityId: 231,
+}
+
+// подготовка параметра `filter`
+const filter = {
   // "fields" - если определено, то результат
   // будут включать только указанные поля
-  fields: 'name',
-  fields: ['name', 'code'],
-
-  // "include" - включить в результат связанные
-  // документы (см. Связи)
-  include: 'city',
-  include: {city: 'country'},
-  include: ['city', 'companies'],
-});
+  fields: [
+    'name',
+    'cityId',
+  ],
+  // "include" - включение в результат
+  // связанных документов (см. Связи)
+  include: [
+    'city',
+    'companies',
+  ],
+}
+  
+// вызов метода `patchById` и вывод результата
+const result = await rep.patchById(24, data, filter);
+console.log(result);
+// {
+//   "id": 24,
+//   "name": "Sheremetyevo Airport",
+//   "cityId": 231,
+//   "city": { <= встроено в ответ
+//     "id": 231,
+//     "name": "Moscow"
+//   },
+//   "companies": [ <= встроено в ответ
+//     {
+//       "id": 513,
+//       "name": "S7 Airlines"
+//     },
+//     {
+//       "id": 514,
+//       "name": "Aeroflot Airlines"
+//     },
+//     ...
+//   ]
+// }
+//
+// поля "code" и "featured" обновлены,
+// но исключены из ответа опцией "fields"
+//
+// документы "city" и "companies"
+// встроены опцией "include" (см. Связи)
 ```
 
 #### patch(data, where = undefined)
