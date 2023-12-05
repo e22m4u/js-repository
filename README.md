@@ -404,8 +404,9 @@ console.log(result);
 //   "code": "DME"
 // }
 
-// вызов метода `patchById` с передачей идентификатора
-// и новых значений обновляемых полей
+// вызов метода `patchById` с передачей
+// идентификатора и новых значений
+// обновляемых полей
 const result = await rep.patchById(24, {
   name: 'Sheremetyevo Airport',
   code: 'SVO',
