@@ -496,7 +496,7 @@ console.log(result);
 //     "id": 1,
 //     "type": "city",
 //     "name": "Bangkok",
-//     "hidden": false
+//     "hidden": true
 //   },
 //   {
 //     "id": 2,
@@ -508,7 +508,7 @@ console.log(result);
 //     "id": 3,
 //     "type": "city",
 //     "name": "Moscow",
-//     "hidden": false
+//     "hidden": true
 //   }
 // ]
 
@@ -532,7 +532,7 @@ console.log(docs);
 //     "id": 1,
 //     "type": "city",
 //     "name": "Bangkok",
-//     "hidden": false,
+//     "hidden": false, <= значение обновлено
 //     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
 //   },
 //   {
@@ -546,7 +546,7 @@ console.log(docs);
 //     "id": 3,
 //     "type": "city",
 //     "name": "Moscow",
-//     "hidden": false,
+//     "hidden": false, <= значение обновлено
 //     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
 //   }
 // ]
@@ -555,20 +555,22 @@ console.log(docs);
 Условия выборки (опционально).
 
 ```js
-// подготовка новых значений
-const data = {
-  type: 'capital',
-  updatedAt: new Date().toISOString(),
-}
+// вызов метода `patch` с передачей
+// условий выборки обновляемых документов
+const result = await rep.patch(
+  // новые значения полей
+  {
+    hidden: false,
+    updatedAt: new Date().toISOString(),
+  },
+  // условия выборки
+  {
+    type: 'city',
+    hidden: true,
+  }
+);
 
-// подготовка условий выборки
-const where = {
-  type: 'city',
-  hidden: false,
-}
-
-// вызов метода `patch` и вывод результата
-const result = await rep.patch(data, where);
+// вывод количества затронутых документов
 console.log(result);
 // 2
 
