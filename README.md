@@ -281,13 +281,13 @@ console.log(result);
 // {
 //   "name": "Rick Sanchez",
 //   "biographyId": 59,
-//   "biography": { <= встроено в ответ
+//   "biography": { <= разрешение связи
 //      "id": 59,
 //      "annotation": "This article is about Rick Sanchez",
 //      "body": "He is a genius scientist whose ..."
 //   }
 //   "pictureIds": [345, 346],
-//   "pictures": [ <= встроено в ответ
+//   "pictures": [ <= разрешение связи
 //     {
 //       "id": 345,
 //       "mime": "image/jpeg",
@@ -335,9 +335,9 @@ const result = await rep.replaceById(12, {
 console.log(result);
 // {
 //   id: 12,
-//   name: 'Morty Smith', <= значение обновлено
-//   kind: 'a young teenage boy', <= добавлено новое поле
-//   age: 14 <= значение обновлено
+//   name: 'Morty Smith', <= обновлено
+//   kind: 'a young teenage boy', <= новое поле
+//   age: 14 <= обновлено
 // }
 //
 // поле "dimension" удалено, так как
@@ -380,14 +380,14 @@ const result = await rep.replaceById(12, data, filter);
 console.log(result);
 // {
 //   "name": "Morty Smith",
-//   "biographyId": 61,
-//   "biography": { <= встроено в ответ
+//   "biographyId": 61, <= новое поле
+//   "biography": { <= разрешение связи
 //      "id": 61,
 //      "annotation": "This article is about Morty Smith",
 //      "body": "Currently, Morty is 14 years old ..."
 //   },
-//   "pictureIds": [347, 348],
-//   "picture": [ <= встроено в ответ
+//   "pictureIds": [347, 348], <= новое поле
+//   "picture": [ <= разрешение связи
 //     {
 //       "id": 347,
 //       "mime": "image/jpeg",
@@ -401,8 +401,8 @@ console.log(result);
 //   ]
 // }
 //
-// поля "age" и "dimension"
-// исключены опцией "fields"
+// поля "kind" и "age" записаны в документ,
+// но исключены из результата опцией "fields"
 //
 // документы "biography" и "pictures"
 // встроены опцией "include" (см. Связи)
@@ -437,9 +437,9 @@ console.log(result);
 // {
 //   "id": 24,
 //   "type": "airport",
-//   "name": "Sheremetyevo Airport", <= значение обновлено
-//   "code": "SVO", <= значение обновлено
-//   "featured": true <= добавлено новое поле
+//   "name": "Sheremetyevo Airport", <= обновлено
+//   "code": "SVO", <= обновлено
+//   "featured": true <= новое поле
 // }
 ```
 
@@ -480,13 +480,13 @@ console.log(result);
 // {
 //   "id": 24,
 //   "name": "Sheremetyevo Airport",
-//   "cityId": 231,
-//   "city": { <= встроено в ответ
+//   "cityId": 231, <= новое поле
+//   "city": { <= разрешение связи
 //     "id": 231,
 //     "name": "Moscow"
 //   },
-//   "companyIds": [513, 514],
-//   "companies": [ <= встроено в ответ
+//   "companyIds": [513, 514], <= новое поле
+//   "companies": [ <= разрешение связи
 //     {
 //       "id": 513,
 //       "name": "S7 Airlines"
@@ -554,22 +554,22 @@ console.log(docs);
 //     "id": 1,
 //     "type": "city",
 //     "name": "Bangkok",
-//     "hidden": false, <= значение обновлено
-//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
+//     "hidden": false, <= обновлено
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= новое поле
 //   },
 //   {
 //     "id": 2,
 //     "type": "country",
 //     "name": "Thailand",
-//     "hidden": false, <= значение обновлено
-//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
+//     "hidden": false, <= обновлено
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= новое поле
 //   },
 //   {
 //     "id": 3,
 //     "type": "city",
 //     "name": "Moscow",
-//     "hidden": false, <= значение обновлено
-//     "updatedAt": "2023-12-02T14:00:00.000Z" <= добавлено новое поле
+//     "hidden": false, <= обновлено
+//     "updatedAt": "2023-12-02T14:00:00.000Z" <= новое поле
 //   }
 // ]
 ```
