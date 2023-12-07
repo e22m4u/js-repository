@@ -214,6 +214,20 @@ schema.defineModel({
 
 // получение репозитория модели "city"
 const cityRep = schema.getRepository('city');
+
+// записываем новый документ "city"
+const city = await cityRep.create({
+  name: 'Moscow',
+  population: 11980000
+});
+
+// выводим результат
+console.log(city);
+// {
+//   "id": 1,
+//   "name": "Moscow",
+//   "population": 11980000
+// }
 ```
 
 #### Методы
