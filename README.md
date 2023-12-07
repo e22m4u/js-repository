@@ -196,14 +196,16 @@ import {Schema} from '@e22m4u/js-repository';
 
 const schema = new Schema();
 
+// объявление источника "myMemory"
 schema.defineDatasource({
   name: 'myMemory',
   adapter: 'memory',
 });
 
+// объявление модели "city"
 schema.defineModel({
   name: 'city',
-  datasource: 'myMemory',
+  datasource: 'myMemory', // выбранный источник
   properties: {
     name: DataType.STRING,
     population: DataType.NUMBER,
