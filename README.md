@@ -328,10 +328,10 @@ await rep.patch(
 const result = await rep.find({
   // упорядочить по полю "featured"
   order: 'featured',
-  // по полю "publishedAt" в обратном порядке
-  order: 'publishedAt DESC',
+  // по полю "featured" в обратном порядке
+  order: 'featured DESC',
   // по нескольким полям в разных направлениях
-  order: ['publishedAt DESC', 'featured ASC', 'id'],
+  order: ['featured ASC', 'publishedAt DESC', 'id'],
 });
 ```
 
