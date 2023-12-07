@@ -205,7 +205,7 @@ schema.defineDatasource({
 // объявление модели "city"
 schema.defineModel({
   name: 'city',
-  datasource: 'myMemory', // выбранный источник
+  datasource: 'myMemory', // выбор источника
   properties: {
     name: DataType.STRING,
     population: DataType.NUMBER,
