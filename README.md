@@ -53,7 +53,7 @@ npm install @e22m4u/js-repository-mongodb-adapter
 ```mermaid
 flowchart LR
 
-A[Datasource]-->B[Data Model]-->С[Repository];
+A[Источник]-->B[Модель]-->С[Ропозиторий];
 ```
 
 Определения источников и моделей хранятся в экземпляре класса `Schema`,
