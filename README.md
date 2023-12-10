@@ -111,7 +111,7 @@ schema.defineDatasource({
 ```js
 // объявление модели "region"
 schema.defineModel({
-  name: 'region', // название новой модели
+  name: 'region', // название модели
   properties: { // поля модели
     name: DataType.STRING,
     population: DataType.NUMBER,
