@@ -150,40 +150,6 @@ schema.defineModel({
 });
 ```
 
-**Наследование**
-
-Модель может наследовать поля и связи используя параметр `base`, куда
-передается название базовой модели. При этом наследуемые настройки можно
-переопределять не затрагивая родителя.
-
-```js
-// модель "area"
-schema.defineModel({
-  name: 'area',
-  properties: {
-    name: DataType.STRING,
-    population: DataType.NUMBER,
-  },
-});
-
-// модель "city"
-schema.defineModel({
-  name: 'city',
-  base: 'area', // базовая модель
-  properties: {
-    timezone: DataType.STRING,
-  },
-});
-
-// документ "city" может выглядеть так
-// {
-//   "id": 1,
-//   "name": "Moscow", <= унаследовано
-//   "population": 11980000, <= унаследовано
-//   "timezone": "Europe/Moscow"
-// }
-```
-
 **Источник данных**
 
 Если модель отражает реальную коллекцию базы, а не является частью другой,
@@ -260,6 +226,40 @@ schema.defineModel({
     },
   },
 });
+```
+
+**Наследование**
+
+Модель может наследовать поля и связи используя параметр `base`, куда
+передается название базовой модели. При этом наследуемые настройки можно
+переопределять не затрагивая родителя.
+
+```js
+// модель "area"
+schema.defineModel({
+  name: 'area',
+  properties: {
+    name: DataType.STRING,
+    population: DataType.NUMBER,
+  },
+});
+
+// модель "city"
+schema.defineModel({
+  name: 'city',
+  base: 'area', // базовая модель
+  properties: {
+    timezone: DataType.STRING,
+  },
+});
+
+// документ "city" может выглядеть так
+// {
+//   "id": 1,
+//   "name": "Moscow", <= унаследовано
+//   "population": 11980000, <= унаследовано
+//   "timezone": "Europe/Moscow"
+// }
 ```
 
 ## Репозиторий
