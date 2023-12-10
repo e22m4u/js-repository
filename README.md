@@ -84,7 +84,7 @@ schema.defineDatasource({
 });
 ```
 
-**Параметры источника**
+**Параметры**
 
 - `name: string` уникальное название
 - `adapter: string` выбранный адаптер
