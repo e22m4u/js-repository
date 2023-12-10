@@ -209,20 +209,20 @@ schema.defineModel({
 
 ```js
 schema.defineModel({
-  name: 'page',
+  name: 'place',
   properties: {
-    title: {
+    name: {
       type: DataType.STRING,
       required: true,
     },
-    tags: {
+    location: {
+      type: DataType.OBJECT,
+      model: 'latLng',
+    },
+    keywords: {
       type: DataType.ARRAY,
       itemType: DataType.STRING,
       default: () => [],
-    },
-    createdAt: {
-      type: DataType.STRING,
-      default: () => new Date().toISOString(),
     },
   },
 });
