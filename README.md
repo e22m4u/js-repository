@@ -217,14 +217,21 @@ schema.defineModel({
 schema.defineModel({
   name: 'place',
   properties: {
-    name: {
-      type: DataType.STRING,
-      required: true,
-    },
+    // базовое определение поля "name"
+    // с передачей типа "string"
+    name: DataType.STRING,
+    // расширенное определение поля "location"
+    // с передачей модели допустимого значения
+    // и флага "required" исключающего null
+    // и undefined
     location: {
       type: DataType.OBJECT,
       model: 'latLng',
+      required: true,
     },
+    // расширенное определение поля "keywords"
+    // с передачей типа допустимого элемента
+    // и фабрикой значения по умолчанию
     keywords: {
       type: DataType.ARRAY,
       itemType: DataType.STRING,
