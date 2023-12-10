@@ -119,6 +119,15 @@ schema.defineModel({
 });
 ```
 
+Параметры модели
+
+- `name: string` название модели (обязательно)
+- `base: string` название наследуемой модели
+- `tableName: string` название коллекции в базе
+- `datasource: string` выбранный источник данных
+- `properties: object` определения полей модели
+- `relations: object` определения связей (см. Связи)
+
 **Название модели**
 
 Название модели должно быть уникальным, так как оно используется
@@ -163,6 +172,51 @@ schema.defineModel({
 });
 ```
 
+Типы данных
+
+- `DataType.ANY` разрешено любое значение
+- `DataType.STRING` только значение типа `string`
+- `DataType.NUMBER` только значение типа `number`
+- `DataType.BOOLEAN` только значение типа `boolean`
+- `DataType.ARRAY` только значение типа `array`
+- `DataType.OBJECT` только значение типа `object`
+
+Когда требуется указать значение по умолчанию, установить флаг `required`
+или объявить более сложный тип допустимого значения, то вместо базового
+определения, используется объект с расширенными настройками.
+
+```js
+schema.defineModel({
+  name: 'page',
+  properties: {
+    title: {
+      type: DataType.STRING,
+      required: true,
+    },
+    tags: {
+      type: DataType.ARRAY,
+      itemType: DataType.STRING,
+      default: () => [],
+    },
+    createdAt: {
+      type: DataType.STRING,
+      default: () => new Date().toISOString(),
+    },
+  },
+});
+```
+
+Параметры поля
+
+- `type: string` тип допустимого значения (обязательно)
+- `itemType: string` тип элемента массива (для `type: 'array'`)
+- `model: string` модель объекта (для `type: 'object'`)
+- `primaryKey: boolean` объявить поле первичным ключом
+- `columnName: string` переопределение названия колонки
+- `columnType: string` тип колонки (определяется адаптером)
+- `required: boolean` объявить поле обязательным
+- `default: any` значение по умолчанию
+
 **Наследование**
 
 Модель может наследовать поля и связи используя параметр `base`, куда
@@ -196,35 +250,6 @@ schema.defineModel({
 //   "timezone": "Europe/Moscow"
 // }
 ```
-
-#### Параметры модели
-
-- `name: string` название модели (обязательно)
-- `base: string` название наследуемой модели
-- `tableName: string` название коллекции в базе
-- `datasource: string` выбранный источник данных
-- `properties: object` определения полей модели
-- `relations: object` определения связей (см. Связи)
-
-#### Типы данных
-
-- `DataType.ANY` разрешено любое значение
-- `DataType.STRING` только значение типа `string`
-- `DataType.NUMBER` только значение типа `number`
-- `DataType.BOOLEAN` только значение типа `boolean`
-- `DataType.ARRAY` только значение типа `array`
-- `DataType.OBJECT` только значение типа `object`
-
-#### Параметры поля
-
-- `type: string` тип допустимого значения (обязательно)
-- `itemType: string` тип элемента массива (для `type: 'array'`)
-- `model: string` модель объекта (для `type: 'object'`)
-- `primaryKey: boolean` объявить поле первичным ключом
-- `columnName: string` переопределение названия колонки
-- `columnType: string` тип колонки (определяется адаптером)
-- `required: boolean` объявить поле обязательным
-- `default: any` значение по умолчанию
 
 ## Репозиторий
 
