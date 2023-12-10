@@ -184,7 +184,18 @@ schema.defineModel({
 schema.defineModel({
   name: 'city',
   base: 'area',
+  properties: {
+    timezone: DataType.STRING,
+  },
 });
+
+// документ "city" может выглядеть так
+// {
+//   "id": 1,
+//   "name": "Moscow", <= унаследовано от "area"
+//   "population": 11980000, <= унаследовано от "area"
+//   "timezone": "Europe/Moscow"
+// }
 ```
 
 #### Параметры модели
