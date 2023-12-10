@@ -59,7 +59,7 @@ import {Schema} from '@e22m4u/js-repository';
 const schema = new Schema();
 ```
 
-Интерфейс `Schema` содержит три основных метода:
+Интерфейс `Schema` имеет три основных метода:
 
 - `defineDatasource(datasourceDef: object): this` - добавить источник
 - `defineModel(modelDef: object): this` - добавить модель
