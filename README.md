@@ -157,10 +157,16 @@ schema.defineModel({
 возможность получить репозиторий для этой модели (см. [Репозиторий](#Репозиторий)).
 
 ```js
+// модель "city"
 schema.defineModel({
   name: 'city',
   datasource: 'myDatasource', // выбранный источник
 });
+
+// репозиторий "city"
+const cityRep = schema.getRepository('city');
+// cityRep.create({name: 'St. Petersburg'});
+// ...
 ```
 
 **Поля документа**
