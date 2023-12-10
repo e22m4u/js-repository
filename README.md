@@ -109,14 +109,21 @@ schema.defineDatasource({
 который будет использован репозиторием для доступа к коллекции.
 
 ```js
-// объявление модели "city"
+// объявление модели "region"
 schema.defineModel({
-  name: 'city', // название новой модели
+  name: 'region', // название новой модели
   properties: { // поля модели
     name: DataType.STRING,
     population: DataType.NUMBER,
   },
 });
+
+// документ может выглядеть так
+// {
+//   "id": 1,
+//   "name": "Asia",
+//   "population": 4753079727
+// }
 ```
 
 **Параметры модели**
