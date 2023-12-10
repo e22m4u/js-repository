@@ -159,6 +159,7 @@ schema.defineModel({
 #### Параметры модели
 
 - `name: string` название модели (обязательно)
+- `base: string` название наследуемой модели
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
 - `properties: object` определения полей модели
