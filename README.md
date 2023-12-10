@@ -170,7 +170,7 @@ schema.defineModel({
 переопределять не затрагивая родителя.
 
 ```js
-// базовая модель "area"
+// модель "area"
 schema.defineModel({
   name: 'area',
   properties: {
@@ -179,11 +179,10 @@ schema.defineModel({
   },
 });
 
-// модель "city" наследует от модели
-// "area" поля "name" и "population"
+// модель "city"
 schema.defineModel({
   name: 'city',
-  base: 'area',
+  base: 'area', // базовая модель
   properties: {
     timezone: DataType.STRING,
   },
@@ -192,8 +191,8 @@ schema.defineModel({
 // документ "city" может выглядеть так
 // {
 //   "id": 1,
-//   "name": "Moscow", <= унаследовано от "area"
-//   "population": 11980000, <= унаследовано от "area"
+//   "name": "Moscow", <= унаследовано
+//   "population": 11980000, <= унаследовано
 //   "timezone": "Europe/Moscow"
 // }
 ```
