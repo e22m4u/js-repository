@@ -154,7 +154,7 @@ schema.defineModel({
 
 Если модель отражает реальную коллекцию базы, а не является частью другой,
 то указав название источника в параметре `datasource` можно получить
-репозиторий данной коллекции методом `getRepository` по названию модели.
+репозиторий данной модели методом `getRepository`.
 
 ```js
 // модель "city"
@@ -163,7 +163,7 @@ schema.defineModel({
   datasource: 'myDatasource', // выбранный источник
 });
 
-// репозиторий "city"
+// репозиторий модели "city"
 const cityRep = schema.getRepository('city');
 // await cityRep.create({name: 'St. Petersburg'});
 // ...
