@@ -167,7 +167,10 @@ schema.defineModel({
   name: 'city',
   properties: {
     name: DataType.STRING,
-    population: DataType.NUMBER,
+    population: {
+      type: DataType.NUMBER,
+      default: 0,
+    },
   },
 });
 ```
