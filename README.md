@@ -74,7 +74,7 @@ const schema = new Schema();
 
 ```js
 schema.defineDatasource({
-  name: 'mongodb', // название нового источника
+  name: 'myMongo', // название нового источника
   adapter: 'mongodb', // название выбранного адаптера
   // настройки адаптера mongodb
   host: '127.0.0.1',
