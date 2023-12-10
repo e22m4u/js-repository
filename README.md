@@ -220,14 +220,16 @@ schema.defineModel({
     // базовое определение поля "name"
     name: DataType.STRING,
     // расширенное определение поля "location"
-    // с параметрами "model" и "required"
+    // с дополнительными параметрами "model"
+    // и "required"
     location: {
       type: DataType.OBJECT,
       model: 'latLng',
       required: true,
     },
     // расширенное определение поля "keywords"
-    // с параметрами "itemType" и "default"
+    // с дополнительными параметрами "itemType"
+    // и "default"
     keywords: {
       type: DataType.ARRAY,
       itemType: DataType.STRING,
