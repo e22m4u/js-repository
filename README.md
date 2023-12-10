@@ -165,7 +165,7 @@ schema.defineModel({
 
 // репозиторий "city"
 const cityRep = schema.getRepository('city');
-// cityRep.create({name: 'St. Petersburg'});
+// await cityRep.create({name: 'St. Petersburg'});
 // ...
 ```
 
