@@ -180,10 +180,10 @@ const cityRep = schema.getRepository('city');
 schema.defineModel({
   name: 'city',
   properties: {
-    name: DataType.STRING,
-    population: {
+    name: DataType.STRING, // поле "name" типа "string"
+    population: { // поле "population" типа "number"
       type: DataType.NUMBER,
-      default: 0,
+      default: 0, // значение по умолчанию
     },
   },
 });
