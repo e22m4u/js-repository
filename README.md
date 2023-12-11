@@ -126,6 +126,10 @@ console.log(city);
 которого объявляется новый источник.
 
 ```js
+import {Schema} from '@e22m4u/js-repository';
+
+const schema = new Schema();
+
 schema.defineDatasource({
   name: 'datasource1', // название нового источника
   adapter: 'memory', // выбранный адаптер
@@ -178,7 +182,7 @@ schema.defineModel({
 
 const fruitRep = schema.getRepository('fruit');
 
-const pineapple = pageRep.create({
+const pineapple = fruitRep.create({
   name: 'Pineapple',
   description: 'A tropical fruit'
 });
@@ -196,7 +200,9 @@ console.log(pineapple);
 в документе.
 
 ```js
-const banana = pageRep.create({
+// ...
+
+const banana = fruitRep.create({
   id: 'fruit-1', // ключ типа "string"
   name: 'Banana',
   description: 'An edible fruit'
