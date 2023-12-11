@@ -137,7 +137,7 @@ schema.defineDatasource({
 schema.defineDatasource({
   name: 'datasource2',
   adapter: 'mongodb',
-  // настройки адаптера mongodb
+  // настройки адаптера "mongodb"
   host: '127.0.0.1',
   port: 27017,
   database: 'data'
@@ -162,7 +162,7 @@ const schema = new Schema();
 
 schema.defineDatasource({
   name: 'myMemory',
-  adapter: 'memory',
+  adapter: 'memory', // адаптер "memory"
 });
 
 schema.defineModel({
