@@ -153,9 +153,7 @@ schema.defineDatasource({
 **Адаптер «memory»**
 
 Встроенный адаптер `memory` хранит данные в памяти процесса, не требует
-установки и отлично подходит для тестов и прототипирования. По умолчанию
-использует автоинкрементные идентификаторы типа `number`, но также может
-принимать строковые ключи, если их значение явно указано в документе.
+установки и отлично подходит для тестов и прототипирования.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -188,6 +186,25 @@ console.log(pineapple);
 //   "id": 1,
 //   "name": "Pineapple",
 //   "description": "A tropical fruit"
+// }
+```
+
+Адаптер `memory` использует автоинкрементные идентификаторы типа `number`,
+но может принимать и строковые ключи, если их значение явно указано
+в документе.
+
+```js
+const banana = pageRep.create({
+  id: 'fruit-1', // ключ типа "string"
+  name: 'Banana',
+  description: 'An edible fruit'
+});
+
+console.log(banana);
+// {
+//   "id": "fruit-1",
+//   "name": 'Banana',
+//   "description": "An edible fruit"
 // }
 ```
 
