@@ -121,14 +121,19 @@ console.log(city);
 
 ## Источник данных
 
-Источник определяет используемый адаптер и его настройки, которые передаются
-вместе с объектом определения источника методом `defineDatasource`, как это
-показано ниже.
+Каждый источник имеет свое уникальное название и информацию о выбранном
+адаптере. Если адаптер имеет параметры, то они передаются с объектом
+определения источника.
 
 ```js
 schema.defineDatasource({
-  name: 'myMongo', // название нового источника
-  adapter: 'mongodb', // название выбранного адаптера
+  name: 'datasource1',
+  adapter: 'memory',
+});
+
+schema.defineDatasource({
+  name: 'datasource2',
+  adapter: 'mongodb',
   // настройки адаптера mongodb
   host: '127.0.0.1',
   port: 27017,
@@ -136,23 +141,51 @@ schema.defineDatasource({
 });
 ```
 
-**Параметры**
+Определение источника:
 
 - `name: string` уникальное название
 - `adapter: string` выбранный адаптер
-- дополнительные параметры (зависит от адаптера)
+- параметры адаптера (если имеются)
 
 **Адаптер «memory»**
 
-При желании можно использовать встроенный адаптер `memory`, который хранит
-данные в памяти процесса. У него нет специальных настроек, и он отлично
-подходит для тестов и прототипирования.
+Встроенный адаптер `memory` хранит данные в памяти процесса, не требует
+установки и отлично подходит для тестов и прототипирования. По умолчанию
+использует автоинкрементные идентификаторы типа `number`, но также может
+принимать строковые ключи, если их значение явно указывается в документе.
 
 ```js
+import {Schema} from '@e22m4u/js-repository';
+
+const schema = new Schema();
+
 schema.defineDatasource({
-  name: 'myMemory', // название источника
-  adapter: 'memory', // выбранный адаптер
+  name: 'myMemory',
+  adapter: 'memory',
 });
+
+schema.defineModel({
+  name: 'fruit',
+  datasource: 'myMemory',
+  properties: {
+    name: DataType.STRING,
+    description: DataType.STRING,
+  },
+});
+
+const fruitRep = schema.getRepository('fruit');
+
+const pineapple = pageRep.create({
+  name: 'Pineapple',
+  description: 'A tropical fruit'
+});
+
+console.log(pineapple);
+// {
+//   "id": 1,
+//   "name": "Pineapple",
+//   "description": "A tropical fruit"
+// }
 ```
 
 ## Модель данных
