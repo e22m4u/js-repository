@@ -23,7 +23,7 @@ import {Schema} from '@e22m4u/js-repository'
 // создание экземпляра схемы
 const schema = new Schema();
 
-// определение источника "memory"
+// определение источника "myMemory"
 schema.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
