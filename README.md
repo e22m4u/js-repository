@@ -70,6 +70,7 @@ const cities = await cityRep.find({
   include: 'country', // включить "country" в результат
 });
 
+console.log(cities);
 // [
 //   {
 //     "id": 24,
