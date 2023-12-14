@@ -129,7 +129,7 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // поля модели
+  properties: { // свойства модели
     name: DataType.STRING, // поле "name" типа "string"
     population: DataType.NUMBER, // поле "population" типа "number"
   },
