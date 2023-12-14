@@ -105,8 +105,8 @@ schema.defineModel({
 });
 ```
 
-4. Наличие источника данных в модели позволяет получить репозиторий по
-ее названию методом `schema.getRepository`
+4. Наличие источника данных позволяет получить репозиторий по
+названию модели методом `schema.getRepository`
 
 ```js
 // получение репозитория для модели "country"
@@ -149,6 +149,18 @@ import {Schema} from '@e22m4u/js-repository'
 
 // создание экземпляра
 const schema = new Schema();
+
+// определение источника
+schema.defineDatasource({
+  name: 'myMemory', // название нового источника
+  adapter: 'memory', // выбранный адаптер
+});
+
+// определение модели
+schema.defineModel({
+  name: 'country', // название новой модели
+  datasource: 'myMemory', // выбранный источник
+});
 ```
 
 ## Источник данных
