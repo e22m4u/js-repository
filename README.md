@@ -259,6 +259,109 @@ schema.defineModel({
 - `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
 - `referencesMany` - документ содержит массив с идентификаторами целевой модели
 
+**belongsTo**
+
+Базовое определение `belongsTo`
+
+```js
+{
+  type: RelationType.BELONGS_TO,
+  model: 'target',
+  foreignKey: 'targetId', // опционально
+}
+```
+
+Полиморфная версия `belongsTo`
+
+```js
+{
+  type: RelationType.BELONGS_TO,
+  polymorphic: true,
+  foreignKey: 'referenceId',      // опционально
+  discriminator: 'referenceType', // опционально
+}
+```
+
+**hasOne**
+
+Базовое определение `hasOne`
+
+```js
+{
+  type: RelationType.HAS_ONE,
+  model: 'target',
+  foreignKey: 'sourceId',
+}
+```
+
+Полиморфная версия `hasOne` с указанием имени связи целевой модели.
+
+```js
+{
+  type: RelationType.HAS_ONE,
+  model: 'target',
+  polymorphic: 'relation',
+}
+```
+
+Полиморфная версия `hasOne` с указанием свойств целевой модели.
+
+```js
+{
+  type: RelationType.HAS_ONE,
+  model: 'target',
+  polymorphic: true,
+  foreignKey: 'referenceId',
+  discriminator: 'referenceType,
+}
+```
+
+**hasMany**
+
+Базовое определение `hasMany`
+
+```js
+{
+  type: RelationType.HAS_MANY,
+  model: 'target',
+  foreignKey: 'sourceId',
+}
+```
+
+Полиморфная версия `hasMany` с указанием имени связи целевой модели.
+
+```js
+{
+  type: RelationType.HAS_MANY,
+  model: 'target',
+  polymorphic: 'relation',
+}
+```
+
+Полиморфная версия `hasMany` с указанием свойств целевой модели.
+
+```js
+{
+  type: RelationType.HAS_MANY,
+  model: 'target',
+  polymorphic: true,
+  foreignKey: 'referenceId',
+  discriminator: 'referenceType,
+}
+```
+
+**referencesMany**
+
+Определение связи `referencesMany`
+
+```js
+{
+  type: RelationType.REFERENCES_MANY,
+  model: 'target',
+  foreignKey: 'targetIds', // опционально
+}
+```
+
 ## Тесты
 
 ```bash

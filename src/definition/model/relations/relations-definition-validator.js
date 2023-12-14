@@ -94,8 +94,8 @@ export class RelationsDefinitionValidator extends Service {
    * {
    *   type: RelationType.BELONGS_TO,
    *   polymorphic: true,
-   *   foreignKey: 'referenceId',     // optional
-   *   discriminator: 'referenceType, // optional
+   *   foreignKey: 'referenceId',      // optional
+   *   discriminator: 'referenceType', // optional
    * }
    * ```
    *
