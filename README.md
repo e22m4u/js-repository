@@ -275,7 +275,7 @@ schema.defineModel({
 
 ### where
 
-Параметр является объектом условий выборки и поддерживает широкий
+Параметр принимает объект с условиями выборки и поддерживает широкий
 набор операторов сравнения.
 
 `{prop: 'bar'}` поиск по значению поля `prop`  
@@ -296,14 +296,15 @@ schema.defineModel({
 `{prop: {regexp: 'ba.+'}}` оператор регулярного выражения `regexp`  
 `{prop: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения
 
-Условия можно объединить операторами `and`, `or` и `nor`.
+*i. Условия можно объединить операторами `and`, `or` и `nor`.*
 
-**Пример**
+**Примеры**
 
 Подсчет документов методом `count` согласно условиям выборки.
 
 ```js
-const count = await rep.count({
+// count(where)
+const res = await rep.count({
   authorId: 251,
   publishedAt: {
     lte: '2023-12-02T14:00:00.000Z',
@@ -314,7 +315,8 @@ const count = await rep.count({
 Удаление документов методом `delete` с применением оператора `or`
 
 ```js
-const count = await rep.delete({
+// delete(where)
+const res = await rep.delete({
   or: [
     {sent: false},
     {title: {like: 'draft'}},
