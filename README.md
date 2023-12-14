@@ -120,7 +120,7 @@ schema.defineDatasource({
 - `base: string` название наследуемой модели
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
-- `properties: object` определения свойств (см. Свойства)
+- `properties: object` определения свойств (см. [Свойства](#Свойства))
 - `relations: object` определения связей (см. Связи)
 
 **Пример**
@@ -182,6 +182,32 @@ console.log(country);
 //   "population": 143400000,
 // }
 ```
+
+## Свойства
+
+Параметр `properties` находится в составе определения модели и принимает
+объект, ключи которого являются полями документа, а значением тип поля
+или объект с дополнительными параметрами.
+
+**Тип данных**
+
+- `DataType.ANY` разрешено любое значение
+- `DataType.STRING` только значение типа `string`
+- `DataType.NUMBER` только значение типа `number`
+- `DataType.BOOLEAN` только значение типа `boolean`
+- `DataType.ARRAY` только значение типа `array`
+- `DataType.OBJECT` только значение типа `object`
+
+**Параметры**
+
+- `type: string` тип допустимого значения (обязательно)
+- `itemType: string` тип элемента массива (для `type: 'array'`)
+- `model: string` модель объекта (для `type: 'object'`)
+- `primaryKey: boolean` объявить поле первичным ключом
+- `columnName: string` переопределение названия колонки
+- `columnType: string` тип колонки (определяется адаптером)
+- `required: boolean` объявить поле обязательным
+- `default: any` значение по умолчанию
 
 ## Тесты
 
