@@ -70,6 +70,8 @@ console.log(country);
 // }
 ```
 
+**Разбор примера**
+
 Экземпляр класса `Schema` хранит информацию об источниках данных, моделей
 и предоставляет методы для их определения.
 
@@ -92,7 +94,7 @@ schema.defineDatasource({
 ```
 
 Когда источник определен, можно описать структуру документа коллекции
-методом `schema.defineModel`
+методом `schema.defineModel`.
 
 ```js
 import {DataType} from '@e22m4u/js-repository';
