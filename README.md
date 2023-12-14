@@ -82,8 +82,8 @@ import {Schema} from '@e22m4u/js-repository';
 const schema = new Schema();
 ```
 
-С помощью метода `schema.defineDatasource` определяются источники данных,
-которые хранят название адаптера и его настройки.
+С помощью метода `schema.defineDatasource` определяется источник данных,
+который хранит название адаптера и его настройки.
 
 ```js
 // 2. определение источника "myMemory"
