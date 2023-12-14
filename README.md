@@ -30,7 +30,8 @@ npm install @e22m4u/js-repository
 Определение источника данных, модели и добавление нового документа в коллекцию.
 
 ```js
-import {Schema} from '@e22m4u/js-repository'
+import {Schema} from '@e22m4u/js-repository';
+import {DataType} from '@e22m4u/js-repository';
 
 // 1. создание экземпляра Schema
 const schema = new Schema();
@@ -92,6 +93,8 @@ schema.defineDatasource({
 Модель описывает структуру документа коллекции и связи к другим моделям.
 
 ```js
+import {DataType} from '@e22m4u/js-repository';
+
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
@@ -127,6 +130,25 @@ console.log(country);
 //   "name": "Russia",
 //   "population": 143400000,
 // }
+```
+
+## Схема
+
+Экземпляр класса `Schema` хранит определения для источников данных и моделей.
+
+**Методы**
+
+- `defineDatasource(datasourceDef: object): this` - добавить источник
+- `defineModel(modelDef: object): this` - добавить модель
+- `getRepository(modelName: string): Repository` - получить репозиторий
+
+**Пример**
+
+```js
+import {Schema} from '@e22m4u/js-repository'
+
+// создание экземпляра
+const schema = new Schema();
 ```
 
 ## Источник данных
@@ -194,10 +216,10 @@ schema.defineModel({
 
 **Аргументы**
 
-- `id` идентификатор (первичный ключ)
-- `data` объект отражающий состав документа
-- `where` параметры выборки (см. Фильтрация)
-- `filter` параметры возвращаемого результата (см. Фильтрация)
+- `id: number|string` идентификатор (первичный ключ)
+- `data: object` объект отражающий состав документа
+- `where: object` параметры выборки (см. Фильтрация)
+- `filter: object` параметры возвращаемого результата (см. Фильтрация)
 
 **Пример**
 
