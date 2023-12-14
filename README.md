@@ -120,7 +120,7 @@ schema.defineDatasource({
 - `base: string` название наследуемой модели
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
-- `properties: object` определения полей модели
+- `properties: object` определения свойств (см. Свойства)
 - `relations: object` определения связей (см. Связи)
 
 **Пример**
