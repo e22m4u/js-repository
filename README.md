@@ -72,7 +72,7 @@ console.log(country);
 
 ## Схема
 
-Экземпляр класса `Schema` хранит определения для источников данных и моделей.
+Экземпляр класса `Schema` хранит определения источников данных и моделей.
 
 **Методы**
 
@@ -165,6 +165,9 @@ schema.defineModel({
 **Пример**
 
 ```js
+// получение репозитория для модели "country"
+const countryRep = schema.getRepository('country');
+
 // добавление нового документа в коллекцию "country"
 const country = await countryRep.create({
   name: 'Russia',
