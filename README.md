@@ -92,7 +92,7 @@ schema.defineDatasource({
 ```
 
 Когда источник определен, можно описать структуру документа коллекции
-методом `schema.defineModel`.
+методом `schema.defineModel`
 
 ```js
 import {DataType} from '@e22m4u/js-repository';
