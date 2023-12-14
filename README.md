@@ -220,8 +220,11 @@ console.log(country);
 schema.defineModel({
   name: 'city',
   properties: { // свойства модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+    name: DataType.STRING, // краткое определение поля "name"
+    population: { // расширенное определение поля "population"
+      type: DataType.NUMBER, // тип поля (обязательно)
+      default: 0, // значение по умолчанию
+    },
   },
 });
 
