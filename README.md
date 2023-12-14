@@ -127,13 +127,18 @@ schema.defineDatasource({
 
 ```js
 schema.defineModel({
-  name: 'country', // название новой модели
-  datasource: 'myMemory', // выбранный источник
+  name: 'user', // название новой модели
   properties: { // свойства модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+    name: DataType.STRING,
+    age: DataType.NUMBER,
   },
 });
+
+// пример документа модели "user"
+// {
+//   "name": "Fedor",
+//   "age": 24
+// }
 ```
 
 ## Репозиторий
@@ -208,6 +213,24 @@ console.log(country);
 - `columnType: string` тип колонки (определяется адаптером)
 - `required: boolean` объявить поле обязательным
 - `default: any` значение по умолчанию
+
+**Пример**
+
+```js
+schema.defineModel({
+  name: 'city',
+  properties: { // свойства модели
+    name: DataType.STRING, // поле "name" типа "string"
+    population: DataType.NUMBER, // поле "population" типа "number"
+  },
+});
+
+// пример документа модели "city"
+// {
+//   "name": "Moscow",
+//   "population": 11980000
+// }
+```
 
 ## Тесты
 
