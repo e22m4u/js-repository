@@ -33,16 +33,16 @@ npm install @e22m4u/js-repository
 import {Schema} from '@e22m4u/js-repository';
 import {DataType} from '@e22m4u/js-repository';
 
-// 1. создание экземпляра Schema
+// создание экземпляра Schema
 const schema = new Schema();
 
-// 2. определение источника "myMemory"
+// определение источника "myMemory"
 schema.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
 
-// 3. определение модели "country"
+// определение модели "country"
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
@@ -52,77 +52,10 @@ schema.defineModel({
   },
 })
 
-// 4. получение репозитория для модели "country"
+// получение репозитория для модели "country"
 const countryRep = schema.getRepository('country');
 
-// 5. добавление нового документа в коллекцию "country"
-const country = await countryRep.create({
-  name: 'Russia',
-  population: 143400000,
-});
-
-// вывод результата
-console.log(country);
-// {
-//   "id": 1,
-//   "name": "Russia",
-//   "population": 143400000,
-// }
-```
-
-**Разбор примера**
-
-Экземпляр класса `Schema` хранит информацию об источниках данных, моделей
-и предоставляет методы для их определения.
-
-```js
-import {Schema} from '@e22m4u/js-repository';
-
-// 1. создание экземпляра Schema
-const schema = new Schema();
-```
-
-С помощью метода `schema.defineDatasource` определяется источник данных,
-который хранит название адаптера и его настройки.
-
-```js
-// 2. определение источника "myMemory"
-schema.defineDatasource({
-  name: 'myMemory', // название нового источника
-  adapter: 'memory', // выбранный адаптер
-});
-```
-
-Когда источник определен, можно описать структуру документа коллекции
-методом `schema.defineModel`.
-
-```js
-import {DataType} from '@e22m4u/js-repository';
-
-// 3. определение модели "country"
-schema.defineModel({
-  name: 'country', // название новой модели
-  datasource: 'myMemory', // выбранный источник
-  properties: { // поля модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
-  },
-});
-```
-
-Наличие параметра `datasource` в определении модели позволяет получить
-репозиторий по ее названию методом `schema.getRepository`.
-
-```js
-// 4. получение репозитория для модели "country"
-const countryRep = schema.getRepository('country');
-```
-
-Репозиторий является инструментом для чтения и записи документов
-определенной модели.
-
-```js
-// 5. добавление нового документа в коллекцию "country"
+// добавление нового документа в коллекцию "country"
 const country = await countryRep.create({
   name: 'Russia',
   population: 143400000,
@@ -154,23 +87,12 @@ import {Schema} from '@e22m4u/js-repository'
 
 // создание экземпляра
 const schema = new Schema();
-
-// определение источника
-schema.defineDatasource({
-  name: 'myMemory', // название нового источника
-  adapter: 'memory', // выбранный адаптер
-});
-
-// определение модели
-schema.defineModel({
-  name: 'country', // название новой модели
-  datasource: 'myMemory', // выбранный источник
-});
 ```
 
 ## Источник данных
 
-Определяется методом `schema.defineDatasource`
+Хранит название выбранного адаптера и его настройки. Определяется
+методом `defineDatasource` экземпляра схемы.
 
 **Параметры**
 
@@ -189,7 +111,8 @@ schema.defineDatasource({
 
 ## Модель
 
-Определяется методом `schema.defineModel`
+Описывает структуру документа коллекции и связи к другим моделям. Определяется
+методом `defineModel` экземпляра схемы.
 
 **Параметры**
 
