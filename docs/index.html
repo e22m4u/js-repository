@@ -119,7 +119,7 @@
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;city&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">properties:</span><span class="hl-1"> { </span><span class="hl-5">// свойства модели</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">STRING</span><span class="hl-1">, </span><span class="hl-5">// поле &quot;name&quot; типа &quot;string&quot;</span><br/><span class="hl-1">    </span><span class="hl-4">population:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">NUMBER</span><span class="hl-1">, </span><span class="hl-5">// поле &quot;population&quot; типа &quot;number&quot;</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">// пример документа модели &quot;city&quot;</span><br/><span class="hl-5">// {</span><br/><span class="hl-5">//   &quot;name&quot;: &quot;Moscow&quot;,</span><br/><span class="hl-5">//   &quot;population&quot;: 11980000</span><br/><span class="hl-5">// }</span>
 </code><button>Copy</button></pre>
 <a id="md:связи" class="tsd-anchor"></a><h2><a href="#md:связи">Связи</a></h2><p>Параметр <code>relations</code> находится в составе определения модели и принимает
-объект, ключ которого являются названием связи, а значением объект 
+объект, ключ которого является названием связи, а значением объект
 с параметрами.</p>
 <p><strong>Параметры</strong></p>
 <ul>
@@ -129,6 +129,8 @@
 <li><code>polymorphic: boolean|string</code> объявить связь полиморфной*</li>
 <li><code>discriminator: string</code> поле для названия целевой модели (для <code>polymorphic: true</code>)</li>
 </ul>
+<p><em>i. Полиморфный режим позволяет динамически определять целевую модель
+по значению поля-дискриминатора.</em></p>
 <p><strong>Тип связи</strong></p>
 <ul>
 <li><code>belongsTo</code> - документ содержит поле с идентификатором целевой модели</li>
