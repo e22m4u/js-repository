@@ -54,8 +54,8 @@
 <p>Получение репозитория по названию модели.</p>
 <pre><code class="language-js"><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-7">productRep</span><span class="hl-1"> = </span><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">getRepository</span><span class="hl-1">(</span><span class="hl-2">&#39;product&#39;</span><span class="hl-1">);</span>
 </code><button>Copy</button></pre>
-<a id="md:источник-данных" class="tsd-anchor"></a><h2><a href="#md:источник-данных">Источник данных</a></h2><p>Источник хранит название выбранного адаптера и его настройки. Определяется
-методом <code>defineDatasource</code> экземпляра схемы.</p>
+<a id="md:источник-данных" class="tsd-anchor"></a><h2><a href="#md:источник-данных">Источник данных</a></h2><p>Источник хранит название выбранного адаптера и его настройки. Определить
+новый источник можно методом <code>defineDatasource</code> экземпляра схемы.</p>
 <p><strong>Параметры</strong></p>
 <ul>
 <li><code>name: string</code> уникальное название</li>
@@ -69,8 +69,8 @@
 <p>Передача дополнительных параметров адаптера.</p>
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineDatasource</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;myMongodb&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">adapter:</span><span class="hl-1"> </span><span class="hl-2">&#39;mongodb&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">// параметры адаптера &quot;mongodb&quot;</span><br/><span class="hl-1">  </span><span class="hl-4">host:</span><span class="hl-1"> </span><span class="hl-2">&#39;127.0.0.1&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">port:</span><span class="hl-1"> </span><span class="hl-8">27017</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">database:</span><span class="hl-1"> </span><span class="hl-2">&#39;myDatabase&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
-<a id="md:модель" class="tsd-anchor"></a><h2><a href="#md:модель">Модель</a></h2><p>Описывает структуру документа коллекции и связи к другим моделям. Определяется
-методом <code>defineModel</code> экземпляра схемы.</p>
+<a id="md:модель" class="tsd-anchor"></a><h2><a href="#md:модель">Модель</a></h2><p>Описывает структуру документа коллекции и связи к другим моделям. Определить
+новую модель можно методом <code>defineModel</code> экземпляра схемы.</p>
 <p><strong>Параметры</strong></p>
 <ul>
 <li><code>name: string</code> название модели (обязательно)</li>
