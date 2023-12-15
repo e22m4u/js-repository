@@ -133,12 +133,6 @@ schema.defineModel({
     age: DataType.NUMBER,
   },
 });
-
-// пример документа модели "user"
-// {
-//   "name": "Fedor",
-//   "age": 24
-// }
 ```
 
 ## Репозиторий
@@ -227,12 +221,6 @@ schema.defineModel({
     },
   },
 });
-
-// пример документа модели "city"
-// {
-//   "name": "Moscow",
-//   "population": 11980000
-// }
 ```
 
 ## Связи
