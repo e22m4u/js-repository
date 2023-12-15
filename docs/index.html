@@ -61,7 +61,7 @@
 <li><code>tableName: string</code> название коллекции в базе</li>
 <li><code>datasource: string</code> выбранный источник данных</li>
 <li><code>properties: object</code> определения свойств (см. <a href="#md:Свойства">Свойства</a>)</li>
-<li><code>relations: object</code> определения связей (см. Связи)</li>
+<li><code>relations: object</code> определения связей (см. <a href="#md:Связи">Связи</a>)</li>
 </ul>
 <p><strong>Пример</strong></p>
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">, </span><span class="hl-5">// название новой модели</span><br/><span class="hl-1">  </span><span class="hl-4">properties:</span><span class="hl-1"> { </span><span class="hl-5">// свойства модели</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">STRING</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">age:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">NUMBER</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>

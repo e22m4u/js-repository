@@ -121,7 +121,7 @@ schema.defineDatasource({
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
 - `properties: object` определения свойств (см. [Свойства](#Свойства))
-- `relations: object` определения связей (см. Связи)
+- `relations: object` определения связей (см. [Связи](#Связи))
 
 **Пример**
 
