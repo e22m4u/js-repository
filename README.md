@@ -316,7 +316,7 @@ const res = await rep.count({
 ```js
 const res = await rep.delete({
   or: [
-    {sent: false},
+    {draft: true},
     {title: {like: 'draft'}},
   ],
 });
