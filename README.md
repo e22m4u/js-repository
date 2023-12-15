@@ -82,7 +82,7 @@ console.log(country);
 
 **Пример**
 
-Импорт класса и создание экземпляра.
+Импорт класса и создание экземпляра схемы.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
