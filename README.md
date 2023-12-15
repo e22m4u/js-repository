@@ -303,7 +303,6 @@ schema.defineModel({
 Подсчет документов методом `count` согласно условиям выборки.
 
 ```js
-// count(where)
 const res = await rep.count({
   authorId: 251,
   publishedAt: {
@@ -315,7 +314,6 @@ const res = await rep.count({
 Удаление документов методом `delete` с применением оператора `or`
 
 ```js
-// delete(where)
 const res = await rep.delete({
   or: [
     {sent: false},
@@ -334,7 +332,6 @@ const res = await rep.delete({
 Упорядочить по свойству `createdAt`
 
 ```js
-// find(filter)
 const res = await rep.find({
   order: 'createdAt',
 });
@@ -343,7 +340,6 @@ const res = await rep.find({
 Упорядочить по свойству `createdAt` в обратном порядке.
 
 ```js
-// find(filter)
 const res = await rep.find({
   order: 'createdAt DESC',
 });
@@ -352,7 +348,6 @@ const res = await rep.find({
 Упорядочить по нескольким свойствам в разных направлениях.
 
 ```js
-// find(filter)
 const res = await rep.find({
   order: [
     'title',
