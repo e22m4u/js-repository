@@ -324,6 +324,33 @@ const res = await rep.delete({
 });
 ```
 
+### order
+
+Параметр упорядочивает выборку по указанным свойствам документа. Обратное
+направление порядка можно задать постфиксом `DESC` в названии свойства.
+
+**Пример**
+
+```js
+// упорядочить по свойству "featured"
+const res1 = await rep.find({
+  order: 'featured',
+});
+
+// по свойству "featured" в обратном порядке
+const res2 = await rep.find({
+  order: 'featured DESC',
+});
+
+// по двум свойствам в разных направлениях
+const res3 = await rep.find({
+  order: [
+    'featured',
+    'publishedAt DESC',
+  ],
+});
+```
+
 ## Тесты
 
 ```bash
