@@ -298,8 +298,8 @@ console.log(res); // true
 schema.defineModel({
   name: 'city',
   properties: { // свойства модели
-    name: DataType.STRING, // тип "string"
-    population: DataType.NUMBER, // тип "number"
+    name: DataType.STRING, // тип свойства "string"
+    population: DataType.NUMBER, // тип свойства "number"
   },
 });
 ```
@@ -311,11 +311,11 @@ schema.defineModel({
   name: 'city',
   properties: { // свойства модели
     name: {
-      type: DataType.STRING, // тип поля "string"
-      required: true, // исключение undefined и null
+      type: DataType.STRING, // тип свойства "string" (обязательно)
+      required: true, // исключение значений undefined и null
     },
     population: {
-      type: DataType.NUMBER, // тип поля "number"
+      type: DataType.NUMBER, // тип свойства "number" (обязательно)
       default: 0, // значение по умолчанию
     },
   },
@@ -330,12 +330,12 @@ schema.defineModel({
   name: 'article',
   properties: { // свойства модели
     tags: {
-      type: DataType.ARRAY, // тип поля "array"
+      type: DataType.ARRAY, // тип свойства "array" (обязательно)
       itemType: DataType.STRING, // тип элемента "string"
       default: () => [], // фабричное значение
     },
     createdAt: {
-      type: DataType.STRING, // тип поля "string"
+      type: DataType.STRING, // тип свойства "string" (обязательно)
       default: () => new Date().toISOString(), // фабричное значение
     },
   },
@@ -377,7 +377,7 @@ schema.defineModel({
 - `order: string[]` указание порядка
 - `limit: number` ограничение количества документов
 - `skip: number` пропуск документов
-- `fields: string[]` выбор необходимых полей документа
+- `fields: string[]` выбор необходимых свойств модели
 - `include: object` включение связанных данных в результат
 
 ### where
@@ -385,7 +385,7 @@ schema.defineModel({
 Параметр принимает объект с условиями выборки и поддерживает широкий
 набор операторов сравнения.
 
-`{foo: 'bar'}` поиск по значению поля `foo`  
+`{foo: 'bar'}` поиск по значению свойства `foo`  
 `{foo: {eq: 'bar'}}` оператор равенства `eq`  
 `{foo: {neq: 'bar'}}` оператор неравенства `neq`  
 `{foo: {gt: 5}}` оператор "больше" `gt`  
@@ -431,8 +431,8 @@ const res = await rep.delete({
 
 ### order
 
-Параметр упорядочивает выборку по указанным полям документа. Обратное
-направление порядка можно задать постфиксом `DESC` в названии поля.
+Параметр упорядочивает выборку по указанным свойствам модели. Обратное
+направление порядка можно задать постфиксом `DESC` в названии свойства.
 
 **Примеры**
 
@@ -452,7 +452,7 @@ const res = await rep.find({
 });
 ```
 
-Упорядочить по нескольким полям в разных направлениях.
+Упорядочить по нескольким свойствам в разных направлениях.
 
 ```js
 const res = await rep.find({
