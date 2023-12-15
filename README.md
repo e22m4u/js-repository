@@ -83,7 +83,7 @@ console.log(country);
 - `defineModel(modelDef: object): this` - добавить модель
 - `getRepository(modelName: string): Repository` - получить репозиторий
 
-**Пример**
+**Примеры**
 
 Импорт класса и создание экземпляра схемы.
 
@@ -230,17 +230,38 @@ const countryRep = schema.getRepository('country');
 Добавление нового документа в коллекцию.
 
 ```js
-const country = await countryRep.create({
+const res = await countryRep.create({
   name: 'Russia',
   population: 143400000,
 });
 
-console.log(country);
+console.log(res);
 // {
 //   "id": 1,
 //   "name": "Russia",
 //   "population": 143400000,
 // }
+```
+
+Поиск документа по идентификатору.
+
+```js
+const res = await countryRep.findById(1);
+
+console.log(res);
+// {
+//   "id": 1,
+//   "name": "Russia",
+//   "population": 143400000,
+// }
+```
+
+Удаление документа по идентификатору.
+
+```js
+const res = await countryRep.deleteById(1);
+
+console.log(res); // true
 ```
 
 ## Свойства
