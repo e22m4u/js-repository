@@ -82,11 +82,36 @@ console.log(country);
 
 **Пример**
 
-```js
-import {Schema} from '@e22m4u/js-repository'
+Импорт класса и создание экземпляра.
 
-// создание экземпляра
+```js
+import {Schema} from '@e22m4u/js-repository';
+
 const schema = new Schema();
+```
+
+Определение нового источника.
+
+```js
+schema.defineDatasource({
+  name: 'myMemory', // название нового источника
+  adapter: 'memory', // выбранный адаптер
+});
+```
+
+Определение новой модели.
+
+```js
+schema.defineModel({
+  name: 'product', // название новой модели
+  datasource: 'myMemory', // выбранный источник
+});
+```
+
+Получение репозитория по названию модели.
+
+```js
+const productRep = schema.getRepository('product');
 ```
 
 ## Источник данных
@@ -161,19 +186,22 @@ schema.defineModel({
 - `where: object` параметры выборки (см. Фильтрация)
 - `filter: object` параметры возвращаемого результата (см. Фильтрация)
 
-**Пример**
+**Примеры**
+
+Получение репозитория по названию модели.
 
 ```js
-// получение репозитория для модели "country"
 const countryRep = schema.getRepository('country');
+```
 
-// добавление нового документа в коллекцию "country"
+Добавление нового документа в коллекцию.
+
+```js
 const country = await countryRep.create({
   name: 'Russia',
   population: 143400000,
 });
 
-// вывод результата
 console.log(country);
 // {
 //   "id": 1,
