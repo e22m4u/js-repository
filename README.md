@@ -129,12 +129,27 @@ const productRep = schema.getRepository('product');
 - `adapter: string` выбранный адаптер
 - параметры адаптера (если имеются)
 
-**Пример**
+**Примеры**
+
+Определение нового источника.
 
 ```js
 schema.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
+});
+```
+
+Передача дополнительных параметров адаптера.
+
+```js
+schema.defineDatasource({
+  name: 'myMongodb',
+  adapter: 'mongodb',
+  // параметры адаптера "mongodb"
+  host: '127.0.0.1',
+  port: 27017,
+  database: 'myDatabase',
 });
 ```
 
@@ -152,7 +167,7 @@ schema.defineDatasource({
 - `properties: object` определения свойств (см. [Свойства](#Свойства))
 - `relations: object` определения связей (см. [Связи](#Связи))
 
-**Пример**
+**Примеры**
 
 Определение модели со свободным набором свойств.
 
@@ -163,7 +178,7 @@ schema.defineModel({
 });
 ```
 
-Определение модели с двумя свойствами указанного типа.
+Определение модели со свойствами указанного типа.
 
 ```js
 schema.defineModel({

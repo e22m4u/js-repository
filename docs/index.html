@@ -59,8 +59,12 @@
 <li><code>adapter: string</code> выбранный адаптер</li>
 <li>параметры адаптера (если имеются)</li>
 </ul>
-<p><strong>Пример</strong></p>
+<p><strong>Примеры</strong></p>
+<p>Определение нового источника.</p>
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineDatasource</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;myMemory&#39;</span><span class="hl-1">, </span><span class="hl-5">// название нового источника</span><br/><span class="hl-1">  </span><span class="hl-4">adapter:</span><span class="hl-1"> </span><span class="hl-2">&#39;memory&#39;</span><span class="hl-1">, </span><span class="hl-5">// выбранный адаптер</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p>Передача дополнительных параметров адаптера.</p>
+<pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineDatasource</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;myMongodb&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">adapter:</span><span class="hl-1"> </span><span class="hl-2">&#39;mongodb&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">// параметры адаптера &quot;mongodb&quot;</span><br/><span class="hl-1">  </span><span class="hl-4">host:</span><span class="hl-1"> </span><span class="hl-2">&#39;127.0.0.1&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">port:</span><span class="hl-1"> </span><span class="hl-8">27017</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">database:</span><span class="hl-1"> </span><span class="hl-2">&#39;myDatabase&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
 <a id="md:модель" class="tsd-anchor"></a><h2><a href="#md:модель">Модель</a></h2><p>Описывает структуру документа коллекции и связи к другим моделям. Определяется
 методом <code>defineModel</code> экземпляра схемы.</p>
@@ -73,11 +77,11 @@
 <li><code>properties: object</code> определения свойств (см. <a href="#md:Свойства">Свойства</a>)</li>
 <li><code>relations: object</code> определения связей (см. <a href="#md:Связи">Связи</a>)</li>
 </ul>
-<p><strong>Пример</strong></p>
+<p><strong>Примеры</strong></p>
 <p>Определение модели со свободным набором свойств.</p>
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">, </span><span class="hl-5">// название новой модели</span><br/><span class="hl-1">  </span><span class="hl-5">// параметр &quot;properties&quot; не указан</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
-<p>Определение модели с двумя свойствами указанного типа.</p>
+<p>Определение модели со свойствами указанного типа.</p>
 <pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">, </span><span class="hl-5">// название новой модели</span><br/><span class="hl-1">  </span><span class="hl-4">properties:</span><span class="hl-1"> { </span><span class="hl-5">// свойства модели</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">STRING</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">age:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">NUMBER</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
 <a id="md:репозиторий" class="tsd-anchor"></a><h2><a href="#md:репозиторий">Репозиторий</a></h2><p>Выполняет операции чтения и записи документов определенной модели.
