@@ -9,7 +9,7 @@
 - [Источник данных](#Источник-данных)
 - [Модель](#Модель)
 - [Репозиторий](#Репозиторий)
-- [Свойства](#Свойства)
+- [Поля](#Поля)
 - [Связи](#Связи)
 - [Фильтрация](#Фильтрация)
 - [Тесты](#Тесты)
@@ -49,9 +49,9 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // свойства модели
-    name: DataType.STRING, // свойство "name" типа "string"
-    population: DataType.NUMBER, // свойство "population" типа "number"
+  properties: { // поля модели
+    name: DataType.STRING, // поле "name" типа "string"
+    population: DataType.NUMBER, // поле "population" типа "number"
   },
 })
 
@@ -108,7 +108,7 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'product', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // свойства модели
+  properties: { // поля модели
     name: DataType.STRING,
     weight: DataType.NUMBER,
   },
@@ -167,12 +167,12 @@ schema.defineDatasource({
 - `base: string` название наследуемой модели
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
-- `properties: object` определения свойств (см. [Свойства](#Свойства))
+- `properties: object` определения полей (см. [Поля](#Поля))
 - `relations: object` определения связей (см. [Связи](#Связи))
 
 **Примеры**
 
-Определение модели со свободным набором свойств.
+Определение модели со свободным набором полей.
 
 ```js
 schema.defineModel({
@@ -181,12 +181,12 @@ schema.defineModel({
 });
 ```
 
-Определение модели со свойствами указанного типа.
+Определение модели с полями указанного типа.
 
 ```js
 schema.defineModel({
   name: 'user', // название новой модели
-  properties: { // свойства модели
+  properties: { // поля модели
     name: DataType.STRING,
     age: DataType.NUMBER,
   },
@@ -264,7 +264,7 @@ const res = await countryRep.deleteById(1);
 console.log(res); // true
 ```
 
-## Свойства
+## Поля
 
 Параметр `properties` находится в составе определения модели и принимает
 объект, ключи которого являются полями документа, а значением тип поля
@@ -284,32 +284,32 @@ console.log(res); // true
 - `type: string` тип допустимого значения (обязательно)
 - `itemType: string` тип элемента массива (для `type: 'array'`)
 - `model: string` модель объекта (для `type: 'object'`)
-- `primaryKey: boolean` объявить свойство первичным ключом
+- `primaryKey: boolean` объявить поле первичным ключом
 - `columnName: string` переопределение названия колонки
 - `columnType: string` тип колонки (определяется адаптером)
-- `required: boolean` объявить свойство обязательным
+- `required: boolean` объявить поле обязательным
 - `default: any` значение по умолчанию
 
 **Примеры**
 
-Краткое определение свойств модели.
+Краткое определение полей модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // свойства модели
-    name: DataType.STRING, // свойство "name" типа "string"
-    population: DataType.NUMBER, // свойство "population" типа "number"
+  properties: { // поля модели
+    name: DataType.STRING, // поле "name" типа "string"
+    population: DataType.NUMBER, // поле "population" типа "number"
   },
 });
 ```
 
-Расширенное определение свойств модели.
+Расширенное определение полей модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // свойства модели
+  properties: { // поля модели
     name: {
       type: DataType.STRING, // тип поля "string"
       required: true, // исключение undefined и null
@@ -328,7 +328,7 @@ schema.defineModel({
 ```js
 schema.defineModel({
   name: 'article',
-  properties: { // свойства модели
+  properties: { // поля модели
     tags: {
       type: DataType.ARRAY, // тип поля "array"
       itemType: DataType.STRING, // тип элемента "string"
@@ -352,16 +352,16 @@ schema.defineModel({
 
 - `type: string` тип связи
 - `model: string` целевая модель
-- `foreignKey: string` свойство для идентификатора цели
+- `foreignKey: string` поле для идентификатора цели
 - `polymorphic: boolean|string` объявить связь полиморфной*
-- `discriminator: string` свойство для названия целевой модели (для `polymorphic: true`)
+- `discriminator: string` поле для названия целевой модели (для `polymorphic: true`)
 
 *i. Полиморфный режим позволяет динамически определять целевую модель
-по ее названию, которое хранит документ в свойстве-дискриминаторе.*
+по ее названию, которое хранит документ в поле-дискриминаторе.*
 
 **Тип связи**
 
-- `belongsTo` - документ содержит свойство с идентификатором целевой модели
+- `belongsTo` - документ содержит поле с идентификатором целевой модели
 - `hasOne` - обратная сторона `belongsTo` по принципу "один к одному"
 - `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
 - `referencesMany` - документ содержит массив с идентификаторами целевой модели
@@ -377,7 +377,7 @@ schema.defineModel({
 - `order: string[]` указание порядка
 - `limit: number` ограничение количества документов
 - `skip: number` пропуск документов
-- `fields: string[]` выбор необходимых свойств документа
+- `fields: string[]` выбор необходимых полей документа
 - `include: object` включение связанных данных в результат
 
 ### where
@@ -431,12 +431,12 @@ const res = await rep.delete({
 
 ### order
 
-Параметр упорядочивает выборку по указанным свойствам документа. Обратное
-направление порядка можно задать постфиксом `DESC` в названии свойства.
+Параметр упорядочивает выборку по указанным полям документа. Обратное
+направление порядка можно задать постфиксом `DESC` в названии поля.
 
 **Примеры**
 
-Упорядочить по свойству `createdAt`
+Упорядочить по полю `createdAt`
 
 ```js
 const res = await rep.find({
@@ -444,7 +444,7 @@ const res = await rep.find({
 });
 ```
 
-Упорядочить по свойству `createdAt` в обратном порядке.
+Упорядочить по полю `createdAt` в обратном порядке.
 
 ```js
 const res = await rep.find({
@@ -452,7 +452,7 @@ const res = await rep.find({
 });
 ```
 
-Упорядочить по нескольким свойствам в разных направлениях.
+Упорядочить по нескольким полям в разных направлениях.
 
 ```js
 const res = await rep.find({
