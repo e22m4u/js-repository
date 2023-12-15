@@ -290,16 +290,53 @@ console.log(res); // true
 - `required: boolean` объявить поле обязательным
 - `default: any` значение по умолчанию
 
-**Пример**
+**Примеры**
+
+Краткое определение свойств модели.
 
 ```js
 schema.defineModel({
   name: 'city',
   properties: { // свойства модели
-    name: DataType.STRING, // краткое определение поля "name"
-    population: { // расширенное определение поля "population"
-      type: DataType.NUMBER, // тип поля (обязательно)
+    name: DataType.STRING, // поле "name" типа "string"
+    population: DataType.NUMBER, // поле "population" типа "number"
+  },
+});
+```
+
+Расширенное определение свойств модели.
+
+```js
+schema.defineModel({
+  name: 'city',
+  properties: { // свойства модели
+    name: {
+      type: DataType.STRING, // тип поля "string"
+      required: true, // исключение undefined и null
+    },
+    population: {
+      type: DataType.NUMBER, // тип поля "number"
       default: 0, // значение по умолчанию
+    },
+  },
+});
+```
+
+Фабричное значение по умолчанию. Значение функции будет произведено в момент
+записи документа в базу.
+
+```js
+schema.defineModel({
+  name: 'article',
+  properties: { // свойства модели
+    tags: {
+      type: DataType.ARRAY, // тип поля "array"
+      itemType: DataType.STRING, // тип элемента "string"
+      default: () => [], // фабричное значение
+    },
+    createdAt: {
+      type: DataType.STRING, // тип поля "string"
+      default: () => new Date().toISOString(), // фабричное значение
     },
   },
 });
