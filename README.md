@@ -49,9 +49,9 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // поля модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+  properties: { // свойства модели
+    name: DataType.STRING, // тип "string"
+    population: DataType.NUMBER, // тип "number"
   },
 })
 
@@ -108,7 +108,7 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'product', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // поля модели
+  properties: { // свойства модели
     name: DataType.STRING,
     weight: DataType.NUMBER,
   },
@@ -167,12 +167,12 @@ schema.defineDatasource({
 - `base: string` название наследуемой модели
 - `tableName: string` название коллекции в базе
 - `datasource: string` выбранный источник данных
-- `properties: object` определения полей (см. [Поля](#Поля))
+- `properties: object` определения свойств (см. [Поля](#Поля))
 - `relations: object` определения связей (см. [Связи](#Связи))
 
 **Примеры**
 
-Определение модели со свободным набором полей.
+Определение модели со свободным набором свойств.
 
 ```js
 schema.defineModel({
@@ -186,7 +186,7 @@ schema.defineModel({
 ```js
 schema.defineModel({
   name: 'user', // название новой модели
-  properties: { // поля модели
+  properties: { // свойства модели
     name: DataType.STRING,
     age: DataType.NUMBER,
   },
@@ -284,32 +284,32 @@ console.log(res); // true
 - `type: string` тип допустимого значения (обязательно)
 - `itemType: string` тип элемента массива (для `type: 'array'`)
 - `model: string` модель объекта (для `type: 'object'`)
-- `primaryKey: boolean` объявить поле первичным ключом
+- `primaryKey: boolean` объявить свойство первичным ключом
 - `columnName: string` переопределение названия колонки
 - `columnType: string` тип колонки (определяется адаптером)
-- `required: boolean` объявить поле обязательным
+- `required: boolean` объявить свойство обязательным
 - `default: any` значение по умолчанию
 
 **Примеры**
 
-Краткое определение полей модели.
+Краткое определение свойств модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // поля модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+  properties: { // свойства модели
+    name: DataType.STRING, // тип "string"
+    population: DataType.NUMBER, // тип "number"
   },
 });
 ```
 
-Расширенное определение полей модели.
+Расширенное определение свойств модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // поля модели
+  properties: { // свойства модели
     name: {
       type: DataType.STRING, // тип поля "string"
       required: true, // исключение undefined и null
@@ -328,7 +328,7 @@ schema.defineModel({
 ```js
 schema.defineModel({
   name: 'article',
-  properties: { // поля модели
+  properties: { // свойства модели
     tags: {
       type: DataType.ARRAY, // тип поля "array"
       itemType: DataType.STRING, // тип элемента "string"
@@ -351,17 +351,17 @@ schema.defineModel({
 **Параметры**
 
 - `type: string` тип связи
-- `model: string` целевая модель
-- `foreignKey: string` поле для идентификатора цели
+- `model: string` название целевой модели
+- `foreignKey: string` свойство текущей модели для идентификатора цели
 - `polymorphic: boolean|string` объявить связь полиморфной*
-- `discriminator: string` поле для названия целевой модели (для `polymorphic: true`)
+- `discriminator: string` свойство текущей модели для названия целевой*
 
 *i. Полиморфный режим позволяет динамически определять целевую модель
-по ее названию, которое хранит документ в поле-дискриминаторе.*
+по ее названию, которое хранит документ в свойстве-дискриминаторе.*
 
 **Тип связи**
 
-- `belongsTo` - документ содержит поле с идентификатором целевой модели
+- `belongsTo` - текущая модель содержит свойство для идентификатора цели
 - `hasOne` - обратная сторона `belongsTo` по принципу "один к одному"
 - `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
 - `referencesMany` - документ содержит массив с идентификаторами целевой модели
