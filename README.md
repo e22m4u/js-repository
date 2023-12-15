@@ -105,6 +105,10 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'product', // название новой модели
   datasource: 'myMemory', // выбранный источник
+  properties: { // свойства модели
+    name: DataType.STRING,
+    weight: DataType.NUMBER,
+  },
 });
 ```
 
