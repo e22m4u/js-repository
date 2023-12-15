@@ -49,9 +49,9 @@ schema.defineDatasource({
 schema.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
-  properties: { // поля модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+  properties: { // свойства модели
+    name: DataType.STRING, // свойство "name" типа "string"
+    population: DataType.NUMBER, // свойство "population" типа "number"
   },
 })
 
@@ -284,10 +284,10 @@ console.log(res); // true
 - `type: string` тип допустимого значения (обязательно)
 - `itemType: string` тип элемента массива (для `type: 'array'`)
 - `model: string` модель объекта (для `type: 'object'`)
-- `primaryKey: boolean` объявить поле первичным ключом
+- `primaryKey: boolean` объявить свойство первичным ключом
 - `columnName: string` переопределение названия колонки
 - `columnType: string` тип колонки (определяется адаптером)
-- `required: boolean` объявить поле обязательным
+- `required: boolean` объявить свойство обязательным
 - `default: any` значение по умолчанию
 
 **Примеры**
@@ -298,8 +298,8 @@ console.log(res); // true
 schema.defineModel({
   name: 'city',
   properties: { // свойства модели
-    name: DataType.STRING, // поле "name" типа "string"
-    population: DataType.NUMBER, // поле "population" типа "number"
+    name: DataType.STRING, // свойство "name" типа "string"
+    population: DataType.NUMBER, // свойство "population" типа "number"
   },
 });
 ```
@@ -352,16 +352,16 @@ schema.defineModel({
 
 - `type: string` тип связи
 - `model: string` целевая модель
-- `foreignKey: string` поле для идентификатора цели
+- `foreignKey: string` свойство для идентификатора цели
 - `polymorphic: boolean|string` объявить связь полиморфной*
-- `discriminator: string` поле для названия целевой модели (для `polymorphic: true`)
+- `discriminator: string` свойство для названия целевой модели (для `polymorphic: true`)
 
 *i. Полиморфный режим позволяет динамически определять целевую модель
-по ее названию, которое хранит документ в поле-дискриминаторе.*
+по ее названию, которое хранит документ в свойстве-дискриминаторе.*
 
 **Тип связи**
 
-- `belongsTo` - документ содержит поле с идентификатором целевой модели
+- `belongsTo` - документ содержит свойство с идентификатором целевой модели
 - `hasOne` - обратная сторона `belongsTo` по принципу "один к одному"
 - `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
 - `referencesMany` - документ содержит массив с идентификаторами целевой модели
@@ -377,7 +377,7 @@ schema.defineModel({
 - `order: string[]` указание порядка
 - `limit: number` ограничение количества документов
 - `skip: number` пропуск документов
-- `fields: string[]` выбор необходимых полей документа
+- `fields: string[]` выбор необходимых свойств документа
 - `include: object` включение связанных данных в результат
 
 ### where
