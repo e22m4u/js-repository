@@ -359,35 +359,32 @@ schema.defineModel({
 
 **Примеры**
 
-Определение моделей связанных через `belongsTo` и `hasMany`
+Объявление связи `belongsTo` при определении модели.
 
 ```js
-// модель "role"
-schema.defineModel({
-  name: 'role',
-  properties: {
-    name: DataType.STRING,
-  },
-  relations: {
-    users: { // название связи
-      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
-      model: 'user', // название целевой модели
-      foreignKey: 'roleId', // свойство целевой модели для идентификатора
-    },
-  },
-});
-
 // модель "user"
 schema.defineModel({
   name: 'user',
-  properties: {
-    name: DataType.STRING,
-  },
   relations: {
     role: { // название связи
       type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
       model: 'role', // название целевой модели
       foreignKey: 'roleId', // свойство для идентификатора (необязательно)
+    },
+  },
+});
+```
+
+Объявление связи `hasMany` при определении модели.
+
+```js
+schema.defineModel({
+  name: 'role',
+  relations: {
+    users: { // название связи
+      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
+      model: 'user', // название целевой модели
+      foreignKey: 'roleId', // свойство целевой модели для идентификатора
     },
   },
 });
