@@ -13,6 +13,7 @@
 - [Репозиторий](#Репозиторий)
 - [Фильтрация](#Фильтрация)
 - [Связи](#Связи)
+- [Расширение](#Расширение)
 - [Тесты](#Тесты)
 - [Лицензия](#Лицензия)
 
@@ -569,6 +570,48 @@ schema.defineModel({
   },
 })
 ```
+
+## Расширение
+
+Метод `getRepository` экземпляра схемы проверяет наличие существующего
+репозитория для указанной модели и возвращает его. В противном случае
+создается новый экземпляр, который будет сохранен для последующих
+обращений к методу.
+
+```js
+import {Schema} from '@e22m4u/js-repository';
+import {Repository} from '@e22m4u/js-repository';
+
+// const schema = new Schema();
+// schema.defineDatasource ...
+// schema.defineModel ...
+
+const rep1 = schema.getRepository('model');
+const rep2 = schema.getRepository('model');
+console.log(rep1 === rep2); // true
+```
+
+Подменить базовый конструктор репозитория можно методом `setRepositoryCtor`
+экземпляра схемы, после чего все создаваемые репозитории будут использовать
+указанный конструктор вместо стандартного.
+
+```js
+import {Schema} from '@e22m4u/js-repository';
+import {Repository} from '@e22m4u/js-repository';
+import {RepositoryRegistry} from '@e22m4u/js-repository';
+
+class MyRepository extends Repository {
+  /*...*/
+}
+
+const schema = new Schema();
+schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
+// теперь schema.getRepository(modelName) будет возвращать
+// экземпляр класса MyRepository
+```
+
+Так как экземпляры репозитория кэшируется, то выполнять замену конструктора
+стоит именно до обращения к методу `getRepository` схемы.
 
 ## Тесты
 
