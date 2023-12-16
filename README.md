@@ -620,7 +620,7 @@ console.log(rep instanceof MyRepository); // true
 
 ## TypeScript
 
-Пример использования интерфейса модели.
+Получение типизированного репозитория с указанием интерфейса модели.
 
 ```ts
 import {Schema} from '@e22m4u/js-repository';
