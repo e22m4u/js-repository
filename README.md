@@ -437,16 +437,34 @@ schema.defineModel({
 })
 ```
 
-Полиморфная версия `hasMany` с указанием названия связи ссылающейся на текущую модель.
+Полиморфная версия `hasMany` с указанием названия связи ссылающейся на текущую
+модель.
 
 ```js
 schema.defineModel({
-  name: 'document',
+  name: 'letter',
   relations: {
-    files: { // название связи
+    attachments: { // название связи
       type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
       model: 'file', // название целевой модели
-      polymorphic: 'reference', // название связи ссылающейся на текущую модель
+      polymorphic: 'reference', // название полиморфной связи целевой модели
+    },
+  },
+})
+```
+
+Полиморфная версия `hasMany` с указанием свойств целевой модели.
+
+```js
+schema.defineModel({
+  name: 'letter',
+  relations: {
+    attachments: { // название связи
+      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
+      model: 'file', // название целевой модели
+      polymorphic: true, // название текущей модели находится в дискриминаторе
+      foreignKey: 'referenceId', // свойство целевой модели для идентификатора
+      discriminator: 'referenceType', // свойство целевой модели для названия текущей
     },
   },
 })

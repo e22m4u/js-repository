@@ -134,7 +134,7 @@ export declare type PolyHasOneDefinitionWithTargetRelationName = {
  *   model: 'model',
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
- *   discriminator: 'referenceType,
+ *   discriminator: 'referenceType',
  * }
  * ```
  */
@@ -196,7 +196,7 @@ export declare type PolyHasManyDefinitionWithTargetRelationName = {
  *   model: 'model',
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
- *   discriminator: 'referenceType,
+ *   discriminator: 'referenceType',
  * }
  * ```
  */

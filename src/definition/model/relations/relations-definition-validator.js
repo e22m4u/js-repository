@@ -193,7 +193,7 @@ export class RelationsDefinitionValidator extends Service {
    *   model: 'model',
    *   polymorphic: true,
    *   foreignKey: 'referenceId',
-   *   discriminator: 'referenceType,
+   *   discriminator: 'referenceType',
    * }
    * ```
    *
@@ -311,7 +311,7 @@ export class RelationsDefinitionValidator extends Service {
    *   model: 'model',
    *   polymorphic: true,
    *   foreignKey: 'referenceId',
-   *   discriminator: 'referenceType,
+   *   discriminator: 'referenceType',
    * }
    * ```
    *
