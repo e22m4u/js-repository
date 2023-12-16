@@ -14,6 +14,7 @@
 - [Фильтрация](#Фильтрация)
 - [Связи](#Связи)
 - [Расширение](#Расширение)
+- [TypeScript](#TypeScript)
 - [Тесты](#Тесты)
 - [Лицензия](#Лицензия)
 
@@ -616,6 +617,51 @@ console.log(rep instanceof MyRepository); // true
 
 *i. Так как экземпляры репозитория кэшируется, то замена конструктора
 выполняется именно до обращения к методу `getRepository`.*
+
+## TypeScript
+
+Пример использования интерфейса модели.
+
+```ts
+import {Schema} from '@e22m4u/js-repository';
+import {DataType} from '@e22m4u/js-repository';
+import {RelationType} from '@e22m4u/js-repository';
+
+// const schema = new Schema();
+// schema.defineDatasource ...
+// schema.defineModel ...
+
+// определение модели "city"
+schema.defineModel({
+  name: 'city',
+  datasource: 'myDatasource',
+  properties: {
+    title: DataType.STRING,
+    timeZone: DataType.STRING,
+  },
+  relations: {
+    country: {
+      type: RelationType.BELONGS_TO,
+      model: 'country',
+    },
+  },
+});
+
+// определение интерфейса "city"
+interface City {
+  id: number;
+  title?: string;
+  timeZone?: string;
+  countryId?: number;
+  country?: Country;
+  // открыть свойства (опционально)
+  [property: string]: unknown;
+}
+
+// получаем репозиторий по названию модели
+// указывая ее тип и тип идентификатора
+const cityRep = schema.getRepository<City, number>('city');
+```
 
 ## Тесты
 
