@@ -359,10 +359,9 @@ schema.defineModel({
 
 **Примеры**
 
-Объявление связи `belongsTo` при определении модели.
+Объявление связи `belongsTo`
 
 ```js
-// модель "user"
 schema.defineModel({
   name: 'user',
   relations: {
@@ -375,7 +374,7 @@ schema.defineModel({
 });
 ```
 
-Объявление связи `hasMany` при определении модели.
+Объявление связи `hasMany`
 
 ```js
 schema.defineModel({
@@ -385,6 +384,21 @@ schema.defineModel({
       type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
       model: 'user', // название целевой модели
       foreignKey: 'roleId', // свойство целевой модели для идентификатора
+    },
+  },
+});
+```
+
+Объявление связи `referencesMany`
+
+```js
+schema.defineModel({
+  name: 'article',
+  relations: {
+    categories: { // название связи
+      type: RelationType.REFERENCES_MANY, // связь через массив идентификаторов
+      model: 'category', // название целевой модели
+      foreignKey: 'categoryIds', // свойство для идентификаторов (необязательно)
     },
   },
 });
