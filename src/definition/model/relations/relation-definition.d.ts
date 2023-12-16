@@ -73,7 +73,7 @@ export declare type BelongsToDefinition = {
  *   type: RelationType.BELONGS_TO,
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
- *   discriminator: 'referenceType,
+ *   discriminator: 'referenceType',
  * }
  * ```
  */

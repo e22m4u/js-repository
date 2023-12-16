@@ -404,6 +404,39 @@ schema.defineModel({
 });
 ```
 
+Полиморфная версия `belongsTo`
+
+```js
+schema.defineModel({
+  name: 'file',
+  relations: {
+    reference: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      // cогласно названию связи "reference", полиморфный режим позволяет
+      // хранить название целевой модели в свойстве "referenceType",
+      // а идентификатор целевого документа в "referenceId"
+      polymorphic: true,
+    },
+  },
+});
+```
+
+Полиморфная версия `belongsTo` с указанием свойств.
+
+```js
+schema.defineModel({
+  name: 'file',
+  relations: {
+    reference: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      polymorphic: true, // название целевой модели хранит дискриминатор
+      foreignKey: 'referenceId', // свойство для идентификатора цели
+      discriminator: 'referenceType', // свойство для названия целевой модели
+    },
+  },
+})
+```
+
 ## Фильтрация
 
 Некоторые методы репозитория принимают объект настроек влияющий
