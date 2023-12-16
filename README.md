@@ -359,24 +359,10 @@ schema.defineModel({
 
 **Примеры**
 
-Определение модели со связью `belongsTo` и включение связанного документа
-в результат метода `findById`
+Определение моделей связанных через `belongsTo` по идентификатору.
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
-import {DataType} from '@e22m4u/js-repository';
-import {RelationType} from '@e22m4u/js-repository';
-
-// создание экземпляра схемы
-const schema = new Schema();
-
-// определение нового источника "myMemory"
-schema.defineDatasource({
-  name: 'myMemory',
-  adapter: 'memory',
-});
-
-// определение новой модели "role"
+// модель "role"
 schema.defineModel({
   name: 'role',
   datasource: 'myMemory',
@@ -385,7 +371,7 @@ schema.defineModel({
   },
 });
 
-// определение новой модели "user"
+// модель "user"
 schema.defineModel({
   name: 'user',
   datasource: 'myMemory',
@@ -400,55 +386,6 @@ schema.defineModel({
     },
   },
 });
-
-// получение репозитория модели "role"
-const roleRep = schema.getRepository('role');
-
-// добавление нового документа "role"
-const role = await roleRep.create({
-  name: 'user',
-});
-
-// просмотр состава документа "role"
-console.log(role);
-// {
-//   "id": 1,
-//   "name": "user"
-// }
-
-// получение репозитория модели "user"
-const userRep = schema.getRepository('user');
-
-// добавление нового документа "user"
-const user = await userRep.create({
-  name: 'Fedor',
-  roleId: role.id, // идентификатор документа "role"
-});
-
-// просмотр состава документа "user"
-console.log(user);
-// {
-//   "id": 1,
-//   "name": "Fedor",
-//   "roleId": 1
-// }
-
-// поиск документа "user" по идентификатору
-const res = await userRep.findById(user.id, {
-  include: 'role', // включить в результат связь "role"
-});
-
-// вывод результата
-console.log(res);
-// {
-//   "id": 1,
-//   "name": "Fedor",
-//   "roleId": 1,
-//   "role": {
-//     "id": 1,
-//     "name": "user"
-//   }
-// }
 ```
 
 ## Фильтрация
