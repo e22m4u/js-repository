@@ -172,15 +172,6 @@ schema.defineDatasource({
 
 **Примеры**
 
-Определение модели со свободным набором свойств.
-
-```js
-schema.defineModel({
-  name: 'user', // название новой модели
-  // параметр "properties" не указан
-});
-```
-
 Определение модели со свойствами указанного типа.
 
 ```js
@@ -365,6 +356,100 @@ schema.defineModel({
 - `hasOne` - обратная сторона `belongsTo` по принципу "один к одному"
 - `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
 - `referencesMany` - документ содержит массив с идентификаторами целевой модели
+
+**Примеры**
+
+Определение модели со связью `belongsTo` и включение связанного документа
+в результат метода `findById`
+
+```js
+import {Schema} from '@e22m4u/js-repository';
+import {DataType} from '@e22m4u/js-repository';
+import {RelationType} from '@e22m4u/js-repository';
+
+// создание экземпляра схемы
+const schema = new Schema();
+
+// определение нового источника "myMemory"
+schema.defineDatasource({
+  name: 'myMemory',
+  adapter: 'memory',
+});
+
+// определение новой модели "role"
+schema.defineModel({
+  name: 'role',
+  datasource: 'myMemory',
+  properties: {
+    name: DataType.STRING,
+  },
+});
+
+// определение новой модели "user"
+schema.defineModel({
+  name: 'user',
+  datasource: 'myMemory',
+  properties: {
+    name: DataType.STRING,
+  },
+  relations: {
+    role: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      model: 'role', // название целевой модели
+      foreignKey: 'roleId', // свойство для идентификатора (необязательно)
+    },
+  },
+});
+
+// получение репозитория модели "role"
+const roleRep = schema.getRepository('role');
+
+// добавление нового документа "role"
+const role = await roleRep.create({
+  name: 'user',
+});
+
+// просмотр состава документа "role"
+console.log(role);
+// {
+//   "id": 1,
+//   "name": "user"
+// }
+
+// получение репозитория модели "user"
+const userRep = schema.getRepository('user');
+
+// добавление нового документа "user"
+const user = await userRep.create({
+  name: 'Fedor',
+  roleId: role.id, // идентификатор документа "role"
+});
+
+// просмотр состава документа "user"
+console.log(user);
+// {
+//   "id": 1,
+//   "name": "Fedor",
+//   "roleId": 1
+// }
+
+// поиск документа "user" по идентификатору
+const res = await userRep.findById(user.id, {
+  include: 'role', // включить в результат связь "role"
+});
+
+// вывод результата
+console.log(res);
+// {
+//   "id": 1,
+//   "name": "Fedor",
+//   "roleId": 1,
+//   "role": {
+//     "id": 1,
+//     "name": "user"
+//   }
+// }
+```
 
 ## Фильтрация
 
