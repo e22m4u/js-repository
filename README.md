@@ -591,9 +591,10 @@ const rep2 = schema.getRepository('model');
 console.log(rep1 === rep2); // true
 ```
 
-Подменить базовый конструктор репозитория можно методом `setRepositoryCtor`
-экземпляра схемы, после чего все создаваемые репозитории будут использовать
-указанный конструктор вместо стандартного.
+Подмена стандартного конструктора репозитория выполняется методом
+`setRepositoryCtor` сервиса `RepositoryRegistry`, который находится
+в контейнере экземпляра схемы. После чего все новые репозитории будут
+использовать указанный конструктор вместо стандартного.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -604,14 +605,17 @@ class MyRepository extends Repository {
   /*...*/
 }
 
-const schema = new Schema();
+// const schema = new Schema();
+// schema.defineDatasource ...
+// schema.defineModel ...
+
 schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
-// теперь schema.getRepository(modelName) будет возвращать
-// экземпляр класса MyRepository
+const rep = schema.getRepository('model');
+console.log(rep instanceof MyRepository); // true
 ```
 
-Так как экземпляры репозитория кэшируется, то выполнять замену конструктора
-стоит именно до обращения к методу `getRepository` схемы.
+*i. Так как экземпляры репозитория кэшируется, то замена конструктора
+выполняется именно до обращения к методу `getRepository`.*
 
 ## Тесты
 
