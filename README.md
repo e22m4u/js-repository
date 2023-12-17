@@ -656,8 +656,8 @@ const rep = schema.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
 
-*i. Так как экземпляры репозитория кэшируется, то замена конструктора
-выполняется именно до обращения к методу `getRepository`.*
+*i. Так как экземпляры репозитория кэшируется, то замену конструктора
+следует выполнять до обращения к методу `getRepository`.*
 
 ## TypeScript
 
