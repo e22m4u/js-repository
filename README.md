@@ -493,7 +493,7 @@ const res = await rep.find({
 });
 ```
 
-Вложенное включение связей.
+Включение вложенных связей.
 
 ```js
 const res = await rep.find({
@@ -522,7 +522,7 @@ const res = await rep.find({
   include: {
     relation: 'employees', // название связи
     scope: { // фильтрация документов "employees"
-      where: {active: true}, // условия выборки
+      where: {hidden: false}, // условия выборки
       order: 'id', // порядок документов
       limit: 10, // ограничение количества
       skip: 5, // пропуск документов
