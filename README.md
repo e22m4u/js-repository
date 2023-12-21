@@ -315,6 +315,7 @@ schema.defineModel({
 
 - `create(data, filter = undefined)` добавить новый документ
 - `replaceById(id, data, filter = undefined)` заменить весь документ
+- `replaceOrCreate(data, filter = undefined)` заменить или создать новый
 - `patchById(id, data, filter = undefined)` частично обновить документ
 - `patch(data, where = undefined)` обновить все документы или по условию
 - `find(filter = undefined)` найти все документы или по условию
