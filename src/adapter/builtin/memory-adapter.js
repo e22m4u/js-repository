@@ -155,6 +155,36 @@ export class MemoryAdapter extends Adapter {
   }
 
   /**
+   * Replace or create.
+   *
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {object|undefined} filter
+   * @returns {Promise<object>}
+   */
+  async replaceOrCreate(modelName, modelData, filter = undefined) {
+    const pkPropName =
+      this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+        modelName,
+      );
+    let idValue = modelData[pkPropName];
+    if (idValue == null) idValue = this._genNextIdValue(modelName, pkPropName);
+
+    const table = this._getTableOrCreate(modelName);
+    modelData = cloneDeep(modelData);
+    modelData[pkPropName] = idValue;
+
+    const tableData = this.getService(
+      ModelDefinitionUtils,
+    ).convertPropertyNamesToColumnNames(modelName, modelData);
+    table.set(idValue, tableData);
+
+    return this.getService(
+      ModelDefinitionUtils,
+    ).convertColumnNamesToPropertyNames(modelName, tableData);
+  }
+
+  /**
    * Patch.
    *
    * @param {string} modelName

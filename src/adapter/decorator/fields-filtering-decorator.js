@@ -45,6 +45,19 @@ export class FieldsFilteringDecorator extends Service {
       return result;
     };
 
+    const replaceOrCreate = adapter.replaceOrCreate;
+    adapter.replaceOrCreate = async function (modelName, modelData, filter) {
+      let result = await replaceOrCreate.call(
+        this,
+        modelName,
+        modelData,
+        filter,
+      );
+      if (filter && typeof filter === 'object' && filter.fields)
+        result = selectFields(result, modelName, filter.fields);
+      return result;
+    };
+
     const patchById = adapter.patchById;
     adapter.patchById = async function (modelName, id, modelData, filter) {
       let result = await patchById.call(this, modelName, id, modelData, filter);

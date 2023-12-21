@@ -86,6 +86,14 @@ describe('Adapter', function () {
     });
   });
 
+  describe('replaceOrCreate', function () {
+    it('throws the "Not implemented"', function () {
+      const adapter = new Adapter();
+      const throwable = () => adapter.replaceOrCreate();
+      expect(throwable).to.throw('Adapter.replaceOrCreate is not implemented.');
+    });
+  });
+
   describe('patchById', function () {
     it('throws the "Not implemented"', function () {
       const adapter = new Adapter();

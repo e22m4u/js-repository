@@ -79,6 +79,21 @@ export class Adapter extends Service {
   }
 
   /**
+   * Replace or create.
+   *
+   * @param {string} modelName
+   * @param {object} modelData
+   * @param {object|undefined} filter
+   * @returns {Promise<object>}
+   */
+  replaceOrCreate(modelName, modelData, filter = undefined) {
+    throw new NotImplementedError(
+      '%s.replaceOrCreate is not implemented.',
+      this.constructor.name,
+    );
+  }
+
+  /**
    * Patch.
    *
    * @param {string} modelName

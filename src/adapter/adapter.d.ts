@@ -53,6 +53,19 @@ export declare class Adapter extends Service {
   ): Promise<ModelData>;
 
   /**
+   * Replace or create.
+   *
+   * @param modelName
+   * @param modelData
+   * @param filter
+   */
+  replaceOrCreate(
+    modelName: string,
+    modelData: ModelData,
+    filter?: ItemFilterClause,
+  ): Promise<ModelData>;
+
+  /**
    * Patch.
    *
    * @param modelName

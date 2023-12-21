@@ -36,6 +36,12 @@ export class DefaultValuesDecorator extends Service {
       return replaceById.call(this, modelName, id, modelData, filter);
     };
 
+    const replaceOrCreate = adapter.replaceOrCreate;
+    adapter.replaceOrCreate = function (modelName, modelData, filter) {
+      modelData = setDefaults(modelName, modelData);
+      return replaceOrCreate.call(this, modelName, modelData, filter);
+    };
+
     const patch = adapter.patch;
     adapter.patch = function (modelName, modelData, where) {
       modelData = setDefaults(modelName, modelData, true);

@@ -103,12 +103,8 @@ export class Repository extends Service {
    * @returns {Promise<object>}
    */
   async replaceOrCreate(data, filter = undefined) {
-    const pkPropName = this.getService(
-      ModelDefinitionUtils,
-    ).getPrimaryKeyAsPropertyName(this.modelName);
-    const pkValue = data[pkPropName];
-    if (pkValue == null) return this.create(data, filter);
-    return this.replaceById(pkValue, data, filter);
+    const adapter = await this.getAdapter();
+    return adapter.replaceOrCreate(this.modelName, data, filter);
   }
 
   /**

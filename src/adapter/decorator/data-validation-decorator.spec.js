@@ -19,6 +19,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  replaceOrCreate(modelName, modelData, filter = undefined) {
+    return Promise.resolve({});
+  }
+
+  // eslint-disable-next-line no-unused-vars
   patch(modelName, modelData, where = undefined) {
     return Promise.resolve(1);
   }
@@ -50,6 +55,14 @@ describe('DataValidationDecorator', function () {
     sandbox.on(V, 'validate');
     const data = {};
     await A.replaceById('model', 1, data);
+    expect(V.validate).to.be.called.once;
+    expect(V.validate).to.be.called.with.exactly('model', data);
+  });
+
+  it('overrides the "replaceOrCreate" method and validates a given data', async function () {
+    sandbox.on(V, 'validate');
+    const data = {};
+    await A.replaceOrCreate('model', data);
     expect(V.validate).to.be.called.once;
     expect(V.validate).to.be.called.with.exactly('model', data);
   });

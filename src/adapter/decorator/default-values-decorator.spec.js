@@ -30,6 +30,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  async replaceOrCreate(modelName, modelData, filter = undefined) {
+    return modelData;
+  }
+
+  // eslint-disable-next-line no-unused-vars
   patch(modelName, modelData, where = undefined) {
     return Promise.resolve(modelData);
   }
@@ -73,6 +78,17 @@ describe('DefaultValuesDecorator', function () {
   it('overrides the "replaceById" method and sets default values to input data', async function () {
     sandbox.on(U, 'setDefaultValuesToEmptyProperties');
     const retval = await A.replaceById('model', 1, INPUT_DATA);
+    expect(retval).to.be.eql({prop: 'value'});
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
+      'model',
+      INPUT_DATA,
+    );
+  });
+
+  it('overrides the "replaceOrCreate" method and sets default values to input data', async function () {
+    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
+    const retval = await A.replaceOrCreate('model', INPUT_DATA);
     expect(retval).to.be.eql({prop: 'value'});
     expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
     expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(

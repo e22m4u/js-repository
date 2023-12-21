@@ -1133,6 +1133,658 @@ describe('MemoryAdapter', function () {
     });
   });
 
+  describe('replaceOrCreate', function () {
+    it('generates a new identifier when a value of a primary key has not provided', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {foo: 'string', bar: 10};
+      const created = await adapter.replaceOrCreate('model', input);
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier when a value of a primary key is undefined', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: undefined,
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.replaceOrCreate('model', input);
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier when a value of a primary key is null', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: null,
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.replaceOrCreate('model', input);
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier for a primary key of a "number" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.NUMBER,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const result1 = await adapter.replaceOrCreate('model', {});
+      const result2 = await adapter.replaceOrCreate('model', {});
+      const result3 = await adapter.replaceOrCreate('model', {});
+      expect(result1).to.be.eql({myId: 1});
+      expect(result2).to.be.eql({myId: 2});
+      expect(result3).to.be.eql({myId: 3});
+    });
+
+    it('generates a new identifier for a primary key of an "any" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.ANY,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const result1 = await adapter.replaceOrCreate('model', {});
+      const result2 = await adapter.replaceOrCreate('model', {});
+      const result3 = await adapter.replaceOrCreate('model', {});
+      expect(result1).to.be.eql({myId: 1});
+      expect(result2).to.be.eql({myId: 2});
+      expect(result3).to.be.eql({myId: 3});
+    });
+
+    it('throws an error when generating a new value for a primary key of a "string" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.STRING,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const promise = adapter.replaceOrCreate('model', {
+        foo: 'string',
+        bar: 10,
+      });
+      await expect(promise).to.be.rejectedWith(
+        'The memory adapter able to generate only Number identifiers, ' +
+          'but the primary key "myId" of the model "model" is defined as String. ' +
+          'Do provide your own value for the "myId" property, or change the type ' +
+          'in the primary key definition to a Number that will be ' +
+          'generated automatically.',
+      );
+    });
+
+    it('throws an error when generating a new value for a primary key of a "boolean" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.BOOLEAN,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const promise = adapter.replaceOrCreate('model', {
+        foo: 'string',
+        bar: 10,
+      });
+      await expect(promise).to.be.rejectedWith(
+        'The memory adapter able to generate only Number identifiers, ' +
+          'but the primary key "myId" of the model "model" is defined as Boolean. ' +
+          'Do provide your own value for the "myId" property, or change the type ' +
+          'in the primary key definition to a Number that will be ' +
+          'generated automatically.',
+      );
+    });
+
+    it('throws an error when generating a new value for a primary key of an "array" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.ARRAY,
+            itemType: DataType.NUMBER,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const promise = adapter.replaceOrCreate('model', {});
+      await expect(promise).to.be.rejectedWith(
+        'The memory adapter able to generate only Number identifiers, ' +
+          'but the primary key "myId" of the model "model" is defined as Array. ' +
+          'Do provide your own value for the "myId" property, or change the type ' +
+          'in the primary key definition to a Number that will be ' +
+          'generated automatically.',
+      );
+    });
+
+    it('throws an error when generating a new value for a primary key of an "object" type', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          myId: {
+            type: DataType.OBJECT,
+            primaryKey: true,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const promise = adapter.replaceOrCreate('model', {});
+      await expect(promise).to.be.rejectedWith(
+        'The memory adapter able to generate only Number identifiers, ' +
+          'but the primary key "myId" of the model "model" is defined as Object. ' +
+          'Do provide your own value for the "myId" property, or change the type ' +
+          'in the primary key definition to a Number that will be ' +
+          'generated automatically.',
+      );
+    });
+
+    it('allows to specify an identifier value for a new item', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const idValue = 5;
+      const input = {foo: 'string', bar: 10};
+      const created = await adapter.replaceOrCreate('model', {
+        [DEF_PK]: idValue,
+        ...input,
+      });
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...input});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...input});
+    });
+
+    it('sets default values if they are not provided for a new item', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 10,
+          },
+          bar: {
+            type: DataType.STRING,
+            default: 'string',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 10, bar: 'string'};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...defaults});
+    });
+
+    it('sets default values for properties provided with an undefined value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 1,
+          },
+          bar: {
+            type: DataType.NUMBER,
+            default: 2,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {foo: undefined});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 1, bar: 2};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...defaults});
+    });
+
+    it('sets default values for properties provided with a null value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 1,
+          },
+          bar: {
+            type: DataType.NUMBER,
+            default: 2,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {foo: null});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 1, bar: 2};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...defaults});
+    });
+
+    it('uses a specified column name for a primary key', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            primaryKey: true,
+            columnName: 'bar',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {});
+      expect(created).to.be.eql({foo: created.foo});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(created.foo);
+      expect(tableData).to.be.eql({bar: created.foo});
+    });
+
+    it('uses a specified column name for a regular property', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            columnName: 'bar',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {foo: 10});
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, bar: 10});
+    });
+
+    it('uses a specified column name for a regular property with a default value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            columnName: 'bar',
+            default: 10,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.replaceOrCreate('model', {});
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, bar: 10});
+    });
+
+    it('uses a short form of a fields clause to filter a return value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {foo: 'string', bar: 10};
+      const filter = {fields: 'foo'};
+      const result = await adapter.replaceOrCreate('model', input, filter);
+      expect(result).to.be.eql({[DEF_PK]: result[DEF_PK], foo: input.foo});
+    });
+
+    it('uses a full form of a fields clause to filter a return value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+          baz: DataType.BOOLEAN,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {foo: 'string', bar: 10, baz: true};
+      const filter = {fields: ['foo', 'bar']};
+      const result = await adapter.replaceOrCreate('model', input, filter);
+      expect(result).to.be.eql({
+        [DEF_PK]: result[DEF_PK],
+        foo: input.foo,
+        bar: input.bar,
+      });
+    });
+
+    it('a fields clause uses property names instead of column names', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            columnName: 'fooCol',
+          },
+          bar: {
+            type: DataType.NUMBER,
+            columnName: 'barCol',
+          },
+          baz: {
+            type: DataType.BOOLEAN,
+            columnName: 'bazCol',
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {foo: 'string', bar: 10, baz: true};
+      const filter = {fields: ['foo', 'bar']};
+      const result = await adapter.replaceOrCreate('model', input, filter);
+      expect(result).to.be.eql({
+        [DEF_PK]: result[DEF_PK],
+        foo: input.foo,
+        bar: input.bar,
+      });
+    });
+
+    it('removes properties when replacing an item by a given identifier', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.NUMBER,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {foo: 1, bar: 2};
+      const created = await adapter.create('model', input);
+      const idValue = created[DEF_PK];
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...input});
+      const replacement = {[DEF_PK]: idValue, foo: 2};
+      const replaced = await adapter.replaceOrCreate('model', replacement);
+      expect(replaced).to.be.eql(replacement);
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql(replacement);
+    });
+
+    it('sets a default values for removed properties when replacing an item', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 1,
+          },
+          bar: {
+            type: DataType.NUMBER,
+            default: 2,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.create('model', {});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 1, bar: 2};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const replacement = {[DEF_PK]: idValue, foo: 2};
+      const replaced = await adapter.replaceOrCreate('model', replacement);
+      expect(replaced).to.be.eql({...defaults, ...replacement});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...defaults, ...replacement});
+    });
+
+    it('sets a default values for replaced properties with an undefined value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 1,
+          },
+          bar: {
+            type: DataType.NUMBER,
+            default: 2,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.create('model', {});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 1, bar: 2};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const replaced = await adapter.replaceOrCreate('model', {
+        [DEF_PK]: idValue,
+        foo: undefined,
+      });
+      expect(replaced).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...defaults});
+    });
+
+    it('sets a default values for replaced properties with a null value', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: {
+            type: DataType.NUMBER,
+            default: 1,
+          },
+          bar: {
+            type: DataType.NUMBER,
+            default: 2,
+          },
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const created = await adapter.create('model', {});
+      const idValue = created[DEF_PK];
+      const defaults = {foo: 1, bar: 2};
+      expect(created).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const replaced = await adapter.replaceOrCreate('model', {
+        [DEF_PK]: idValue,
+        foo: null,
+      });
+      expect(replaced).to.be.eql({[DEF_PK]: idValue, ...defaults});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({[DEF_PK]: idValue, ...defaults});
+    });
+  });
+
   describe('patch', function () {
     it('updates only provided properties for all items and returns their number', async function () {
       const schema = new Schema();

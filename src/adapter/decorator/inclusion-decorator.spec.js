@@ -31,6 +31,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  async replaceOrCreate(modelName, modelData, filter = undefined) {
+    return Object.assign({}, MODEL_DATA);
+  }
+
+  // eslint-disable-next-line no-unused-vars
   async patchById(modelName, id, modelData, filter = undefined) {
     return Object.assign({}, MODEL_DATA);
   }
@@ -75,6 +80,18 @@ describe('InclusionDecorator', function () {
       Object.assign(entities[0], RETVAL_DATA);
     });
     const retval = await A.replaceById('model', 1, {}, FILTER);
+    expect(retval).to.be.eql(RETVAL_DATA);
+    expect(T.includeTo).to.be.called.once;
+  });
+
+  it('overrides the "replaceOrCreate" method and applies clause inclusion', async function () {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
+      expect(entities).to.be.eql([MODEL_DATA]);
+      expect(modelName).to.be.eql('model');
+      expect(clause).to.be.eql(FILTER.include);
+      Object.assign(entities[0], RETVAL_DATA);
+    });
+    const retval = await A.replaceOrCreate('model', {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.includeTo).to.be.called.once;
   });

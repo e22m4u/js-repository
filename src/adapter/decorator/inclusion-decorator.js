@@ -45,6 +45,19 @@ export class InclusionDecorator extends Service {
       return retvalData;
     };
 
+    const replaceOrCreate = adapter.replaceOrCreate;
+    adapter.replaceOrCreate = async function (modelName, modelData, filter) {
+      const retvalData = await replaceOrCreate.call(
+        this,
+        modelName,
+        modelData,
+        filter,
+      );
+      if (filter && typeof filter === 'object' && filter.include)
+        await includeTo([retvalData], modelName, filter.include);
+      return retvalData;
+    };
+
     const patchById = adapter.patchById;
     adapter.patchById = async function (modelName, id, modelData, filter) {
       const retvalData = await patchById.call(

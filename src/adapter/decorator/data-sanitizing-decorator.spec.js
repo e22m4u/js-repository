@@ -19,6 +19,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  replaceOrCreate(modelName, modelData, filter = undefined) {
+    return Promise.resolve({});
+  }
+
+  // eslint-disable-next-line no-unused-vars
   patch(modelName, modelData, where = undefined) {
     return Promise.resolve(1);
   }
@@ -50,6 +55,14 @@ describe('DataSanitizingDecorator', function () {
     sandbox.on(V, 'sanitize');
     const data = {};
     await A.replaceById('model', 1, data);
+    expect(V.sanitize).to.be.called.once;
+    expect(V.sanitize).to.be.called.with.exactly('model', data);
+  });
+
+  it('overrides the "replaceOrCreate" method and sanitizes a given data', async function () {
+    sandbox.on(V, 'sanitize');
+    const data = {};
+    await A.replaceOrCreate('model', data);
     expect(V.sanitize).to.be.called.once;
     expect(V.sanitize).to.be.called.with.exactly('model', data);
   });

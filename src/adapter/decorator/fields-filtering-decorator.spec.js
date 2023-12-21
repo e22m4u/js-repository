@@ -33,6 +33,11 @@ class TestAdapter extends Adapter {
   }
 
   // eslint-disable-next-line no-unused-vars
+  async replaceOrCreate(modelName, modelData, filter = undefined) {
+    return MODEL_DATA;
+  }
+
+  // eslint-disable-next-line no-unused-vars
   async patchById(modelName, id, modelData, filter = undefined) {
     return MODEL_DATA;
   }
@@ -72,6 +77,18 @@ describe('FieldsFilteringDecorator', function () {
   it('overrides the "replaceById" method and filtering output fields', async function () {
     sandbox.on(T, 'filter');
     const retval = await A.replaceById(MODEL_NAME, 1, {}, FILTER);
+    expect(retval).to.be.eql(RETVAL_DATA);
+    expect(T.filter).to.be.called.once;
+    expect(T.filter).to.be.called.with.exactly(
+      MODEL_DATA,
+      MODEL_NAME,
+      FILTER.fields,
+    );
+  });
+
+  it('overrides the "replaceOrCreate" method and filtering output fields', async function () {
+    sandbox.on(T, 'filter');
+    const retval = await A.replaceOrCreate(MODEL_NAME, {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;
     expect(T.filter).to.be.called.with.exactly(
