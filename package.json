@@ -38,22 +38,22 @@
     "@e22m4u/js-service": "0.0.7"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.2",
-    "@commitlint/config-conventional": "^18.4.2",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "c8": "^8.0.1",
     "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
     "chai-spies": "^1.1.0",
     "chai-subset": "^1.6.0",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-chai-expect": "^3.0.0",
-    "eslint-plugin-jsdoc": "^46.9.0",
+    "eslint-plugin-jsdoc": "^46.9.1",
     "eslint-plugin-mocha": "^10.2.0",
     "husky": "^8.0.3",
     "mocha": "^10.2.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "typedoc": "^0.25.4",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   }
 }
