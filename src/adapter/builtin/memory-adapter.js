@@ -92,7 +92,9 @@ export class MemoryAdapter extends Adapter {
         modelName,
       );
     let idValue = modelData[pkPropName];
-    if (idValue == null) idValue = this._genNextIdValue(modelName, pkPropName);
+    if (idValue == null || idValue === '' || idValue === 0) {
+      idValue = this._genNextIdValue(modelName, pkPropName);
+    }
 
     const table = this._getTableOrCreate(modelName);
     if (table.has(idValue))
@@ -168,7 +170,9 @@ export class MemoryAdapter extends Adapter {
         modelName,
       );
     let idValue = modelData[pkPropName];
-    if (idValue == null) idValue = this._genNextIdValue(modelName, pkPropName);
+    if (idValue == null || idValue === '' || idValue === 0) {
+      idValue = this._genNextIdValue(modelName, pkPropName);
+    }
 
     const table = this._getTableOrCreate(modelName);
     modelData = cloneDeep(modelData);

@@ -187,6 +187,64 @@ describe('MemoryAdapter', function () {
       expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
     });
 
+    it('generates a new identifier when a value of a primary key is an empty string', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: '',
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.create('model', input);
+      const idValue = created[DEF_PK];
+      expect(idValue).to.be.not.eq('');
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier when a value of a primary key is zero', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: 0,
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.create('model', input);
+      const idValue = created[DEF_PK];
+      expect(idValue).to.be.not.eq(0);
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
     it('generates a new identifier for a primary key of a "number" type', async function () {
       const schema = new Schema();
       schema.defineDatasource({
@@ -1208,6 +1266,64 @@ describe('MemoryAdapter', function () {
       };
       const created = await adapter.replaceOrCreate('model', input);
       const idValue = created[DEF_PK];
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier when a value of a primary key is an empty string', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: '',
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.replaceOrCreate('model', input);
+      const idValue = created[DEF_PK];
+      expect(idValue).to.be.not.eq('');
+      expect(created).to.be.eql({...input, [DEF_PK]: idValue});
+      const table = adapter._getTableOrCreate('model');
+      const tableData = table.get(idValue);
+      expect(tableData).to.be.eql({...input, [DEF_PK]: idValue});
+    });
+
+    it('generates a new identifier when a value of a primary key is zero', async function () {
+      const schema = new Schema();
+      schema.defineDatasource({
+        name: 'memory',
+        adapter: 'memory',
+      });
+      schema.defineModel({
+        name: 'model',
+        datasource: 'memory',
+        properties: {
+          foo: DataType.STRING,
+          bar: DataType.NUMBER,
+        },
+      });
+      const adapter = new MemoryAdapter(schema.container, {});
+      const input = {
+        [DEF_PK]: 0,
+        foo: 'string',
+        bar: 10,
+      };
+      const created = await adapter.replaceOrCreate('model', input);
+      const idValue = created[DEF_PK];
+      expect(idValue).to.be.not.eq(0);
       expect(created).to.be.eql({...input, [DEF_PK]: idValue});
       const table = adapter._getTableOrCreate('model');
       const tableData = table.get(idValue);
