@@ -28,3 +28,11 @@ export declare type ModelId = unknown;
  */
 type Identity<T> = T;
 export declare type Flatten<T> = Identity<{[k in keyof T]: T[k]}>;
+
+/**
+ * A callable type with the "new" operator
+ * allows class and constructor.
+ */
+export interface Constructor<T = unknown> {
+  new (...args: any[]): T;
+}

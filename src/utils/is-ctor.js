@@ -1,5 +1,6 @@
 /**
- * Is ctor.
+ * Returns true if the given value
+ * is a constructor function or a class.
  *
  * @param {*} value
  * @returns {boolean}

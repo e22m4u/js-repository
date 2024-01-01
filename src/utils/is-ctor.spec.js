@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {isCtor} from './is-ctor.js';
 
-describe('isConstructor', function () {
+describe('isCtor', function () {
   it('returns true if a given value is a constructor', function () {
     expect(isCtor(Date)).to.be.true;
     expect(isCtor(Number)).to.be.true;

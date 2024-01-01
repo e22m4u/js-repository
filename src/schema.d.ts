@@ -1,5 +1,6 @@
 import {ModelId} from './types.js';
 import {ModelData} from './types.js';
+import {Constructor} from './types.js';
 import {Service} from '@e22m4u/js-service';
 import {Repository} from './repository/index.js';
 import {ModelDefinition} from './definition/index.js';
@@ -20,9 +21,9 @@ export declare class Schema extends Service {
   /**
    * Define model.
    *
-   * @param modelDef
+   * @param modelDefOrCtor
    */
-  defineModel(modelDef: ModelDefinition): this;
+  defineModel(modelDefOrCtor: ModelDefinition | Constructor): this;
 
   /**
    * Get repository.

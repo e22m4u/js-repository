@@ -43,8 +43,8 @@ export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
  * ```
  */
 export declare type WhereClause =
-  & AndClause
-  & OrClause
+  & Partial<AndClause>
+  & Partial<OrClause>
   & PropertiesClause;
 
 /**
@@ -124,7 +124,7 @@ export declare type OperatorClause = {
  * ```
  */
 export interface AndClause {
-  and?: WhereClause[];
+  and: WhereClause[];
 }
 
 /**
@@ -138,7 +138,7 @@ export interface AndClause {
  * ```
  */
 export interface OrClause {
-  or?: WhereClause[];
+  or: WhereClause[];
 }
 
 /**
