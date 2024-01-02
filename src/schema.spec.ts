@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import {Schema} from './schema.js';
-import {model} from './decorators/index.js';
 import {Repository} from './repository/index.js';
 import {DefinitionRegistry} from './definition/index.js';
 
@@ -33,15 +32,6 @@ describe('Schema', function () {
       expect(res).to.be.eql({name: 'model'});
     });
 
-    it('sets the model definition from a class metadata', function () {
-      @model()
-      class Target {}
-      const schema = new Schema();
-      schema.defineModel(Target);
-      const res = schema.getService(DefinitionRegistry).getModel('Target');
-      expect(res).to.be.eql({name: 'Target'});
-    });
-
     it('throws an error if the model name already defined', function () {
       const schema = new Schema();
       schema.defineModel({name: 'model'});
@@ -51,7 +41,7 @@ describe('Schema', function () {
   });
 
   describe('getRepository', function () {
-    it('returns the repository by the model name', function () {
+    it('returns a repository by the model name', function () {
       const schema = new Schema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
       schema.defineModel({name: 'model', datasource: 'datasource'});
@@ -63,6 +53,19 @@ describe('Schema', function () {
       const schema = new Schema();
       const throwable = () => schema.getRepository('model');
       expect(throwable).to.throw('The model "model" is not defined.');
+    });
+
+    it('uses generic types to define the repository type', function () {
+      const schema = new Schema();
+      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
+      schema.defineModel({name: 'model', datasource: 'datasource'});
+      interface MyModel {
+        myId: number;
+      }
+      const res1: Repository = schema.getRepository('model');
+      const res2: Repository<MyModel, number, 'myId'> =
+        schema.getRepository<MyModel, number, 'myId'>('model');
+      expect(res1).to.be.eq(res2);
     });
   });
 });

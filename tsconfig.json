@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "strict": true,
     "rootDir": "src",
     "noEmit": true,
     "target": "es2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "experimentalDecorators": true,
+    "strictNullChecks": true
   }
 }

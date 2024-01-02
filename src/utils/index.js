@@ -1,5 +1,4 @@
 export * from './is-ctor.js';
-export * from './is-class.js';
 export * from './capitalize.js';
 export * from './clone-deep.js';
 export * from './singularize.js';

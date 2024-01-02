@@ -7,4 +7,3 @@ export * from './adapter/index.js';
 export * from './relations/index.js';
 export * from './definition/index.js';
 export * from './repository/index.js';
-export * from './decorators/index.js';

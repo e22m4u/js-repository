@@ -1,3 +1,4 @@
+import {Adapter} from '../adapter.js';
 import {Service} from '@e22m4u/js-service';
 
 /**
@@ -9,5 +10,5 @@ export declare class DataSanitizingDecorator extends Service {
    *
    * @param adapter
    */
-  decorate(adapter): void;
+  decorate(adapter: Adapter): void;
 }

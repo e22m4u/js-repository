@@ -1,6 +1,5 @@
 import {ModelId} from './types.js';
 import {ModelData} from './types.js';
-import {Constructor} from './types.js';
 import {Service} from '@e22m4u/js-service';
 import {Repository} from './repository/index.js';
 import {ModelDefinition} from './definition/index.js';
@@ -21,9 +20,9 @@ export declare class Schema extends Service {
   /**
    * Define model.
    *
-   * @param modelDefOrCtor
+   * @param modelDef
    */
-  defineModel(modelDefOrCtor: ModelDefinition | Constructor): this;
+  defineModel(modelDef: ModelDefinition): this;
 
   /**
    * Get repository.
@@ -31,7 +30,7 @@ export declare class Schema extends Service {
    * @param modelName
    */
   getRepository<
-    Data extends ModelData = ModelData,
+    Data extends object = ModelData,
     IdType extends ModelId = ModelId,
     IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   >(modelName: string): Repository<Data, IdType, IdName>;

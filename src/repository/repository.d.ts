@@ -14,11 +14,17 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition/index.js';
  * Repository.
  */
 export declare class Repository<
-  Data extends ModelData = ModelData,
+  Data extends object = ModelData,
   IdType extends ModelId = ModelId,
   IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   FlatData extends ModelData = Flatten<Data>,
 > extends Service {
+  // it fixes unused generic bug
+  private _Data?: Data;
+  private _IdType?: IdType;
+  private _IdName?: IdName;
+  private _FlatData?: FlatData;
+
   /**
    * Model name.
    */
@@ -162,7 +168,7 @@ type WithoutId<IdName extends string, Data extends ModelData> = Flatten<
 /**
  * Makes fields as optional and remove id field.
  */
-type PartialWithoutId<IdName extends string, Data extends ModelData> = Flatten<
+type PartialWithoutId<IdName extends string, Data extends object> = Flatten<
   Partial<Omit<Data, IdName>>
 >;
 
@@ -171,5 +177,5 @@ type PartialWithoutId<IdName extends string, Data extends ModelData> = Flatten<
  */
 type OptionalUnlessRequiredId<
   IdName extends string,
-  Data extends ModelData,
+  Data extends object,
 > = Flatten<Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data>;

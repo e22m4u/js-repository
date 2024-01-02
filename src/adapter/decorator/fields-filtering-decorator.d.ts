@@ -1,4 +1,5 @@
 import {Service} from '@e22m4u/js-service';
+import {Adapter} from '../adapter.js';
 
 /**
  * Fields filtering decorator.
@@ -9,5 +10,5 @@ export declare class FieldsFilteringDecorator extends Service {
    *
    * @param adapter
    */
-  decorate(adapter): void;
+  decorate(adapter: Adapter): void;
 }
