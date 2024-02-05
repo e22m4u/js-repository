@@ -2,7 +2,7 @@
 
 Модуль для работы с базами данных для Node.js
 
-[API](https://e22m4u.github.io/js-repository/modules.html)
+[API](https://e22m4u.github.io/js-repository/index.html)
 
 - [Установка](#Установка)
 - [Описание](#Описание)
