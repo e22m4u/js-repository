@@ -26,9 +26,7 @@
     "ODM",
     "Database",
     "Datasource",
-    "Relation",
-    "Inclusion",
-    "Memory"
+    "Relations"
   ],
   "author": "e22m4u <e22m4u@gmail.com>",
   "license": "MIT",
