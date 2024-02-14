@@ -174,1780 +174,1782 @@ describe('ModelDataValidator', function () {
       });
     });
 
-    describe('DataType.ANY', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('does not throw an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-        });
-
-        it('does not throw an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-        });
-
-        it('does not throw an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-        });
-
-        it('does not throw an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-        });
-
-        it('does not throw an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-        });
-
-        it('does not throw an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ANY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('does not throw an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-        });
-
-        it('does not throw an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-        });
-
-        it('does not throw an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-        });
-
-        it('does not throw an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-        });
-
-        it('does not throw an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-        });
-
-        it('does not throw an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-        });
-      });
-    });
-
-    describe('DataType.STRING', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('does not throw an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.STRING,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Object given.',
-          );
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('does not throw an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.STRING,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a String, but Object given.',
-          );
-        });
-      });
-    });
-
-    describe('DataType.NUMBER', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but String given.',
-          );
-        });
-
-        it('does not throw an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.NUMBER,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Object given.',
-          );
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but String given.',
-          );
-        });
-
-        it('does not throw an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.NUMBER,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Number, but Object given.',
-          );
-        });
-      });
-    });
-
-    describe('DataType.BOOLEAN', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Number given.',
-          );
-        });
-
-        it('does not throw an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-        });
-
-        it('does not throw an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.BOOLEAN,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Object given.',
-          );
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Number given.',
-          );
-        });
-
-        it('does not throw an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-        });
-
-        it('does not throw an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Array given.',
-          );
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.BOOLEAN,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'a Boolean, but Object given.',
-          );
-        });
-      });
-    });
-
-    describe('DataType.ARRAY', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Boolean given.',
-          );
-        });
-
-        it('does not throw an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.ARRAY,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Object given.',
-          );
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Boolean given.',
-          );
-        });
-
-        it('does not throw an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-        });
-
-        it('throws an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.ARRAY,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Array, but Object given.',
-          );
-        });
-
-        describe('the "model" option', function () {
-          it('throws an error when the given object element has an invalid model', async function () {
+    describe('validate by property type', function () {
+      describe('DataType.ANY', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
             const S = new Schema();
             S.defineModel({
-              name: 'modelA',
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('does not throw an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+          });
+
+          it('does not throw an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+          });
+
+          it('does not throw an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+          });
+
+          it('does not throw an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+          });
+
+          it('does not throw an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+          });
+
+          it('does not throw an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ANY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('does not throw an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+          });
+
+          it('does not throw an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+          });
+
+          it('does not throw an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+          });
+
+          it('does not throw an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+          });
+
+          it('does not throw an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+          });
+
+          it('does not throw an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+          });
+        });
+      });
+
+      describe('DataType.STRING', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
               properties: {
                 foo: DataType.STRING,
               },
             });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
             S.defineModel({
-              name: 'modelB',
+              name: 'model',
               datasource: 'datasource',
               properties: {
-                bar: {
-                  type: DataType.ARRAY,
-                  itemType: DataType.OBJECT,
-                  model: 'modelA',
-                },
+                foo: DataType.STRING,
               },
             });
-            const promise = S.getService(ModelDataValidator).validate(
-              'modelB',
-              {
-                bar: [{foo: 10}],
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('does not throw an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.STRING,
               },
-            );
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
             await expect(promise).to.be.rejectedWith(
-              'The property "foo" of the model "modelA" must have ' +
+              'The property "foo" of the model "model" must have ' +
                 'a String, but Number given.',
             );
           });
 
-          it('does not throw an error when the given object element has a valid model', async function () {
+          it('throws an error if true given', async function () {
             const S = new Schema();
             S.defineModel({
-              name: 'modelA',
+              name: 'model',
+              datasource: 'datasource',
               properties: {
                 foo: DataType.STRING,
               },
             });
-            S.defineModel({
-              name: 'modelB',
-              datasource: 'datasource',
-              properties: {
-                bar: {
-                  type: DataType.ARRAY,
-                  itemType: DataType.OBJECT,
-                  model: 'modelA',
-                },
-              },
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
             });
-            await S.getService(ModelDataValidator).validate('modelB', {
-              bar: [{foo: '10'}],
-            });
-          });
-        });
-      });
-    });
-
-    describe('DataType.OBJECT', function () {
-      describe('ShortPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Array given.',
-          );
-        });
-
-        it('does not throw an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: DataType.OBJECT,
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-        });
-      });
-
-      describe('FullPropertyDefinition', function () {
-        it('does not throw an error if an undefined given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: undefined,
-          });
-        });
-
-        it('does not throw an error if a null given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-          });
-        });
-
-        it('throws an error if a string given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 'bar',
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but String given.',
-          );
-        });
-
-        it('throws an error if a number given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: 10,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Number given.',
-          );
-        });
-
-        it('throws an error if true given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: true,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Boolean given.',
-          );
-        });
-
-        it('throws an error if false given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: false,
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Boolean given.',
-          );
-        });
-
-        it('throws an error if an array given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          const promise = S.getService(ModelDataValidator).validate('model', {
-            foo: [],
-          });
-          await expect(promise).to.be.rejectedWith(
-            'The property "foo" of the model "model" must have ' +
-              'an Object, but Array given.',
-          );
-        });
-
-        it('does not throw an error if an object given', async function () {
-          const S = new Schema();
-          S.defineModel({
-            name: 'model',
-            datasource: 'datasource',
-            properties: {
-              foo: {
-                type: DataType.OBJECT,
-              },
-            },
-          });
-          await S.getService(ModelDataValidator).validate('model', {
-            foo: {},
-          });
-        });
-
-        describe('the "model" option', function () {
-          it('throws an error when the given object has an invalid model', async function () {
-            const S = new Schema();
-            S.defineModel({
-              name: 'modelA',
-              properties: {
-                foo: DataType.STRING,
-              },
-            });
-            S.defineModel({
-              name: 'modelB',
-              datasource: 'datasource',
-              properties: {
-                bar: {
-                  type: DataType.OBJECT,
-                  model: 'modelA',
-                },
-              },
-            });
-            const promise = S.getService(ModelDataValidator).validate(
-              'modelB',
-              {
-                bar: {foo: 10},
-              },
-            );
             await expect(promise).to.be.rejectedWith(
-              'The property "foo" of the model "modelA" must have ' +
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.STRING,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Object given.',
+            );
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('does not throw an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
                 'a String, but Number given.',
             );
           });
 
-          it('does not throw an error when the given object has a valid model', async function () {
+          it('throws an error if true given', async function () {
             const S = new Schema();
             S.defineModel({
-              name: 'modelA',
-              properties: {
-                foo: DataType.STRING,
-              },
-            });
-            S.defineModel({
-              name: 'modelB',
+              name: 'model',
               datasource: 'datasource',
               properties: {
-                bar: {
-                  type: DataType.OBJECT,
-                  model: 'modelA',
+                foo: {
+                  type: DataType.STRING,
                 },
               },
             });
-            await S.getService(ModelDataValidator).validate('modelB', {
-              bar: {foo: '10'},
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a String, but Object given.',
+            );
+          });
+        });
+      });
+
+      describe('DataType.NUMBER', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but String given.',
+            );
+          });
+
+          it('does not throw an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.NUMBER,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Object given.',
+            );
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but String given.',
+            );
+          });
+
+          it('does not throw an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.NUMBER,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Number, but Object given.',
+            );
+          });
+        });
+      });
+
+      describe('DataType.BOOLEAN', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Number given.',
+            );
+          });
+
+          it('does not throw an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+          });
+
+          it('does not throw an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.BOOLEAN,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Object given.',
+            );
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Number given.',
+            );
+          });
+
+          it('does not throw an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+          });
+
+          it('does not throw an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Array given.',
+            );
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.BOOLEAN,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'a Boolean, but Object given.',
+            );
+          });
+        });
+      });
+
+      describe('DataType.ARRAY', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Number given.',
+            );
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Boolean given.',
+            );
+          });
+
+          it('does not throw an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.ARRAY,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Object given.',
+            );
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Number given.',
+            );
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Boolean given.',
+            );
+          });
+
+          it('does not throw an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+          });
+
+          it('throws an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.ARRAY,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Array, but Object given.',
+            );
+          });
+
+          describe('the "model" option', function () {
+            it('throws an error when the given object element has an invalid model', async function () {
+              const S = new Schema();
+              S.defineModel({
+                name: 'modelA',
+                properties: {
+                  foo: DataType.STRING,
+                },
+              });
+              S.defineModel({
+                name: 'modelB',
+                datasource: 'datasource',
+                properties: {
+                  bar: {
+                    type: DataType.ARRAY,
+                    itemType: DataType.OBJECT,
+                    model: 'modelA',
+                  },
+                },
+              });
+              const promise = S.getService(ModelDataValidator).validate(
+                'modelB',
+                {
+                  bar: [{foo: 10}],
+                },
+              );
+              await expect(promise).to.be.rejectedWith(
+                'The property "foo" of the model "modelA" must have ' +
+                  'a String, but Number given.',
+              );
+            });
+
+            it('does not throw an error when the given object element has a valid model', async function () {
+              const S = new Schema();
+              S.defineModel({
+                name: 'modelA',
+                properties: {
+                  foo: DataType.STRING,
+                },
+              });
+              S.defineModel({
+                name: 'modelB',
+                datasource: 'datasource',
+                properties: {
+                  bar: {
+                    type: DataType.ARRAY,
+                    itemType: DataType.OBJECT,
+                    model: 'modelA',
+                  },
+                },
+              });
+              await S.getService(ModelDataValidator).validate('modelB', {
+                bar: [{foo: '10'}],
+              });
+            });
+          });
+        });
+      });
+
+      describe('DataType.OBJECT', function () {
+        describe('ShortPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Number given.',
+            );
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Array given.',
+            );
+          });
+
+          it('does not throw an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: DataType.OBJECT,
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+          });
+        });
+
+        describe('FullPropertyDefinition', function () {
+          it('does not throw an error if an undefined given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: undefined,
+            });
+          });
+
+          it('does not throw an error if a null given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: null,
+            });
+          });
+
+          it('throws an error if a string given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 'bar',
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but String given.',
+            );
+          });
+
+          it('throws an error if a number given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: 10,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Number given.',
+            );
+          });
+
+          it('throws an error if true given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: true,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Boolean given.',
+            );
+          });
+
+          it('throws an error if false given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: false,
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Boolean given.',
+            );
+          });
+
+          it('throws an error if an array given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            const promise = S.getService(ModelDataValidator).validate('model', {
+              foo: [],
+            });
+            await expect(promise).to.be.rejectedWith(
+              'The property "foo" of the model "model" must have ' +
+                'an Object, but Array given.',
+            );
+          });
+
+          it('does not throw an error if an object given', async function () {
+            const S = new Schema();
+            S.defineModel({
+              name: 'model',
+              datasource: 'datasource',
+              properties: {
+                foo: {
+                  type: DataType.OBJECT,
+                },
+              },
+            });
+            await S.getService(ModelDataValidator).validate('model', {
+              foo: {},
+            });
+          });
+
+          describe('the "model" option', function () {
+            it('throws an error when the given object has an invalid model', async function () {
+              const S = new Schema();
+              S.defineModel({
+                name: 'modelA',
+                properties: {
+                  foo: DataType.STRING,
+                },
+              });
+              S.defineModel({
+                name: 'modelB',
+                datasource: 'datasource',
+                properties: {
+                  bar: {
+                    type: DataType.OBJECT,
+                    model: 'modelA',
+                  },
+                },
+              });
+              const promise = S.getService(ModelDataValidator).validate(
+                'modelB',
+                {
+                  bar: {foo: 10},
+                },
+              );
+              await expect(promise).to.be.rejectedWith(
+                'The property "foo" of the model "modelA" must have ' +
+                  'a String, but Number given.',
+              );
+            });
+
+            it('does not throw an error when the given object has a valid model', async function () {
+              const S = new Schema();
+              S.defineModel({
+                name: 'modelA',
+                properties: {
+                  foo: DataType.STRING,
+                },
+              });
+              S.defineModel({
+                name: 'modelB',
+                datasource: 'datasource',
+                properties: {
+                  bar: {
+                    type: DataType.OBJECT,
+                    model: 'modelA',
+                  },
+                },
+              });
+              await S.getService(ModelDataValidator).validate('modelB', {
+                bar: {foo: '10'},
+              });
             });
           });
         });

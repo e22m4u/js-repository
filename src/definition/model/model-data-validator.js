@@ -64,14 +64,9 @@ export class ModelDataValidator extends Service {
         propValue,
       );
     }
-    // DataType
-    await this._validatePropertyValueType(
-      modelName,
-      propName,
-      propDef,
-      propValue,
-    );
-    // PropertyValidators
+    // Property type.
+    await this._validateByPropertyType(modelName, propName, propDef, propValue);
+    // Property validators.
     await this._validateByPropertyValidators(
       modelName,
       propName,
@@ -81,7 +76,7 @@ export class ModelDataValidator extends Service {
   }
 
   /**
-   * Validate value type.
+   * Validate by property type.
    *
    * @param {string} modelName
    * @param {string} propName
@@ -90,7 +85,7 @@ export class ModelDataValidator extends Service {
    * @param {boolean} isArrayValue
    * @returns {Promise<void>}
    */
-  async _validatePropertyValueType(
+  async _validateByPropertyType(
     modelName,
     propName,
     propDef,
@@ -139,7 +134,7 @@ export class ModelDataValidator extends Service {
       case DataType.ARRAY:
         if (!Array.isArray(propValue)) throw createError('an Array');
         const arrayItemsValidationPromises = propValue.map(async value =>
-          this._validatePropertyValueType(
+          this._validateByPropertyType(
             modelName,
             propName,
             propDef,
