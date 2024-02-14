@@ -12,9 +12,5 @@ export declare class ModelDataValidator extends Service {
    * @param modelData
    * @param isPartial
    */
-  validate(
-    modelName: string,
-    modelData: ModelData,
-    isPartial?: boolean,
-  ): Promise<void>;
+  validate(modelName: string, modelData: ModelData, isPartial?: boolean): void;
 }

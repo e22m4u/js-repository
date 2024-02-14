@@ -1,6 +1,3 @@
-import {ServiceContainer} from '@e22m4u/js-service';
-import {FullPropertyDefinition} from '../property-definition.js';
-
 /**
  * Property validator context.
  */
@@ -8,8 +5,6 @@ export type PropertyValidatorContext = {
   validatorName: string,
   modelName: string,
   propName: string,
-  propDef: FullPropertyDefinition,
-  container: ServiceContainer,
 }
 
 /**
@@ -19,7 +14,7 @@ export type PropertyValidator = (
   value: unknown,
   options: unknown,
   context: PropertyValidatorContext,
-) => Promise<boolean> | boolean;
+) => boolean;
 
 /**
  * Property validate options.

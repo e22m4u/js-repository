@@ -16,9 +16,9 @@ export class ModelDataValidator extends Service {
    * @param {string} modelName
    * @param {object} modelData
    * @param {boolean} isPartial
-   * @returns {Promise<void>}
+   * @returns {undefined}
    */
-  async validate(modelName, modelData, isPartial = false) {
+  validate(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v given.',
@@ -30,16 +30,16 @@ export class ModelDataValidator extends Service {
         ModelDefinitionUtils,
       ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propNames = Object.keys(isPartial ? modelData : propDefs);
-    for (const propName of propNames) {
+    propNames.forEach(propName => {
       const propDef = propDefs[propName];
-      if (!propDef) continue;
-      await this._validatePropertyValue(
+      if (!propDef) return;
+      this._validatePropertyValue(
         modelName,
         propName,
         propDef,
         modelData[propName],
       );
-    }
+    });
   }
 
   /**
@@ -49,9 +49,9 @@ export class ModelDataValidator extends Service {
    * @param {string} propName
    * @param {string|object} propDef
    * @param {*} propValue
-   * @returns {Promise<void>}
+   * @returns {undefined}
    */
-  async _validatePropertyValue(modelName, propName, propDef, propValue) {
+  _validatePropertyValue(modelName, propName, propDef, propValue) {
     // undefined and null
     if (propValue == null) {
       const isRequired =
@@ -65,14 +65,9 @@ export class ModelDataValidator extends Service {
       );
     }
     // Property type.
-    await this._validateValueByPropertyType(
-      modelName,
-      propName,
-      propDef,
-      propValue,
-    );
+    this._validateValueByPropertyType(modelName, propName, propDef, propValue);
     // Property validators.
-    await this._validateValueByPropertyValidators(
+    this._validateValueByPropertyValidators(
       modelName,
       propName,
       propDef,
@@ -88,9 +83,9 @@ export class ModelDataValidator extends Service {
    * @param {string|object} propDef
    * @param {*} propValue
    * @param {boolean} isArrayValue
-   * @returns {Promise<void>}
+   * @returns {undefined}
    */
-  async _validateValueByPropertyType(
+  _validateValueByPropertyType(
     modelName,
     propName,
     propDef,
@@ -138,7 +133,7 @@ export class ModelDataValidator extends Service {
       // ARRAY
       case DataType.ARRAY:
         if (!Array.isArray(propValue)) throw createError('an Array');
-        const arrayItemsValidationPromises = propValue.map(async value =>
+        propValue.forEach(value =>
           this._validateValueByPropertyType(
             modelName,
             propName,
@@ -147,13 +142,12 @@ export class ModelDataValidator extends Service {
             true,
           ),
         );
-        await Promise.all(arrayItemsValidationPromises);
         break;
       // OBJECT
       case DataType.OBJECT:
         if (!isPureObject(propValue)) throw createError('an Object');
         if (typeof propDef === 'object' && propDef.model)
-          await this.validate(propDef.model, propValue);
+          this.validate(propDef.model, propValue);
         break;
     }
   }
@@ -165,14 +159,9 @@ export class ModelDataValidator extends Service {
    * @param {string} propName
    * @param {string|object} propDef
    * @param {*} propValue
-   * @returns {Promise<void>}
+   * @returns {undefined}
    */
-  async _validateValueByPropertyValidators(
-    modelName,
-    propName,
-    propDef,
-    propValue,
-  ) {
+  _validateValueByPropertyValidators(modelName, propName, propDef, propValue) {
     if (typeof propDef === 'string' || propDef.validate == null) return;
     const validateDef = propDef.validate;
     const propertyValidatorRegistry = this.getService(
@@ -187,30 +176,31 @@ export class ModelDataValidator extends Service {
         propValue,
         validatorName,
       );
-    const container = this.container;
-    const validateBy = async (validatorName, validatorOptions = undefined) => {
+    const validateBy = (validatorName, validatorOptions = undefined) => {
       const validator = propertyValidatorRegistry.getValidator(validatorName);
-      const context = {validatorName, modelName, propName, propDef, container};
-      const valid = await validator(propValue, validatorOptions, context);
-      if (valid !== true) throw createError(validatorName);
+      const context = {validatorName, modelName, propName};
+      const valid = validator(propValue, validatorOptions, context);
+      if (valid instanceof Promise) {
+        throw new InvalidArgumentError(
+          'Asynchronous property validators are not supported, ' +
+            'but the property validator %v returns a Promise.',
+          validatorName,
+        );
+      } else if (valid !== true) {
+        throw createError(validatorName);
+      }
     };
     if (validateDef && typeof validateDef === 'string') {
-      await validateBy(validateDef);
+      validateBy(validateDef);
     } else if (Array.isArray(validateDef)) {
-      const validationPromises = validateDef.map(validatorName =>
-        validateBy(validatorName),
-      );
-      await Promise.all(validationPromises);
+      validateDef.forEach(validatorName => validateBy(validatorName));
     } else if (validateDef !== null && typeof validateDef === 'object') {
-      const validationPromises = [];
       Object.keys(validateDef).forEach(validatorName => {
         if (Object.prototype.hasOwnProperty.call(validateDef, validatorName)) {
           const validatorOptions = validateDef[validatorName];
-          const validationPromise = validateBy(validatorName, validatorOptions);
-          validationPromises.push(validationPromise);
+          validateBy(validatorName, validatorOptions);
         }
       });
-      await Promise.all(validationPromises);
     } else {
       throw new InvalidArgumentError(
         'The provided option "validate" of the property %v in the model %v ' +
