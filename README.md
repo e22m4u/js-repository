@@ -39,7 +39,7 @@ npm install @e22m4u/js-repository
 - *Модель* - описывает структуру документа и связи к другим моделям
 - *Репозиторий* - выполняет операции чтения и записи документов модели
 
-![Схема](assets/mermaid-diagram.png "Схема")
+<img alt="Схема" src="https://gitflic.ru/project/e22m4u/js-repository/blob/raw?file=assets%2Fmermaid-diagram.png&commit=39e53768b4ea62cafe60522e14d1fa9ddd42ebd5">
 
 ## Пример
 
