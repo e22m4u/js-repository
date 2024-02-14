@@ -1,6 +1,6 @@
 {
   "name": "@e22m4u/js-repository",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Модуль для работы с базами данных для Node.js",
   "type": "module",
   "main": "src/index.js",
