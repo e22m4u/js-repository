@@ -174,7 +174,7 @@ export class ModelDataValidator extends Service {
     propValue,
   ) {
     if (typeof propDef === 'string' || propDef.validate == null) return;
-    const options = propDef.validate;
+    const validateDef = propDef.validate;
     const propertyValidatorRegistry = this.getService(
       PropertyValidatorRegistry,
     );
@@ -194,18 +194,18 @@ export class ModelDataValidator extends Service {
       const valid = await validator(propValue, validatorOptions, context);
       if (valid !== true) throw createError(validatorName);
     };
-    if (options && typeof options === 'string') {
-      await validateBy(options);
-    } else if (Array.isArray(options)) {
-      const validationPromises = options.map(validatorName =>
+    if (validateDef && typeof validateDef === 'string') {
+      await validateBy(validateDef);
+    } else if (Array.isArray(validateDef)) {
+      const validationPromises = validateDef.map(validatorName =>
         validateBy(validatorName),
       );
       await Promise.all(validationPromises);
-    } else if (options !== null && typeof options === 'object') {
+    } else if (validateDef !== null && typeof validateDef === 'object') {
       const validationPromises = [];
-      Object.keys(options).forEach(validatorName => {
-        if (Object.prototype.hasOwnProperty.call(options, validatorName)) {
-          const validatorOptions = options[validatorName];
+      Object.keys(validateDef).forEach(validatorName => {
+        if (Object.prototype.hasOwnProperty.call(validateDef, validatorName)) {
+          const validatorOptions = validateDef[validatorName];
           const validationPromise = validateBy(validatorName, validatorOptions);
           validationPromises.push(validationPromise);
         }
@@ -218,7 +218,7 @@ export class ModelDataValidator extends Service {
           'but %v given.',
         propName,
         modelName,
-        options,
+        validateDef,
       );
     }
   }
