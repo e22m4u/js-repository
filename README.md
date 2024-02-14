@@ -283,6 +283,7 @@ schema.defineModel({
 
 - `minLength: number` минимальная длинна строки или массива
 - `maxLength: number` максимальная длинна строки или массива
+- `regexp: string | RegExp` проверка по регулярному выражению
 
 **Пример**
 

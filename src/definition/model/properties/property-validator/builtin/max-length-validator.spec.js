@@ -3,9 +3,34 @@ import {format} from '@e22m4u/js-format';
 import {maxLengthValidator} from './max-length-validator.js';
 
 describe('maxLengthValidator', function () {
-  it('returns true by the false value in options', function () {
+  it('returns true if the "options" argument is false', function () {
     const res = maxLengthValidator(undefined, false, {});
     expect(res).to.be.true;
+  });
+
+  it('requires the "value" argument as a String or an Array', function () {
+    const throwable = v => () =>
+      maxLengthValidator(v, 10, {
+        validatorName: 'myValidator',
+      });
+    const error = v =>
+      format(
+        'The property validator "myValidator" requires a String ' +
+          'or an Array value, but %s given.',
+        v,
+      );
+    expect(throwable(10)).to.throw(error('10'));
+    expect(throwable(0)).to.throw(error('0'));
+    expect(throwable(true)).to.throw(error('true'));
+    expect(throwable(false)).to.throw(error('false'));
+    expect(throwable(undefined)).to.throw(error('undefined'));
+    expect(throwable(null)).to.throw(error('null'));
+    expect(throwable({})).to.throw(error('Object'));
+    expect(throwable(() => undefined)).to.throw(error('Function'));
+    throwable('str')();
+    throwable('')();
+    throwable([1, 2, 3])();
+    throwable([])();
   });
 
   it('requires the "options" argument to be a number', function () {
@@ -27,6 +52,9 @@ describe('maxLengthValidator', function () {
     expect(throwable({})).to.throw(error('Object'));
     expect(throwable([])).to.throw(error('Array'));
     expect(throwable(() => undefined)).to.throw(error('Function'));
+    throwable(10)();
+    throwable(0)();
+    throwable(false)();
   });
 
   describe('a string value', function () {

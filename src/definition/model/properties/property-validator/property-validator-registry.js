@@ -1,4 +1,5 @@
 import {Service} from '@e22m4u/js-service';
+import {regexpValidator} from './builtin/index.js';
 import {maxLengthValidator} from './builtin/index.js';
 import {minLengthValidator} from './builtin/index.js';
 import {InvalidArgumentError} from '../../../../errors/index.js';
@@ -15,6 +16,7 @@ export class PropertyValidatorRegistry extends Service {
   _validators = {
     maxLength: maxLengthValidator,
     minLength: minLengthValidator,
+    regexp: regexpValidator,
   };
 
   /**
