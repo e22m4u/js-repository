@@ -74,4 +74,44 @@ describe('DataValidationDecorator', function () {
     expect(V.validate).to.be.called.once;
     expect(V.validate).to.be.called.with.exactly('model', data, true);
   });
+
+  it('waits the validator execution in the "create" method', async function () {
+    const schema = new Schema();
+    schema.defineModel({name: 'model'});
+    const adapter = S.getService(TestAdapter);
+    const validator = S.getService(ModelDataValidator);
+    validator.validate = () => Promise.reject('rejected');
+    const promise = adapter.create('model', {});
+    await expect(promise).to.be.rejectedWith('rejected');
+  });
+
+  it('waits the validator execution in the "replaceById" method', async function () {
+    const schema = new Schema();
+    schema.defineModel({name: 'model'});
+    const adapter = S.getService(TestAdapter);
+    const validator = S.getService(ModelDataValidator);
+    validator.validate = () => Promise.reject('rejected');
+    const promise = adapter.replaceById('model', 1, {});
+    await expect(promise).to.be.rejectedWith('rejected');
+  });
+
+  it('waits the validator execution in the "replaceOrCreate" method', async function () {
+    const schema = new Schema();
+    schema.defineModel({name: 'model'});
+    const adapter = S.getService(TestAdapter);
+    const validator = S.getService(ModelDataValidator);
+    validator.validate = () => Promise.reject('rejected');
+    const promise = adapter.replaceOrCreate('model', {});
+    await expect(promise).to.be.rejectedWith('rejected');
+  });
+
+  it('waits the validator execution in the "patchById" method', async function () {
+    const schema = new Schema();
+    schema.defineModel({name: 'model'});
+    const adapter = S.getService(TestAdapter);
+    const validator = S.getService(ModelDataValidator);
+    validator.validate = () => Promise.reject('rejected');
+    const promise = adapter.patchById('model', 1, {});
+    await expect(promise).to.be.rejectedWith('rejected');
+  });
 });

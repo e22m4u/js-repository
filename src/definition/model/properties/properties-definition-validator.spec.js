@@ -2,11 +2,14 @@ import chai from 'chai';
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
+import {PropertyValidatorRegistry} from './property-validator/index.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 const S = new PropertiesDefinitionValidator();
 const sandbox = chai.spy.sandbox();
+
+S.getService(PropertyValidatorRegistry).addValidator('myValidator', () => true);
 
 describe('PropertiesDefinitionValidator', function () {
   afterEach(function () {
@@ -385,6 +388,53 @@ describe('PropertiesDefinitionValidator', function () {
       S.validate('model', propDefs);
       expect(V.validate).to.have.been.called.once;
       expect(V.validate).to.have.been.called.with.exactly('model', propDefs);
+    });
+
+    it('the option "validate" should have a non-empty String, an Array of String or an Object', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ANY,
+          validate: v,
+        };
+        S.validate('model', {foo});
+      };
+      const error = v =>
+        format(
+          'The provided option "validate" of the property "foo" in the model "model" ' +
+            'should be a non-empty String, an Array of String or an Object, ' +
+            'but %s given.',
+          v,
+        );
+      expect(validate('')).to.throw(error('""'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(0)).to.throw(error('0'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate(false)).to.throw(error('false'));
+      expect(validate(() => undefined)).to.throw(error('Function'));
+      validate('myValidator')();
+      validate(['myValidator'])();
+      validate([])();
+      validate({myValidator: true})();
+      validate({})();
+      validate(null)();
+      validate(undefined)();
+    });
+
+    it('the option "validate" requires only existing validator names', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ANY,
+          validate: v,
+        };
+        S.validate('model', {foo});
+      };
+      const error = v => format('The property validator %s is not found.', v);
+      expect(validate('unknown')).to.throw(error('"unknown"'));
+      expect(validate({unknown: true})).to.throw(error('"unknown"'));
+      expect(validate(['unknown'])).to.throw(error('"unknown"'));
+      validate('myValidator')();
+      validate(['myValidator'])();
+      validate({myValidator: true})();
     });
   });
 });

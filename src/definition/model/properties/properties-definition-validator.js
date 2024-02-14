@@ -2,6 +2,7 @@ import {Service} from '@e22m4u/js-service';
 import {DataType as Type} from './data-type.js';
 import {capitalize} from '../../../utils/index.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
+import {PropertyValidatorRegistry} from './property-validator/index.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 /**
@@ -200,6 +201,52 @@ export class PropertiesDefinitionValidator extends Service {
           capitalize(propDef.itemType),
           propName,
           modelName,
+        );
+      }
+    }
+    if (propDef.validate != null) {
+      const propertyValidatorRegistry = this.getService(
+        PropertyValidatorRegistry,
+      );
+      if (propDef.validate && typeof propDef.validate === 'string') {
+        if (!propertyValidatorRegistry.hasValidator(propDef.validate))
+          throw new InvalidArgumentError(
+            'The property validator %v is not found.',
+            propDef.validate,
+          );
+      } else if (Array.isArray(propDef.validate)) {
+        for (const validatorName of propDef.validate) {
+          if (typeof validatorName !== 'string')
+            throw new InvalidArgumentError(
+              'The provided option "validate" of the property %v in the model %v ' +
+                'has an Array value that should have a non-empty String, ' +
+                'but %v given.',
+              propName,
+              modelName,
+              validatorName,
+            );
+          if (!propertyValidatorRegistry.hasValidator(validatorName))
+            throw new InvalidArgumentError(
+              'The property validator %v is not found.',
+              validatorName,
+            );
+        }
+      } else if (typeof propDef.validate === 'object') {
+        for (const validatorName in propDef.validate) {
+          if (!propertyValidatorRegistry.hasValidator(validatorName))
+            throw new InvalidArgumentError(
+              'The property validator %v is not found.',
+              validatorName,
+            );
+        }
+      } else {
+        throw new InvalidArgumentError(
+          'The provided option "validate" of the property %v in the model %v ' +
+            'should be a non-empty String, an Array of String or an Object, ' +
+            'but %v given.',
+          propName,
+          modelName,
+          propDef.validate,
         );
       }
     }

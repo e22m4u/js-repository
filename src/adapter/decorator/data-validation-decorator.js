@@ -21,32 +21,40 @@ export class DataValidationDecorator extends Service {
       );
 
     const create = adapter.create;
-    adapter.create = function (modelName, modelData, filter) {
-      this.getService(ModelDataValidator).validate(modelName, modelData);
+    adapter.create = async function (modelName, modelData, filter) {
+      await this.getService(ModelDataValidator).validate(modelName, modelData);
       return create.call(this, modelName, modelData, filter);
     };
 
     const replaceById = adapter.replaceById;
-    adapter.replaceById = function (modelName, id, modelData, filter) {
-      this.getService(ModelDataValidator).validate(modelName, modelData);
+    adapter.replaceById = async function (modelName, id, modelData, filter) {
+      await this.getService(ModelDataValidator).validate(modelName, modelData);
       return replaceById.call(this, modelName, id, modelData, filter);
     };
 
     const replaceOrCreate = adapter.replaceOrCreate;
-    adapter.replaceOrCreate = function (modelName, modelData, filter) {
-      this.getService(ModelDataValidator).validate(modelName, modelData);
+    adapter.replaceOrCreate = async function (modelName, modelData, filter) {
+      await this.getService(ModelDataValidator).validate(modelName, modelData);
       return replaceOrCreate.call(this, modelName, modelData, filter);
     };
 
     const patch = adapter.patch;
-    adapter.patch = function (modelName, modelData, where) {
-      this.getService(ModelDataValidator).validate(modelName, modelData, true);
+    adapter.patch = async function (modelName, modelData, where) {
+      await this.getService(ModelDataValidator).validate(
+        modelName,
+        modelData,
+        true,
+      );
       return patch.call(this, modelName, modelData, where);
     };
 
     const patchById = adapter.patchById;
-    adapter.patchById = function (modelName, id, modelData, filter) {
-      this.getService(ModelDataValidator).validate(modelName, modelData, true);
+    adapter.patchById = async function (modelName, id, modelData, filter) {
+      await this.getService(ModelDataValidator).validate(
+        modelName,
+        modelData,
+        true,
+      );
       return patchById.call(this, modelName, id, modelData, filter);
     };
   }

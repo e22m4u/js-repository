@@ -1,4 +1,5 @@
 import {DataType} from './data-type.js';
+import {PropertyValidateOptions} from './property-validator/index.js';
 
 /**
  * Full property definition.
@@ -12,6 +13,7 @@ export declare type FullPropertyDefinition = {
   columnType?: string;
   required?: boolean;
   default?: unknown;
+  validate?: PropertyValidateOptions;
 };
 
 /**

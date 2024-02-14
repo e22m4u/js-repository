@@ -5,6 +5,15 @@ import {DefinitionRegistry} from './definition/index.js';
 
 describe('Schema', function () {
   describe('defineDatasource', function () {
+    it('returns this', function () {
+      const schema = new Schema();
+      const res = schema.defineDatasource({
+        name: 'datasource',
+        adapter: 'memory',
+      });
+      expect(res).to.be.eq(schema);
+    });
+
     it('sets the datasource definition', function () {
       const schema = new Schema();
       schema.defineDatasource({name: 'datasource', adapter: 'memory'});
@@ -25,6 +34,12 @@ describe('Schema', function () {
   });
 
   describe('defineModel', function () {
+    it('returns this', function () {
+      const schema = new Schema();
+      const res = schema.defineModel({name: 'model'});
+      expect(res).to.be.eq(schema);
+    });
+
     it('sets the model definition', function () {
       const schema = new Schema();
       schema.defineModel({name: 'model'});
