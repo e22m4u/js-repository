@@ -65,9 +65,14 @@ export class ModelDataValidator extends Service {
       );
     }
     // Property type.
-    await this._validateByPropertyType(modelName, propName, propDef, propValue);
+    await this._validateValueByPropertyType(
+      modelName,
+      propName,
+      propDef,
+      propValue,
+    );
     // Property validators.
-    await this._validateByPropertyValidators(
+    await this._validateValueByPropertyValidators(
       modelName,
       propName,
       propDef,
@@ -76,7 +81,7 @@ export class ModelDataValidator extends Service {
   }
 
   /**
-   * Validate by property type.
+   * Validate value by property type.
    *
    * @param {string} modelName
    * @param {string} propName
@@ -85,7 +90,7 @@ export class ModelDataValidator extends Service {
    * @param {boolean} isArrayValue
    * @returns {Promise<void>}
    */
-  async _validateByPropertyType(
+  async _validateValueByPropertyType(
     modelName,
     propName,
     propDef,
@@ -134,7 +139,7 @@ export class ModelDataValidator extends Service {
       case DataType.ARRAY:
         if (!Array.isArray(propValue)) throw createError('an Array');
         const arrayItemsValidationPromises = propValue.map(async value =>
-          this._validateByPropertyType(
+          this._validateValueByPropertyType(
             modelName,
             propName,
             propDef,
@@ -154,7 +159,7 @@ export class ModelDataValidator extends Service {
   }
 
   /**
-   * Validate by property validators.
+   * Validate value by property validators.
    *
    * @param {string} modelName
    * @param {string} propName
@@ -162,7 +167,12 @@ export class ModelDataValidator extends Service {
    * @param {*} propValue
    * @returns {Promise<void>}
    */
-  async _validateByPropertyValidators(modelName, propName, propDef, propValue) {
+  async _validateValueByPropertyValidators(
+    modelName,
+    propName,
+    propDef,
+    propValue,
+  ) {
     if (typeof propDef === 'string' || propDef.validate == null) return;
     const options = propDef.validate;
     const propertyValidatorRegistry = this.getService(
