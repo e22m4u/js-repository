@@ -3,6 +3,7 @@ import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
+import {DefinitionRegistry} from '../definition-registry.js';
 import {PropertyValidatorRegistry} from './properties/index.js';
 
 describe('ModelDataValidator', function () {
@@ -1998,7 +1999,7 @@ describe('ModelDataValidator', function () {
 
     describe('validate by property validators', function () {
       describe('the option "validate" with the string value', function () {
-        it('do not validate null and undefined values', function () {
+        it('validates a property value even is not provided', function () {
           const S = new Schema();
           S.getService(PropertyValidatorRegistry).addValidator(
             'myValidator',
@@ -2011,20 +2012,41 @@ describe('ModelDataValidator', function () {
                 type: DataType.ANY,
                 validate: 'myValidator',
               },
-              bar: {
-                type: DataType.ANY,
-                validate: 'myValidator',
-              },
-              baz: {
+            },
+          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = () => validator.validate('model', {});
+          expect(throwable).to.throw(
+            'The property "foo" of the model "model" has an invalid value undefined ' +
+              'that caught by the validator "myValidator".',
+          );
+        });
+
+        it('validates undefined and null values', function () {
+          const S = new Schema();
+          S.getService(PropertyValidatorRegistry).addValidator(
+            'myValidator',
+            () => false,
+          );
+          S.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
                 type: DataType.ANY,
                 validate: 'myValidator',
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-            bar: undefined,
-          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = v => () => validator.validate('model', {foo: v});
+          const error = v =>
+            format(
+              'The property "foo" of the model "model" has an invalid value %s ' +
+                'that caught by the validator "myValidator".',
+              v,
+            );
+          expect(throwable(undefined)).to.throw(error('undefined'));
+          expect(throwable(null)).to.throw(error('null'));
         });
 
         it('throws an error from the validator', function () {
@@ -2211,7 +2233,7 @@ describe('ModelDataValidator', function () {
           });
         });
 
-        it('do not validate null and undefined values', function () {
+        it('validates a property value even is not provided', function () {
           const S = new Schema();
           S.getService(PropertyValidatorRegistry).addValidator(
             'myValidator',
@@ -2224,20 +2246,41 @@ describe('ModelDataValidator', function () {
                 type: DataType.ANY,
                 validate: ['myValidator'],
               },
-              bar: {
-                type: DataType.ANY,
-                validate: ['myValidator'],
-              },
-              baz: {
+            },
+          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = () => validator.validate('model', {});
+          expect(throwable).to.throw(
+            'The property "foo" of the model "model" has an invalid value undefined ' +
+              'that caught by the validator "myValidator".',
+          );
+        });
+
+        it('validates undefined and null values', function () {
+          const S = new Schema();
+          S.getService(PropertyValidatorRegistry).addValidator(
+            'myValidator',
+            () => false,
+          );
+          S.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
                 type: DataType.ANY,
                 validate: ['myValidator'],
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-            bar: undefined,
-          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = v => () => validator.validate('model', {foo: v});
+          const error = v =>
+            format(
+              'The property "foo" of the model "model" has an invalid value %s ' +
+                'that caught by the validator "myValidator".',
+              v,
+            );
+          expect(throwable(undefined)).to.throw(error('undefined'));
+          expect(throwable(null)).to.throw(error('null'));
         });
 
         it('throws an error from the validator', function () {
@@ -2425,7 +2468,7 @@ describe('ModelDataValidator', function () {
           });
         });
 
-        it('do not validate null and undefined values', function () {
+        it('validates a property value even is not provided', function () {
           const S = new Schema();
           S.getService(PropertyValidatorRegistry).addValidator(
             'myValidator',
@@ -2440,13 +2483,26 @@ describe('ModelDataValidator', function () {
                   myValidator: true,
                 },
               },
-              bar: {
-                type: DataType.ANY,
-                validate: {
-                  myValidator: true,
-                },
-              },
-              baz: {
+            },
+          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = () => validator.validate('model', {});
+          expect(throwable).to.throw(
+            'The property "foo" of the model "model" has an invalid value undefined ' +
+              'that caught by the validator "myValidator".',
+          );
+        });
+
+        it('validates undefined and null values', function () {
+          const S = new Schema();
+          S.getService(PropertyValidatorRegistry).addValidator(
+            'myValidator',
+            () => false,
+          );
+          S.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
                 type: DataType.ANY,
                 validate: {
                   myValidator: true,
@@ -2454,10 +2510,16 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
-            foo: null,
-            bar: undefined,
-          });
+          const validator = S.getService(ModelDataValidator);
+          const throwable = v => () => validator.validate('model', {foo: v});
+          const error = v =>
+            format(
+              'The property "foo" of the model "model" has an invalid value %s ' +
+                'that caught by the validator "myValidator".',
+              v,
+            );
+          expect(throwable(undefined)).to.throw(error('undefined'));
+          expect(throwable(null)).to.throw(error('null'));
         });
 
         it('throws an error from the validator', function () {
@@ -2675,6 +2737,45 @@ describe('ModelDataValidator', function () {
           });
           expect(validated).to.be.true;
         });
+      });
+
+      it('the option "validate" requires a non-empty String, an Array or an Object', function () {
+        const schema = new Schema();
+        schema
+          .getService(PropertyValidatorRegistry)
+          .addValidator('myValidator', () => true);
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              validate: undefined,
+            },
+          },
+        });
+        const V = schema.getService(ModelDataValidator);
+        const throwable = v => () => {
+          const models = schema.getService(DefinitionRegistry)['_models'];
+          models.model.properties.foo.validate = v;
+          V.validate('model', {});
+        };
+        const error = v =>
+          format(
+            'The provided option "validate" of the property "foo" in the model "model" ' +
+              'should be a non-empty String, an Array of String or an Object, ' +
+              'but %s given.',
+            v,
+          );
+        expect(throwable('')).to.throw(error('""'));
+        expect(throwable(10)).to.throw(error('10'));
+        expect(throwable(0)).to.throw(error('0'));
+        expect(throwable(true)).to.throw(error('true'));
+        expect(throwable(false)).to.throw(error('false'));
+        throwable('myValidator')();
+        throwable(['myValidator'])();
+        throwable([])();
+        throwable({myValidator: true})();
+        throwable({})();
       });
     });
   });

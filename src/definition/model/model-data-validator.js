@@ -52,6 +52,13 @@ export class ModelDataValidator extends Service {
    * @returns {undefined}
    */
   _validatePropertyValue(modelName, propName, propDef, propValue) {
+    // property validators
+    this._validateValueByPropertyValidators(
+      modelName,
+      propName,
+      propDef,
+      propValue,
+    );
     // undefined and null
     if (propValue == null) {
       const isRequired =
@@ -64,15 +71,8 @@ export class ModelDataValidator extends Service {
         propValue,
       );
     }
-    // Property type.
+    // property type
     this._validateValueByPropertyType(modelName, propName, propDef, propValue);
-    // Property validators.
-    this._validateValueByPropertyValidators(
-      modelName,
-      propName,
-      propDef,
-      propValue,
-    );
   }
 
   /**
@@ -164,9 +164,7 @@ export class ModelDataValidator extends Service {
   _validateValueByPropertyValidators(modelName, propName, propDef, propValue) {
     if (typeof propDef === 'string' || propDef.validate == null) return;
     const validateDef = propDef.validate;
-    const propertyValidatorRegistry = this.getService(
-      PropertyValidatorRegistry,
-    );
+    const validatorRegistry = this.getService(PropertyValidatorRegistry);
     const createError = validatorName =>
       new InvalidArgumentError(
         'The property %v of the model %v has an invalid value %v ' +
@@ -177,7 +175,7 @@ export class ModelDataValidator extends Service {
         validatorName,
       );
     const validateBy = (validatorName, validatorOptions = undefined) => {
-      const validator = propertyValidatorRegistry.getValidator(validatorName);
+      const validator = validatorRegistry.getValidator(validatorName);
       const context = {validatorName, modelName, propName};
       const valid = validator(propValue, validatorOptions, context);
       if (valid instanceof Promise) {

@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {PropertyValidatorRegistry} from './property-validator/index.js';
+import {PropertyTransformerRegistry} from './property-transformer/index.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
@@ -10,6 +11,10 @@ const S = new PropertiesDefinitionValidator();
 const sandbox = chai.spy.sandbox();
 
 S.getService(PropertyValidatorRegistry).addValidator('myValidator', () => true);
+S.getService(PropertyTransformerRegistry).addTransformer(
+  'myTransformer',
+  () => true,
+);
 
 describe('PropertiesDefinitionValidator', function () {
   afterEach(function () {
@@ -435,6 +440,53 @@ describe('PropertiesDefinitionValidator', function () {
       validate('myValidator')();
       validate(['myValidator'])();
       validate({myValidator: true})();
+    });
+
+    it('the option "transform" should have a non-empty String, an Array of String or an Object', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ANY,
+          transform: v,
+        };
+        S.validate('model', {foo});
+      };
+      const error = v =>
+        format(
+          'The provided option "transform" of the property "foo" in the model "model" ' +
+            'should be a non-empty String, an Array of String or an Object, ' +
+            'but %s given.',
+          v,
+        );
+      expect(validate('')).to.throw(error('""'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(0)).to.throw(error('0'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate(false)).to.throw(error('false'));
+      expect(validate(() => undefined)).to.throw(error('Function'));
+      validate('myTransformer')();
+      validate(['myTransformer'])();
+      validate([])();
+      validate({myTransformer: true})();
+      validate({})();
+      validate(null)();
+      validate(undefined)();
+    });
+
+    it('the option "transform" requires only existing transformer names', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ANY,
+          transform: v,
+        };
+        S.validate('model', {foo});
+      };
+      const error = v => format('The property transformer %s is not found.', v);
+      expect(validate('unknown')).to.throw(error('"unknown"'));
+      expect(validate({unknown: true})).to.throw(error('"unknown"'));
+      expect(validate(['unknown'])).to.throw(error('"unknown"'));
+      validate('myTransformer')();
+      validate(['myTransformer'])();
+      validate({myTransformer: true})();
     });
   });
 });

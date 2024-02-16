@@ -9,7 +9,7 @@ import {InvalidArgumentError} from '../../../../../errors/index.js';
  * @returns {boolean}
  */
 export function maxLengthValidator(value, options, context) {
-  if (options === false) return true;
+  if (value == null || options === false) return true;
   if (typeof options !== 'number')
     throw new InvalidArgumentError(
       'The validator %v requires the "options" argument ' +

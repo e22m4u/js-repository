@@ -9,6 +9,7 @@ import {DefaultValuesDecorator} from './decorator/index.js';
 import {DataValidationDecorator} from './decorator/index.js';
 import {DataSanitizingDecorator} from './decorator/index.js';
 import {FieldsFilteringDecorator} from './decorator/index.js';
+import {DataTransformationDecorator} from './decorator/index.js';
 
 const sandbox = chai.spy.sandbox();
 
@@ -35,9 +36,10 @@ describe('Adapter', function () {
       const schema = new Schema();
       const dec1 = schema.getService(DataSanitizingDecorator);
       const dec2 = schema.getService(DefaultValuesDecorator);
-      const dec3 = schema.getService(DataValidationDecorator);
-      const dec4 = schema.getService(FieldsFilteringDecorator);
-      const dec5 = schema.getService(InclusionDecorator);
+      const dec3 = schema.getService(DataTransformationDecorator);
+      const dec4 = schema.getService(DataValidationDecorator);
+      const dec5 = schema.getService(FieldsFilteringDecorator);
+      const dec6 = schema.getService(InclusionDecorator);
       const order = [];
       const decorate = function (ctx) {
         expect(ctx).to.be.instanceof(Adapter);
@@ -48,6 +50,7 @@ describe('Adapter', function () {
       sandbox.on(dec3, 'decorate', decorate);
       sandbox.on(dec4, 'decorate', decorate);
       sandbox.on(dec5, 'decorate', decorate);
+      sandbox.on(dec6, 'decorate', decorate);
       new Adapter(schema.container);
       expect(order).to.be.empty;
       expect(dec1.decorate).to.be.not.called;
@@ -55,6 +58,7 @@ describe('Adapter', function () {
       expect(dec3.decorate).to.be.not.called;
       expect(dec4.decorate).to.be.not.called;
       expect(dec5.decorate).to.be.not.called;
+      expect(dec6.decorate).to.be.not.called;
       class ExtendedAdapter extends Adapter {}
       new ExtendedAdapter(schema.container);
       expect(order[0]).to.be.eql(dec1);
@@ -62,11 +66,13 @@ describe('Adapter', function () {
       expect(order[2]).to.be.eql(dec3);
       expect(order[3]).to.be.eql(dec4);
       expect(order[4]).to.be.eql(dec5);
+      expect(order[5]).to.be.eql(dec6);
       expect(dec1.decorate).to.be.called.once;
       expect(dec2.decorate).to.be.called.once;
       expect(dec3.decorate).to.be.called.once;
       expect(dec4.decorate).to.be.called.once;
       expect(dec5.decorate).to.be.called.once;
+      expect(dec6.decorate).to.be.called.once;
     });
   });
 

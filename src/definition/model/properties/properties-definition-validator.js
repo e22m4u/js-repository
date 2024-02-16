@@ -3,6 +3,7 @@ import {DataType as Type} from './data-type.js';
 import {capitalize} from '../../../utils/index.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {PropertyValidatorRegistry} from './property-validator/index.js';
+import {PropertyTransformerRegistry} from './property-transformer/index.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 /**
@@ -247,6 +248,52 @@ export class PropertiesDefinitionValidator extends Service {
           propName,
           modelName,
           propDef.validate,
+        );
+      }
+    }
+    if (propDef.transform != null) {
+      const propertyTransformerRegistry = this.getService(
+        PropertyTransformerRegistry,
+      );
+      if (propDef.transform && typeof propDef.transform === 'string') {
+        if (!propertyTransformerRegistry.hasTransformer(propDef.transform))
+          throw new InvalidArgumentError(
+            'The property transformer %v is not found.',
+            propDef.transform,
+          );
+      } else if (Array.isArray(propDef.transform)) {
+        for (const transformerName of propDef.transform) {
+          if (typeof transformerName !== 'string')
+            throw new InvalidArgumentError(
+              'The provided option "transform" of the property %v in the model %v ' +
+                'has an Array value that should have a non-empty String, ' +
+                'but %v given.',
+              propName,
+              modelName,
+              transformerName,
+            );
+          if (!propertyTransformerRegistry.hasTransformer(transformerName))
+            throw new InvalidArgumentError(
+              'The property transformer %v is not found.',
+              transformerName,
+            );
+        }
+      } else if (typeof propDef.transform === 'object') {
+        for (const transformerName in propDef.transform) {
+          if (!propertyTransformerRegistry.hasTransformer(transformerName))
+            throw new InvalidArgumentError(
+              'The property transformer %v is not found.',
+              transformerName,
+            );
+        }
+      } else {
+        throw new InvalidArgumentError(
+          'The provided option "transform" of the property %v in the model %v ' +
+            'should be a non-empty String, an Array of String or an Object, ' +
+            'but %v given.',
+          propName,
+          modelName,
+          propDef.transform,
         );
       }
     }

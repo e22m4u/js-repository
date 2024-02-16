@@ -17,6 +17,7 @@ S.defineModel({
 });
 
 const INPUT_DATA = {};
+const INPUT_DATA_WITH_DEFAULTS = {prop: 'value'};
 
 class TestAdapter extends Adapter {
   // eslint-disable-next-line no-unused-vars
@@ -65,139 +66,114 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "create" method method and sets default values to input data', async function () {
-    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-    const retval = await A.create('model', INPUT_DATA);
-    expect(retval).to.be.eql({prop: 'value'});
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-      'model',
-      INPUT_DATA,
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.false;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
     );
+    const res = await A.create('model', INPUT_DATA);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
   it('overrides the "replaceById" method and sets default values to input data', async function () {
-    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-    const retval = await A.replaceById('model', 1, INPUT_DATA);
-    expect(retval).to.be.eql({prop: 'value'});
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-      'model',
-      INPUT_DATA,
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.false;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
     );
+    const res = await A.replaceById('model', 1, INPUT_DATA);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
   it('overrides the "replaceOrCreate" method and sets default values to input data', async function () {
-    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-    const retval = await A.replaceOrCreate('model', INPUT_DATA);
-    expect(retval).to.be.eql({prop: 'value'});
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-      'model',
-      INPUT_DATA,
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.false;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
     );
+    const res = await A.replaceOrCreate('model', INPUT_DATA);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
-  describe('overrides the "patch" method and sets default values to input data', function () {
-    it('does not set default values to not existing properties of input data', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {};
-      const retval = await A.patch('model', data);
-      expect(retval).to.be.eql({});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
-
-    it('does set default values to input properties of null', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {prop: null};
-      const retval = await A.patch('model', data);
-      expect(retval).to.be.eql({prop: 'value'});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
-
-    it('does set default values to input properties of undefined', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {prop: undefined};
-      const retval = await A.patch('model', data);
-      expect(retval).to.be.eql({prop: 'value'});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
+  it('overrides the "patch" method and sets default values to input data', async function () {
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.true;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
+    );
+    const res = await A.patch('model', INPUT_DATA);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
-  describe('overrides the "patchById" method and sets default values to input data', function () {
-    it('does not set default values to not existing properties of input data', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {};
-      const retval = await A.patchById('model', 1, data);
-      expect(retval).to.be.eql({});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
-
-    it('does set default values to input properties of null', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {prop: null};
-      const retval = await A.patchById('model', 2, data);
-      expect(retval).to.be.eql({prop: 'value'});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
-
-    it('does set default values to input properties of undefined', async function () {
-      sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-      const data = {prop: undefined};
-      const retval = await A.patchById('model', 3, data);
-      expect(retval).to.be.eql({prop: 'value'});
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-      expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-        'model',
-        data,
-        true,
-      );
-    });
+  it('overrides the "patchById" method and sets default values to input data', async function () {
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.true;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
+    );
+    const res = await A.patchById('model', 1, INPUT_DATA);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
   it('overrides the "find" method and sets default values to output data', async function () {
-    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-    const retval = await A.find('model');
-    expect(retval).to.be.eql([{prop: 'value'}]);
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-      'model',
-      INPUT_DATA,
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.false;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
     );
+    const res = await A.find('model');
+    expect(res).to.be.eql([INPUT_DATA_WITH_DEFAULTS]);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 
   it('overrides the "findById" method and sets default values to output data', async function () {
-    sandbox.on(U, 'setDefaultValuesToEmptyProperties');
-    const retval = await A.findById('model', 1);
-    expect(retval).to.be.eql({prop: 'value'});
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
-    expect(U.setDefaultValuesToEmptyProperties).to.be.called.with.exactly(
-      'model',
-      INPUT_DATA,
+    sandbox.on(
+      U,
+      'setDefaultValuesToEmptyProperties',
+      (modelName, modelData, onlyProvidedProperties = false) => {
+        expect(modelName).to.be.eq('model');
+        expect(modelData).to.be.eql(INPUT_DATA);
+        expect(onlyProvidedProperties).to.be.false;
+        return INPUT_DATA_WITH_DEFAULTS;
+      },
     );
+    const res = await A.findById('model', 1);
+    expect(res).to.be.eql(INPUT_DATA_WITH_DEFAULTS);
+    expect(U.setDefaultValuesToEmptyProperties).to.be.called.once;
   });
 });
