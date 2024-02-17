@@ -334,7 +334,7 @@ schema.defineModel({
       type: DataType.STRING,
       transform: [ // трансформеры свойства "name"
         'trim', // удалить пробелы в начале и конце строки
-        'toTitleCase', // перевод в регистр заголовка
+        'toTitleCase', // перевод строки в регистр заголовка
       ],
     },
   },
