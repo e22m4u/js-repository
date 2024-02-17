@@ -1,5 +1,8 @@
 import {Service} from '@e22m4u/js-service';
 import {trimTransformer} from './builtin/index.js';
+import {toUpperCaseTransformer} from './builtin/index.js';
+import {toLowerCaseTransformer} from './builtin/index.js';
+import {toTitleCaseTransformer} from './builtin/index.js';
 import {InvalidArgumentError} from '../../../../errors/index.js';
 
 /**
@@ -13,6 +16,9 @@ export class PropertyTransformerRegistry extends Service {
    */
   _transformers = {
     trim: trimTransformer,
+    toUpperCase: toUpperCaseTransformer,
+    toLowerCase: toLowerCaseTransformer,
+    toTitleCase: toTitleCaseTransformer,
   };
 
   /**

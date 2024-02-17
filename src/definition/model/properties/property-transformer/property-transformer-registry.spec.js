@@ -1,6 +1,9 @@
 import {expect} from 'chai';
 import {format} from '@e22m4u/js-format';
 import {trimTransformer} from './builtin/index.js';
+import {toUpperCaseTransformer} from './builtin/index.js';
+import {toLowerCaseTransformer} from './builtin/index.js';
+import {toTitleCaseTransformer} from './builtin/index.js';
 import {PropertyTransformerRegistry} from './property-transformer-registry.js';
 
 describe('PropertyTransformerRegistry', function () {
@@ -9,6 +12,9 @@ describe('PropertyTransformerRegistry', function () {
       const S = new PropertyTransformerRegistry();
       expect(S['_transformers']).to.be.eql({
         trim: trimTransformer,
+        toUpperCase: toUpperCaseTransformer,
+        toLowerCase: toLowerCaseTransformer,
+        toTitleCase: toTitleCaseTransformer,
       });
     });
 

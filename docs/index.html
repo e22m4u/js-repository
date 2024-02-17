@@ -150,6 +150,9 @@
 нужно производить с входящими данными.</p>
 <ul>
 <li><code>trim</code> удаление пробельных символов с начала и конца строки</li>
+<li><code>toUpperCase</code> перевод строки в верхний регистр</li>
+<li><code>toLowerCase</code> перевод строки в нижний регистр</li>
+<li><code>toTitleCase</code> перевод строки в регистр заголовка</li>
 </ul>
 <p><strong>Пример</strong></p>
 <p>Трансформеры указываются в объявлении свойства модели параметром
@@ -157,7 +160,7 @@
 указать несколько названий, то используется массив. Если трансформер
 имеет настройки, то используется объект, где ключом является название
 трансформера, а значением его параметры.</p>
-<pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">properties:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">STRING</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">transform:</span><span class="hl-1"> [ </span><span class="hl-5">// трансформеры свойства &quot;name&quot;</span><br/><span class="hl-1">        </span><span class="hl-2">&#39;trim&#39;</span><span class="hl-1">, </span><span class="hl-5">// обрезать пробелы в начале и в конце строки</span><br/><span class="hl-1">      ],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+<pre><code class="language-js"><span class="hl-4">schema</span><span class="hl-1">.</span><span class="hl-0">defineModel</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">properties:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-4">DataType</span><span class="hl-1">.</span><span class="hl-7">STRING</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">transform:</span><span class="hl-1"> [ </span><span class="hl-5">// трансформеры свойства &quot;name&quot;</span><br/><span class="hl-1">        </span><span class="hl-2">&#39;trim&#39;</span><span class="hl-1">, </span><span class="hl-5">// удалить пробелы в начале и конце строки</span><br/><span class="hl-1">        </span><span class="hl-2">&#39;toTitleCase&#39;</span><span class="hl-1">, </span><span class="hl-5">// перевод в регистр заголовка</span><br/><span class="hl-1">      ],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
 <a id="md:репозиторий" class="tsd-anchor"></a><h2><a href="#md:репозиторий">Репозиторий</a></h2><p>Выполняет операции чтения и записи документов определенной модели.
 Получить репозиторий можно методом <code>getRepository</code> экземпляра схемы.</p>
