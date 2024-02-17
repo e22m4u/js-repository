@@ -8,6 +8,7 @@ const sandbox = chai.spy.sandbox();
 
 describe('DefinitionRegistry', function () {
   let S;
+
   beforeEach(function () {
     S = new DefinitionRegistry();
   });
