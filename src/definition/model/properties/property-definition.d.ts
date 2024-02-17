@@ -1,5 +1,6 @@
 import {DataType} from './data-type.js';
 import {PropertyValidateOptions} from './property-validator/index.js';
+import {PropertyTransformOptions} from './property-transformer/index.js';
 
 /**
  * Full property definition.
@@ -14,6 +15,7 @@ export declare type FullPropertyDefinition = {
   required?: boolean;
   default?: unknown;
   validate?: PropertyValidateOptions;
+  transform?: PropertyTransformOptions;
 };
 
 /**
