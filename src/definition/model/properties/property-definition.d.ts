@@ -16,6 +16,7 @@ export declare type FullPropertyDefinition = {
   default?: unknown;
   validate?: PropertyValidateOptions;
   transform?: PropertyTransformOptions;
+  unique?: boolean;
 };
 
 /**

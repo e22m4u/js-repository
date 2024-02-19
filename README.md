@@ -224,6 +224,7 @@ schema.defineModel({
 - `required: boolean` объявить свойство обязательным
 - `default: any` значение по умолчанию
 - `validate: string | array | object` см. [Валидаторы](#Валидаторы)
+- `unique: boolean` допускать только уникальные значения
 
 **Примеры**
 

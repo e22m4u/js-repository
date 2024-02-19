@@ -250,6 +250,7 @@ describe('PropertiesDefinitionValidator', function () {
             'should be a Boolean, but %s given.',
           v,
         );
+      expect(validate('str')).to.throw(error('"str"'));
       expect(validate(10)).to.throw(error('10'));
       expect(validate([])).to.throw(error('Array'));
       expect(validate({})).to.throw(error('Object'));
@@ -277,7 +278,7 @@ describe('PropertiesDefinitionValidator', function () {
       expect(validate([])).to.throw(error);
       expect(validate({})).to.throw(error);
       expect(validate(null)).to.throw(error);
-      validate(undefined);
+      validate(undefined)();
     });
 
     it('expects the primary key should not have the option "required" to be true', function () {
@@ -294,8 +295,8 @@ describe('PropertiesDefinitionValidator', function () {
           'so it should not have the option "required" to be provided.',
       );
       expect(validate(true)).to.throw(error);
-      validate(false);
-      validate(undefined);
+      validate(false)();
+      validate(undefined)();
     });
 
     it('expects the primary key should not have the option "default" to be provided', function () {
@@ -318,7 +319,7 @@ describe('PropertiesDefinitionValidator', function () {
       expect(validate([])).to.throw(error);
       expect(validate({})).to.throw(error);
       expect(validate(null)).to.throw(error);
-      validate(undefined);
+      validate(undefined)();
     });
 
     it('expects a non-array property should not have the option "itemType" to be provided', function () {
@@ -337,7 +338,7 @@ describe('PropertiesDefinitionValidator', function () {
       expect(validate(DataType.NUMBER)).to.throw(error);
       expect(validate(DataType.BOOLEAN)).to.throw(error);
       expect(validate(DataType.OBJECT)).to.throw(error);
-      validate(DataType.ARRAY);
+      validate(DataType.ARRAY)();
     });
 
     it('the option "model" requires the "object" property type', function () {
@@ -487,6 +488,46 @@ describe('PropertiesDefinitionValidator', function () {
       validate('myTransformer')();
       validate(['myTransformer'])();
       validate({myTransformer: true})();
+    });
+
+    it('expects provided the option "unique" to be a boolean', function () {
+      const validate = v => {
+        const foo = {
+          type: DataType.STRING,
+          unique: v,
+        };
+        return () => S.validate('model', {foo});
+      };
+      const error = v =>
+        format(
+          'The provided option "unique" of the property "foo" in the model "model" ' +
+            'should be a Boolean, but %s given.',
+          v,
+        );
+      expect(validate('str')).to.throw(error('"str"'));
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate([])).to.throw(error('Array'));
+      expect(validate({})).to.throw(error('Object'));
+      validate(true)();
+      validate(false)();
+    });
+
+    it('expects the primary key should not have the option "unique" to be true', function () {
+      const validate = v => () => {
+        const foo = {
+          type: DataType.ANY,
+          primaryKey: true,
+          unique: v,
+        };
+        S.validate('model', {foo});
+      };
+      const error = format(
+        'The property "foo" of the model "model" is a primary key, ' +
+          'so it should not have the option "unique" to be provided.',
+      );
+      expect(validate(true)).to.throw(error);
+      validate(false)();
+      validate(undefined)();
     });
   });
 });
