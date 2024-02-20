@@ -2,6 +2,7 @@ import chai from 'chai';
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
+import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertyValidatorRegistry} from './property-validator/index.js';
 import {PropertyTransformerRegistry} from './property-transformer/index.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
@@ -490,7 +491,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate({myTransformer: true})();
     });
 
-    it('expects provided the option "unique" to be a boolean', function () {
+    it('expects provided the option "unique" to be the PropertyUniqueness', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -501,18 +502,20 @@ describe('PropertiesDefinitionValidator', function () {
       const error = v =>
         format(
           'The provided option "unique" of the property "foo" in the model "model" ' +
-            'should be a Boolean, but %s given.',
+            'should be one of values: %l, but %s given.',
+          Object.values(PropertyUniqueness),
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
       expect(validate(10)).to.throw(error('10'));
       expect(validate([])).to.throw(error('Array'));
       expect(validate({})).to.throw(error('Object'));
-      validate(true)();
-      validate(false)();
+      validate(PropertyUniqueness.UNIQUE)();
+      validate(PropertyUniqueness.SPARSE)();
+      validate(PropertyUniqueness.NON_UNIQUE)();
     });
 
-    it('expects the primary key should not have the option "unique" to be true', function () {
+    it('expects the primary key should not have the option "unique"', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ANY,
@@ -525,7 +528,8 @@ describe('PropertiesDefinitionValidator', function () {
         'The property "foo" of the model "model" is a primary key, ' +
           'so it should not have the option "unique" to be provided.',
       );
-      expect(validate(true)).to.throw(error);
+      expect(validate(PropertyUniqueness.UNIQUE)).to.throw(error);
+      expect(validate(PropertyUniqueness.SPARSE)).to.throw(error);
       validate(false)();
       validate(undefined)();
     });

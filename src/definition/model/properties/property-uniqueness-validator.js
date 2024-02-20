@@ -1,5 +1,8 @@
+import {DataType} from './data-type.js';
 import {Service} from '@e22m4u/js-service';
 import {isPureObject} from '../../../utils/index.js';
+import {PropertyUniqueness} from './property-uniqueness.js';
+import {EmptyValuesDefiner} from './empty-values-definer.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {ModelDefinitionUtils} from '../model-definition-utils.js';
 
@@ -67,10 +70,17 @@ export class PropertyUniquenessValidator extends Service {
         propValue,
       );
     let willBeReplaced = undefined;
+    const emptyValuesDefiner = this.getService(EmptyValuesDefiner);
     for (const propName of propNames) {
       const propDef = propDefs[propName];
       if (!propDef || typeof propDef === 'string' || !propDef.unique) continue;
+      // sparse
       const propValue = modelData[propName];
+      if (propDef.unique === PropertyUniqueness.SPARSE) {
+        const propType = propDef.type || DataType.ANY;
+        const isEmpty = emptyValuesDefiner.isEmpty(propType, propValue);
+        if (isEmpty) continue;
+      }
       // create
       if (methodName === 'create') {
         const count = await countMethod({[propName]: propValue});

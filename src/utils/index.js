@@ -2,6 +2,7 @@ export * from './is-ctor.js';
 export * from './capitalize.js';
 export * from './clone-deep.js';
 export * from './singularize.js';
+export * from './is-deep-equal.js';
 export * from './get-ctor-name.js';
 export * from './is-pure-object.js';
 export * from './string-to-regexp.js';

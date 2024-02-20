@@ -1,6 +1,7 @@
 import {Service} from '@e22m4u/js-service';
 import {DataType as Type} from './data-type.js';
 import {capitalize} from '../../../utils/index.js';
+import {PropertyUniqueness} from './property-uniqueness.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {PropertyValidatorRegistry} from './property-validator/index.js';
 import {PropertyTransformerRegistry} from './property-transformer/index.js';
@@ -297,14 +298,19 @@ export class PropertiesDefinitionValidator extends Service {
         );
       }
     }
-    if (propDef.unique && typeof propDef.unique !== 'boolean')
+    if (
+      propDef.unique &&
+      !Object.values(PropertyUniqueness).includes(propDef.unique)
+    ) {
       throw new InvalidArgumentError(
         'The provided option "unique" of the property %v in the model %v ' +
-          'should be a Boolean, but %v given.',
+          'should be one of values: %l, but %v given.',
         propName,
         modelName,
+        Object.values(PropertyUniqueness),
         propDef.unique,
       );
+    }
     if (propDef.unique && propDef.primaryKey)
       throw new InvalidArgumentError(
         'The property %v of the model %v is a primary key, ' +

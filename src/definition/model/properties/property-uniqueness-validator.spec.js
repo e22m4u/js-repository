@@ -2,6 +2,8 @@ import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {Schema} from '../../../schema.js';
+import {PropertyUniqueness} from './property-uniqueness.js';
+import {EmptyValuesDefiner} from './empty-values-definer.js';
 import {PropertyUniquenessValidator} from './property-uniqueness-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
 
@@ -183,6 +185,48 @@ describe('PropertyUniquenessValidator', function () {
         'The PropertyUniquenessValidator does not ' +
           'support the adapter method "unsupported".',
       );
+    });
+
+    it('skips uniqueness checking for an empty value for "sparse" mode', async function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            unique: true,
+          },
+          bar: {
+            type: DataType.STRING,
+            unique: PropertyUniqueness.SPARSE,
+          },
+          baz: {
+            type: DataType.STRING,
+            unique: true,
+          },
+        },
+      });
+      const S = schema.getService(PropertyUniquenessValidator);
+      let invoked = 0;
+      schema
+        .getService(EmptyValuesDefiner)
+        .setEmptyValuesOf(DataType.STRING, ['val2']);
+      const modelData = {
+        foo: 'val1',
+        bar: 'val2',
+        baz: 'val3',
+      };
+      const countMethod = where => {
+        invoked++;
+        if (invoked === 1) {
+          expect(where).to.be.eql({foo: 'val1'});
+        } else if (invoked === 2) {
+          expect(where).to.be.eql({baz: 'val3'});
+        }
+        return 0;
+      };
+      await S.validate(countMethod, 'create', 'model', modelData);
+      expect(invoked).to.be.eql(2);
     });
 
     describe('create', function () {
