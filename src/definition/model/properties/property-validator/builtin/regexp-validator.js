@@ -10,7 +10,7 @@ import {InvalidArgumentError} from '../../../../../errors/index.js';
  * @returns {boolean}
  */
 export function regexpValidator(value, options, context) {
-  if (value == null || options === false) return true;
+  if (options === false) return true;
   if (typeof options !== 'string' && !(options instanceof RegExp))
     throw new InvalidArgumentError(
       'The validator %v requires the "options" argument ' +

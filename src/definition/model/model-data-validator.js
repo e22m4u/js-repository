@@ -53,15 +53,6 @@ export class ModelDataValidator extends Service {
    * @returns {undefined}
    */
   _validatePropertyValue(modelName, propName, propDef, propValue) {
-    // property validators
-    this._validateValueByPropertyValidators(
-      modelName,
-      propName,
-      propDef,
-      propValue,
-    );
-    // a required property should
-    // not have an empty property
     const propType =
       this.getService(ModelDefinitionUtils).getDataTypeFromPropertyDefinition(
         propDef,
@@ -71,9 +62,13 @@ export class ModelDataValidator extends Service {
       propValue,
     );
     if (isEmpty) {
+      // skips validation
+      // for an empty value
       const isRequired =
         typeof propDef === 'string' ? false : Boolean(propDef.required);
       if (!isRequired) return;
+      // a required property should
+      // not have an empty value
       throw new InvalidArgumentError(
         'The property %v of the model %v is required, but %v given.',
         propName,
@@ -81,7 +76,15 @@ export class ModelDataValidator extends Service {
         propValue,
       );
     }
-    // property type
+    // passes the property value
+    // through property validators
+    this._validateValueByPropertyValidators(
+      modelName,
+      propName,
+      propDef,
+      propValue,
+    );
+    // type checking of the property value
     this._validateValueByPropertyType(modelName, propName, propDef, propValue);
   }
 
