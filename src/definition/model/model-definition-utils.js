@@ -2,6 +2,7 @@ import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {cloneDeep} from '../../utils/index.js';
 import {excludeObjectKeys} from '../../utils/index.js';
+import {EmptyValuesDefiner} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {DefinitionRegistry} from '../definition-registry.js';
 
@@ -139,10 +140,16 @@ export class ModelDefinitionUtils extends Service {
       ? Object.keys(modelData)
       : Object.keys(propDefs);
     const extendedData = cloneDeep(modelData);
+    const emptyValueDefiner = this.getService(EmptyValuesDefiner);
     propNames.forEach(propName => {
-      const value = extendedData[propName];
-      if (value != null) return;
       const propDef = propDefs[propName];
+      const propValue = extendedData[propName];
+      const propType =
+        propDef != null
+          ? this.getDataTypeFromPropertyDefinition(propDef)
+          : DataType.ANY;
+      const isEmpty = emptyValueDefiner.isEmpty(propType, propValue);
+      if (!isEmpty) return;
       if (
         propDef &&
         typeof propDef === 'object' &&
@@ -224,6 +231,35 @@ export class ModelDefinitionUtils extends Service {
     }
     if (typeof propDef === 'string') return propDef;
     return propDef.type;
+  }
+
+  /**
+   * Get data type from property definition.
+   *
+   * @param {object} propDef
+   * @returns {string}
+   */
+  getDataTypeFromPropertyDefinition(propDef) {
+    if (
+      (!propDef || typeof propDef !== 'object') &&
+      !Object.values(DataType).includes(propDef)
+    ) {
+      throw new InvalidArgumentError(
+        'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+          'should be an Object or the DataType enum, but %v given.',
+        propDef,
+      );
+    }
+    if (typeof propDef === 'string') return propDef;
+    const dataType = propDef.type;
+    if (!Object.values(DataType).includes(dataType))
+      throw new InvalidArgumentError(
+        'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+          'should have the "type" property with one of values: %l, but %v given.',
+        Object.values(DataType),
+        propDef.type,
+      );
+    return dataType;
   }
 
   /**

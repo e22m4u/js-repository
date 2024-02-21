@@ -4,6 +4,7 @@ import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
 import {RelationType} from './relations/index.js';
+import {EmptyValuesDefiner} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from './model-definition-utils.js';
@@ -476,6 +477,26 @@ describe('ModelDefinitionUtils', function () {
       expect(result).to.be.eql({foo: 'string'});
     });
 
+    it('sets a default value if a property has an empty value', function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            default: 'placeholder',
+          },
+        },
+      });
+      schema
+        .getService(EmptyValuesDefiner)
+        .setEmptyValuesOf(DataType.STRING, ['empty']);
+      const result = schema
+        .getService(ModelDefinitionUtils)
+        .setDefaultValuesToEmptyProperties('model', {foo: 'empty'});
+      expect(result).to.be.eql({foo: 'placeholder'});
+    });
+
     it('sets a value from a factory function', function () {
       const schema = new Schema();
       schema.defineModel({
@@ -824,6 +845,67 @@ describe('ModelDefinitionUtils', function () {
         .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('modelB', 'foo');
       expect(result).to.be.eq(DataType.STRING);
+    });
+  });
+
+  describe('getDataTypeFromPropertyDefinition', function () {
+    it('requires the given argument "propDef" must be an Object or DataType', function () {
+      const schema = new Schema();
+      const S = schema.getService(ModelDefinitionUtils);
+      const throwable = v => () => S.getDataTypeFromPropertyDefinition(v);
+      const error = v =>
+        format(
+          'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+            'should be an Object or the DataType enum, but %s given.',
+          v,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable(DataType.ANY)();
+      throwable({type: DataType.ANY})();
+    });
+
+    it('requires the given Object to have the "type" property with the DataType enum', function () {
+      const schema = new Schema();
+      const S = schema.getService(ModelDefinitionUtils);
+      const throwable = v => () =>
+        S.getDataTypeFromPropertyDefinition({type: v});
+      const error = v =>
+        format(
+          'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+            'should have the "type" property with one of values: %l, but %s given.',
+          Object.values(DataType),
+          v,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable(DataType.ANY)();
+    });
+
+    it('returns the DataType from the given DataType enum', function () {
+      const schema = new Schema();
+      const S = schema.getService(ModelDefinitionUtils);
+      const res = S.getDataTypeFromPropertyDefinition(DataType.STRING);
+      expect(res).to.be.eq(DataType.STRING);
+    });
+
+    it('returns the DataType from the given PropertyDefinition', function () {
+      const schema = new Schema();
+      const S = schema.getService(ModelDefinitionUtils);
+      const res = S.getDataTypeFromPropertyDefinition({type: DataType.STRING});
+      expect(res).to.be.eq(DataType.STRING);
     });
   });
 

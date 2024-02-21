@@ -2,6 +2,7 @@ import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {getCtorName} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';
+import {EmptyValuesDefiner} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {PropertyValidatorRegistry} from './properties/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
@@ -59,8 +60,17 @@ export class ModelDataValidator extends Service {
       propDef,
       propValue,
     );
-    // undefined and null
-    if (propValue == null) {
+    // a required property should
+    // not have an empty property
+    const propType =
+      this.getService(ModelDefinitionUtils).getDataTypeFromPropertyDefinition(
+        propDef,
+      );
+    const isEmpty = this.getService(EmptyValuesDefiner).isEmpty(
+      propType,
+      propValue,
+    );
+    if (isEmpty) {
       const isRequired =
         typeof propDef === 'string' ? false : Boolean(propDef.required);
       if (!isRequired) return;

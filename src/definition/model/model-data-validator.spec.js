@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
+import {EmptyValuesDefiner} from './properties/index.js';
 import {ModelDataValidator} from './model-data-validator.js';
 import {DefinitionRegistry} from '../definition-registry.js';
 import {PropertyValidatorRegistry} from './properties/index.js';
@@ -111,6 +112,28 @@ describe('ModelDataValidator', function () {
         schema.getService(ModelDataValidator).validate('model', {foo: null});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" is required, but null given.',
+      );
+    });
+
+    it('throws an error if a required property has an empty value', function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            required: true,
+          },
+        },
+      });
+      schema
+        .getService(EmptyValuesDefiner)
+        .setEmptyValuesOf(DataType.STRING, ['empty']);
+      const throwable = () =>
+        schema.getService(ModelDataValidator).validate('model', {foo: 'empty'});
+      expect(throwable).to.throw(
+        'The property "foo" of the model "model" ' +
+          'is required, but "empty" given.',
       );
     });
 

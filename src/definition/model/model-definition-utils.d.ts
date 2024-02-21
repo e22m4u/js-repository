@@ -2,6 +2,7 @@ import {ModelData} from '../../types.js';
 import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {RelationDefinition} from './relations/index.js';
+import {PropertyDefinition} from './properties/index.js';
 import {PropertyDefinitionMap} from './model-definition.js';
 import {RelationDefinitionMap} from './model-definition.js';
 
@@ -93,6 +94,13 @@ export declare class ModelDefinitionUtils extends Service {
    * @param propertyName
    */
   getDataTypeByPropertyName(modelName: string, propertyName: string): DataType;
+
+  /**
+   * Get data type from property definition.
+   *
+   * @param propDef
+   */
+  getDataTypeFromPropertyDefinition(propDef: PropertyDefinition): DataType;
 
   /**
    * Get own properties definition of primary keys.
