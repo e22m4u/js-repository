@@ -15,9 +15,10 @@ export class ModelDataTransformer extends Service {
    *
    * @param {string} modelName
    * @param {object} modelData
+   * @param {boolean} isPartial
    * @returns {object}
    */
-  transform(modelName, modelData) {
+  transform(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v given.',
@@ -30,7 +31,7 @@ export class ModelDataTransformer extends Service {
       modelDefinitionUtils.getPropertiesDefinitionInBaseModelHierarchy(
         modelName,
       );
-    const propNames = Object.keys(propDefs);
+    const propNames = Object.keys(isPartial ? modelData : propDefs);
     const transformedData = cloneDeep(modelData);
     propNames.forEach(propName => {
       const propDef = propDefs[propName];
