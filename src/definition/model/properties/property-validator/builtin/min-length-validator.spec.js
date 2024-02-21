@@ -8,6 +8,13 @@ describe('minLengthValidator', function () {
     expect(res).to.be.true;
   });
 
+  it('returns true for undefined and null values', function () {
+    const res1 = minLengthValidator(undefined, 10, {});
+    const res2 = minLengthValidator(null, 10, {});
+    expect(res1).to.be.true;
+    expect(res2).to.be.true;
+  });
+
   it('requires the "value" argument as a String or an Array', function () {
     const throwable = v => () =>
       minLengthValidator(v, 0, {
@@ -23,14 +30,14 @@ describe('minLengthValidator', function () {
     expect(throwable(0)).to.throw(error('0'));
     expect(throwable(true)).to.throw(error('true'));
     expect(throwable(false)).to.throw(error('false'));
-    expect(throwable(undefined)).to.throw(error('undefined'));
-    expect(throwable(null)).to.throw(error('null'));
     expect(throwable({})).to.throw(error('Object'));
     expect(throwable(() => undefined)).to.throw(error('Function'));
     throwable('str')();
     throwable('')();
     throwable([1, 2, 3])();
     throwable([])();
+    throwable(undefined)();
+    throwable(null)();
   });
 
   it('requires the "options" argument to be a number', function () {

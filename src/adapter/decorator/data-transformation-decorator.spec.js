@@ -80,7 +80,7 @@ describe('DataTransformationDecorator', function () {
     const res = await A.patch('model', modelData);
     expect(res).to.be.eql(transformedData);
     expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData, true);
+    expect(V.transform).to.be.called.with.exactly('model', modelData);
   });
 
   it('overrides the "patchById" method and transforms a given data', async function () {
@@ -90,6 +90,6 @@ describe('DataTransformationDecorator', function () {
     const res = await A.patchById('model', 1, modelData);
     expect(res).to.be.eql(transformedData);
     expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData, true);
+    expect(V.transform).to.be.called.with.exactly('model', modelData);
   });
 });

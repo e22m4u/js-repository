@@ -104,7 +104,7 @@ describe('ModelDataTransformer', function () {
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
-      it('transforms a property value even it is not provided', function () {
+      it('does not transform a property value if it is not provided', function () {
         const schema = new Schema();
         const myTransformer = () => 'transformed';
         schema
@@ -121,10 +121,10 @@ describe('ModelDataTransformer', function () {
         });
         const T = schema.getService(ModelDataTransformer);
         const res = T.transform('model', {});
-        expect(res).to.be.eql({foo: 'transformed'});
+        expect(res).to.be.eql({});
       });
 
-      it('transforms undefined and null values', function () {
+      it('does not transform undefined and null values', function () {
         const schema = new Schema();
         const myTransformer = () => 'transformed';
         schema
@@ -142,30 +142,8 @@ describe('ModelDataTransformer', function () {
         const T = schema.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({foo: 'transformed'});
-      });
-
-      it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new Schema();
-        const myTransformer = () => 'transformed';
-        schema
-          .getService(PropertyTransformerRegistry)
-          .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.STRING,
-              transform: 'myTransformer',
-            },
-          },
-        });
-        const T = schema.getService(ModelDataTransformer);
-        const res1 = T.transform('model', {});
-        const res2 = T.transform('model', {}, true);
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({});
+        expect(res1).to.be.eql({foo: undefined});
+        expect(res2).to.be.eql({foo: null});
       });
     });
 
@@ -257,7 +235,7 @@ describe('ModelDataTransformer', function () {
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
-      it('transforms a property value even it is not provided', function () {
+      it('does not transform a property value if it is not provided', function () {
         const schema = new Schema();
         const myTransformer = () => 'transformed';
         schema
@@ -274,7 +252,7 @@ describe('ModelDataTransformer', function () {
         });
         const T = schema.getService(ModelDataTransformer);
         const res = T.transform('model', {});
-        expect(res).to.be.eql({foo: 'transformed'});
+        expect(res).to.be.eql({});
       });
 
       it('transforms undefined and null values', function () {
@@ -295,30 +273,8 @@ describe('ModelDataTransformer', function () {
         const T = schema.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({foo: 'transformed'});
-      });
-
-      it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new Schema();
-        const myTransformer = () => 'transformed';
-        schema
-          .getService(PropertyTransformerRegistry)
-          .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.STRING,
-              transform: ['myTransformer'],
-            },
-          },
-        });
-        const T = schema.getService(ModelDataTransformer);
-        const res1 = T.transform('model', {});
-        const res2 = T.transform('model', {}, true);
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({});
+        expect(res1).to.be.eql({foo: undefined});
+        expect(res2).to.be.eql({foo: null});
       });
     });
 
@@ -421,7 +377,7 @@ describe('ModelDataTransformer', function () {
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
-      it('transforms a property value even it is not provided', function () {
+      it('does not transform a property value if it is not provided', function () {
         const schema = new Schema();
         const myTransformer = () => 'transformed';
         schema
@@ -440,7 +396,7 @@ describe('ModelDataTransformer', function () {
         });
         const T = schema.getService(ModelDataTransformer);
         const res = T.transform('model', {});
-        expect(res).to.be.eql({foo: 'transformed'});
+        expect(res).to.be.eql({});
       });
 
       it('transforms undefined and null values', function () {
@@ -463,32 +419,8 @@ describe('ModelDataTransformer', function () {
         const T = schema.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({foo: 'transformed'});
-      });
-
-      it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new Schema();
-        const myTransformer = () => 'transformed';
-        schema
-          .getService(PropertyTransformerRegistry)
-          .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.STRING,
-              transform: {
-                myTransformer: true,
-              },
-            },
-          },
-        });
-        const T = schema.getService(ModelDataTransformer);
-        const res1 = T.transform('model', {});
-        const res2 = T.transform('model', {}, true);
-        expect(res1).to.be.eql({foo: 'transformed'});
-        expect(res2).to.be.eql({});
+        expect(res1).to.be.eql({foo: undefined});
+        expect(res2).to.be.eql({foo: null});
       });
     });
 
@@ -501,7 +433,7 @@ describe('ModelDataTransformer', function () {
         name: 'model',
         properties: {
           foo: {
-            type: DataType.STRING,
+            type: DataType.ANY,
             transform: undefined,
           },
         },
@@ -510,7 +442,7 @@ describe('ModelDataTransformer', function () {
       const throwable = v => () => {
         const models = schema.getService(DefinitionRegistry)['_models'];
         models.model.properties.foo.transform = v;
-        T.transform('model', {});
+        T.transform('model', {foo: 'bar'});
       };
       const error = v =>
         format(

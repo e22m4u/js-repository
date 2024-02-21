@@ -1,6 +1,7 @@
 import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';
+import {EmptyValuesDefiner} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
 import {PropertyTransformerRegistry} from './properties/index.js';
@@ -14,34 +15,39 @@ export class ModelDataTransformer extends Service {
    *
    * @param {string} modelName
    * @param {object} modelData
-   * @param {boolean} isPartial
    * @returns {object}
    */
-  transform(modelName, modelData, isPartial = false) {
+  transform(modelName, modelData) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v given.',
         modelName,
         modelData,
       );
+    const emptyValuesDefiner = this.getService(EmptyValuesDefiner);
+    const modelDefinitionUtils = this.getService(ModelDefinitionUtils);
     const propDefs =
-      this.getService(
-        ModelDefinitionUtils,
-      ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
+      modelDefinitionUtils.getPropertiesDefinitionInBaseModelHierarchy(
+        modelName,
+      );
+    const propNames = Object.keys(propDefs);
     const transformedData = cloneDeep(modelData);
-    const propNames = Object.keys(isPartial ? modelData : propDefs);
     propNames.forEach(propName => {
       const propDef = propDefs[propName];
       if (!propDef) return;
-      const oldValue = modelData[propName];
-      const newValue = this._transformPropertyValue(
+      const propType =
+        modelDefinitionUtils.getDataTypeFromPropertyDefinition(propDef);
+      const propValue = modelData[propName];
+      const isEmpty = emptyValuesDefiner.isEmpty(propType, propValue);
+      if (isEmpty) return;
+      const newPropValue = this._transformPropertyValue(
         modelName,
         propName,
         propDef,
-        oldValue,
+        propValue,
       );
-      if (oldValue !== newValue) {
-        transformedData[propName] = newValue;
+      if (propValue !== newPropValue) {
+        transformedData[propName] = newPropValue;
       }
     });
     return transformedData;

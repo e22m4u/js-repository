@@ -41,13 +41,13 @@ export class DataTransformationDecorator extends Service {
 
     const patch = adapter.patch;
     adapter.patch = function (modelName, modelData, where) {
-      modelData = transformer.transform(modelName, modelData, true);
+      modelData = transformer.transform(modelName, modelData);
       return patch.call(this, modelName, modelData, where);
     };
 
     const patchById = adapter.patchById;
     adapter.patchById = function (modelName, id, modelData, filter) {
-      modelData = transformer.transform(modelName, modelData, true);
+      modelData = transformer.transform(modelName, modelData);
       return patchById.call(this, modelName, id, modelData, filter);
     };
   }
