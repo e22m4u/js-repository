@@ -70,7 +70,7 @@ schema.defineModel({
   },
 })
 
-// получение репозитория для модели "country"
+// получение репозитория модели "country"
 const countryRep = schema.getRepository('country');
 
 // добавление нового документа в коллекцию "country"
@@ -79,7 +79,7 @@ const country = await countryRep.create({
   population: 143400000,
 });
 
-// вывод результата
+// вывод нового документа
 console.log(country);
 // {
 //   "id": 1,
