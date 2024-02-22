@@ -1,4 +1,5 @@
 import {DataType} from './data-type.js';
+import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertyValidateOptions} from './property-validator/index.js';
 import {PropertyTransformOptions} from './property-transformer/index.js';
 
@@ -16,7 +17,7 @@ export declare type FullPropertyDefinition = {
   default?: unknown;
   validate?: PropertyValidateOptions;
   transform?: PropertyTransformOptions;
-  unique?: boolean;
+  unique?: boolean | PropertyUniqueness;
 };
 
 /**

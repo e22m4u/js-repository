@@ -148,7 +148,7 @@ describe('PropertyUniquenessValidator', function () {
       await throwable({});
     });
 
-    it('skips checking if the option "unique" is false or not defined', async function () {
+    it('skips checking if the option "unique" is not provided', async function () {
       const schema = new Schema();
       schema.defineModel({
         name: 'model',
@@ -157,9 +157,69 @@ describe('PropertyUniquenessValidator', function () {
           bar: {
             type: DataType.ANY,
           },
-          baz: {
+        },
+      });
+      const S = schema.getService(PropertyUniquenessValidator);
+      const promise = S.validate(() => 1, 'create', 'model', {});
+      await expect(promise).not.to.be.rejected;
+    });
+
+    it('skips checking if the option "unique" is undefined', async function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.ANY,
+            unique: undefined,
+          },
+        },
+      });
+      const S = schema.getService(PropertyUniquenessValidator);
+      const promise = S.validate(() => 1, 'create', 'model', {});
+      await expect(promise).not.to.be.rejected;
+    });
+
+    it('skips checking if the option "unique" is null', async function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.ANY,
+            unique: null,
+          },
+        },
+      });
+      const S = schema.getService(PropertyUniquenessValidator);
+      const promise = S.validate(() => 1, 'create', 'model', {});
+      await expect(promise).not.to.be.rejected;
+    });
+
+    it('skips checking if the option "unique" is false', async function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
             type: DataType.ANY,
             unique: false,
+          },
+        },
+      });
+      const S = schema.getService(PropertyUniquenessValidator);
+      const promise = S.validate(() => 1, 'create', 'model', {});
+      await expect(promise).not.to.be.rejected;
+    });
+
+    it('skips checking if the option "unique" is "nonUnique"', async function () {
+      const schema = new Schema();
+      schema.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.ANY,
+            unique: PropertyUniqueness.NON_UNIQUE,
           },
         },
       });
@@ -187,800 +247,2494 @@ describe('PropertyUniquenessValidator', function () {
       );
     });
 
-    it('skips uniqueness checking for an empty value for "sparse" mode', async function () {
-      const schema = new Schema();
-      schema.defineModel({
-        name: 'model',
-        properties: {
-          foo: {
-            type: DataType.STRING,
-            unique: true,
-          },
-          bar: {
-            type: DataType.STRING,
-            unique: PropertyUniqueness.SPARSE,
-          },
-          baz: {
-            type: DataType.STRING,
-            unique: true,
-          },
-        },
+    describe('the "unique" option is true', function () {
+      describe('create', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({baz: undefined});
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'create', 'model', modelData);
+          expect(invoked).to.be.eq(2);
+        });
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      let invoked = 0;
-      schema
-        .getService(EmptyValuesDefiner)
-        .setEmptyValuesOf(DataType.STRING, ['val2']);
-      const modelData = {
-        foo: 'val1',
-        bar: 'val2',
-        baz: 'val3',
-      };
-      const countMethod = where => {
-        invoked++;
-        if (invoked === 1) {
-          expect(where).to.be.eql({foo: 'val1'});
-        } else if (invoked === 2) {
-          expect(where).to.be.eql({baz: 'val3'});
-        }
-        return 0;
-      };
-      await S.validate(countMethod, 'create', 'model', modelData);
-      expect(invoked).to.be.eql(2);
+
+      describe('replaceById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'replaceById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                baz: undefined,
+              });
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(2);
+        });
+
+        it('can use a custom primary key', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+      });
+
+      describe('replaceOrCreate', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+            foo: 'bar',
+          });
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({baz: undefined});
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          expect(invoked).to.be.eq(2);
+        });
+
+        describe('in case that the given model has a document identifier', function () {
+          describe('a document of the given identifier does not exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({myId: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'val1'});
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({bar: 'val2'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
+            });
+          });
+
+          describe('a document of the given identifier already exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'bar',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    myId: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    myId: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: true,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: 'val2',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'val1',
+                  });
+                  return 0;
+                } else if (invoked === 3) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    bar: 'val2',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
+            });
+          });
+        });
+      });
+
+      describe('patch', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'patch', 'model', modelData);
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
+        });
+      });
+
+      describe('patchById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'patchById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+            baz: 'qux',
+          });
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
+        });
+
+        it('uses a custom primary key to check existence of the given identifier', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: true,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+      });
     });
 
-    describe('create', function () {
-      it('throws an error if the "countMethod" returns a positive number', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+    describe('the "unique" option is "strict"', function () {
+      describe('create', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
-        await expect(promise).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({baz: undefined});
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'create', 'model', modelData);
+          expect(invoked).to.be.eq(2);
+        });
       });
 
-      it('passes validation if the "countMethod" returns zero', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+      describe('replaceById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'replaceById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                baz: undefined,
+              });
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(2);
+        });
+
+        it('can use a custom primary key', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
       });
 
-      it('invokes the "countMethod" for each unique property of the model', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+      describe('replaceOrCreate', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
             },
-            bar: {
-              type: DataType.ANY,
-              unique: false,
-            },
-            baz: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+            foo: 'bar',
+          });
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const modelData = {foo: 'val1', bar: 'val2'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({foo: 'val1'});
-          } else if (invoked === 1) {
-            expect(where).to.be.eql({baz: undefined});
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(countMethod, 'create', 'model', modelData);
-        expect(invoked).to.be.eq(2);
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for each unique property of the model', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            } else if (invoked === 1) {
+              expect(where).to.be.eql({baz: undefined});
+            }
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          expect(invoked).to.be.eq(2);
+        });
+
+        describe('in case that the given model has a document identifier', function () {
+          describe('a document of the given identifier does not exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({myId: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'val1'});
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({bar: 'val2'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
+            });
+          });
+
+          describe('a document of the given identifier already exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'bar',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    myId: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    myId: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.STRICT,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: 'val2',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'val1',
+                  });
+                  return 0;
+                } else if (invoked === 3) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    bar: 'val2',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
+            });
+          });
+        });
+      });
+
+      describe('patch', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'patch', 'model', modelData);
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
+        });
+      });
+
+      describe('patchById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'patchById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+            baz: 'qux',
+          });
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
+        });
+
+        it('uses a custom primary key to check existence of the given identifier', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.STRICT,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
       });
     });
 
-    describe('replaceById', function () {
-      it('throws an error if the "countMethod" returns a positive number', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise = S.validate(
-          () => 1,
-          'replaceById',
-          'model',
-          {foo: 'bar'},
-          1,
-        );
-        await expect(promise).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
-      });
-
-      it('passes validation if the "countMethod" returns zero', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
-      });
-
-      it('invokes the "countMethod" for each unique property of the model', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-            bar: {
-              type: DataType.ANY,
-              unique: false,
-            },
-            baz: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const idValue = 1;
-        const modelData = {foo: 'val1', bar: 'val2'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({
-              [DEF_PK]: {neq: idValue},
-              foo: 'val1',
-            });
-          } else if (invoked === 1) {
-            expect(where).to.be.eql({
-              [DEF_PK]: {neq: idValue},
-              baz: undefined,
-            });
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(
-          countMethod,
-          'replaceById',
-          'model',
-          modelData,
-          idValue,
-        );
-        expect(invoked).to.be.eq(2);
-      });
-
-      it('can use a custom primary key', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            myId: {
-              type: DataType.NUMBER,
-              primaryKey: true,
-            },
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const idValue = 1;
-        const modelData = {foo: 'bar'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({
-              myId: {neq: idValue},
-              foo: 'bar',
-            });
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(
-          countMethod,
-          'replaceById',
-          'model',
-          modelData,
-          idValue,
-        );
-        expect(invoked).to.be.eq(1);
-      });
-    });
-
-    describe('replaceOrCreate', function () {
-      it('throws an error if the "countMethod" returns a positive number', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
-          foo: 'bar',
-        });
-        await expect(promise).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
-      });
-
-      it('passes validation if the "countMethod" returns zero', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
-      });
-
-      it('invokes the "countMethod" for each unique property of the model', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-            bar: {
-              type: DataType.ANY,
-              unique: false,
-            },
-            baz: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const modelData = {foo: 'val1', bar: 'val2'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({foo: 'val1'});
-          } else if (invoked === 1) {
-            expect(where).to.be.eql({baz: undefined});
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
-        expect(invoked).to.be.eq(2);
-      });
-
-      describe('in case that the given model has a document identifier', function () {
-        describe('a document of the given identifier does not exist', function () {
-          it('uses the default primary key to check existence of the given identifier', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
+    describe('the "unique" option is "sparse"', function () {
+      describe('create', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
               },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'create', 'model', modelData);
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for empty values', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          schema
+            .getService(EmptyValuesDefiner)
+            .setEmptyValuesOf(DataType.STRING, ['val2']);
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'create', 'model', modelData);
+          expect(invoked).to.be.eql(1);
+        });
+      });
+
+      describe('replaceById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'replaceById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for empty values', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          schema
+            .getService(EmptyValuesDefiner)
+            .setEmptyValuesOf(DataType.STRING, ['val2']);
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eql(1);
+        });
+
+        it('uses a custom primary key to check existence of the given identifier', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
+        });
+      });
+
+      describe('replaceOrCreate', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+            foo: 'bar',
+          });
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+        });
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          expect(invoked).to.be.eq(1);
+        });
+
+        describe('in case that the given model has a document identifier', function () {
+          describe('a document of the given identifier does not exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
             });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {[DEF_PK]: idValue, foo: 'bar'};
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({[DEF_PK]: idValue});
+
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({myId: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'bar'});
+                }
+                invoked++;
                 return 0;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({foo: 'bar'});
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
+            });
+
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'val1'});
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({bar: 'val2'});
+                }
+                invoked++;
                 return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-            );
-            expect(invoked).to.be.eq(2);
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
+            });
+
+            it('skips uniqueness checking for empty values', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              schema
+                .getService(EmptyValuesDefiner)
+                .setEmptyValuesOf(DataType.STRING, ['val2']);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'val1'});
+                }
+                invoked++;
+                return 0;
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eql(2);
+            });
           });
 
-          it('uses a custom primary key to check existence of the given identifier', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                myId: {
-                  type: DataType.NUMBER,
-                  primaryKey: true,
+          describe('a document of the given identifier already exist', function () {
+            it('uses the default primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
                 },
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
-              },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'bar',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(2);
             });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {myId: idValue, foo: 'bar'};
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({myId: idValue});
-                return 0;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({foo: 'bar'});
-                return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-              idValue,
-            );
-            expect(invoked).to.be.eq(2);
-          });
 
-          it('checks the given identifier only once', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
+            it('uses a custom primary key to check existence of the given identifier', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  myId: {
+                    type: DataType.NUMBER,
+                    primaryKey: true,
+                  },
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
                 },
-                bar: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
-              },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {myId: idValue, foo: 'bar'};
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({
+                    myId: idValue,
+                  });
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    myId: {neq: idValue},
+                    foo: 'bar',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+                idValue,
+              );
+              expect(invoked).to.be.eq(2);
             });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({[DEF_PK]: idValue});
-                return 0;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({foo: 'val1'});
-                return 0;
-              } else if (invoked === 3) {
-                expect(where).to.be.eql({bar: 'val2'});
-                return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-            );
-            expect(invoked).to.be.eq(3);
-          });
-        });
 
-        describe('a document of the given identifier already exist', function () {
-          it('uses the default primary key to check existence of the given identifier', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
+            it('checks the given identifier only once', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.ANY,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
                 },
-              },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: 'val2',
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'val1',
+                  });
+                  return 0;
+                } else if (invoked === 3) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    bar: 'val2',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eq(3);
             });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {
-              [DEF_PK]: idValue,
-              foo: 'bar',
-            };
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({
-                  [DEF_PK]: idValue,
-                });
-                return 1;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({
-                  [DEF_PK]: {neq: idValue},
-                  foo: 'bar',
-                });
-                return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-            );
-            expect(invoked).to.be.eq(2);
-          });
 
-          it('uses a custom primary key to check existence of the given identifier', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                myId: {
-                  type: DataType.NUMBER,
-                  primaryKey: true,
+            it('skips uniqueness checking for empty values', async function () {
+              const schema = new Schema();
+              schema.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
                 },
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
-              },
+              });
+              const S = schema.getService(PropertyUniquenessValidator);
+              schema
+                .getService(EmptyValuesDefiner)
+                .setEmptyValuesOf(DataType.STRING, ['val2']);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'val1',
+                  });
+                  return 0;
+                }
+              };
+              await S.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eql(2);
             });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {myId: idValue, foo: 'bar'};
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({
-                  myId: idValue,
-                });
-                return 1;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({
-                  myId: {neq: idValue},
-                  foo: 'bar',
-                });
-                return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-              idValue,
-            );
-            expect(invoked).to.be.eq(2);
-          });
-
-          it('checks the given identifier only once', async function () {
-            const schema = new Schema();
-            schema.defineModel({
-              name: 'model',
-              properties: {
-                foo: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
-                bar: {
-                  type: DataType.ANY,
-                  unique: true,
-                },
-              },
-            });
-            const S = schema.getService(PropertyUniquenessValidator);
-            let invoked = 0;
-            const idValue = 1;
-            const modelData = {
-              [DEF_PK]: idValue,
-              foo: 'val1',
-              bar: 'val2',
-            };
-            const countMethod = where => {
-              invoked++;
-              if (invoked === 1) {
-                expect(where).to.be.eql({[DEF_PK]: idValue});
-                return 1;
-              } else if (invoked === 2) {
-                expect(where).to.be.eql({
-                  [DEF_PK]: {neq: idValue},
-                  foo: 'val1',
-                });
-                return 0;
-              } else if (invoked === 3) {
-                expect(where).to.be.eql({
-                  [DEF_PK]: {neq: idValue},
-                  bar: 'val2',
-                });
-                return 0;
-              }
-            };
-            await S.validate(
-              countMethod,
-              'replaceOrCreate',
-              'model',
-              modelData,
-            );
-            expect(invoked).to.be.eq(3);
           });
         });
       });
-    });
 
-    describe('patch', function () {
-      it('throws an error if the "countMethod" returns a positive number', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+      describe('patch', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
-        await expect(promise).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
+
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+        });
+
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'patch', 'model', modelData);
+          expect(invoked).to.be.eq(1);
+        });
+
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
+        });
+
+        it('skips uniqueness checking for empty values', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          schema
+            .getService(EmptyValuesDefiner)
+            .setEmptyValuesOf(DataType.STRING, ['val2']);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'patch', 'model', modelData);
+          expect(invoked).to.be.eql(1);
+        });
       });
 
-      it('passes validation if the "countMethod" returns zero', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+      describe('patchById', function () {
+        it('throws an error if the "countMethod" returns a positive number', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise = S.validate(
+            () => 1,
+            'patchById',
+            'model',
+            {foo: 'bar'},
+            1,
+          );
+          await expect(promise).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
-      });
 
-      it('invokes the "countMethod" only for given properties which should be unique', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+        it('passes validation if the "countMethod" returns zero', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-            bar: {
-              type: DataType.ANY,
-              unique: false,
-            },
-            baz: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const modelData = {foo: 'val1', bar: 'val2'};
-        const countMethod = where => {
-          if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
-          invoked++;
-          return 0;
-        };
-        await S.validate(countMethod, 'patch', 'model', modelData);
-        expect(invoked).to.be.eq(1);
-      });
 
-      it('skips not provided fields to check uniqueness', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+        it('invokes the "countMethod" for given properties which should be unique', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.ANY,
+                unique: false,
+              },
+              baz: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
-        const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
-        await expect(promise1).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
-        await expect(promise2).not.to.be.rejected;
-      });
-    });
 
-    describe('patchById', function () {
-      it('throws an error if the "countMethod" returns a positive number', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+        it('skips uniqueness checking for non-provided fields', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+            baz: 'qux',
+          });
+          await expect(promise1).to.be.rejectedWith(
+            'An existing document of the model "model" already has ' +
+              'the property "foo" with the value "bar" and should be unique.',
+          );
+          await expect(promise2).not.to.be.rejected;
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise = S.validate(
-          () => 1,
-          'patchById',
-          'model',
-          {foo: 'bar'},
-          1,
-        );
-        await expect(promise).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
-      });
 
-      it('passes validation if the "countMethod" returns zero', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+        it('skips uniqueness checking for empty values', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          schema
+            .getService(EmptyValuesDefiner)
+            .setEmptyValuesOf(DataType.STRING, ['val2']);
+          const modelData = {foo: 'val1', bar: 'val2'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: 1},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(countMethod, 'patchById', 'model', modelData, 1);
+          expect(invoked).to.be.eql(1);
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
-      });
 
-      it('invokes the "countMethod" only for given properties which should be unique', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
+        it('uses a custom primary key to check existence of the given identifier', async function () {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              myId: {
+                type: DataType.NUMBER,
+                primaryKey: true,
+              },
+              foo: {
+                type: DataType.ANY,
+                unique: PropertyUniqueness.SPARSE,
+              },
             },
-            bar: {
-              type: DataType.ANY,
-              unique: false,
-            },
-            baz: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
+          });
+          const S = schema.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'bar'};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                myId: {neq: idValue},
+                foo: 'bar',
+              });
+            invoked++;
+            return 0;
+          };
+          await S.validate(
+            countMethod,
+            'patchById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eq(1);
         });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const idValue = 1;
-        const modelData = {foo: 'val1', bar: 'val2'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({
-              [DEF_PK]: {neq: idValue},
-              foo: 'val1',
-            });
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(countMethod, 'patchById', 'model', modelData, idValue);
-        expect(invoked).to.be.eq(1);
-      });
-
-      it('skips not provided fields to check uniqueness', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        const promise1 = S.validate(() => 1, 'patchById', 'model', {
-          foo: 'bar',
-        });
-        const promise2 = S.validate(() => 1, 'patchById', 'model', {
-          baz: 'qux',
-        });
-        await expect(promise1).to.be.rejectedWith(
-          'An existing document of the model "model" already has ' +
-            'the property "foo" with the value "bar" and should be unique.',
-        );
-        await expect(promise2).not.to.be.rejected;
-      });
-
-      it('uses a custom primary key to check existence of the given identifier', async function () {
-        const schema = new Schema();
-        schema.defineModel({
-          name: 'model',
-          properties: {
-            myId: {
-              type: DataType.NUMBER,
-              primaryKey: true,
-            },
-            foo: {
-              type: DataType.ANY,
-              unique: true,
-            },
-          },
-        });
-        const S = schema.getService(PropertyUniquenessValidator);
-        let invoked = 0;
-        const idValue = 1;
-        const modelData = {foo: 'bar'};
-        const countMethod = where => {
-          if (invoked === 0) {
-            expect(where).to.be.eql({
-              myId: {neq: idValue},
-              foo: 'bar',
-            });
-          }
-          invoked++;
-          return 0;
-        };
-        await S.validate(countMethod, 'patchById', 'model', modelData, idValue);
-        expect(invoked).to.be.eq(1);
       });
     });
   });

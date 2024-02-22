@@ -298,18 +298,20 @@ export class PropertiesDefinitionValidator extends Service {
         );
       }
     }
-    if (
-      propDef.unique &&
-      !Object.values(PropertyUniqueness).includes(propDef.unique)
-    ) {
-      throw new InvalidArgumentError(
-        'The provided option "unique" of the property %v in the model %v ' +
-          'should be one of values: %l, but %v given.',
-        propName,
-        modelName,
-        Object.values(PropertyUniqueness),
-        propDef.unique,
-      );
+    if (propDef.unique) {
+      if (
+        typeof propDef.unique !== 'boolean' &&
+        !Object.values(PropertyUniqueness).includes(propDef.unique)
+      ) {
+        throw new InvalidArgumentError(
+          'The provided option "unique" of the property %v in the model %v ' +
+            'should be a Boolean or one of values: %l, but %v given.',
+          propName,
+          modelName,
+          Object.values(PropertyUniqueness),
+          propDef.unique,
+        );
+      }
     }
     if (propDef.unique && propDef.primaryKey)
       throw new InvalidArgumentError(

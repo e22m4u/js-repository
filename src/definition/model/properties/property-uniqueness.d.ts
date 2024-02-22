@@ -1,8 +1,8 @@
 /**
  * Property uniqueness.
  */
-export declare type PropertyUniqueness = {
-  UNIQUE: true;
-  SPARSE: 'sparse';
-  NON_UNIQUE: false;
+export declare enum PropertyUniqueness {
+  STRICT = 'strict',
+  SPARSE = 'sparse',
+  NON_UNIQUE = 'nonUnique',
 }

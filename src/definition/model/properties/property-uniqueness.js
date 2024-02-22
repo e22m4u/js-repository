@@ -2,7 +2,7 @@
  * Property uniqueness.
  */
 export const PropertyUniqueness = {
-  UNIQUE: true,
+  STRICT: 'strict',
   SPARSE: 'sparse',
-  NON_UNIQUE: false,
+  NON_UNIQUE: 'nonUnique',
 };

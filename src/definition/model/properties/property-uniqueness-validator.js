@@ -73,7 +73,14 @@ export class PropertyUniquenessValidator extends Service {
     const emptyValuesDefiner = this.getService(EmptyValuesDefiner);
     for (const propName of propNames) {
       const propDef = propDefs[propName];
-      if (!propDef || typeof propDef === 'string' || !propDef.unique) continue;
+      if (
+        !propDef ||
+        typeof propDef === 'string' ||
+        !propDef.unique ||
+        propDef.unique === PropertyUniqueness.NON_UNIQUE
+      ) {
+        continue;
+      }
       // sparse
       const propValue = modelData[propName];
       if (propDef.unique === PropertyUniqueness.SPARSE) {

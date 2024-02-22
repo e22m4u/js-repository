@@ -491,7 +491,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate({myTransformer: true})();
     });
 
-    it('expects provided the option "unique" to be the PropertyUniqueness', function () {
+    it('expects provided the option "unique" to be a Boolean or the PropertyUniqueness', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -502,7 +502,7 @@ describe('PropertiesDefinitionValidator', function () {
       const error = v =>
         format(
           'The provided option "unique" of the property "foo" in the model "model" ' +
-            'should be one of values: %l, but %s given.',
+            'should be a Boolean or one of values: %l, but %s given.',
           Object.values(PropertyUniqueness),
           v,
         );
@@ -510,7 +510,9 @@ describe('PropertiesDefinitionValidator', function () {
       expect(validate(10)).to.throw(error('10'));
       expect(validate([])).to.throw(error('Array'));
       expect(validate({})).to.throw(error('Object'));
-      validate(PropertyUniqueness.UNIQUE)();
+      validate(true)();
+      validate(false)();
+      validate(PropertyUniqueness.STRICT)();
       validate(PropertyUniqueness.SPARSE)();
       validate(PropertyUniqueness.NON_UNIQUE)();
     });
@@ -528,10 +530,13 @@ describe('PropertiesDefinitionValidator', function () {
         'The property "foo" of the model "model" is a primary key, ' +
           'so it should not have the option "unique" to be provided.',
       );
-      expect(validate(PropertyUniqueness.UNIQUE)).to.throw(error);
+      expect(validate(true)).to.throw(error);
+      expect(validate(PropertyUniqueness.STRICT)).to.throw(error);
       expect(validate(PropertyUniqueness.SPARSE)).to.throw(error);
+      expect(validate(PropertyUniqueness.NON_UNIQUE)).to.throw(error);
       validate(false)();
       validate(undefined)();
+      validate(null)();
     });
   });
 });
