@@ -4,38 +4,52 @@ import {Adapter} from '../adapter.js';
 import {Schema} from '../../schema.js';
 import {ModelDataTransformer} from '../../definition/index.js';
 
-const S = new Schema();
-S.defineModel({name: 'model'});
+const MODEL_NAME = 'myModel';
+const MODEL_DATA = {kind: 'modelData'};
+const TRANSFORMED_DATA = {kind: 'transformedData'};
+const WHERE_CLAUSE = {kind: {existed: true}};
+const FILTER_CLAUSE = {where: WHERE_CLAUSE};
+const DUMMY_ID = 1;
 
 class TestAdapter extends Adapter {
-  // eslint-disable-next-line no-unused-vars
   create(modelName, modelData, filter = undefined) {
+    expect(modelName).to.be.eq(MODEL_NAME);
+    expect(modelData).to.be.eql(TRANSFORMED_DATA);
+    expect(filter).to.be.eql(FILTER_CLAUSE);
     return Promise.resolve(modelData);
   }
-
-  // eslint-disable-next-line no-unused-vars
   replaceById(modelName, id, modelData, filter = undefined) {
+    expect(modelName).to.be.eq(MODEL_NAME);
+    expect(id).to.be.eq(DUMMY_ID);
+    expect(modelData).to.be.eql(TRANSFORMED_DATA);
+    expect(filter).to.be.eql(FILTER_CLAUSE);
     return Promise.resolve(modelData);
   }
-
-  // eslint-disable-next-line no-unused-vars
   replaceOrCreate(modelName, modelData, filter = undefined) {
+    expect(modelName).to.be.eq(MODEL_NAME);
+    expect(modelData).to.be.eql(TRANSFORMED_DATA);
+    expect(filter).to.be.eql(FILTER_CLAUSE);
     return Promise.resolve(modelData);
   }
-
-  // eslint-disable-next-line no-unused-vars
   patch(modelName, modelData, where = undefined) {
+    expect(modelName).to.be.eq(MODEL_NAME);
+    expect(modelData).to.be.eql(TRANSFORMED_DATA);
+    expect(where).to.be.eql(WHERE_CLAUSE);
     return Promise.resolve(modelData);
   }
-
-  // eslint-disable-next-line no-unused-vars
   patchById(modelName, id, modelData, filter = undefined) {
+    expect(modelName).to.be.eq(MODEL_NAME);
+    expect(id).to.be.eq(DUMMY_ID);
+    expect(modelData).to.be.eql(TRANSFORMED_DATA);
+    expect(filter).to.be.eql(FILTER_CLAUSE);
     return Promise.resolve(modelData);
   }
 }
 
+const S = new Schema();
+S.defineModel({name: MODEL_NAME});
 const A = S.getService(TestAdapter);
-const V = S.getService(ModelDataTransformer);
+const T = S.getService(ModelDataTransformer);
 const sandbox = chai.spy.sandbox();
 
 describe('DataTransformationDecorator', function () {
@@ -43,53 +57,137 @@ describe('DataTransformationDecorator', function () {
     sandbox.restore();
   });
 
-  it('overrides the "create" method and transforms a given data', async function () {
-    const modelData = {kind: 'modelData'};
-    const transformedData = {kind: 'transformedData'};
-    sandbox.on(V, 'transform', () => transformedData);
-    const res = await A.create('model', modelData);
-    expect(res).to.be.eql(transformedData);
-    expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData);
+  describe('overrides the "create" method', function () {
+    it('transforms the given data', async function () {
+      sandbox.on(T, 'transform', () => TRANSFORMED_DATA);
+      const res = await A.create(MODEL_NAME, MODEL_DATA, FILTER_CLAUSE);
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
+
+    it('resolves the transformation promise', async function () {
+      sandbox.on(T, 'transform', () => Promise.resolve(TRANSFORMED_DATA));
+      const res = await A.create(MODEL_NAME, MODEL_DATA, FILTER_CLAUSE);
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
   });
 
-  it('overrides the "replaceById" method and transforms a given data', async function () {
-    const modelData = {kind: 'modelData'};
-    const transformedData = {kind: 'transformedData'};
-    sandbox.on(V, 'transform', () => transformedData);
-    const res = await A.replaceById('model', 1, modelData);
-    expect(res).to.be.eql(transformedData);
-    expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData);
+  describe('overrides the "replaceById" method', function () {
+    it('transforms the given data', async function () {
+      sandbox.on(T, 'transform', () => TRANSFORMED_DATA);
+      const res = await A.replaceById(
+        MODEL_NAME,
+        DUMMY_ID,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
+
+    it('resolves the transformation promise', async function () {
+      sandbox.on(T, 'transform', () => Promise.resolve(TRANSFORMED_DATA));
+      const res = await A.replaceById(
+        MODEL_NAME,
+        DUMMY_ID,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
   });
 
-  it('overrides the "replaceOrCreate" method and transforms a given data', async function () {
-    const modelData = {kind: 'modelData'};
-    const transformedData = {kind: 'transformedData'};
-    sandbox.on(V, 'transform', () => transformedData);
-    const res = await A.replaceOrCreate('model', modelData);
-    expect(res).to.be.eql(transformedData);
-    expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData);
+  describe('overrides the "replaceOrCreate" method', function () {
+    it('transforms the given data', async function () {
+      sandbox.on(T, 'transform', () => TRANSFORMED_DATA);
+      const res = await A.replaceOrCreate(
+        MODEL_NAME,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
+
+    it('resolves the transformation promise', async function () {
+      sandbox.on(T, 'transform', () => Promise.resolve(TRANSFORMED_DATA));
+      const res = await A.replaceOrCreate(
+        MODEL_NAME,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(MODEL_NAME, MODEL_DATA);
+    });
   });
 
-  it('overrides the "patch" method and transforms a given data', async function () {
-    const modelData = {kind: 'modelData'};
-    const transformedData = {kind: 'transformedData'};
-    sandbox.on(V, 'transform', () => transformedData);
-    const res = await A.patch('model', modelData);
-    expect(res).to.be.eql(transformedData);
-    expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData, true);
+  describe('overrides the "patch" method', function () {
+    it('transforms the given data', async function () {
+      sandbox.on(T, 'transform', () => TRANSFORMED_DATA);
+      const res = await A.patch(MODEL_NAME, MODEL_DATA, WHERE_CLAUSE);
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(
+        MODEL_NAME,
+        MODEL_DATA,
+        true,
+      );
+    });
+
+    it('resolves the transformation promise', async function () {
+      sandbox.on(T, 'transform', () => Promise.resolve(TRANSFORMED_DATA));
+      const res = await A.patch(MODEL_NAME, MODEL_DATA, WHERE_CLAUSE);
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(
+        MODEL_NAME,
+        MODEL_DATA,
+        true,
+      );
+    });
   });
 
-  it('overrides the "patchById" method and transforms a given data', async function () {
-    const modelData = {kind: 'modelData'};
-    const transformedData = {kind: 'transformedData'};
-    sandbox.on(V, 'transform', () => transformedData);
-    const res = await A.patchById('model', 1, modelData);
-    expect(res).to.be.eql(transformedData);
-    expect(V.transform).to.be.called.once;
-    expect(V.transform).to.be.called.with.exactly('model', modelData, true);
+  describe('overrides the "patchById" method', function () {
+    it('transforms the given data', async function () {
+      sandbox.on(T, 'transform', () => TRANSFORMED_DATA);
+      const res = await A.patchById(
+        MODEL_NAME,
+        DUMMY_ID,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(
+        MODEL_NAME,
+        MODEL_DATA,
+        true,
+      );
+    });
+
+    it('resolves the transformation promise', async function () {
+      sandbox.on(T, 'transform', () => Promise.resolve(TRANSFORMED_DATA));
+      const res = await A.patchById(
+        MODEL_NAME,
+        DUMMY_ID,
+        MODEL_DATA,
+        FILTER_CLAUSE,
+      );
+      expect(res).to.be.eql(TRANSFORMED_DATA);
+      expect(T.transform).to.be.called.once;
+      expect(T.transform).to.be.called.with.exactly(
+        MODEL_NAME,
+        MODEL_DATA,
+        true,
+      );
+    });
   });
 });

@@ -165,6 +165,40 @@ describe('ModelDataTransformer', function () {
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
       });
+
+      it('transforms the property value by its asynchronous transformer', async function () {
+        const schema = new Schema();
+        const myTransformer1 = (value, options) => {
+          expect(options).to.be.undefined;
+          return Promise.resolve(`${value}2`);
+        };
+        const myTransformer2 = (value, options) => {
+          expect(options).to.be.undefined;
+          return Promise.resolve(`${value}3`);
+        };
+        schema
+          .getService(PropertyTransformerRegistry)
+          .addTransformer('myTransformer1', myTransformer1)
+          .addTransformer('myTransformer2', myTransformer2);
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              transform: 'myTransformer1',
+            },
+            bar: {
+              type: DataType.STRING,
+              transform: 'myTransformer2',
+            },
+          },
+        });
+        const T = schema.getService(ModelDataTransformer);
+        const promise = T.transform('model', {foo: '1', bar: '2'});
+        expect(promise).to.be.instanceof(Promise);
+        const res = await promise;
+        expect(res).to.be.eql({foo: '12', bar: '23'});
+      });
     });
 
     describe('the option "transform" with an array value', function () {
@@ -315,6 +349,45 @@ describe('ModelDataTransformer', function () {
         const T = schema.getService(ModelDataTransformer);
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
+      });
+
+      it('transforms the property value by its asynchronous transformers', async function () {
+        const schema = new Schema();
+        const myTransformer1 = (value, options) => {
+          expect(options).to.be.undefined;
+          return Promise.resolve(`${value}2`);
+        };
+        const myTransformer2 = (value, options) => {
+          expect(options).to.be.undefined;
+          return Promise.resolve(`${value}3`);
+        };
+        const myTransformer3 = (value, options) => {
+          expect(options).to.be.undefined;
+          return Promise.resolve(`${value}4`);
+        };
+        schema
+          .getService(PropertyTransformerRegistry)
+          .addTransformer('myTransformer1', myTransformer1)
+          .addTransformer('myTransformer2', myTransformer2)
+          .addTransformer('myTransformer3', myTransformer3);
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              transform: ['myTransformer1', 'myTransformer2'],
+            },
+            bar: {
+              type: DataType.STRING,
+              transform: ['myTransformer2', 'myTransformer3'],
+            },
+          },
+        });
+        const T = schema.getService(ModelDataTransformer);
+        const promise = T.transform('model', {foo: '1', bar: '2'});
+        expect(promise).to.be.instanceof(Promise);
+        const res = await promise;
+        expect(res).to.be.eql({foo: '123', bar: '234'});
       });
     });
 
@@ -483,6 +556,51 @@ describe('ModelDataTransformer', function () {
         const T = schema.getService(ModelDataTransformer);
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
+      });
+
+      it('transforms the property value by its asynchronous transformers', async function () {
+        const schema = new Schema();
+        const myTransformer1 = (value, options) => {
+          expect(options).to.be.eq('foo');
+          return Promise.resolve(`${value}2`);
+        };
+        const myTransformer2 = (value, options) => {
+          expect(options).to.be.eq('bar');
+          return Promise.resolve(`${value}3`);
+        };
+        const myTransformer3 = (value, options) => {
+          expect(options).to.be.eq('baz');
+          return Promise.resolve(`${value}4`);
+        };
+        schema
+          .getService(PropertyTransformerRegistry)
+          .addTransformer('myTransformer1', myTransformer1)
+          .addTransformer('myTransformer2', myTransformer2)
+          .addTransformer('myTransformer3', myTransformer3);
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              transform: {
+                myTransformer1: 'foo',
+                myTransformer2: 'bar',
+              },
+            },
+            bar: {
+              type: DataType.STRING,
+              transform: {
+                myTransformer2: 'bar',
+                myTransformer3: 'baz',
+              },
+            },
+          },
+        });
+        const T = schema.getService(ModelDataTransformer);
+        const promise = T.transform('model', {foo: '1', bar: '2'});
+        expect(promise).to.be.instanceof(Promise);
+        const res = await promise;
+        expect(res).to.be.eql({foo: '123', bar: '234'});
       });
     });
 

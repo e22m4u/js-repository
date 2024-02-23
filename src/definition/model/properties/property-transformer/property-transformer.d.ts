@@ -1,3 +1,5 @@
+import {ValueOrPromise} from '../../../../types.js';
+
 /**
  * Property transformer context.
  */
@@ -14,7 +16,7 @@ export declare type PropertyTransformer = (
   value: unknown,
   options: unknown,
   context: PropertyTransformerContext,
-) => boolean;
+) => ValueOrPromise<unknown>;
 
 /**
  * Property transform options.

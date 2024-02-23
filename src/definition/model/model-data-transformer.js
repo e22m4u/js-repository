@@ -1,6 +1,7 @@
 import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';
+import {transformPromise} from '../../utils/index.js';
 import {EmptyValuesDefiner} from './properties/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
@@ -16,7 +17,7 @@ export class ModelDataTransformer extends Service {
    * @param {string} modelName
    * @param {object} modelData
    * @param {boolean} isPartial
-   * @returns {object}
+   * @returns {object|Promise<object>}
    */
   transform(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
@@ -33,25 +34,27 @@ export class ModelDataTransformer extends Service {
       );
     const propNames = Object.keys(isPartial ? modelData : propDefs);
     const transformedData = cloneDeep(modelData);
-    propNames.forEach(propName => {
+    return propNames.reduce((transformedDataOrPromise, propName) => {
       const propDef = propDefs[propName];
-      if (!propDef) return;
+      if (!propDef) return transformedDataOrPromise;
       const propType =
         modelDefinitionUtils.getDataTypeFromPropertyDefinition(propDef);
       const propValue = modelData[propName];
       const isEmpty = emptyValuesDefiner.isEmpty(propType, propValue);
-      if (isEmpty) return;
-      const newPropValue = this._transformPropertyValue(
+      if (isEmpty) return transformedDataOrPromise;
+      const newPropValueOrPromise = this._transformPropertyValue(
         modelName,
         propName,
         propDef,
         propValue,
       );
-      if (propValue !== newPropValue) {
-        transformedData[propName] = newPropValue;
-      }
-    });
-    return transformedData;
+      return transformPromise(newPropValueOrPromise, newPropValue => {
+        return transformPromise(transformedDataOrPromise, resolvedData => {
+          if (newPropValue !== propValue) resolvedData[propName] = newPropValue;
+          return resolvedData;
+        });
+      });
+    }, transformedData);
   }
 
   /**
@@ -80,15 +83,21 @@ export class ModelDataTransformer extends Service {
     if (transformDef && typeof transformDef === 'string') {
       return transformFn(propValue, transformDef);
     } else if (Array.isArray(transformDef)) {
-      return transformDef.reduce(
-        (value, transformerName) => transformFn(value, transformerName),
+      return transformDef.reduce((valueOrPromise, transformerName) => {
+        return transformPromise(valueOrPromise, value => {
+          return transformFn(value, transformerName);
+        });
+      }, propValue);
+    } else if (transformDef !== null && typeof transformDef === 'object') {
+      return Object.keys(transformDef).reduce(
+        (valueOrPromise, transformerName) => {
+          const transformerOptions = transformDef[transformerName];
+          return transformPromise(valueOrPromise, value => {
+            return transformFn(value, transformerName, transformerOptions);
+          });
+        },
         propValue,
       );
-    } else if (transformDef !== null && typeof transformDef === 'object') {
-      return Object.keys(transformDef).reduce((value, transformerName) => {
-        const transformerOptions = transformDef[transformerName];
-        return transformFn(value, transformerName, transformerOptions);
-      }, propValue);
     } else {
       throw new InvalidArgumentError(
         'The provided option "transform" of the property %v in the model %v ' +

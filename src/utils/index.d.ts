@@ -1,4 +1,5 @@
 export * from './is-ctor.js';
+export * from './is-promise.js';
 export * from './capitalize.js';
 export * from './clone-deep.js';
 export * from './singularize.js';
@@ -7,6 +8,7 @@ export * from './get-ctor-name.js';
 export * from './is-pure-object.js';
 export * from './string-to-regexp.js';
 export * from './get-value-by-path.js';
+export * from './transform-promise.js';
 export * from './select-object-keys.js';
 export * from './exclude-object-keys.js';
 export * from './get-decorator-target-type.js';

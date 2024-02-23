@@ -36,3 +36,10 @@ export declare type Flatten<T> = Identity<{[k in keyof T]: T[k]}>;
 export interface Constructor<T = unknown> {
   new (...args: any[]): T;
 }
+
+/**
+ * Representing a value or promise. This type is used
+ * to represent results of synchronous/asynchronous
+ * resolution of values.
+ */
+export type ValueOrPromise<T> = T | PromiseLike<T>;
