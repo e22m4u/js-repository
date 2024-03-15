@@ -53,7 +53,37 @@ npm install @e22m4u/js-repository
 - *Модель* - описывает структуру документа и связи к другим моделям
 - *Репозиторий* - выполняет операции чтения и записи документов модели
 
-<img alt="Схема" src="https://gitverse.ru/api/repos/e22m4u/js-repository/raw/branch/master/assets/mermaid-diagram.png">
+```mermaid
+flowchart TD
+
+  A[Схема]
+  subgraph Базы данных
+    B[Источник данных 1]
+    C[Источник данных 2]
+  end
+  A-->B
+  A-->C
+
+  subgraph Коллекции
+    D[Модель A]
+    E[Модель Б]
+    F[Модель В]
+    G[Модель Г]
+  end
+  B-->D
+  B-->E
+  C-->F
+  C-->G
+
+  H[Репозиторий A]
+  I[Репозиторий Б]
+  J[Репозиторий В]
+  K[Репозиторий Г]
+  D-->H
+  E-->I
+  F-->J
+  G-->K
+```
 
 ## Пример
 
