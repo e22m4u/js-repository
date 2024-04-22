@@ -379,7 +379,8 @@ schema.defineModel({
 то выбрасывается ошибка.
 
 Регистрация пользовательского валидатора происходит методом `addValidator`
-сервиса `PropertyValidatorRegistry`
+сервиса `PropertyValidatorRegistry`, который принимает название валидатора
+и саму функцию.
 
 **Пример**
 
