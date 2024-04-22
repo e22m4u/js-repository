@@ -390,8 +390,7 @@ const numericValidator = (input) => {
   return /^[0-9]+$/.test(String(input));
 }
 
-// регистрация нового
-// валидатора "numeric"
+// регистрация валидатора "numeric"
 schema
   .get(PropertyValidatorRegistry)
   .addValidator('numeric', numericValidator);
