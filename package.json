@@ -31,8 +31,10 @@
   "license": "MIT",
   "homepage": "https://github.com/e22m4u/js-repository",
   "dependencies": {
-    "@e22m4u/js-format": "0.0.10",
     "@e22m4u/js-service": "0.0.12"
+  },
+  "peerDependencies": {
+    "@e22m4u/js-service": "0.0.x"
   },
   "devDependencies": {
     "@commitlint/cli": "~19.2.2",
