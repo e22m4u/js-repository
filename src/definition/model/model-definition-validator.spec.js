@@ -1,5 +1,5 @@
-import chai from 'chai';
 import {expect} from 'chai';
+import {chai} from '../../chai.js';
 import {format} from '@e22m4u/js-format';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';

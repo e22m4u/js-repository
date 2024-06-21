@@ -1,5 +1,5 @@
-import chai from 'chai';
 import {expect} from 'chai';
+import {chai} from '../../../chai.js';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {PropertyUniqueness} from './property-uniqueness.js';

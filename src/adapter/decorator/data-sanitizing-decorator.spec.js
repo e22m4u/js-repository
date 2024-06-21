@@ -1,5 +1,5 @@
-import chai from 'chai';
 import {expect} from 'chai';
+import {chai} from '../../chai.js';
 import {Adapter} from '../adapter.js';
 import {Schema} from '../../schema.js';
 import {ModelDataSanitizer} from '../../definition/index.js';

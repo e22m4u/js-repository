@@ -1,5 +1,5 @@
-import chai from 'chai';
 import {expect} from 'chai';
+import {chai} from '../chai.js';
 import {ModelDefinitionValidator} from './model/index.js';
 import {DefinitionRegistry} from './definition-registry.js';
 import {DatasourceDefinitionValidator} from '../definition/index.js';
