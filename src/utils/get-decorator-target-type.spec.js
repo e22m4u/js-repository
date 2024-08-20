@@ -56,6 +56,7 @@ describe('getDecoratorTargetType', function () {
 
   it('returns CONSTRUCTOR_PARAMETER', function () {
     class Target {
+      // eslint-disable-next-line no-unused-vars
       constructor(param) {}
     }
     validate(DTT.CONSTRUCTOR_PARAMETER)(Target, undefined, 0);
@@ -63,6 +64,7 @@ describe('getDecoratorTargetType', function () {
 
   it('returns STATIC_METHOD_PARAMETER', function () {
     class Target {
+      // eslint-disable-next-line no-unused-vars
       static method(param) {}
     }
     validate(DTT.STATIC_METHOD_PARAMETER)(Target, 'method', 0);
@@ -70,6 +72,7 @@ describe('getDecoratorTargetType', function () {
 
   it('returns INSTANCE_METHOD_PARAMETER', function () {
     class Target {
+      // eslint-disable-next-line no-unused-vars
       method(param) {}
     }
     validate(DTT.INSTANCE_METHOD_PARAMETER)(Target.prototype, 'method', 0);

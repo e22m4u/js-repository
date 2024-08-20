@@ -164,6 +164,7 @@ export class MemoryAdapter extends Adapter {
    * @param {object|undefined} filter
    * @returns {Promise<object>}
    */
+  // eslint-disable-next-line no-unused-vars
   async replaceOrCreate(modelName, modelData, filter = undefined) {
     const pkPropName =
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(

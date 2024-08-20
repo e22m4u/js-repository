@@ -58,7 +58,7 @@ export function isDeepEqual(firstValue, secondValue) {
     // the property value.
     const propertyNamesA = [...keysA, ...symbolsA];
     for (const propertyNameA of propertyNamesA) {
-      if (!b.hasOwnProperty(propertyNameA)) return false;
+      if (!Object.prototype.hasOwnProperty.call(b, propertyNameA)) return false;
       const propertyValueA = a[propertyNameA];
       const propertyValueB = b[propertyNameA];
       if (!compare(propertyValueA, propertyValueB)) return false;
