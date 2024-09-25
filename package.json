@@ -54,7 +54,7 @@
     "husky": "~9.1.6",
     "mocha": "~10.7.3",
     "prettier": "~3.3.3",
-    "ts-node": "~10.9.2",
+    "tsx": "~4.19.1",
     "typescript": "~5.5.4",
     "typescript-eslint": "~8.7.0"
   }
