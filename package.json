@@ -13,8 +13,8 @@
     "node": ">=12"
   },
   "scripts": {
-    "lint": "tsc && eslint .",
-    "lint:fix": "tsc && eslint . --fix",
+    "lint": "tsc && eslint ./src",
+    "lint:fix": "tsc && eslint ./src --fix",
     "format": "prettier --write \"./src/**/*.js\"",
     "test": "npm run lint && c8 --reporter=text-summary mocha",
     "test:coverage": "npm run lint && c8 --reporter=text mocha",
