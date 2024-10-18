@@ -33,8 +33,6 @@ npm install @e22m4u/js-repository
 | `memory`  | виртуальная база в памяти процесса (не требует установки)                                                                      |
 | `mongodb` | MongoDB - система управления NoSQL базами (*[установка](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
 
-#### Импорт
-
 Модуль поддерживает ESM и CommonJS стандарты.
 
 *ESM*
