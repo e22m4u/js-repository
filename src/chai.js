@@ -1,8 +1,8 @@
-import * as chaiTools from 'chai';
+import * as chaiModule from 'chai';
 import chaiSpies from 'chai-spies';
 import chaiSubset from 'chai-subset';
 import chaiAsPromised from 'chai-as-promised';
-const chai = {...chaiTools};
+const chai = {...chaiModule};
 
 chaiSpies(chai, chai.util);
 chaiSubset(chai, chai.util);
