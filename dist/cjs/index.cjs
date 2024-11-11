@@ -6193,7 +6193,7 @@ function findAdapterCtorInModule(module2) {
   let adapterCtor;
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
-    if (typeof ctor === "function" && ctor.prototype instanceof Adapter) {
+    if (typeof ctor === "function") {
       adapterCtor = ctor;
       break;
     }
