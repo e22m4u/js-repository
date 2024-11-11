@@ -5,6 +5,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 var __glob = (map) => (path) => {
   var fn = map[path];
   if (fn) return fn();
@@ -42,6 +43,7 @@ function isClass(value) {
 }
 var init_is_class = __esm({
   "node_modules/@e22m4u/js-format/src/utils/is-class.js"() {
+    __name(isClass, "isClass");
   }
 });
 
@@ -80,6 +82,7 @@ var init_value_to_string = __esm({
       "Set",
       "Date"
     ];
+    __name(valueToString, "valueToString");
   }
 });
 
@@ -94,6 +97,7 @@ var init_array_to_list = __esm({
   "node_modules/@e22m4u/js-format/src/array-to-list.js"() {
     init_value_to_string();
     SEPARATOR = ", ";
+    __name(arrayToList, "arrayToList");
   }
 });
 
@@ -139,15 +143,16 @@ var init_format = __esm({
   "node_modules/@e22m4u/js-format/src/format.js"() {
     init_array_to_list();
     init_value_to_string();
+    __name(format, "format");
   }
 });
 
 // node_modules/@e22m4u/js-format/src/errorf.js
-var Errorf;
+var _Errorf, Errorf;
 var init_errorf = __esm({
   "node_modules/@e22m4u/js-format/src/errorf.js"() {
     init_format();
-    Errorf = class extends Error {
+    _Errorf = class _Errorf extends Error {
       /**
        * Constructor.
        *
@@ -159,6 +164,8 @@ var init_errorf = __esm({
         super(message);
       }
     };
+    __name(_Errorf, "Errorf");
+    Errorf = _Errorf;
   }
 });
 
@@ -171,12 +178,14 @@ var init_src = __esm({
 });
 
 // node_modules/@e22m4u/js-service/src/errors/invalid-argument-error.js
-var InvalidArgumentError;
+var _InvalidArgumentError, InvalidArgumentError;
 var init_invalid_argument_error = __esm({
   "node_modules/@e22m4u/js-service/src/errors/invalid-argument-error.js"() {
     init_src();
-    InvalidArgumentError = class extends Errorf {
+    _InvalidArgumentError = class _InvalidArgumentError extends Errorf {
     };
+    __name(_InvalidArgumentError, "InvalidArgumentError");
+    InvalidArgumentError = _InvalidArgumentError;
   }
 });
 
@@ -188,12 +197,12 @@ var init_errors = __esm({
 });
 
 // node_modules/@e22m4u/js-service/src/service-container.js
-var ServiceContainer;
+var _ServiceContainer, ServiceContainer;
 var init_service_container = __esm({
   "node_modules/@e22m4u/js-service/src/service-container.js"() {
     init_service();
     init_errors();
-    ServiceContainer = class _ServiceContainer {
+    _ServiceContainer = class _ServiceContainer {
       /**
        * Services map.
        *
@@ -273,7 +282,7 @@ var init_service_container = __esm({
             "The first argument of ServicesContainer.add must be a class constructor, but %v given.",
             ctor
           );
-        const factory = () => ctor.prototype instanceof Service ? new ctor(this, ...args) : new ctor(...args);
+        const factory = /* @__PURE__ */ __name(() => ctor.prototype instanceof Service ? new ctor(this, ...args) : new ctor(...args), "factory");
         this._services.set(ctor, factory);
         return this;
       }
@@ -316,15 +325,17 @@ var init_service_container = __esm({
         return this;
       }
     };
+    __name(_ServiceContainer, "ServiceContainer");
+    ServiceContainer = _ServiceContainer;
   }
 });
 
 // node_modules/@e22m4u/js-service/src/service.js
-var Service;
+var _Service, Service;
 var init_service = __esm({
   "node_modules/@e22m4u/js-service/src/service.js"() {
     init_service_container();
-    Service = class {
+    _Service = class _Service {
       /**
        * Container.
        *
@@ -392,6 +403,8 @@ var init_service = __esm({
         return this;
       }
     };
+    __name(_Service, "Service");
+    Service = _Service;
   }
 });
 
@@ -404,34 +417,38 @@ var init_src2 = __esm({
 });
 
 // src/errors/not-implemented-error.js
-var NotImplementedError;
+var _NotImplementedError, NotImplementedError;
 var init_not_implemented_error = __esm({
   "src/errors/not-implemented-error.js"() {
     "use strict";
     init_src();
-    NotImplementedError = class extends Errorf {
+    _NotImplementedError = class _NotImplementedError extends Errorf {
     };
+    __name(_NotImplementedError, "NotImplementedError");
+    NotImplementedError = _NotImplementedError;
   }
 });
 
 // src/errors/invalid-argument-error.js
-var InvalidArgumentError2;
+var _InvalidArgumentError2, InvalidArgumentError2;
 var init_invalid_argument_error2 = __esm({
   "src/errors/invalid-argument-error.js"() {
     "use strict";
     init_src();
-    InvalidArgumentError2 = class extends Errorf {
+    _InvalidArgumentError2 = class _InvalidArgumentError2 extends Errorf {
     };
+    __name(_InvalidArgumentError2, "InvalidArgumentError");
+    InvalidArgumentError2 = _InvalidArgumentError2;
   }
 });
 
 // src/errors/invalid-operator-value-error.js
-var InvalidOperatorValueError;
+var _InvalidOperatorValueError, InvalidOperatorValueError;
 var init_invalid_operator_value_error = __esm({
   "src/errors/invalid-operator-value-error.js"() {
     "use strict";
     init_src();
-    InvalidOperatorValueError = class extends Error {
+    _InvalidOperatorValueError = class _InvalidOperatorValueError extends Error {
       /**
        * Constructor.
        *
@@ -450,6 +467,8 @@ var init_invalid_operator_value_error = __esm({
         );
       }
     };
+    __name(_InvalidOperatorValueError, "InvalidOperatorValueError");
+    InvalidOperatorValueError = _InvalidOperatorValueError;
   }
 });
 
@@ -464,13 +483,13 @@ var init_errors2 = __esm({
 });
 
 // src/filter/slice-clause-tool.js
-var SliceClauseTool;
+var _SliceClauseTool, SliceClauseTool;
 var init_slice_clause_tool = __esm({
   "src/filter/slice-clause-tool.js"() {
     "use strict";
     init_src2();
     init_errors2();
-    SliceClauseTool = class extends Service {
+    _SliceClauseTool = class _SliceClauseTool extends Service {
       /**
        * Slice.
        *
@@ -526,6 +545,8 @@ var init_slice_clause_tool = __esm({
           );
       }
     };
+    __name(_SliceClauseTool, "SliceClauseTool");
+    SliceClauseTool = _SliceClauseTool;
   }
 });
 
@@ -537,6 +558,7 @@ function isCtor(value) {
 var init_is_ctor = __esm({
   "src/utils/is-ctor.js"() {
     "use strict";
+    __name(isCtor, "isCtor");
   }
 });
 
@@ -549,6 +571,7 @@ function isPromise(value) {
 var init_is_promise = __esm({
   "src/utils/is-promise.js"() {
     "use strict";
+    __name(isPromise, "isPromise");
   }
 });
 
@@ -560,6 +583,7 @@ function capitalize(string) {
 var init_capitalize = __esm({
   "src/utils/capitalize.js"() {
     "use strict";
+    __name(capitalize, "capitalize");
   }
 });
 
@@ -603,6 +627,7 @@ function cloneDeep(value) {
 var init_clone_deep = __esm({
   "src/utils/clone-deep.js"() {
     "use strict";
+    __name(cloneDeep, "cloneDeep");
   }
 });
 
@@ -626,13 +651,14 @@ function singularize(noun) {
 var init_singularize = __esm({
   "src/utils/singularize.js"() {
     "use strict";
+    __name(singularize, "singularize");
   }
 });
 
 // src/utils/is-deep-equal.js
 function isDeepEqual(firstValue, secondValue) {
   const cached = /* @__PURE__ */ new WeakMap();
-  const compare = (a, b) => {
+  const compare = /* @__PURE__ */ __name((a, b) => {
     if (a === null || b === null) return a === b;
     if (typeof a !== "object" || typeof b !== "object") return a === b;
     const dataTypeA = Array.isArray(a) ? "array" : "object";
@@ -668,12 +694,13 @@ function isDeepEqual(firstValue, secondValue) {
       if (!compare(propertyValueA, propertyValueB)) return false;
     }
     return true;
-  };
+  }, "compare");
   return compare(firstValue, secondValue);
 }
 var init_is_deep_equal = __esm({
   "src/utils/is-deep-equal.js"() {
     "use strict";
+    __name(isDeepEqual, "isDeepEqual");
   }
 });
 
@@ -686,6 +713,7 @@ function getCtorName(value) {
 var init_get_ctor_name = __esm({
   "src/utils/get-ctor-name.js"() {
     "use strict";
+    __name(getCtorName, "getCtorName");
   }
 });
 
@@ -698,6 +726,7 @@ function isPureObject(value) {
 var init_is_pure_object = __esm({
   "src/utils/is-pure-object.js"() {
     "use strict";
+    __name(isPureObject, "isPureObject");
   }
 });
 
@@ -720,6 +749,7 @@ function stringToRegexp(pattern, flags = void 0) {
 var init_string_to_regexp = __esm({
   "src/utils/string-to-regexp.js"() {
     "use strict";
+    __name(stringToRegexp, "stringToRegexp");
   }
 });
 
@@ -742,6 +772,7 @@ function getValueByPath(obj, path, orElse = void 0) {
 var init_get_value_by_path = __esm({
   "src/utils/get-value-by-path.js"() {
     "use strict";
+    __name(getValueByPath, "getValueByPath");
   }
 });
 
@@ -753,6 +784,7 @@ var init_transform_promise = __esm({
   "src/utils/transform-promise.js"() {
     "use strict";
     init_is_promise();
+    __name(transformPromise, "transformPromise");
   }
 });
 
@@ -786,6 +818,7 @@ var init_select_object_keys = __esm({
   "src/utils/select-object-keys.js"() {
     "use strict";
     init_errors2();
+    __name(selectObjectKeys, "selectObjectKeys");
   }
 });
 
@@ -805,6 +838,7 @@ var init_exclude_object_keys = __esm({
   "src/utils/exclude-object-keys.js"() {
     "use strict";
     init_errors2();
+    __name(excludeObjectKeys, "excludeObjectKeys");
   }
 });
 
@@ -843,6 +877,7 @@ var init_get_decorator_target_type = __esm({
       STATIC_METHOD_PARAMETER: "staticMethodParameter",
       INSTANCE_METHOD_PARAMETER: "instanceMethodParameter"
     };
+    __name(getDecoratorTargetType, "getDecoratorTargetType");
   }
 });
 
@@ -883,14 +918,14 @@ function compareFn(a, b) {
   }
   return 0;
 }
-var OrderClauseTool;
+var _OrderClauseTool, OrderClauseTool;
 var init_order_clause_tool = __esm({
   "src/filter/order-clause-tool.js"() {
     "use strict";
     init_src2();
     init_utils2();
     init_errors2();
-    OrderClauseTool = class extends Service {
+    _OrderClauseTool = class _OrderClauseTool extends Service {
       /**
        * Sort.
        *
@@ -955,11 +990,14 @@ var init_order_clause_tool = __esm({
         return clause;
       }
     };
+    __name(_OrderClauseTool, "OrderClauseTool");
+    OrderClauseTool = _OrderClauseTool;
+    __name(compareFn, "compareFn");
   }
 });
 
 // src/filter/operator-clause-tool.js
-var OperatorClauseTool;
+var _OperatorClauseTool, OperatorClauseTool;
 var init_operator_clause_tool = __esm({
   "src/filter/operator-clause-tool.js"() {
     "use strict";
@@ -967,7 +1005,7 @@ var init_operator_clause_tool = __esm({
     init_utils2();
     init_errors2();
     init_errors2();
-    OperatorClauseTool = class extends Service {
+    _OperatorClauseTool = class _OperatorClauseTool extends Service {
       /**
        * Compare.
        *
@@ -1403,11 +1441,13 @@ var init_operator_clause_tool = __esm({
         }
       }
     };
+    __name(_OperatorClauseTool, "OperatorClauseTool");
+    OperatorClauseTool = _OperatorClauseTool;
   }
 });
 
 // src/filter/where-clause-tool.js
-var WhereClauseTool;
+var _WhereClauseTool, WhereClauseTool;
 var init_where_clause_tool = __esm({
   "src/filter/where-clause-tool.js"() {
     "use strict";
@@ -1415,7 +1455,7 @@ var init_where_clause_tool = __esm({
     init_utils2();
     init_errors2();
     init_operator_clause_tool();
-    WhereClauseTool = class extends Service {
+    _WhereClauseTool = class _WhereClauseTool extends Service {
       /**
        * Filter by where clause.
        *
@@ -1545,6 +1585,8 @@ var init_where_clause_tool = __esm({
           );
       }
     };
+    __name(_WhereClauseTool, "WhereClauseTool");
+    WhereClauseTool = _WhereClauseTool;
   }
 });
 
@@ -1570,7 +1612,7 @@ var init_relation_definition = __esm({
 });
 
 // src/definition/model/relations/relations-definition-validator.js
-var RelationsDefinitionValidator;
+var _RelationsDefinitionValidator, RelationsDefinitionValidator;
 var init_relations_definition_validator = __esm({
   "src/definition/model/relations/relations-definition-validator.js"() {
     "use strict";
@@ -1578,7 +1620,7 @@ var init_relations_definition_validator = __esm({
     init_relation_type();
     init_relation_type();
     init_errors2();
-    RelationsDefinitionValidator = class extends Service {
+    _RelationsDefinitionValidator = class _RelationsDefinitionValidator extends Service {
       /**
        * Validate.
        *
@@ -1955,6 +1997,8 @@ var init_relations_definition_validator = __esm({
           );
       }
     };
+    __name(_RelationsDefinitionValidator, "RelationsDefinitionValidator");
+    RelationsDefinitionValidator = _RelationsDefinitionValidator;
   }
 });
 
@@ -2005,7 +2049,7 @@ var init_property_uniqueness = __esm({
 });
 
 // src/definition/model/properties/empty-values-definer.js
-var EmptyValuesDefiner;
+var _EmptyValuesDefiner, EmptyValuesDefiner;
 var init_empty_values_definer = __esm({
   "src/definition/model/properties/empty-values-definer.js"() {
     "use strict";
@@ -2013,7 +2057,7 @@ var init_empty_values_definer = __esm({
     init_src2();
     init_utils2();
     init_errors2();
-    EmptyValuesDefiner = class extends Service {
+    _EmptyValuesDefiner = class _EmptyValuesDefiner extends Service {
       /**
        * Empty values map.
        *
@@ -2066,6 +2110,8 @@ var init_empty_values_definer = __esm({
         return this._emptyValuesMap.get(dataType).some((v) => isDeepEqual(v, value));
       }
     };
+    __name(_EmptyValuesDefiner, "EmptyValuesDefiner");
+    EmptyValuesDefiner = _EmptyValuesDefiner;
   }
 });
 
@@ -2100,6 +2146,7 @@ var init_regexp_validator = __esm({
     "use strict";
     init_utils2();
     init_errors2();
+    __name(regexpValidator, "regexpValidator");
   }
 });
 
@@ -2124,6 +2171,7 @@ var init_max_length_validator = __esm({
   "src/definition/model/properties/property-validator/builtin/max-length-validator.js"() {
     "use strict";
     init_errors2();
+    __name(maxLengthValidator, "maxLengthValidator");
   }
 });
 
@@ -2148,6 +2196,7 @@ var init_min_length_validator = __esm({
   "src/definition/model/properties/property-validator/builtin/min-length-validator.js"() {
     "use strict";
     init_errors2();
+    __name(minLengthValidator, "minLengthValidator");
   }
 });
 
@@ -2162,7 +2211,7 @@ var init_builtin = __esm({
 });
 
 // src/definition/model/properties/property-validator/property-validator-registry.js
-var PropertyValidatorRegistry;
+var _PropertyValidatorRegistry, PropertyValidatorRegistry;
 var init_property_validator_registry = __esm({
   "src/definition/model/properties/property-validator/property-validator-registry.js"() {
     "use strict";
@@ -2171,7 +2220,7 @@ var init_property_validator_registry = __esm({
     init_builtin();
     init_builtin();
     init_errors2();
-    PropertyValidatorRegistry = class extends Service {
+    _PropertyValidatorRegistry = class _PropertyValidatorRegistry extends Service {
       /**
        * Validators.
        *
@@ -2234,6 +2283,8 @@ var init_property_validator_registry = __esm({
         return validator;
       }
     };
+    __name(_PropertyValidatorRegistry, "PropertyValidatorRegistry");
+    PropertyValidatorRegistry = _PropertyValidatorRegistry;
   }
 });
 
@@ -2267,6 +2318,7 @@ var init_trim_transformer = __esm({
   "src/definition/model/properties/property-transformer/builtin/trim-transformer.js"() {
     "use strict";
     init_errors2();
+    __name(trimTransformer, "trimTransformer");
   }
 });
 
@@ -2284,6 +2336,7 @@ var init_to_lower_case_transformer = __esm({
   "src/definition/model/properties/property-transformer/builtin/to-lower-case-transformer.js"() {
     "use strict";
     init_errors2();
+    __name(toLowerCaseTransformer, "toLowerCaseTransformer");
   }
 });
 
@@ -2301,6 +2354,7 @@ var init_to_upper_case_transformer = __esm({
   "src/definition/model/properties/property-transformer/builtin/to-upper-case-transformer.js"() {
     "use strict";
     init_errors2();
+    __name(toUpperCaseTransformer, "toUpperCaseTransformer");
   }
 });
 
@@ -2321,6 +2375,7 @@ var init_to_title_case_transformer = __esm({
   "src/definition/model/properties/property-transformer/builtin/to-title-case-transformer.js"() {
     "use strict";
     init_errors2();
+    __name(toTitleCaseTransformer, "toTitleCaseTransformer");
   }
 });
 
@@ -2336,7 +2391,7 @@ var init_builtin2 = __esm({
 });
 
 // src/definition/model/properties/property-transformer/property-transformer-registry.js
-var PropertyTransformerRegistry;
+var _PropertyTransformerRegistry, PropertyTransformerRegistry;
 var init_property_transformer_registry = __esm({
   "src/definition/model/properties/property-transformer/property-transformer-registry.js"() {
     "use strict";
@@ -2346,7 +2401,7 @@ var init_property_transformer_registry = __esm({
     init_builtin2();
     init_builtin2();
     init_errors2();
-    PropertyTransformerRegistry = class extends Service {
+    _PropertyTransformerRegistry = class _PropertyTransformerRegistry extends Service {
       /**
        * Transformers.
        *
@@ -2410,6 +2465,8 @@ var init_property_transformer_registry = __esm({
         return transformer;
       }
     };
+    __name(_PropertyTransformerRegistry, "PropertyTransformerRegistry");
+    PropertyTransformerRegistry = _PropertyTransformerRegistry;
   }
 });
 
@@ -2423,7 +2480,7 @@ var init_property_transformer2 = __esm({
 });
 
 // src/definition/definition-registry.js
-var DefinitionRegistry;
+var _DefinitionRegistry, DefinitionRegistry;
 var init_definition_registry = __esm({
   "src/definition/definition-registry.js"() {
     "use strict";
@@ -2431,7 +2488,7 @@ var init_definition_registry = __esm({
     init_errors2();
     init_model();
     init_definition();
-    DefinitionRegistry = class extends Service {
+    _DefinitionRegistry = class _DefinitionRegistry extends Service {
       /**
        * Datasources.
        *
@@ -2514,11 +2571,13 @@ var init_definition_registry = __esm({
         return modelDef;
       }
     };
+    __name(_DefinitionRegistry, "DefinitionRegistry");
+    DefinitionRegistry = _DefinitionRegistry;
   }
 });
 
 // src/definition/model/model-definition-utils.js
-var DEFAULT_PRIMARY_KEY_PROPERTY_NAME, ModelDefinitionUtils;
+var DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
 var init_model_definition_utils = __esm({
   "src/definition/model/model-definition-utils.js"() {
     "use strict";
@@ -2530,7 +2589,7 @@ var init_model_definition_utils = __esm({
     init_errors2();
     init_definition_registry();
     DEFAULT_PRIMARY_KEY_PROPERTY_NAME = "id";
-    ModelDefinitionUtils = class extends Service {
+    _ModelDefinitionUtils = class _ModelDefinitionUtils extends Service {
       /**
        * Get primary key as property name.
        *
@@ -2780,7 +2839,7 @@ var init_model_definition_utils = __esm({
       getPropertiesDefinitionInBaseModelHierarchy(modelName) {
         let result = {};
         let pkPropDefs = {};
-        const recursion = (currModelName, prevModelName = void 0) => {
+        const recursion = /* @__PURE__ */ __name((currModelName, prevModelName = void 0) => {
           if (currModelName === prevModelName)
             throw new InvalidArgumentError2(
               "The model %v has a circular inheritance.",
@@ -2794,7 +2853,7 @@ var init_model_definition_utils = __esm({
           result = { ...regularPropDefs, ...result };
           const modelDef = this.getService(DefinitionRegistry).getModel(currModelName);
           if (modelDef.base) recursion(modelDef.base, currModelName);
-        };
+        }, "recursion");
         recursion(modelName);
         return result;
       }
@@ -2817,7 +2876,7 @@ var init_model_definition_utils = __esm({
        */
       getRelationsDefinitionInBaseModelHierarchy(modelName) {
         let result = {};
-        const recursion = (currModelName, prevModelName = void 0) => {
+        const recursion = /* @__PURE__ */ __name((currModelName, prevModelName = void 0) => {
           var _a;
           if (currModelName === prevModelName)
             throw new InvalidArgumentError2(
@@ -2828,7 +2887,7 @@ var init_model_definition_utils = __esm({
           const ownRelDefs = (_a = modelDef.relations) != null ? _a : {};
           result = { ...ownRelDefs, ...result };
           if (modelDef.base) recursion(modelDef.base, currModelName);
-        };
+        }, "recursion");
         recursion(modelName);
         return result;
       }
@@ -2875,11 +2934,13 @@ var init_model_definition_utils = __esm({
         return excludeObjectKeys(modelData, relNames);
       }
     };
+    __name(_ModelDefinitionUtils, "ModelDefinitionUtils");
+    ModelDefinitionUtils = _ModelDefinitionUtils;
   }
 });
 
 // src/definition/model/properties/property-uniqueness-validator.js
-var PropertyUniquenessValidator;
+var _PropertyUniquenessValidator, PropertyUniquenessValidator;
 var init_property_uniqueness_validator = __esm({
   "src/definition/model/properties/property-uniqueness-validator.js"() {
     "use strict";
@@ -2890,7 +2951,7 @@ var init_property_uniqueness_validator = __esm({
     init_empty_values_definer();
     init_errors2();
     init_model_definition_utils();
-    PropertyUniquenessValidator = class extends Service {
+    _PropertyUniquenessValidator = class _PropertyUniquenessValidator extends Service {
       /**
        * Validate.
        *
@@ -2931,12 +2992,12 @@ var init_property_uniqueness_validator = __esm({
         const idProp = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
           modelName
         );
-        const createError = (propName, propValue) => new InvalidArgumentError2(
+        const createError = /* @__PURE__ */ __name((propName, propValue) => new InvalidArgumentError2(
           "An existing document of the model %v already has the property %v with the value %v and should be unique.",
           modelName,
           propName,
           propValue
-        );
+        ), "createError");
         let willBeReplaced = void 0;
         const emptyValuesDefiner = this.getService(EmptyValuesDefiner);
         for (const propName of propNames) {
@@ -2993,18 +3054,20 @@ var init_property_uniqueness_validator = __esm({
         }
       }
     };
+    __name(_PropertyUniquenessValidator, "PropertyUniquenessValidator");
+    PropertyUniquenessValidator = _PropertyUniquenessValidator;
   }
 });
 
 // src/definition/model/properties/primary-keys-definition-validator.js
-var PrimaryKeysDefinitionValidator;
+var _PrimaryKeysDefinitionValidator, PrimaryKeysDefinitionValidator;
 var init_primary_keys_definition_validator = __esm({
   "src/definition/model/properties/primary-keys-definition-validator.js"() {
     "use strict";
     init_src2();
     init_errors2();
     init_model_definition_utils();
-    PrimaryKeysDefinitionValidator = class extends Service {
+    _PrimaryKeysDefinitionValidator = class _PrimaryKeysDefinitionValidator extends Service {
       /**
        * Validate.
        *
@@ -3043,11 +3106,13 @@ var init_primary_keys_definition_validator = __esm({
         }
       }
     };
+    __name(_PrimaryKeysDefinitionValidator, "PrimaryKeysDefinitionValidator");
+    PrimaryKeysDefinitionValidator = _PrimaryKeysDefinitionValidator;
   }
 });
 
 // src/definition/model/properties/properties-definition-validator.js
-var PropertiesDefinitionValidator;
+var _PropertiesDefinitionValidator, PropertiesDefinitionValidator;
 var init_properties_definition_validator = __esm({
   "src/definition/model/properties/properties-definition-validator.js"() {
     "use strict";
@@ -3059,7 +3124,7 @@ var init_properties_definition_validator = __esm({
     init_property_validator2();
     init_property_transformer2();
     init_primary_keys_definition_validator();
-    PropertiesDefinitionValidator = class extends Service {
+    _PropertiesDefinitionValidator = class _PropertiesDefinitionValidator extends Service {
       /**
        * Validate.
        *
@@ -3331,6 +3396,8 @@ var init_properties_definition_validator = __esm({
           );
       }
     };
+    __name(_PropertiesDefinitionValidator, "PropertiesDefinitionValidator");
+    PropertiesDefinitionValidator = _PropertiesDefinitionValidator;
   }
 });
 
@@ -3358,7 +3425,7 @@ var init_model_definition = __esm({
 });
 
 // src/definition/model/model-data-validator.js
-var ModelDataValidator;
+var _ModelDataValidator, ModelDataValidator;
 var init_model_data_validator = __esm({
   "src/definition/model/model-data-validator.js"() {
     "use strict";
@@ -3370,7 +3437,7 @@ var init_model_data_validator = __esm({
     init_errors2();
     init_properties();
     init_model_definition_utils();
-    ModelDataValidator = class extends Service {
+    _ModelDataValidator = class _ModelDataValidator extends Service {
       /**
        * Validate.
        *
@@ -3458,7 +3525,7 @@ var init_model_data_validator = __esm({
         } else {
           expectingType = typeof propDef !== "string" ? propDef.type : propDef;
         }
-        const createError = (expected) => {
+        const createError = /* @__PURE__ */ __name((expected) => {
           const pattern = isArrayValue ? "The array property %v of the model %v must have %s element, but %s given." : "The property %v of the model %v must have %s, but %s given.";
           const ctorName = getCtorName(propValue);
           const givenStr = ctorName != null ? ctorName : typeof propValue;
@@ -3469,7 +3536,7 @@ var init_model_data_validator = __esm({
             expected,
             givenStr
           );
-        };
+        }, "createError");
         switch (expectingType) {
           // STRING
           case DataType.STRING:
@@ -3517,14 +3584,14 @@ var init_model_data_validator = __esm({
         if (typeof propDef === "string" || propDef.validate == null) return;
         const validateDef = propDef.validate;
         const validatorRegistry = this.getService(PropertyValidatorRegistry);
-        const createError = (validatorName) => new InvalidArgumentError2(
+        const createError = /* @__PURE__ */ __name((validatorName) => new InvalidArgumentError2(
           "The property %v of the model %v has an invalid value %v that caught by the validator %v.",
           propName,
           modelName,
           propValue,
           validatorName
-        );
-        const validateBy = (validatorName, validatorOptions = void 0) => {
+        ), "createError");
+        const validateBy = /* @__PURE__ */ __name((validatorName, validatorOptions = void 0) => {
           const validator = validatorRegistry.getValidator(validatorName);
           const context = { validatorName, modelName, propName };
           const valid = validator(propValue, validatorOptions, context);
@@ -3536,7 +3603,7 @@ var init_model_data_validator = __esm({
           } else if (valid !== true) {
             throw createError(validatorName);
           }
-        };
+        }, "validateBy");
         if (validateDef && typeof validateDef === "string") {
           validateBy(validateDef);
         } else if (Array.isArray(validateDef)) {
@@ -3558,18 +3625,20 @@ var init_model_data_validator = __esm({
         }
       }
     };
+    __name(_ModelDataValidator, "ModelDataValidator");
+    ModelDataValidator = _ModelDataValidator;
   }
 });
 
 // src/definition/model/model-data-sanitizer.js
-var ModelDataSanitizer;
+var _ModelDataSanitizer, ModelDataSanitizer;
 var init_model_data_sanitizer = __esm({
   "src/definition/model/model-data-sanitizer.js"() {
     "use strict";
     init_src2();
     init_errors2();
     init_model_definition_utils();
-    ModelDataSanitizer = class extends Service {
+    _ModelDataSanitizer = class _ModelDataSanitizer extends Service {
       /**
        * Validate.
        *
@@ -3593,11 +3662,13 @@ var init_model_data_sanitizer = __esm({
         ).excludeObjectKeysByRelationNames(modelName, modelData);
       }
     };
+    __name(_ModelDataSanitizer, "ModelDataSanitizer");
+    ModelDataSanitizer = _ModelDataSanitizer;
   }
 });
 
 // src/definition/model/model-data-transformer.js
-var ModelDataTransformer;
+var _ModelDataTransformer, ModelDataTransformer;
 var init_model_data_transformer = __esm({
   "src/definition/model/model-data-transformer.js"() {
     "use strict";
@@ -3609,7 +3680,7 @@ var init_model_data_transformer = __esm({
     init_errors2();
     init_model_definition_utils();
     init_properties();
-    ModelDataTransformer = class extends Service {
+    _ModelDataTransformer = class _ModelDataTransformer extends Service {
       /**
        * Transform.
        *
@@ -3667,11 +3738,11 @@ var init_model_data_transformer = __esm({
           return propValue;
         const transformDef = propDef.transform;
         const transformerRegistry = this.getService(PropertyTransformerRegistry);
-        const transformFn = (value, transformerName, transformerOptions = void 0) => {
+        const transformFn = /* @__PURE__ */ __name((value, transformerName, transformerOptions = void 0) => {
           const transformer = transformerRegistry.getTransformer(transformerName);
           const context = { transformerName, modelName, propName };
           return transformer(value, transformerOptions, context);
-        };
+        }, "transformFn");
         if (transformDef && typeof transformDef === "string") {
           return transformFn(propValue, transformDef);
         } else if (Array.isArray(transformDef)) {
@@ -3700,11 +3771,13 @@ var init_model_data_transformer = __esm({
         }
       }
     };
+    __name(_ModelDataTransformer, "ModelDataTransformer");
+    ModelDataTransformer = _ModelDataTransformer;
   }
 });
 
 // src/definition/model/model-definition-validator.js
-var ModelDefinitionValidator;
+var _ModelDefinitionValidator, ModelDefinitionValidator;
 var init_model_definition_validator = __esm({
   "src/definition/model/model-definition-validator.js"() {
     "use strict";
@@ -3712,7 +3785,7 @@ var init_model_definition_validator = __esm({
     init_errors2();
     init_relations();
     init_properties();
-    ModelDefinitionValidator = class extends Service {
+    _ModelDefinitionValidator = class _ModelDefinitionValidator extends Service {
       /**
        * Validate.
        *
@@ -3775,6 +3848,8 @@ var init_model_definition_validator = __esm({
         }
       }
     };
+    __name(_ModelDefinitionValidator, "ModelDefinitionValidator");
+    ModelDefinitionValidator = _ModelDefinitionValidator;
   }
 });
 
@@ -3794,13 +3869,13 @@ var init_model = __esm({
 });
 
 // src/definition/datasource/datasource-definition-validator.js
-var DatasourceDefinitionValidator;
+var _DatasourceDefinitionValidator, DatasourceDefinitionValidator;
 var init_datasource_definition_validator = __esm({
   "src/definition/datasource/datasource-definition-validator.js"() {
     "use strict";
     init_src2();
     init_errors2();
-    DatasourceDefinitionValidator = class extends Service {
+    _DatasourceDefinitionValidator = class _DatasourceDefinitionValidator extends Service {
       /**
        * Validate.
        *
@@ -3825,6 +3900,8 @@ var init_datasource_definition_validator = __esm({
           );
       }
     };
+    __name(_DatasourceDefinitionValidator, "DatasourceDefinitionValidator");
+    DatasourceDefinitionValidator = _DatasourceDefinitionValidator;
   }
 });
 
@@ -3847,7 +3924,7 @@ var init_definition = __esm({
 });
 
 // src/filter/fields-clause-tool.js
-var FieldsClauseTool;
+var _FieldsClauseTool, FieldsClauseTool;
 var init_fields_clause_tool = __esm({
   "src/filter/fields-clause-tool.js"() {
     "use strict";
@@ -3855,7 +3932,7 @@ var init_fields_clause_tool = __esm({
     init_utils2();
     init_errors2();
     init_definition();
-    FieldsClauseTool = class extends Service {
+    _FieldsClauseTool = class _FieldsClauseTool extends Service {
       /**
        * Filter.
        *
@@ -3933,11 +4010,13 @@ var init_fields_clause_tool = __esm({
         return fields;
       }
     };
+    __name(_FieldsClauseTool, "FieldsClauseTool");
+    FieldsClauseTool = _FieldsClauseTool;
   }
 });
 
 // src/relations/has-one-resolver.js
-var HasOneResolver;
+var _HasOneResolver, HasOneResolver;
 var init_has_one_resolver = __esm({
   "src/relations/has-one-resolver.js"() {
     "use strict";
@@ -3947,7 +4026,7 @@ var init_has_one_resolver = __esm({
     init_errors2();
     init_repository2();
     init_definition();
-    HasOneResolver = class extends Service {
+    _HasOneResolver = class _HasOneResolver extends Service {
       /**
        * Include to.
        *
@@ -4186,11 +4265,13 @@ var init_has_one_resolver = __esm({
         );
       }
     };
+    __name(_HasOneResolver, "HasOneResolver");
+    HasOneResolver = _HasOneResolver;
   }
 });
 
 // src/relations/has-many-resolver.js
-var HasManyResolver;
+var _HasManyResolver, HasManyResolver;
 var init_has_many_resolver = __esm({
   "src/relations/has-many-resolver.js"() {
     "use strict";
@@ -4200,7 +4281,7 @@ var init_has_many_resolver = __esm({
     init_errors2();
     init_repository2();
     init_definition();
-    HasManyResolver = class extends Service {
+    _HasManyResolver = class _HasManyResolver extends Service {
       /**
        * Include to.
        *
@@ -4449,11 +4530,13 @@ var init_has_many_resolver = __esm({
         );
       }
     };
+    __name(_HasManyResolver, "HasManyResolver");
+    HasManyResolver = _HasManyResolver;
   }
 });
 
 // src/relations/belongs-to-resolver.js
-var BelongsToResolver;
+var _BelongsToResolver, BelongsToResolver;
 var init_belongs_to_resolver = __esm({
   "src/relations/belongs-to-resolver.js"() {
     "use strict";
@@ -4463,7 +4546,7 @@ var init_belongs_to_resolver = __esm({
     init_errors2();
     init_repository2();
     init_definition();
-    BelongsToResolver = class extends Service {
+    _BelongsToResolver = class _BelongsToResolver extends Service {
       /**
        * Include to.
        *
@@ -4655,11 +4738,13 @@ var init_belongs_to_resolver = __esm({
         });
       }
     };
+    __name(_BelongsToResolver, "BelongsToResolver");
+    BelongsToResolver = _BelongsToResolver;
   }
 });
 
 // src/relations/references-many-resolver.js
-var ReferencesManyResolver;
+var _ReferencesManyResolver, ReferencesManyResolver;
 var init_references_many_resolver = __esm({
   "src/relations/references-many-resolver.js"() {
     "use strict";
@@ -4669,7 +4754,7 @@ var init_references_many_resolver = __esm({
     init_errors2();
     init_repository2();
     init_definition();
-    ReferencesManyResolver = class extends Service {
+    _ReferencesManyResolver = class _ReferencesManyResolver extends Service {
       /**
        * Include to.
        *
@@ -4754,6 +4839,8 @@ var init_references_many_resolver = __esm({
         });
       }
     };
+    __name(_ReferencesManyResolver, "ReferencesManyResolver");
+    ReferencesManyResolver = _ReferencesManyResolver;
   }
 });
 
@@ -4769,7 +4856,7 @@ var init_relations2 = __esm({
 });
 
 // src/filter/include-clause-tool.js
-var IncludeClauseTool;
+var _IncludeClauseTool, IncludeClauseTool;
 var init_include_clause_tool = __esm({
   "src/filter/include-clause-tool.js"() {
     "use strict";
@@ -4785,7 +4872,7 @@ var init_include_clause_tool = __esm({
     init_fields_clause_tool();
     init_definition();
     init_relations2();
-    IncludeClauseTool = class _IncludeClauseTool extends Service {
+    _IncludeClauseTool = class _IncludeClauseTool extends Service {
       /**
        * Include to.
        *
@@ -5103,6 +5190,8 @@ var init_include_clause_tool = __esm({
         return void 0;
       }
     };
+    __name(_IncludeClauseTool, "IncludeClauseTool");
+    IncludeClauseTool = _IncludeClauseTool;
   }
 });
 
@@ -5120,7 +5209,7 @@ var init_filter = __esm({
 });
 
 // src/adapter/decorator/inclusion-decorator.js
-var InclusionDecorator;
+var _InclusionDecorator, InclusionDecorator;
 var init_inclusion_decorator = __esm({
   "src/adapter/decorator/inclusion-decorator.js"() {
     "use strict";
@@ -5128,7 +5217,7 @@ var init_inclusion_decorator = __esm({
     init_src2();
     init_filter();
     init_errors2();
-    InclusionDecorator = class extends Service {
+    _InclusionDecorator = class _InclusionDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5141,7 +5230,7 @@ var init_inclusion_decorator = __esm({
             adapter
           );
         const tool = adapter.getService(IncludeClauseTool);
-        const includeTo = (...args) => tool.includeTo(...args);
+        const includeTo = /* @__PURE__ */ __name((...args) => tool.includeTo(...args), "includeTo");
         const create = adapter.create;
         adapter.create = async function(modelName, modelData, filter) {
           const retvalData = await create.call(this, modelName, modelData, filter);
@@ -5203,11 +5292,13 @@ var init_inclusion_decorator = __esm({
         };
       }
     };
+    __name(_InclusionDecorator, "InclusionDecorator");
+    InclusionDecorator = _InclusionDecorator;
   }
 });
 
 // src/adapter/decorator/default-values-decorator.js
-var DefaultValuesDecorator;
+var _DefaultValuesDecorator, DefaultValuesDecorator;
 var init_default_values_decorator = __esm({
   "src/adapter/decorator/default-values-decorator.js"() {
     "use strict";
@@ -5215,7 +5306,7 @@ var init_default_values_decorator = __esm({
     init_src2();
     init_errors2();
     init_definition();
-    DefaultValuesDecorator = class extends Service {
+    _DefaultValuesDecorator = class _DefaultValuesDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5228,7 +5319,7 @@ var init_default_values_decorator = __esm({
             adapter
           );
         const utils = adapter.getService(ModelDefinitionUtils);
-        const setDefaults = (...args) => utils.setDefaultValuesToEmptyProperties(...args);
+        const setDefaults = /* @__PURE__ */ __name((...args) => utils.setDefaultValuesToEmptyProperties(...args), "setDefaults");
         const create = adapter.create;
         adapter.create = function(modelName, modelData, filter) {
           modelData = setDefaults(modelName, modelData);
@@ -5266,11 +5357,13 @@ var init_default_values_decorator = __esm({
         };
       }
     };
+    __name(_DefaultValuesDecorator, "DefaultValuesDecorator");
+    DefaultValuesDecorator = _DefaultValuesDecorator;
   }
 });
 
 // src/adapter/decorator/data-sanitizing-decorator.js
-var DataSanitizingDecorator;
+var _DataSanitizingDecorator, DataSanitizingDecorator;
 var init_data_sanitizing_decorator = __esm({
   "src/adapter/decorator/data-sanitizing-decorator.js"() {
     "use strict";
@@ -5278,7 +5371,7 @@ var init_data_sanitizing_decorator = __esm({
     init_src2();
     init_errors2();
     init_definition();
-    DataSanitizingDecorator = class extends Service {
+    _DataSanitizingDecorator = class _DataSanitizingDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5291,7 +5384,7 @@ var init_data_sanitizing_decorator = __esm({
             adapter
           );
         const sanitizer = adapter.getService(ModelDataSanitizer);
-        const sanitize = (...args) => sanitizer.sanitize(...args);
+        const sanitize = /* @__PURE__ */ __name((...args) => sanitizer.sanitize(...args), "sanitize");
         const create = adapter.create;
         adapter.create = async function(modelName, modelData, filter) {
           modelData = sanitize(modelName, modelData);
@@ -5319,11 +5412,13 @@ var init_data_sanitizing_decorator = __esm({
         };
       }
     };
+    __name(_DataSanitizingDecorator, "DataSanitizingDecorator");
+    DataSanitizingDecorator = _DataSanitizingDecorator;
   }
 });
 
 // src/adapter/decorator/data-validation-decorator.js
-var DataValidationDecorator;
+var _DataValidationDecorator, DataValidationDecorator;
 var init_data_validation_decorator = __esm({
   "src/adapter/decorator/data-validation-decorator.js"() {
     "use strict";
@@ -5331,7 +5426,7 @@ var init_data_validation_decorator = __esm({
     init_src2();
     init_errors2();
     init_definition();
-    DataValidationDecorator = class extends Service {
+    _DataValidationDecorator = class _DataValidationDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5371,11 +5466,13 @@ var init_data_validation_decorator = __esm({
         };
       }
     };
+    __name(_DataValidationDecorator, "DataValidationDecorator");
+    DataValidationDecorator = _DataValidationDecorator;
   }
 });
 
 // src/adapter/decorator/fields-filtering-decorator.js
-var FieldsFilteringDecorator;
+var _FieldsFilteringDecorator, FieldsFilteringDecorator;
 var init_fields_filtering_decorator = __esm({
   "src/adapter/decorator/fields-filtering-decorator.js"() {
     "use strict";
@@ -5383,7 +5480,7 @@ var init_fields_filtering_decorator = __esm({
     init_src2();
     init_filter();
     init_errors2();
-    FieldsFilteringDecorator = class extends Service {
+    _FieldsFilteringDecorator = class _FieldsFilteringDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5396,7 +5493,7 @@ var init_fields_filtering_decorator = __esm({
             adapter
           );
         const tool = adapter.getService(FieldsClauseTool);
-        const selectFields = (...args) => tool.filter(...args);
+        const selectFields = /* @__PURE__ */ __name((...args) => tool.filter(...args), "selectFields");
         const create = adapter.create;
         adapter.create = async function(modelName, modelData, filter) {
           let result = await create.call(this, modelName, modelData, filter);
@@ -5452,11 +5549,13 @@ var init_fields_filtering_decorator = __esm({
         };
       }
     };
+    __name(_FieldsFilteringDecorator, "FieldsFilteringDecorator");
+    FieldsFilteringDecorator = _FieldsFilteringDecorator;
   }
 });
 
 // src/adapter/decorator/data-transformation-decorator.js
-var DataTransformationDecorator;
+var _DataTransformationDecorator, DataTransformationDecorator;
 var init_data_transformation_decorator = __esm({
   "src/adapter/decorator/data-transformation-decorator.js"() {
     "use strict";
@@ -5464,7 +5563,7 @@ var init_data_transformation_decorator = __esm({
     init_src2();
     init_errors2();
     init_definition();
-    DataTransformationDecorator = class extends Service {
+    _DataTransformationDecorator = class _DataTransformationDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5504,11 +5603,13 @@ var init_data_transformation_decorator = __esm({
         };
       }
     };
+    __name(_DataTransformationDecorator, "DataTransformationDecorator");
+    DataTransformationDecorator = _DataTransformationDecorator;
   }
 });
 
 // src/adapter/decorator/property-uniqueness-decorator.js
-var PropertyUniquenessDecorator;
+var _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
 var init_property_uniqueness_decorator = __esm({
   "src/adapter/decorator/property-uniqueness-decorator.js"() {
     "use strict";
@@ -5516,7 +5617,7 @@ var init_property_uniqueness_decorator = __esm({
     init_src2();
     init_errors2();
     init_definition();
-    PropertyUniquenessDecorator = class extends Service {
+    _PropertyUniquenessDecorator = class _PropertyUniquenessDecorator extends Service {
       /**
        * Decorate.
        *
@@ -5578,6 +5679,8 @@ var init_property_uniqueness_decorator = __esm({
         };
       }
     };
+    __name(_PropertyUniquenessDecorator, "PropertyUniquenessDecorator");
+    PropertyUniquenessDecorator = _PropertyUniquenessDecorator;
   }
 });
 
@@ -5596,7 +5699,7 @@ var init_decorator = __esm({
 });
 
 // src/adapter/adapter.js
-var Adapter;
+var _Adapter, Adapter;
 var init_adapter = __esm({
   "src/adapter/adapter.js"() {
     "use strict";
@@ -5609,7 +5712,7 @@ var init_adapter = __esm({
     init_decorator();
     init_decorator();
     init_decorator();
-    Adapter = class _Adapter extends Service {
+    _Adapter = class _Adapter extends Service {
       /**
        * Settings.
        *
@@ -5795,6 +5898,8 @@ var init_adapter = __esm({
         );
       }
     };
+    __name(_Adapter, "Adapter");
+    Adapter = _Adapter;
   }
 });
 
@@ -5803,7 +5908,7 @@ var memory_adapter_exports = {};
 __export(memory_adapter_exports, {
   MemoryAdapter: () => MemoryAdapter
 });
-var MemoryAdapter;
+var _MemoryAdapter, MemoryAdapter;
 var init_memory_adapter = __esm({
   "src/adapter/builtin/memory-adapter.js"() {
     "use strict";
@@ -5816,7 +5921,7 @@ var init_memory_adapter = __esm({
     init_filter();
     init_errors2();
     init_definition();
-    MemoryAdapter = class extends Adapter {
+    _MemoryAdapter = class _MemoryAdapter extends Adapter {
       /**
        * Tables.
        *
@@ -6175,6 +6280,8 @@ var init_memory_adapter = __esm({
         return modelItems.length;
       }
     };
+    __name(_MemoryAdapter, "MemoryAdapter");
+    MemoryAdapter = _MemoryAdapter;
   }
 });
 
@@ -6193,14 +6300,14 @@ function findAdapterCtorInModule(module2) {
   let adapterCtor;
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
-    if (typeof ctor === "function") {
+    if (typeof ctor === "function" && ctor.prototype instanceof Adapter) {
       adapterCtor = ctor;
       break;
     }
   }
   return adapterCtor;
 }
-var AdapterLoader;
+var _AdapterLoader, AdapterLoader;
 var init_adapter_loader = __esm({
   "src/adapter/adapter-loader.js"() {
     "use strict";
@@ -6208,7 +6315,7 @@ var init_adapter_loader = __esm({
     init_src2();
     init_errors2();
     init_();
-    AdapterLoader = class extends Service {
+    _AdapterLoader = class _AdapterLoader extends Service {
       /**
        * Load by name.
        *
@@ -6242,11 +6349,14 @@ var init_adapter_loader = __esm({
         return new adapterCtor(this.container, settings);
       }
     };
+    __name(_AdapterLoader, "AdapterLoader");
+    AdapterLoader = _AdapterLoader;
+    __name(findAdapterCtorInModule, "findAdapterCtorInModule");
   }
 });
 
 // src/adapter/adapter-registry.js
-var AdapterRegistry;
+var _AdapterRegistry, AdapterRegistry;
 var init_adapter_registry = __esm({
   "src/adapter/adapter-registry.js"() {
     "use strict";
@@ -6254,7 +6364,7 @@ var init_adapter_registry = __esm({
     init_src2();
     init_adapter_loader();
     init_definition();
-    AdapterRegistry = class extends Service {
+    _AdapterRegistry = class _AdapterRegistry extends Service {
       /**
        * Adapters.
        *
@@ -6280,6 +6390,8 @@ var init_adapter_registry = __esm({
         return adapter;
       }
     };
+    __name(_AdapterRegistry, "AdapterRegistry");
+    AdapterRegistry = _AdapterRegistry;
   }
 });
 
@@ -6294,7 +6406,7 @@ var init_adapter2 = __esm({
 });
 
 // src/repository/repository.js
-var Repository;
+var _Repository, Repository;
 var init_repository = __esm({
   "src/repository/repository.js"() {
     "use strict";
@@ -6303,7 +6415,7 @@ var init_repository = __esm({
     init_adapter2();
     init_errors2();
     init_definition();
-    Repository = class extends Service {
+    _Repository = class _Repository extends Service {
       /**
        * Model name.
        *
@@ -6491,18 +6603,20 @@ var init_repository = __esm({
         return adapter.count(this.modelName, where);
       }
     };
+    __name(_Repository, "Repository");
+    Repository = _Repository;
   }
 });
 
 // src/repository/repository-registry.js
-var RepositoryRegistry;
+var _RepositoryRegistry, RepositoryRegistry;
 var init_repository_registry = __esm({
   "src/repository/repository-registry.js"() {
     "use strict";
     init_src2();
     init_repository();
     init_errors2();
-    RepositoryRegistry = class extends Service {
+    _RepositoryRegistry = class _RepositoryRegistry extends Service {
       /**
        * Repositories.
        *
@@ -6544,6 +6658,8 @@ var init_repository_registry = __esm({
         return repository;
       }
     };
+    __name(_RepositoryRegistry, "RepositoryRegistry");
+    RepositoryRegistry = _RepositoryRegistry;
   }
 });
 
@@ -6619,7 +6735,7 @@ init_src2();
 init_repository2();
 init_definition();
 init_repository2();
-var Schema = class extends Service {
+var _Schema = class _Schema extends Service {
   /**
    * Define datasource.
    *
@@ -6650,6 +6766,8 @@ var Schema = class extends Service {
     return this.getService(RepositoryRegistry).getRepository(modelName);
   }
 };
+__name(_Schema, "Schema");
+var Schema = _Schema;
 
 // src/index.js
 init_utils2();
