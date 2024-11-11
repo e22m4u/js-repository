@@ -15,6 +15,15 @@ import {PropertyUniquenessDecorator} from './decorator/index.js';
  */
 export class Adapter extends Service {
   /**
+   * Class name.
+   *
+   * @type {string}
+   */
+  get className() {
+    return Adapter.name;
+  }
+
+  /**
    * Settings.
    *
    * @type {object|undefined}

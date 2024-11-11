@@ -5714,6 +5714,14 @@ var init_adapter = __esm({
     init_decorator();
     _Adapter = class _Adapter extends Service {
       /**
+       * Class name.
+       *
+       * @type {string}
+       */
+      get className() {
+        return _Adapter.name;
+      }
+      /**
        * Settings.
        *
        * @type {object|undefined}
@@ -6300,7 +6308,8 @@ function findAdapterCtorInModule(module2) {
   let adapterCtor;
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
-    if (typeof ctor === "function" && ctor.prototype instanceof Adapter) {
+    console.log(ctor);
+    if (typeof ctor === "function" && ctor.prototype && typeof ctor.prototype === "object" && ctor.prototype.className === Adapter.name) {
       adapterCtor = ctor;
       break;
     }
