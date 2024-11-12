@@ -5615,9 +5615,7 @@ var init_adapter = __esm({
        *
        * @type {string}
        */
-      get kind() {
-        return _Adapter.name;
-      }
+      static kind = _Adapter.name;
       /**
        * Settings.
        *
@@ -6202,7 +6200,7 @@ function findAdapterCtorInModule(module2) {
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
     console.log(ctor);
-    if (typeof ctor === "function" && ctor.prototype && typeof ctor.prototype === "object" && ctor.prototype.kind === Adapter.name) {
+    if (typeof ctor === "function" && ctor.kind === Adapter.name) {
       adapterCtor = ctor;
       break;
     }

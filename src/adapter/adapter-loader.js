@@ -55,12 +55,7 @@ function findAdapterCtorInModule(module) {
   if (!module || typeof module !== 'object' || Array.isArray(module)) return;
   for (const ctor of Object.values(module)) {
     console.log(ctor);
-    if (
-      typeof ctor === 'function' &&
-      ctor.prototype &&
-      typeof ctor.prototype === 'object' &&
-      ctor.prototype.kind === Adapter.name
-    ) {
+    if (typeof ctor === 'function' && ctor.kind === Adapter.name) {
       adapterCtor = ctor;
       break;
     }

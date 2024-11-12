@@ -15,10 +15,12 @@ import {PropertyUniquenessDecorator} from './decorator/index.js';
 const sandbox = chai.spy.sandbox();
 
 describe('Adapter', function () {
-  it('exposes kind getter', function () {
-    const adapter = new Adapter();
-    expect(adapter.kind).to.be.eq('Adapter');
-    expect(Adapter.prototype.kind).to.be.eq('Adapter');
+  it('exposes static property "kind"', function () {
+    expect(Adapter.kind).to.be.eq(Adapter.name);
+    const MyAdapter1 = class extends Adapter {};
+    expect(MyAdapter1.kind).to.be.eq(Adapter.name);
+    class MyAdapter2 extends Adapter {}
+    expect(MyAdapter2.kind).to.be.eq(Adapter.name);
   });
 
   describe('constructor', function () {

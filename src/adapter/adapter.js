@@ -19,9 +19,7 @@ export class Adapter extends Service {
    *
    * @type {string}
    */
-  get kind() {
-    return Adapter.name;
-  }
+  static kind = Adapter.name;
 
   /**
    * Settings.
