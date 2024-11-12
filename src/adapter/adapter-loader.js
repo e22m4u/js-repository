@@ -59,7 +59,7 @@ function findAdapterCtorInModule(module) {
       typeof ctor === 'function' &&
       ctor.prototype &&
       typeof ctor.prototype === 'object' &&
-      ctor.prototype.className === Adapter.name
+      ctor.prototype.kind === Adapter.name
     ) {
       adapterCtor = ctor;
       break;

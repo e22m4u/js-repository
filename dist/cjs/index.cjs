@@ -5611,11 +5611,11 @@ var init_adapter = __esm({
     init_decorator();
     Adapter = class _Adapter extends Service {
       /**
-       * Class name.
+       * Kind.
        *
        * @type {string}
        */
-      get className() {
+      get kind() {
         return _Adapter.name;
       }
       /**
@@ -6202,7 +6202,7 @@ function findAdapterCtorInModule(module2) {
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
     console.log(ctor);
-    if (typeof ctor === "function" && ctor.prototype && typeof ctor.prototype === "object" && ctor.prototype.className === Adapter.name) {
+    if (typeof ctor === "function" && ctor.prototype && typeof ctor.prototype === "object" && ctor.prototype.kind === Adapter.name) {
       adapterCtor = ctor;
       break;
     }

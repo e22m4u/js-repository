@@ -15,11 +15,11 @@ import {PropertyUniquenessDecorator} from './decorator/index.js';
  */
 export class Adapter extends Service {
   /**
-   * Class name.
+   * Kind.
    *
    * @type {string}
    */
-  get className() {
+  get kind() {
     return Adapter.name;
   }
 

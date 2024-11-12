@@ -15,6 +15,12 @@ import {PropertyUniquenessDecorator} from './decorator/index.js';
 const sandbox = chai.spy.sandbox();
 
 describe('Adapter', function () {
+  it('exposes kind getter', function () {
+    const adapter = new Adapter();
+    expect(adapter.kind).to.be.eq('Adapter');
+    expect(Adapter.prototype.kind).to.be.eq('Adapter');
+  });
+
   describe('constructor', function () {
     afterEach(function () {
       sandbox.restore();
