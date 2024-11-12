@@ -11,6 +11,13 @@ import {DataTransformationDecorator} from './decorator/index.js';
 import {PropertyUniquenessDecorator} from './decorator/index.js';
 
 /**
+ * Adapter class name.
+ *
+ * @type {string}
+ */
+export const ADAPTER_CLASS_NAME = 'Adapter';
+
+/**
  * Adapter.
  */
 export class Adapter extends Service {
@@ -19,7 +26,7 @@ export class Adapter extends Service {
    *
    * @type {string}
    */
-  static kind = 'Adapter';
+  static kind = ADAPTER_CLASS_NAME;
 
   /**
    * Settings.
