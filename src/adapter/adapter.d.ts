@@ -12,6 +12,13 @@ import {ServiceContainer} from '@e22m4u/js-service';
  */
 export declare class Adapter extends Service {
   /**
+   * Kind.
+   *
+   * @type {string}
+   */
+  static kind: string;
+
+  /**
    * Settings.
    */
   get settings(): AnyObject | undefined;
