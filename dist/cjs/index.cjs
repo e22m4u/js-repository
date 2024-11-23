@@ -2838,6 +2838,14 @@ var init_properties_definition_validator = __esm({
             propDef.itemType
           );
         }
+        if (propDef.itemModel && typeof propDef.itemModel !== "string") {
+          throw new InvalidArgumentError(
+            'The provided option "itemModel" of the property %v in the model %v should be a String, but %v given.',
+            propName,
+            modelName,
+            propDef.itemModel
+          );
+        }
         if (propDef.model && typeof propDef.model !== "string")
           throw new InvalidArgumentError(
             'The provided option "model" of the property %v in the model %v should be a String, but %v given.',
@@ -2893,28 +2901,41 @@ var init_properties_definition_validator = __esm({
           );
         if (propDef.itemType && propDef.type !== DataType.ARRAY)
           throw new InvalidArgumentError(
-            'The property %v of the model %v has the non-array type, so it should not have the option "itemType" to be provided.',
+            'The property %v of the model %v has a non-array type, so it should not have the option "itemType" to be provided.',
             propName,
             modelName,
             propDef.type
           );
-        if (propDef.model && propDef.type !== DataType.OBJECT && propDef.itemType !== DataType.OBJECT) {
-          if (propDef.type !== DataType.ARRAY) {
+        if (propDef.itemModel && propDef.type !== DataType.ARRAY)
+          throw new InvalidArgumentError(
+            'The option "itemModel" is not supported for %s property type, so the property %v of the model %v should not have the option "itemModel" to be provided.',
+            capitalize(propDef.type),
+            propName,
+            modelName
+          );
+        if (propDef.itemModel && propDef.itemType !== DataType.OBJECT) {
+          if (propDef.itemType) {
             throw new InvalidArgumentError(
-              'The option "model" is not supported for %s property type, so the property %v of the model %v should not have the option "model" to be provided.',
-              capitalize(propDef.type),
+              'The provided option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v has specified item type as %s.',
               propName,
-              modelName
+              modelName,
+              capitalize(propDef.itemType)
             );
           } else {
             throw new InvalidArgumentError(
-              'The option "model" is not supported for Array property type of %s, so the property %v of the model %v should not have the option "model" to be provided.',
-              capitalize(propDef.itemType),
+              'The provided option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v does not have specified item type.',
               propName,
               modelName
             );
           }
         }
+        if (propDef.model && propDef.type !== DataType.OBJECT)
+          throw new InvalidArgumentError(
+            'The option "model" is not supported for %s property type, so the property %v of the model %v should not have the option "model" to be provided.',
+            capitalize(propDef.type),
+            propName,
+            modelName
+          );
         if (propDef.validate != null) {
           const propertyValidatorRegistry = this.getService(
             PropertyValidatorRegistry
@@ -3186,11 +3207,15 @@ var init_model_data_validator = __esm({
             );
             break;
           // OBJECT
-          case DataType.OBJECT:
+          case DataType.OBJECT: {
             if (!isPureObject(propValue)) throw createError("an Object");
-            if (typeof propDef === "object" && propDef.model)
-              this.validate(propDef.model, propValue);
+            if (typeof propDef === "object") {
+              const modelOptionField = isArrayValue ? "itemModel" : "model";
+              const modelOptionValue = propDef[modelOptionField];
+              if (modelOptionValue) this.validate(modelOptionValue, propValue);
+            }
             break;
+          }
         }
       }
       /**

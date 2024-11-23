@@ -133,7 +133,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(DataType.STRING)();
     });
 
-    it('expects provided the option "itemType" to be a DataType', function () {
+    it('expects the provided option "itemType" to be a DataType', function () {
       const validate = v => {
         const foo = {type: DataType.ARRAY, itemType: v};
         return () => S.validate('model', {foo});
@@ -153,7 +153,29 @@ describe('PropertiesDefinitionValidator', function () {
       validate(DataType.STRING)();
     });
 
-    it('expects provided the option "model" to be a string', function () {
+    it('expects the provided option "itemModel" to be a string', function () {
+      const validate = v => {
+        const foo = {
+          type: DataType.ARRAY,
+          itemType: DataType.OBJECT,
+          itemModel: v,
+        };
+        return () => S.validate('model', {foo});
+      };
+      const error = v =>
+        format(
+          'The provided option "itemModel" of the property "foo" ' +
+            'in the model "model" should be a String, but %s given.',
+          v,
+        );
+      expect(validate(10)).to.throw(error('10'));
+      expect(validate(true)).to.throw(error('true'));
+      expect(validate([])).to.throw(error('Array'));
+      expect(validate({})).to.throw(error('Object'));
+      validate('model')();
+    });
+
+    it('expects the provided option "model" to be a string', function () {
       const validate = v => {
         const foo = {
           type: DataType.OBJECT,
@@ -174,7 +196,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate('model')();
     });
 
-    it('expects provided the option "primaryKey" to be a boolean', function () {
+    it('expects the provided option "primaryKey" to be a boolean', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -195,7 +217,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(false)();
     });
 
-    it('expects provided the option "columnName" to be a string', function () {
+    it('expects the provided option "columnName" to be a string', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -216,7 +238,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate('columnName')();
     });
 
-    it('expects provided the option "columnType" to be a string', function () {
+    it('expects the provided option "columnType" to be a string', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -237,7 +259,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate('columnType')();
     });
 
-    it('expects provided the option "required" to be a boolean', function () {
+    it('expects the provided option "required" to be a boolean', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,
@@ -332,7 +354,7 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error =
-        'The property "foo" of the model "model" has the non-array type, ' +
+        'The property "foo" of the model "model" has a non-array type, ' +
         'so it should not have the option "itemType" to be provided.';
       expect(validate(DataType.ANY)).to.throw(error);
       expect(validate(DataType.STRING)).to.throw(error);
@@ -364,27 +386,34 @@ describe('PropertiesDefinitionValidator', function () {
       validate(DataType.OBJECT)();
     });
 
-    it('the option "model" requires the "object" item type', function () {
+    it('the option "itemModel" requires the "object" item type', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ARRAY,
           itemType: v,
-          model: 'model',
+          itemModel: 'model',
         };
         S.validate('model', {foo});
       };
-      const error = v =>
+      const errorForNonEmpty = v =>
         format(
-          'The option "model" is not supported for Array property type of %s, ' +
-            'so the property "foo" of the model "model" should not have ' +
-            'the option "model" to be provided.',
+          'The provided option "itemModel" requires the option "itemType" ' +
+            'to be explicitly set to Object, but the property "foo" of ' +
+            'the model "model" has specified item type as %s.',
           v,
         );
-      expect(validate(DataType.ANY)).to.throw(error('Any'));
-      expect(validate(DataType.STRING)).to.throw(error('String'));
-      expect(validate(DataType.NUMBER)).to.throw(error('Number'));
-      expect(validate(DataType.BOOLEAN)).to.throw(error('Boolean'));
-      expect(validate(DataType.ARRAY)).to.throw(error('Array'));
+      const errorForEmpty = format(
+        'The provided option "itemModel" requires the option "itemType" ' +
+          'to be explicitly set to Object, but the property "foo" of ' +
+          'the model "model" does not have specified item type.',
+      );
+      expect(validate(DataType.ANY)).to.throw(errorForNonEmpty('Any'));
+      expect(validate(DataType.STRING)).to.throw(errorForNonEmpty('String'));
+      expect(validate(DataType.NUMBER)).to.throw(errorForNonEmpty('Number'));
+      expect(validate(DataType.BOOLEAN)).to.throw(errorForNonEmpty('Boolean'));
+      expect(validate(DataType.ARRAY)).to.throw(errorForNonEmpty('Array'));
+      expect(validate(undefined)).to.throw(errorForEmpty);
+      expect(validate(null)).to.throw(errorForEmpty);
       validate(DataType.OBJECT)();
     });
 
@@ -491,7 +520,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate({myTransformer: true})();
     });
 
-    it('expects provided the option "unique" to be a Boolean or the PropertyUniqueness', function () {
+    it('expects the provided option "unique" to be a Boolean or the PropertyUniqueness', function () {
       const validate = v => {
         const foo = {
           type: DataType.STRING,

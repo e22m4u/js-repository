@@ -9,6 +9,7 @@ import {PropertyTransformOptions} from './property-transformer/index.js';
 export declare type FullPropertyDefinition = {
   type: DataType;
   itemType?: DataType;
+  itemModel?: string;
   model?: string;
   primaryKey?: boolean;
   columnName?: string;

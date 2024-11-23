@@ -1651,7 +1651,22 @@ describe('ModelDataValidator', function () {
             );
           });
 
-          describe('the "model" option', function () {
+          describe('the "itemModel" option', function () {
+            it('does not throw an error if the option "itemModel" is not specified in case of Object item type', function () {
+              const S = new Schema();
+              S.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ARRAY,
+                    itemType: DataType.OBJECT,
+                  },
+                },
+              });
+              const value = {foo: [{a: 1}, {b: 2}]};
+              S.getService(ModelDataValidator).validate('model', value);
+            });
+
             it('throws an error when the given object element has an invalid model', function () {
               const S = new Schema();
               S.defineModel({
@@ -1667,7 +1682,7 @@ describe('ModelDataValidator', function () {
                   bar: {
                     type: DataType.ARRAY,
                     itemType: DataType.OBJECT,
-                    model: 'modelA',
+                    itemModel: 'modelA',
                   },
                 },
               });
@@ -1696,7 +1711,7 @@ describe('ModelDataValidator', function () {
                   bar: {
                     type: DataType.ARRAY,
                     itemType: DataType.OBJECT,
-                    model: 'modelA',
+                    itemModel: 'modelA',
                   },
                 },
               });

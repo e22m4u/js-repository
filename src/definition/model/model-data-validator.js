@@ -157,11 +157,15 @@ export class ModelDataValidator extends Service {
         );
         break;
       // OBJECT
-      case DataType.OBJECT:
+      case DataType.OBJECT: {
         if (!isPureObject(propValue)) throw createError('an Object');
-        if (typeof propDef === 'object' && propDef.model)
-          this.validate(propDef.model, propValue);
+        if (typeof propDef === 'object') {
+          const modelOptionField = isArrayValue ? 'itemModel' : 'model';
+          const modelOptionValue = propDef[modelOptionField];
+          if (modelOptionValue) this.validate(modelOptionValue, propValue);
+        }
         break;
+      }
     }
   }
 

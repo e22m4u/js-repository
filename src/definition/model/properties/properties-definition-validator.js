@@ -112,6 +112,15 @@ export class PropertiesDefinitionValidator extends Service {
         propDef.itemType,
       );
     }
+    if (propDef.itemModel && typeof propDef.itemModel !== 'string') {
+      throw new InvalidArgumentError(
+        'The provided option "itemModel" of the property %v in the model %v ' +
+          'should be a String, but %v given.',
+        propName,
+        modelName,
+        propDef.itemModel,
+      );
+    }
     if (propDef.model && typeof propDef.model !== 'string')
       throw new InvalidArgumentError(
         'The provided option "model" of the property %v in the model %v ' +
@@ -175,37 +184,50 @@ export class PropertiesDefinitionValidator extends Service {
       );
     if (propDef.itemType && propDef.type !== Type.ARRAY)
       throw new InvalidArgumentError(
-        'The property %v of the model %v has the non-array type, ' +
+        'The property %v of the model %v has a non-array type, ' +
           'so it should not have the option "itemType" to be provided.',
         propName,
         modelName,
         propDef.type,
       );
-    if (
-      propDef.model &&
-      propDef.type !== Type.OBJECT &&
-      propDef.itemType !== Type.OBJECT
-    ) {
-      if (propDef.type !== Type.ARRAY) {
+    if (propDef.itemModel && propDef.type !== Type.ARRAY)
+      throw new InvalidArgumentError(
+        'The option "itemModel" is not supported for %s property type, ' +
+          'so the property %v of the model %v should not have ' +
+          'the option "itemModel" to be provided.',
+        capitalize(propDef.type),
+        propName,
+        modelName,
+      );
+    if (propDef.itemModel && propDef.itemType !== Type.OBJECT) {
+      if (propDef.itemType) {
         throw new InvalidArgumentError(
-          'The option "model" is not supported for %s property type, ' +
-            'so the property %v of the model %v should not have ' +
-            'the option "model" to be provided.',
-          capitalize(propDef.type),
+          'The provided option "itemModel" requires the option "itemType" ' +
+            'to be explicitly set to Object, but the property %v of ' +
+            'the model %v has specified item type as %s.',
           propName,
           modelName,
+          capitalize(propDef.itemType),
         );
       } else {
         throw new InvalidArgumentError(
-          'The option "model" is not supported for Array property type of %s, ' +
-            'so the property %v of the model %v should not have ' +
-            'the option "model" to be provided.',
-          capitalize(propDef.itemType),
+          'The provided option "itemModel" requires the option "itemType" ' +
+            'to be explicitly set to Object, but the property %v of ' +
+            'the model %v does not have specified item type.',
           propName,
           modelName,
         );
       }
     }
+    if (propDef.model && propDef.type !== Type.OBJECT)
+      throw new InvalidArgumentError(
+        'The option "model" is not supported for %s property type, ' +
+          'so the property %v of the model %v should not have ' +
+          'the option "model" to be provided.',
+        capitalize(propDef.type),
+        propName,
+        modelName,
+      );
     if (propDef.validate != null) {
       const propertyValidatorRegistry = this.getService(
         PropertyValidatorRegistry,
