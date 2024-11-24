@@ -3,6 +3,7 @@ import {chai} from '../chai.js';
 import {Schema} from '../schema.js';
 import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/js-service';
+import {ADAPTER_CLASS_NAME} from './adapter.js';
 import {ServiceContainer} from '@e22m4u/js-service';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
@@ -15,12 +16,11 @@ import {PropertyUniquenessDecorator} from './decorator/index.js';
 const sandbox = chai.spy.sandbox();
 
 describe('Adapter', function () {
-  it('exposes static property "kind"', function () {
-    expect(Adapter.kind).to.be.eq(Adapter.name);
-    const MyAdapter1 = class extends Adapter {};
-    expect(MyAdapter1.kind).to.be.eq(Adapter.name);
-    class MyAdapter2 extends Adapter {}
-    expect(MyAdapter2.kind).to.be.eq(Adapter.name);
+  it('exposes static property "kinds"', function () {
+    const kinds = [...Service.kinds, ADAPTER_CLASS_NAME];
+    expect(Adapter.kinds).to.be.eql(kinds);
+    const MyAdapter = class extends Adapter {};
+    expect(MyAdapter.kinds).to.be.eql(kinds);
   });
 
   describe('constructor', function () {

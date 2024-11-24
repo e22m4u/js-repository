@@ -5346,7 +5346,7 @@ var init_decorator = __esm({
 });
 
 // src/adapter/adapter.js
-var import_js_service32, _Adapter, Adapter;
+var import_js_service32, ADAPTER_CLASS_NAME, _Adapter, Adapter;
 var init_adapter = __esm({
   "src/adapter/adapter.js"() {
     "use strict";
@@ -5359,6 +5359,7 @@ var init_adapter = __esm({
     init_decorator();
     init_decorator();
     init_decorator();
+    ADAPTER_CLASS_NAME = "Adapter";
     _Adapter = class _Adapter extends import_js_service32.Service {
       /**
        * Settings.
@@ -5551,7 +5552,7 @@ var init_adapter = __esm({
      *
      * @type {string}
      */
-    __publicField(_Adapter, "kind", "Adapter");
+    __publicField(_Adapter, "kinds", [...import_js_service32.Service.kinds, ADAPTER_CLASS_NAME]);
     Adapter = _Adapter;
   }
 });
@@ -5953,7 +5954,7 @@ function findAdapterCtorInModule(module2) {
   let adapterCtor;
   if (!module2 || typeof module2 !== "object" || Array.isArray(module2)) return;
   for (const ctor of Object.values(module2)) {
-    if (typeof ctor === "function" && ctor.kind === Adapter.kind) {
+    if (typeof ctor === "function" && Array.isArray(ctor.kinds) && Adapter.kinds.includes(ADAPTER_CLASS_NAME)) {
       adapterCtor = ctor;
       break;
     }
@@ -5966,6 +5967,7 @@ var init_adapter_loader = __esm({
     "use strict";
     init_adapter();
     import_js_service33 = require("@e22m4u/js-service");
+    init_adapter();
     init_errors();
     init_();
     _AdapterLoader = class _AdapterLoader extends import_js_service33.Service {
@@ -6328,6 +6330,7 @@ var init_repository2 = __esm({
 // src/index.js
 var src_exports = {};
 __export(src_exports, {
+  ADAPTER_CLASS_NAME: () => ADAPTER_CLASS_NAME,
   Adapter: () => Adapter,
   AdapterLoader: () => AdapterLoader,
   AdapterRegistry: () => AdapterRegistry,
@@ -6432,6 +6435,7 @@ init_definition();
 init_repository2();
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  ADAPTER_CLASS_NAME,
   Adapter,
   AdapterLoader,
   AdapterRegistry,

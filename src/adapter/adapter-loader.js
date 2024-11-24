@@ -1,5 +1,6 @@
 import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/js-service';
+import {ADAPTER_CLASS_NAME} from './adapter.js';
 import {InvalidArgumentError} from '../errors/index.js';
 
 /**
@@ -54,7 +55,11 @@ function findAdapterCtorInModule(module) {
   let adapterCtor;
   if (!module || typeof module !== 'object' || Array.isArray(module)) return;
   for (const ctor of Object.values(module)) {
-    if (typeof ctor === 'function' && ctor.kind === Adapter.kind) {
+    if (
+      typeof ctor === 'function' &&
+      Array.isArray(ctor.kinds) &&
+      Adapter.kinds.includes(ADAPTER_CLASS_NAME)
+    ) {
       adapterCtor = ctor;
       break;
     }
