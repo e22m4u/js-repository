@@ -690,6 +690,191 @@ describe('ModelDefinitionUtils', function () {
         .convertPropertyNamesToColumnNames('modelB', {foo: 'string'});
       expect(result).to.be.eql({fooColumn: 'string'});
     });
+
+    describe('embedded object with model', function () {
+      it('does nothing if no property definitions', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: {foo: 'string'},
+          });
+        expect(result).to.be.eql({embedded: {foo: 'string'}});
+      });
+
+      it('does nothing if no column name specified', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: DataType.STRING,
+            bar: DataType.NUMBER,
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: {foo: 'string', bar: 10},
+          });
+        expect(result).to.be.eql({embedded: {foo: 'string', bar: 10}});
+      });
+
+      it('replaces property names by column names', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              columnName: 'fooColumn',
+            },
+            bar: {
+              type: DataType.NUMBER,
+              columnName: 'barColumn',
+            },
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: {foo: 'string', bar: 10},
+          });
+        expect(result).to.be.eql({
+          embedded: {fooColumn: 'string', barColumn: 10},
+        });
+      });
+    });
+
+    describe('embedded array with items model', function () {
+      it('does nothing if no property definitions', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: [{foo: 'val'}, {bar: 10}],
+          });
+        expect(result).to.be.eql({embedded: [{foo: 'val'}, {bar: 10}]});
+      });
+
+      it('does nothing if no column name specified', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: DataType.STRING,
+            bar: DataType.NUMBER,
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: [
+              {foo: 'val1', bar: 10},
+              {foo: 'val2', bar: 20},
+            ],
+          });
+        expect(result).to.be.eql({
+          embedded: [
+            {foo: 'val1', bar: 10},
+            {foo: 'val2', bar: 20},
+          ],
+        });
+      });
+
+      it('replaces property names by column names', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              columnName: 'fooColumn',
+            },
+            bar: {
+              type: DataType.NUMBER,
+              columnName: 'barColumn',
+            },
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertPropertyNamesToColumnNames('modelA', {
+            embedded: [
+              {foo: 'val1', bar: 10},
+              {foo: 'val2', bar: 20},
+            ],
+          });
+        expect(result).to.be.eql({
+          embedded: [
+            {fooColumn: 'val1', barColumn: 10},
+            {fooColumn: 'val2', barColumn: 20},
+          ],
+        });
+      });
+    });
   });
 
   describe('convertColumnNamesToPropertyNames', function () {
@@ -763,6 +948,189 @@ describe('ModelDefinitionUtils', function () {
         .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('modelA', {fooColumn: 'string'});
       expect(result).to.be.eql({foo: 'string'});
+    });
+
+    describe('embedded object with model', function () {
+      it('does nothing if no property definitions', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: {foo: 'string'},
+          });
+        expect(result).to.be.eql({embedded: {foo: 'string'}});
+      });
+
+      it('does nothing if no column name specified', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: DataType.STRING,
+            bar: DataType.NUMBER,
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: {foo: 'string', bar: 10},
+          });
+        expect(result).to.be.eql({embedded: {foo: 'string', bar: 10}});
+      });
+
+      it('replaces property names by column names', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.OBJECT,
+              model: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              columnName: 'fooColumn',
+            },
+            bar: {
+              type: DataType.NUMBER,
+              columnName: 'barColumn',
+            },
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: {fooColumn: 'string', barColumn: 10},
+          });
+        expect(result).to.be.eql({embedded: {foo: 'string', bar: 10}});
+      });
+    });
+
+    describe('embedded array with items model', function () {
+      it('does nothing if no property definitions', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: [{foo: 'val'}, {bar: 10}],
+          });
+        expect(result).to.be.eql({embedded: [{foo: 'val'}, {bar: 10}]});
+      });
+
+      it('does nothing if no column name specified', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: DataType.STRING,
+            bar: DataType.NUMBER,
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: [
+              {foo: 'val1', bar: 10},
+              {foo: 'val2', bar: 20},
+            ],
+          });
+        expect(result).to.be.eql({
+          embedded: [
+            {foo: 'val1', bar: 10},
+            {foo: 'val2', bar: 20},
+          ],
+        });
+      });
+
+      it('replaces property names by column names', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'modelA',
+          properties: {
+            embedded: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'modelB',
+            },
+          },
+        });
+        schema.defineModel({
+          name: 'modelB',
+          properties: {
+            foo: {
+              type: DataType.STRING,
+              columnName: 'fooColumn',
+            },
+            bar: {
+              type: DataType.NUMBER,
+              columnName: 'barColumn',
+            },
+          },
+        });
+        const result = schema
+          .getService(ModelDefinitionUtils)
+          .convertColumnNamesToPropertyNames('modelA', {
+            embedded: [
+              {fooColumn: 'val1', barColumn: 10},
+              {fooColumn: 'val2', barColumn: 20},
+            ],
+          });
+        expect(result).to.be.eql({
+          embedded: [
+            {foo: 'val1', bar: 10},
+            {foo: 'val2', bar: 20},
+          ],
+        });
+      });
     });
   });
 

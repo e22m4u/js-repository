@@ -179,8 +179,43 @@ export class ModelDefinitionUtils extends Service {
     propNames.forEach(propName => {
       if (!(propName in convertedData)) return;
       const colName = this.getColumnNameByPropertyName(modelName, propName);
-      if (propName === colName) return;
-      const propValue = convertedData[propName];
+      let propValue = convertedData[propName];
+      // если значением является объект, то проверяем
+      // тип свойства и наличие модели для замены
+      // полей данного объекта
+      const propDef = propDefs[propName];
+      if (
+        propValue !== null &&
+        typeof propValue === 'object' &&
+        !Array.isArray(propValue) &&
+        propDef !== null &&
+        typeof propDef === 'object' &&
+        propDef.type === DataType.OBJECT &&
+        propDef.model
+      ) {
+        propValue = this.convertPropertyNamesToColumnNames(
+          propDef.model,
+          propValue,
+        );
+      }
+      // если значением является массив, то проверяем
+      // тип свойства и наличие модели элементов массива
+      // для замены полей каждого объекта
+      if (
+        Array.isArray(propValue) &&
+        propDef !== null &&
+        typeof propDef === 'object' &&
+        propDef.type === DataType.ARRAY &&
+        propDef.itemModel
+      ) {
+        propValue = propValue.map(el => {
+          // если элементом массива является объект,
+          // то конвертируем поля согласно модели
+          return el !== null && typeof el === 'object' && !Array.isArray(el)
+            ? this.convertPropertyNamesToColumnNames(propDef.itemModel, el)
+            : el;
+        });
+      }
       delete convertedData[propName];
       convertedData[colName] = propValue;
     });
@@ -201,8 +236,44 @@ export class ModelDefinitionUtils extends Service {
     const convertedData = cloneDeep(tableData);
     propNames.forEach(propName => {
       const colName = this.getColumnNameByPropertyName(modelName, propName);
-      if (!(colName in convertedData) || colName === propName) return;
-      const colValue = convertedData[colName];
+      if (!(colName in convertedData)) return;
+      let colValue = convertedData[colName];
+      // если значением является объект, то проверяем
+      // тип свойства и наличие модели для замены
+      // полей данного объекта
+      const propDef = propDefs[propName];
+      if (
+        colValue !== null &&
+        typeof colValue === 'object' &&
+        !Array.isArray(colValue) &&
+        propDef !== null &&
+        typeof propDef === 'object' &&
+        propDef.type === DataType.OBJECT &&
+        propDef.model
+      ) {
+        colValue = this.convertColumnNamesToPropertyNames(
+          propDef.model,
+          colValue,
+        );
+      }
+      // если значением является массив, то проверяем
+      // тип свойства и наличие модели элементов массива
+      // для замены полей каждого объекта
+      if (
+        Array.isArray(colValue) &&
+        propDef !== null &&
+        typeof propDef === 'object' &&
+        propDef.type === DataType.ARRAY &&
+        propDef.itemModel
+      ) {
+        colValue = colValue.map(el => {
+          // если элементом массива является объект,
+          // то конвертируем поля согласно модели
+          return el !== null && typeof el === 'object' && !Array.isArray(el)
+            ? this.convertColumnNamesToPropertyNames(propDef.itemModel, el)
+            : el;
+        });
+      }
       delete convertedData[colName];
       convertedData[propName] = colValue;
     });

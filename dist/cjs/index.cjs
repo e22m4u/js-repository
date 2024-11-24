@@ -2348,8 +2348,19 @@ var init_model_definition_utils = __esm({
         propNames.forEach((propName) => {
           if (!(propName in convertedData)) return;
           const colName = this.getColumnNameByPropertyName(modelName, propName);
-          if (propName === colName) return;
-          const propValue = convertedData[propName];
+          let propValue = convertedData[propName];
+          const propDef = propDefs[propName];
+          if (propValue !== null && typeof propValue === "object" && !Array.isArray(propValue) && propDef !== null && typeof propDef === "object" && propDef.type === DataType.OBJECT && propDef.model) {
+            propValue = this.convertPropertyNamesToColumnNames(
+              propDef.model,
+              propValue
+            );
+          }
+          if (Array.isArray(propValue) && propDef !== null && typeof propDef === "object" && propDef.type === DataType.ARRAY && propDef.itemModel) {
+            propValue = propValue.map((el) => {
+              return el !== null && typeof el === "object" && !Array.isArray(el) ? this.convertPropertyNamesToColumnNames(propDef.itemModel, el) : el;
+            });
+          }
           delete convertedData[propName];
           convertedData[colName] = propValue;
         });
@@ -2368,8 +2379,20 @@ var init_model_definition_utils = __esm({
         const convertedData = cloneDeep(tableData);
         propNames.forEach((propName) => {
           const colName = this.getColumnNameByPropertyName(modelName, propName);
-          if (!(colName in convertedData) || colName === propName) return;
-          const colValue = convertedData[colName];
+          if (!(colName in convertedData)) return;
+          let colValue = convertedData[colName];
+          const propDef = propDefs[propName];
+          if (colValue !== null && typeof colValue === "object" && !Array.isArray(colValue) && propDef !== null && typeof propDef === "object" && propDef.type === DataType.OBJECT && propDef.model) {
+            colValue = this.convertColumnNamesToPropertyNames(
+              propDef.model,
+              colValue
+            );
+          }
+          if (Array.isArray(colValue) && propDef !== null && typeof propDef === "object" && propDef.type === DataType.ARRAY && propDef.itemModel) {
+            colValue = colValue.map((el) => {
+              return el !== null && typeof el === "object" && !Array.isArray(el) ? this.convertColumnNamesToPropertyNames(propDef.itemModel, el) : el;
+            });
+          }
           delete convertedData[colName];
           convertedData[propName] = colValue;
         });
