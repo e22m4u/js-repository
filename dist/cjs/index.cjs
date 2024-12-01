@@ -2578,6 +2578,34 @@ var init_model_definition_utils = __esm({
         const relNames = Object.keys(relDefs);
         return excludeObjectKeys(modelData, relNames);
       }
+      /**
+       * Get model name of property value if defined.
+       *
+       * @param {string} modelName
+       * @param {string} propertyName
+       * @returns {undefined|string}
+       */
+      getModelNameOfPropertyValueIfDefined(modelName, propertyName) {
+        if (!modelName || typeof modelName !== "string")
+          throw new InvalidArgumentError(
+            'Parameter "modelName" of ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined requires a non-empty String, but %v given.',
+            modelName
+          );
+        if (!propertyName || typeof propertyName !== "string")
+          throw new InvalidArgumentError(
+            'Parameter "propertyName" of ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined requires a non-empty String, but %v given.',
+            propertyName
+          );
+        const propDefs = this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
+        const propDef = propDefs[propertyName];
+        if (!propDef) return void 0;
+        if (propDef && typeof propDef === "object") {
+          if (propDef.type === DataType.OBJECT) return propDef.model || void 0;
+          if (propDef.type === DataType.ARRAY)
+            return propDef.itemModel || void 0;
+        }
+        return void 0;
+      }
     };
     __name(_ModelDefinitionUtils, "ModelDefinitionUtils");
     ModelDefinitionUtils = _ModelDefinitionUtils;

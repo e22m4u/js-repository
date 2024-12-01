@@ -1921,4 +1921,236 @@ describe('ModelDefinitionUtils', function () {
       throwable({foo: 'bar'})();
     });
   });
+
+  describe('getModelNameOfPropertyValueIfDefined', function () {
+    it('returns undefined if a given property does not exist in the model', function () {
+      const schema = new Schema();
+      schema.defineModel({name: 'model'});
+      const S = schema.getService(ModelDefinitionUtils);
+      const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+      expect(res).to.be.undefined;
+    });
+
+    describe('short property definition', function () {
+      it('requires parameter "modelName" to be a non-empty String', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: DataType.OBJECT,
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const throwable = v => () =>
+          S.getModelNameOfPropertyValueIfDefined(v, 'foo');
+        const error = v =>
+          format(
+            'Parameter "modelName" of ' +
+              'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+              'requires a non-empty String, but %s given.',
+            v,
+          );
+        expect(throwable('')).to.throw(error('""'));
+        expect(throwable(10)).to.throw(error('10'));
+        expect(throwable(true)).to.throw(error('true'));
+        expect(throwable(false)).to.throw(error('false'));
+        expect(throwable([])).to.throw(error('Array'));
+        expect(throwable({})).to.throw(error('Object'));
+        expect(throwable(undefined)).to.throw(error('undefined'));
+        expect(throwable(null)).to.throw(error('null'));
+        throwable('model')();
+      });
+
+      it('requires parameter "propertyName" to be a non-empty String', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: DataType.OBJECT,
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const throwable = v => () =>
+          S.getModelNameOfPropertyValueIfDefined('model', v);
+        const error = v =>
+          format(
+            'Parameter "propertyName" of ' +
+              'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+              'requires a non-empty String, but %s given.',
+            v,
+          );
+        expect(throwable('')).to.throw(error('""'));
+        expect(throwable(10)).to.throw(error('10'));
+        expect(throwable(true)).to.throw(error('true'));
+        expect(throwable(false)).to.throw(error('false'));
+        expect(throwable([])).to.throw(error('Array'));
+        expect(throwable({})).to.throw(error('Object'));
+        expect(throwable(undefined)).to.throw(error('undefined'));
+        expect(throwable(null)).to.throw(error('null'));
+        throwable('foo')();
+      });
+
+      it('returns undefined if the property definition is DataType', function () {
+        const fn = v => {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: v,
+            },
+          });
+          const S = schema.getService(ModelDefinitionUtils);
+          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        };
+        expect(fn(DataType.ANY)).to.be.undefined;
+        expect(fn(DataType.STRING)).to.be.undefined;
+        expect(fn(DataType.NUMBER)).to.be.undefined;
+        expect(fn(DataType.BOOLEAN)).to.be.undefined;
+        expect(fn(DataType.ARRAY)).to.be.undefined;
+        expect(fn(DataType.OBJECT)).to.be.undefined;
+      });
+    });
+
+    describe('full property definition', function () {
+      it('requires parameter "modelName" to be a non-empty String', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.OBJECT,
+            },
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const throwable = v => () =>
+          S.getModelNameOfPropertyValueIfDefined(v, 'foo');
+        const error = v =>
+          format(
+            'Parameter "modelName" of ' +
+              'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+              'requires a non-empty String, but %s given.',
+            v,
+          );
+        expect(throwable('')).to.throw(error('""'));
+        expect(throwable(10)).to.throw(error('10'));
+        expect(throwable(true)).to.throw(error('true'));
+        expect(throwable(false)).to.throw(error('false'));
+        expect(throwable([])).to.throw(error('Array'));
+        expect(throwable({})).to.throw(error('Object'));
+        expect(throwable(undefined)).to.throw(error('undefined'));
+        expect(throwable(null)).to.throw(error('null'));
+        throwable('model')();
+      });
+
+      it('requires parameter "propertyName" to be a non-empty String', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.OBJECT,
+            },
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const throwable = v => () =>
+          S.getModelNameOfPropertyValueIfDefined('model', v);
+        const error = v =>
+          format(
+            'Parameter "propertyName" of ' +
+              'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+              'requires a non-empty String, but %s given.',
+            v,
+          );
+        expect(throwable('')).to.throw(error('""'));
+        expect(throwable(10)).to.throw(error('10'));
+        expect(throwable(true)).to.throw(error('true'));
+        expect(throwable(false)).to.throw(error('false'));
+        expect(throwable([])).to.throw(error('Array'));
+        expect(throwable({})).to.throw(error('Object'));
+        expect(throwable(undefined)).to.throw(error('undefined'));
+        expect(throwable(null)).to.throw(error('null'));
+        throwable('foo')();
+      });
+
+      it('return undefined if no model name specified', function () {
+        const fn = v => {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: v,
+              },
+            },
+          });
+          const S = schema.getService(ModelDefinitionUtils);
+          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        };
+        expect(fn(DataType.ANY)).to.be.undefined;
+        expect(fn(DataType.STRING)).to.be.undefined;
+        expect(fn(DataType.NUMBER)).to.be.undefined;
+        expect(fn(DataType.BOOLEAN)).to.be.undefined;
+        expect(fn(DataType.ARRAY)).to.be.undefined;
+        expect(fn(DataType.OBJECT)).to.be.undefined;
+      });
+
+      it('return undefined if no model name specified in case of Array property', function () {
+        const fn = v => {
+          const schema = new Schema();
+          schema.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ARRAY,
+                itemType: v,
+              },
+            },
+          });
+          const S = schema.getService(ModelDefinitionUtils);
+          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        };
+        expect(fn(DataType.ANY)).to.be.undefined;
+        expect(fn(DataType.STRING)).to.be.undefined;
+        expect(fn(DataType.NUMBER)).to.be.undefined;
+        expect(fn(DataType.BOOLEAN)).to.be.undefined;
+        expect(fn(DataType.ARRAY)).to.be.undefined;
+        expect(fn(DataType.OBJECT)).to.be.undefined;
+      });
+
+      it('returns a model name from the option "model" in case of Object property', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.OBJECT,
+              model: 'myModel',
+            },
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        expect(res).to.be.eq('myModel');
+      });
+
+      it('returns a model name from the option "itemModel" in case of Array property', function () {
+        const schema = new Schema();
+        schema.defineModel({
+          name: 'model',
+          properties: {
+            foo: {
+              type: DataType.ARRAY,
+              itemType: DataType.OBJECT,
+              itemModel: 'myModel',
+            },
+          },
+        });
+        const S = schema.getService(ModelDefinitionUtils);
+        const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        expect(res).to.be.eq('myModel');
+      });
+    });
+  });
 });

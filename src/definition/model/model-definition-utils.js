@@ -475,4 +475,51 @@ export class ModelDefinitionUtils extends Service {
     const relNames = Object.keys(relDefs);
     return excludeObjectKeys(modelData, relNames);
   }
+
+  /**
+   * Get model name of property value if defined.
+   *
+   * @param {string} modelName
+   * @param {string} propertyName
+   * @returns {undefined|string}
+   */
+  getModelNameOfPropertyValueIfDefined(modelName, propertyName) {
+    if (!modelName || typeof modelName !== 'string')
+      throw new InvalidArgumentError(
+        'Parameter "modelName" of ' +
+          'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+          'requires a non-empty String, but %v given.',
+        modelName,
+      );
+    if (!propertyName || typeof propertyName !== 'string')
+      throw new InvalidArgumentError(
+        'Parameter "propertyName" of ' +
+          'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
+          'requires a non-empty String, but %v given.',
+        propertyName,
+      );
+    // если определение свойства не найдено,
+    // то возвращаем undefined
+    const propDefs =
+      this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
+    const propDef = propDefs[propertyName];
+    if (!propDef) return undefined;
+    // если определение свойства является
+    // объектом, то проверяем тип и возвращаем
+    // название модели
+    if (propDef && typeof propDef === 'object') {
+      // если тип свойства является объектом,
+      // то возвращаем значение опции "model",
+      // или undefined
+      if (propDef.type === DataType.OBJECT) return propDef.model || undefined;
+      // если тип свойства является массивом,
+      // то возвращаем значение опции "itemModel",
+      // или undefined
+      if (propDef.type === DataType.ARRAY)
+        return propDef.itemModel || undefined;
+    }
+    // если определение свойства не является
+    // объектом, то возвращаем undefined
+    return undefined;
+  }
 }
