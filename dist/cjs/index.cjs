@@ -2583,7 +2583,7 @@ var init_model_definition_utils = __esm({
        *
        * @param {string} modelName
        * @param {string} propertyName
-       * @returns {undefined|string}
+       * @returns {string|undefined}
        */
       getModelNameOfPropertyValueIfDefined(modelName, propertyName) {
         if (!modelName || typeof modelName !== "string")

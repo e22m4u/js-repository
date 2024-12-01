@@ -481,7 +481,7 @@ export class ModelDefinitionUtils extends Service {
    *
    * @param {string} modelName
    * @param {string} propertyName
-   * @returns {undefined|string}
+   * @returns {string|undefined}
    */
   getModelNameOfPropertyValueIfDefined(modelName, propertyName) {
     if (!modelName || typeof modelName !== 'string')

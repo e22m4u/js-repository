@@ -166,4 +166,15 @@ export declare class ModelDefinitionUtils extends Service {
     modelName: string,
     modelData: T,
   ): Partial<T>;
+
+  /**
+   * Get model name of property value if defined.
+   *
+   * @param modelName
+   * @param propertyName
+   */
+  getModelNameOfPropertyValueIfDefined(
+    modelName: string,
+    propertyName: string,
+  ): string | undefined;
 }
