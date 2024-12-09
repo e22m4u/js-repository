@@ -39,7 +39,7 @@
   "license": "MIT",
   "homepage": "https://github.com/e22m4u/js-repository",
   "peerDependencies": {
-    "@e22m4u/js-format": "~0.1.7",
+    "@e22m4u/js-format": "~0.1.0",
     "@e22m4u/js-service": "~0.2.0"
   },
   "devDependencies": {
