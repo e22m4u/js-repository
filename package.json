@@ -39,8 +39,8 @@
   "license": "MIT",
   "homepage": "https://github.com/e22m4u/js-repository",
   "peerDependencies": {
-    "@e22m4u/js-format": "0.1.x",
-    "@e22m4u/js-service": "0.2.x"
+    "@e22m4u/js-format": "~0.1.7",
+    "@e22m4u/js-service": "~0.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "~19.6.0",
@@ -55,17 +55,17 @@
     "chai-spies": "~1.1.0",
     "chai-subset": "~1.6.0",
     "esbuild": "~0.24.0",
-    "eslint": "~9.15.0",
+    "eslint": "~9.16.0",
     "eslint-config-prettier": "~9.1.0",
     "eslint-plugin-chai-expect": "~3.1.0",
     "eslint-plugin-jsdoc": "~50.6.0",
     "eslint-plugin-mocha": "~10.5.0",
     "husky": "~9.1.7",
-    "mocha": "~10.8.2",
+    "mocha": "~11.0.1",
     "prettier": "~3.4.1",
     "rimraf": "~6.0.1",
     "tsx": "~4.19.2",
-    "typescript": "~5.6.3",
-    "typescript-eslint": "~8.16.0"
+    "typescript": "~5.7.2",
+    "typescript-eslint": "~8.17.0"
   }
 }
