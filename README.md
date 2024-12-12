@@ -31,10 +31,10 @@ npm install @e22m4u/js-repository
 
 Optionally install an adapter.
 
-|           | описание                                                                                                                        |
-|-----------|---------------------------------------------------------------------------------------------------------------------------------|
-| `memory`  | in-memory virtual database (no installation required)                                                                           |
-| `mongodb` | MongoDB - NoSQL database management system (*[установка](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
+|           | description                                                                                                                   |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------|
+| `memory`  | in-memory virtual database (no installation required)                                                                         |
+| `mongodb` | MongoDB - NoSQL database management system (*[install](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
 
 ## Import
 
@@ -474,7 +474,7 @@ schema.defineModel({
 });
 ```
 
-## Пустые значения
+## Empty Values
 
 Different property types have their own sets of empty values. These sets
 are used to determine the presence of a payload in the property value.
