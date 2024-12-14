@@ -292,7 +292,7 @@ type or an object with additional parameters.
 - `validate: string | array | object` see [Validators](#Validators)
 - `unique: boolean | string` check value uniqueness
 
-**Parameter `unique`**
+**`unique`**
 
 When `unique` is set to `true` or `'strict'`, strict uniqueness
 checking is performed. In this mode, [empty values](#Empty-Values)
