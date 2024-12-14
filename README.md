@@ -54,18 +54,19 @@ const {Schema} = require('@e22m4u/js-repository');
 
 ## Description
 
-The module provides an abstraction layer over different database interfaces
-by representing them as named *data sources* connected to *models*. A *model*
-describes a database table where columns are represented as model properties.
-Each model property can have a specific *type* of allowed value, along with
-*validators* and *transformers* that process data before it is written to
-the database. Additionally, a *model* can define classic relationship types
-like "one-to-one", "one-to-many" and others between models.
+The module provides an abstraction layer over different database
+interfaces by representing them as named *data sources* connected
+to *models*. A *model* describes a database table where columns
+are represented as model properties. Each model property can have
+a specific *type* of allowed value, along with *validators* and
+*transformers* that process data before it is written to the database.
+Additionally, a *model* can define classic relationship types like
+"one-to-one", "one-to-many" and others between models.
 
-Data operations are performed using a *repository*, which is available for each
-model with a declared *data source*. The repository can filter requested documents,
-validate properties according to the model definition, and include related data
-in query results.
+Data operations are performed using a *repository*, which is available
+for each model with a declared *data source*. The repository can filter
+requested documents, validate properties according to the model definition,
+and include related data in query results.
 
 - *Data Source* - defines database connection settings
 - *Model* - describes document structure and relationships with other models
@@ -236,9 +237,9 @@ schema.defineDatasource({
 
 ## Model
 
-A model describes the structure of a collection document and its relationships
-with other models. New models are added using the `defineModel` method
-of a schema instance.
+A model describes the structure of a collection document and
+its relationships with other models. New models are added using
+the `defineModel` method of a schema instance.
 
 **Parameters**
 
@@ -265,9 +266,9 @@ schema.defineModel({
 
 ## Properties
 
-The `properties` parameter is in the model definition and accepts
-an object whose keys are the properties of this model, and the value
-is either the property type or an object with additional parameters.
+The `properties` parameter in a model definition accepts an object
+where keys are model properties and values are either a property
+type or an object with additional parameters.
 
 **Data Type**
 
@@ -283,32 +284,32 @@ is either the property type or an object with additional parameters.
 - `type: string` type of allowed value (required)
 - `itemType: string` array item type (for `type: 'array'`)
 - `model: string` object model (for `type: 'object'`)
-- `primaryKey: boolean` declare property as primary key
+- `primaryKey: boolean` mark property as primary key
 - `columnName: string` override column name
 - `columnType: string` column type (defined by adapter)
-- `required: boolean` declare property as required
+- `required: boolean` mark property as required
 - `default: any` default value
 - `validate: string | array | object` see [Validators](#Validators)
-- `unique: boolean | string` check value for uniqueness
+- `unique: boolean | string` check value uniqueness
 
 **Parameter `unique`**
 
-If the value of the `unique` parameter is `true` or `'strict'`,
-strict uniqueness checking is performed. In this mode,
-[empty values](#Empty-Values) are also subject to verification,
-where `null` and `undefined` cannot be repeated more than once.
+When `unique` is set to `true` or `'strict'`, strict uniqueness
+checking is performed. In this mode, [empty values](#Empty-Values)
+are also validated, where `null` and `undefined` cannot appear more
+than once.
 
-The `'sparse'` mode only checks values with payload, excluding
-[empty values](#Empty-Values), whose list differs depending
-on the property type. For example, for type `string`, empty
-values will be `undefined`, `null` and `''` (empty string).
+The `'sparse'` mode only checks non-empty values, excluding
+[empty values](#Empty-Values) which vary by property type.
+For example, for `string` type, empty values include `undefined`,
+`null` and `''` (empty string).
 
 - `unique: true | 'strict'` strict uniqueness check
 - `unique: 'sparse'` exclude [empty values](#Empty-Values) from check
-- `unique: false | 'nonUnique'` do not check for uniqueness (default)
+- `unique: false | 'nonUnique'` no uniqueness check (default)
 
-Predefined constants can be used as `unique` parameter values
-as equivalent to string values `strict`, `sparse` and `nonUnique`.
+Predefined constants can be used as `unique` parameter values,
+equivalent to the string values `strict`, `sparse` and `nonUnique`:
 
 - `PropertyUniqueness.STRICT`
 - `PropertyUniqueness.SPARSE`
@@ -350,7 +351,7 @@ schema.defineModel({
 });
 ```
 
-Factory default value. The function's return value will be determined
+Factory default values. The function's return value is determined
 when writing the document.
 
 ```js
@@ -372,20 +373,19 @@ schema.defineModel({
 
 ## Validators
 
-In addition to type checking, additional conditions can be set using
-validators, through which the property value will pass before being
-written to the database. The exception is [empty values](#Empty-Values),
-which are not subject to validation.
+In addition to type checking, properties can have validators
+that process values before they are written to the database.
+[Empty values](#Empty-Values) are exempt from validation.
 
-- `minLength: number` minimum length of string or array
-- `maxLength: number` maximum length of string or array
-- `regexp: string | RegExp` regular expression check
+- `minLength: number` minimum length for strings or arrays
+- `maxLength: number` maximum length for strings or arrays
+- `regexp: string | RegExp` regular expression pattern check
 
 **Example**
 
-Validators are specified in the model property definition with
-the `validate` parameter, which accepts an object with their names
-and settings.
+Validators are specified in the model property definition using
+the `validate` parameter, which accepts an object with validator
+names and settings.
 
 ```js
 schema.defineModel({
@@ -404,14 +404,14 @@ schema.defineModel({
 
 ### Custom Validators
 
-A validator is a function that receives the value of the corresponding
-field before writing to the database. If during validation the function
-returns `false`, a standard error is thrown. Standard error substitution
-is possible by throwing a custom error directly inside the function.
+A validator is a function that receives a property value before
+it is written to the database. If validation returns `false`,
+a standard error is thrown. Custom errors can be thrown directly
+within the validator function.
 
-Custom validator registration is performed using the `addValidator` method
-of the `PropertyValidatorRegistry` service, which accepts a new name
-and function for value validation.
+Custom validators are registered using the `addValidator` method
+of the `PropertyValidatorRegistry` service, which accepts a new
+validator name and validation function.
 
 **Example**
 
@@ -442,22 +442,22 @@ schema.defineModel({
 
 ## Transformers
 
-Transformers are used to modify values of specific fields before writing
-to the database. Transformers allow you to specify what changes should
-be made to incoming data. The exception is [empty values](#Empty-Values),
-which are not subject to transformation.
+Transformers modify property values before they are written
+to the database. They define how incoming data should be processed.
+[Empty values](#Empty-Values) are exempt from transformation.
 
 - `trim` removes whitespace from both ends of string
-- `toUpperCase` convert string to uppercase
-- `toLowerCase` convert string to lowercase
-- `toTitleCase` convert string to title case
+- `toUpperCase` converts string to uppercase
+- `toLowerCase` converts string to lowercase
+- `toTitleCase` converts string to title case
 
 **Example**
 
-Transformers are specified in the model property definition with the `transform`
-parameter, which accepts the transformer name. If multiple names need to be specified,
-an array is used. If the transformer has settings, an object is used where the key
-is the transformer name and the value is its parameters.
+Transformers are specified in the model property definition using
+the `transform` parameter. It accepts a transformer name as a string.
+For multiple transformers, use an array. If a transformer has settings,
+use an object where the key is the transformer name and the value contains
+its parameters.
 
 ```js
 schema.defineModel({
@@ -477,12 +477,11 @@ schema.defineModel({
 ## Empty Values
 
 Different property types have their own sets of empty values. These sets
-are used to determine the presence of a payload in the property value.
-For example, the `default` parameter in the property definition sets
-the default value only if the incoming value is empty. The `required`
-parameter excludes empty values by throwing an error. And the `unique`
-parameter in `sparse` mode, on the contrary, allows duplication of empty
-values of a unique property.
+determine whether a property value has meaningful content. For example,
+the `default` parameter in a property definition only sets the default
+value if the incoming value is empty. The `required` parameter excludes
+empty values by throwing an error. The `unique` parameter in `sparse`
+mode allows duplicate empty values for a unique property.
 
 | type        | empty values              |
 |-------------|---------------------------|
@@ -495,9 +494,9 @@ values of a unique property.
 
 ## Repository
 
-Performs read and write operations on documents of a specific model.
-You can get a repository using the `getRepository` method of the schema
-instance.
+A repository performs read and write operations on documents
+of a specific model. You can get a repository using the schema
+instance's `getRepository` method.
 
 **Methods**
 
@@ -517,9 +516,9 @@ instance.
 **Arguments**
 
 - `id: number|string` identifier (primary key)
-- `data: object` object reflecting document composition
-- `where: object` selection parameters (see [Filtering](#Filtering))
-- `filter: object` return result parameters (see [Filtering](#Filtering))
+- `data: object` object representing document structure
+- `where: object` query parameters (see [Filtering](#Filtering))
+- `filter: object` result parameters (see [Filtering](#Filtering))
 
 **Examples**
 
@@ -568,9 +567,9 @@ console.log(res); // true
 
 ## Filtering
 
-Some repository methods accept a settings object that affects the returned
-result. The widest set of such settings has the first parameter of the `find`
-method, which expects an object containing the set of options listed below.
+Some repository methods accept a settings object that affects
+the returned result. The `find` method's first parameter accepts
+the widest range of options, which are listed below.
 
 - `where: object` selection object
 - `order: string[]` order specification
@@ -602,7 +601,7 @@ a wide range of comparison operators.
 `{foo: {regexp: 'ba.+'}}` regular expression operator `regexp`  
 `{foo: {regexp: 'ba.+', flags: 'i'}}` regular expression flags
 
-*i. Conditions can be combined with `and`, `or` and `nor` operators.*
+*Note: Conditions can be combined with `and`, `or` and `nor` operators.*
 
 **Examples**
 
@@ -631,7 +630,7 @@ const res = await rep.delete({
 ### order
 
 The parameter orders the selection by specified model properties.
-Reverse order direction can be set with the `DESC` postfix in
+Reverse order can be specified with the `DESC` suffix in
 the property name.
 
 **Examples**
@@ -664,13 +663,13 @@ const res = await rep.find({
 });
 ```
 
-*i. The `ASC` order direction is optional.*
+*Note: The `ASC` order direction is optional.*
 
 ### include
 
-The parameter includes related documents in the result of the called
-method. The names of included relations must be defined in the current
-model. (see [Relations](#Relations))
+The parameter includes related documents in the method result.
+The included relation names must be defined in the current model
+(see [Relations](#Relations)).
 
 **Examples**
 
@@ -724,9 +723,8 @@ const res = await rep.find({
 
 ## Relations
 
-The `relations` parameter is in the model definition and accepts
-an object whose key is the relation name and value is an object
-with parameters.
+The `relations` parameter in a model definition accepts an object where
+the key is the relation name and the value is an object with parameters.
 
 **Parameters**
 
@@ -736,14 +734,14 @@ with parameters.
 - `polymorphic: boolean|string` declare relation as polymorphic*
 - `discriminator: string` current model property for target name*
 
-*i. Polymorphic mode allows dynamically determining the target model
-by its name, which the document stores in the discriminator property.*
+*Note: Polymorphic mode allows dynamically determining the target
+model by its name, which is stored in the discriminator property.*
 
 **Relation Type**
 
 - `belongsTo` - current model contains property for target identifier
-- `hasOne` - reverse side of `belongsTo` by "one-to-one" principle
-- `hasMany` - reverse side of `belongsTo` by "one-to-many" principle
+- `hasOne` - reverse side of `belongsTo` using "one-to-one" principle
+- `hasMany` - reverse side of `belongsTo` using "one-to-many" principle
 - `referencesMany` - document contains array with target model identifiers
 
 **Examples**
@@ -759,8 +757,7 @@ schema.defineModel({
       model: 'role', // target model name
       foreignKey: 'roleId', // foreign key (optional)
       // if "foreignKey" is not specified, then foreign key
-      // property is formed according to relation name
-      // with "Id" postfix added
+      // property is formed from relation name with "Id" suffix
     },
   },
 });
@@ -792,8 +789,7 @@ schema.defineModel({
       model: 'category', // target model name
       foreignKey: 'categoryIds', // foreign key (optional)
       // if "foreignKey" is not specified, then foreign key
-      // property is formed according to relation name
-      // with "Ids" postfix added
+      // property is formed from relation name with "Ids" suffix
     },
   },
 });
@@ -808,17 +804,17 @@ schema.defineModel({
     reference: { // relation name
       type: RelationType.BELONGS_TO, // current model references target
       // polymorphic mode allows storing target model name
-      // in discriminator property, which is formed according to
-      // relation name with "Type" postfix, and in this case
-      // target model name is stored in "referenceType",
-      // and document identifier in "referenceId"
+      // in discriminator property, formed from relation name
+      // with "Type" suffix, so in this case target model name
+      // is stored in "referenceType" and document identifier
+      // in "referenceId"
       polymorphic: true,
     },
   },
 });
 ```
 
-Polymorphic version of `belongsTo` with property specification.
+Polymorphic version of `belongsTo` with properties specification.
 
 ```js
 schema.defineModel({
@@ -834,7 +830,7 @@ schema.defineModel({
 });
 ```
 
-Polymorphic version of `hasMany` with target model relation name specification.
+Polymorphic version of `hasMany` with target model relation name.
 
 ```js
 schema.defineModel({
@@ -849,7 +845,7 @@ schema.defineModel({
 });
 ```
 
-Polymorphic version of `hasMany` with target model property specification.
+Polymorphic version of `hasMany` with target model property.
 
 ```js
 schema.defineModel({
@@ -868,9 +864,10 @@ schema.defineModel({
 
 ## Extension
 
-The `getRepository` method of the schema instance checks for an existing
-repository for the specified model and returns it. Otherwise, a new instance
-is created which will be saved for subsequent calls to the method.
+The `getRepository` method of a schema instance checks for
+an existing repository for the specified model and returns it.
+Otherwise, a new instance is created and cached for subsequent
+calls to the method.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -885,11 +882,10 @@ const rep2 = schema.getRepository('model');
 console.log(rep1 === rep2); // true
 ```
 
-Replacing the standard repository constructor is done using
-the `setRepositoryCtor` method of the `RepositoryRegistry`
-service, which is in the schema instance container. After that,
-all new repositories will be created by the specified constructor
-instead of the standard one.
+To replace the default repository constructor, use the `setRepositoryCtor`
+method of the `RepositoryRegistry` service, which is available in
+the schema instance container. After this, all new repositories will
+be created using the specified constructor instead of the default one.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -909,12 +905,12 @@ const rep = schema.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
 
-*i. Since repository instances are cached, the constructor replacement
-should be performed before calling the `getRepository` method.*
+*Note: Since repository instances are cached, constructor replacement
+should be done before calling the `getRepository` method.*
 
 ## TypeScript
 
-Getting a typed repository with model interface specification.
+Get a typed repository with model interface specification.
 
 ```ts
 import {Schema} from '@e22m4u/js-repository';
