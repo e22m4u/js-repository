@@ -6379,8 +6379,8 @@ var init_repository2 = __esm({
 });
 
 // src/index.js
-var src_exports = {};
-__export(src_exports, {
+var index_exports = {};
+__export(index_exports, {
   ADAPTER_CLASS_NAME: () => ADAPTER_CLASS_NAME,
   Adapter: () => Adapter,
   AdapterLoader: () => AdapterLoader,
@@ -6435,7 +6435,7 @@ __export(src_exports, {
   stringToRegexp: () => stringToRegexp,
   transformPromise: () => transformPromise
 });
-module.exports = __toCommonJS(src_exports);
+module.exports = __toCommonJS(index_exports);
 
 // src/schema.js
 var import_js_service37 = require("@e22m4u/js-service");
