@@ -2,6 +2,21 @@
   "name": "@e22m4u/js-repository",
   "version": "0.2.5",
   "description": "Repository pattern implementation for Node.js",
+  "author": "e22m4u <e22m4u@yandex.ru>",
+  "license": "MIT",
+  "keywords": [
+    "Repository",
+    "ORM",
+    "ODM",
+    "Database",
+    "Datasource",
+    "Relations"
+  ],
+  "homepage": "https://github.com/e22m4u/js-repository",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e22m4u/js-repository.git"
+  },
   "type": "module",
   "types": "./src/index.d.ts",
   "module": "./src/index.js",
@@ -23,21 +38,6 @@
     "build:cjs": "rimraf ./dist/cjs && node --no-warnings=ExperimentalWarning build-cjs.js",
     "prepare": "husky"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/e22m4u/js-repository.git"
-  },
-  "keywords": [
-    "Repository",
-    "ORM",
-    "ODM",
-    "Database",
-    "Datasource",
-    "Relations"
-  ],
-  "author": "e22m4u <e22m4u@yandex.ru>",
-  "license": "MIT",
-  "homepage": "https://github.com/e22m4u/js-repository",
   "peerDependencies": {
     "@e22m4u/js-format": "~0.1.0",
     "@e22m4u/js-service": "~0.2.0"
