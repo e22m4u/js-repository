@@ -1,44 +1,42 @@
 ## @e22m4u/js-repository
 
-*English | [Русский](README-ru.md)*
+Реализация паттерна «Репозиторий» для работы с базами данных в Node.js
 
-Repository pattern implementation for Node.js
-
-- [Installation](#Installation)
-- [Import](#Import)
-- [Description](#Description)
-- [Example](#Example)
-- [Schema](#Schema)
-- [Data Source](#Data-Source)
-- [Model](#Model)
-- [Properties](#Properties)
-- [Validators](#Validators)
-- [Transformers](#Transformers)
-- [Empty Values](#Empty-Values)
-- [Repository](#Repository)
-- [Filtering](#Filtering)
-- [Relations](#Relations)
-- [Extension](#Extension)
+- [Установка](#Установка)
+- [Импорт](#Импорт)
+- [Описание](#Описание)
+- [Пример](#Пример)
+- [Схема](#Схема)
+- [Источник данных](#Источник-данных)
+- [Модель](#Модель)
+- [Свойства](#Свойства)
+- [Валидаторы](#Валидаторы)
+- [Трансформеры](#Трансформеры)
+- [Пустые значения](#Пустые-значения)
+- [Репозиторий](#Репозиторий)
+- [Фильтрация](#Фильтрация)
+- [Связи](#Связи)
+- [Расширение](#Расширение)
 - [TypeScript](#TypeScript)
-- [Tests](#Tests)
-- [License](#License)
+- [Тесты](#Тесты)
+- [Лицензия](#Лицензия)
 
-## Installation
+## Установка
 
 ```bash
 npm install @e22m4u/js-repository
 ```
 
-Optionally install an adapter.
+Опционально устанавливаем адаптер.
 
-|           | description                                                                                                                   |
-|-----------|-------------------------------------------------------------------------------------------------------------------------------|
-| `memory`  | in-memory virtual database (no installation required)                                                                         |
-| `mongodb` | MongoDB - NoSQL database management system (*[install](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
+|           | описание                                                                                                                       |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------|
+| `memory`  | виртуальная база в памяти процесса (не требует установки)                                                                      |
+| `mongodb` | MongoDB - система управления NoSQL базами (*[установка](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))* |
 
-## Import
+## Импорт
 
-The module supports both ESM and CommonJS standards.
+Модуль поддерживает ESM и CommonJS стандарты.
 
 *ESM*
 
@@ -52,97 +50,95 @@ import {Schema} from '@e22m4u/js-repository';
 const {Schema} = require('@e22m4u/js-repository');
 ```
 
-## Description
+## Описание
 
-The module provides an abstraction layer over different database
-interfaces by representing them as named *data sources* connected
-to *models*. A *model* describes a database table where columns
-are represented as model properties. Each model property can have
-a specific *type* of allowed value, along with *validators* and
-*transformers* that process data before it is written to the database.
-Additionally, a *model* can define classic relationship types like
-"one-to-one", "one-to-many" and others between models.
+Модуль позволяет абстрагироваться от различных интерфейсов баз данных,
+представляя их как именованные *источники данных*, подключаемые к *моделям*.
+*Модель* же описывает таблицу базы, колонки которой являются свойствами
+модели. Свойства модели могут иметь определенный *тип* допустимого значения,
+набор *валидаторов* и *трансформеров*, через которые проходят данные перед
+записью в базу. Кроме того, *модель* может определять классические связи
+«один к одному», «один ко многим» и другие типы отношений между моделями.
 
-Data operations are performed using a *repository*, which is available
-for each model with a declared *data source*. The repository can filter
-requested documents, validate properties according to the model definition,
-and include related data in query results.
+Непосредственно чтение и запись данных производится с помощью *репозитория*,
+который имеет каждая модель с объявленным *источником данных*. Репозиторий
+может фильтровать запрашиваемые документы, выполнять валидацию свойств
+согласно определению модели, и встраивать связанные данные в результат
+выборки.
 
-- *Data Source* - defines database connection settings
-- *Model* - describes document structure and relationships with other models
-- *Repository* - handles read and write operations for model documents
-
+- *Источник данных* - определяет способ подключения к базе
+- *Модель* - описывает структуру документа и связи к другим моделям
+- *Репозиторий* - выполняет операции чтения и записи документов модели
 
 ```mermaid
 flowchart TD
 
-  A[Schema]
-  subgraph Databases
-    B[Data Source 1]
-    C[Data Source 2]
+  A[Схема]
+  subgraph Базы данных
+    B[Источник данных 1]
+    C[Источник данных 2]
   end
   A-->B
   A-->C
 
-  subgraph Collections
-    D[Model A]
-    E[Model B]
-    F[Model C]
-    G[Model D]
+  subgraph Коллекции
+    D[Модель A]
+    E[Модель Б]
+    F[Модель В]
+    G[Модель Г]
   end
   B-->D
   B-->E
   C-->F
   C-->G
 
-  H[Repository A]
-  I[Repository B]
-  J[Repository C]
-  K[Repository D]
+  H[Репозиторий A]
+  I[Репозиторий Б]
+  J[Репозиторий В]
+  K[Репозиторий Г]
   D-->H
   E-->I
   F-->J
   G-->K
 ```
 
-## Example
+## Пример
 
-Here's how to define a data source, create a model, and add
-a new document to the collection.
+Объявление источника данных, модели и добавление нового документа в коллекцию.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
 import {DataType} from '@e22m4u/js-repository';
 
-// create Schema instance
+// создание экземпляра Schema
 const schema = new Schema();
 
-// declare "myMemory" data source
+// объявление источника "myMemory"
 schema.defineDatasource({
-  name: 'myMemory', // name of new source
-  adapter: 'memory', // selected adapter
+  name: 'myMemory', // название нового источника
+  adapter: 'memory', // выбранный адаптер
 });
 
-// declare "country" model
+// объявление модели "country"
 schema.defineModel({
-  name: 'country', // name of new model
-  datasource: 'myMemory', // selected data source
-  properties: { // model properties
-    name: DataType.STRING, // "string" type
-    population: DataType.NUMBER, // "number" type
+  name: 'country', // название новой модели
+  datasource: 'myMemory', // выбранный источник
+  properties: { // свойства модели
+    name: DataType.STRING, // тип "string"
+    population: DataType.NUMBER, // тип "number"
   },
 })
 
-// get repository for "country" model
+// получение репозитория модели "country"
 const countryRep = schema.getRepository('country');
 
-// add new document to "country" collection
+// добавление нового документа в коллекцию "country"
 const country = await countryRep.create({
   name: 'Russia',
   population: 143400000,
 });
 
-// output new document
+// вывод нового документа
 console.log(country);
 // {
 //   "id": 1,
@@ -151,19 +147,19 @@ console.log(country);
 // }
 ```
 
-## Schema
+## Схема
 
-A `Schema` class instance stores data source and model definitions.
+Экземпляр класса `Schema` хранит определения источников данных и моделей.
 
-**Methods**
+**Методы**
 
-- `defineDatasource(datasourceDef: object): this` - add a data source
-- `defineModel(modelDef: object): this` - add a model
-- `getRepository(modelName: string): Repository` - get a repository
+- `defineDatasource(datasourceDef: object): this` - добавить источник
+- `defineModel(modelDef: object): this` - добавить модель
+- `getRepository(modelName: string): Repository` - получить репозиторий
 
-**Examples**
+**Примеры**
 
-Import the class and create a schema instance.
+Импорт класса и создание экземпляра схемы.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -171,221 +167,219 @@ import {Schema} from '@e22m4u/js-repository';
 const schema = new Schema();
 ```
 
-Define a new data source.
+Определение нового источника.
 
 ```js
 schema.defineDatasource({
-  name: 'myMemory', // name of new source
-  adapter: 'memory', // selected adapter
+  name: 'myMemory', // название нового источника
+  adapter: 'memory', // выбранный адаптер
 });
 ```
 
-Define a new model.
+Определение новой модели.
 
 ```js
 schema.defineModel({
-  name: 'product', // name of new model
-  datasource: 'myMemory', // selected source
-  properties: { // model properties
+  name: 'product', // название новой модели
+  datasource: 'myMemory', // выбранный источник
+  properties: { // свойства модели
     name: DataType.STRING,
     weight: DataType.NUMBER,
   },
 });
 ```
 
-Get a repository by model name.
+Получение репозитория по названию модели.
 
 ```js
 const productRep = schema.getRepository('product');
 ```
 
-## Data Source
+## Источник данных
 
-A data source defines an adapter selection and its configuration
-settings. New data sources are added using the `defineDatasource`
-method of a schema instance.
+Источник хранит название выбранного адаптера и его настройки. Определение
+нового источника выполняется методом `defineDatasource` экземпляра схемы.
 
-**Parameters**
+**Параметры**
 
-- `name: string` unique name
-- `adapter: string` selected adapter
-- additional adapter-specific parameters (if any)
+- `name: string` уникальное название
+- `adapter: string` выбранный адаптер
+- параметры адаптера (если имеются)
 
-**Examples**
+**Примеры**
 
-Define a new data source.
+Определение нового источника.
 
 ```js
 schema.defineDatasource({
-  name: 'myMemory', // name of new source
-  adapter: 'memory', // selected adapter
+  name: 'myMemory', // название нового источника
+  adapter: 'memory', // выбранный адаптер
 });
 ```
 
-Pass additional adapter parameters.
+Передача дополнительных параметров адаптера.
 
 ```js
 schema.defineDatasource({
   name: 'myMongodb',
   adapter: 'mongodb',
-  // mongodb adapter parameters
+  // параметры адаптера "mongodb"
   host: '127.0.0.1',
   port: 27017,
   database: 'myDatabase',
 });
 ```
 
-## Model
+## Модель
 
-A model describes the structure of a collection document and
-its relationships with other models. New models are added using
-the `defineModel` method of a schema instance.
+Описывает структуру документа коллекции и связи к другим моделям. Определение
+новой модели выполняется методом `defineModel` экземпляра схемы.
 
-**Parameters**
+**Параметры**
 
-- `name: string` model name (required)
-- `base: string` name of parent model to inherit from
-- `tableName: string` collection name in database
-- `datasource: string` selected data source
-- `properties: object` property definitions (see [Properties](#Properties))
-- `relations: object` relationship definitions (see [Relations](#Relations))
+- `name: string` название модели (обязательно)
+- `base: string` название наследуемой модели
+- `tableName: string` название коллекции в базе
+- `datasource: string` выбранный источник данных
+- `properties: object` определения свойств (см. [Свойства](#Свойства))
+- `relations: object` определения связей (см. [Связи](#Связи))
 
-**Examples**
+**Примеры**
 
-Define a model with typed properties.
+Определение модели со свойствами указанного типа.
 
 ```js
 schema.defineModel({
-  name: 'user', // name of new model
-  properties: { // model properties
+  name: 'user', // название новой модели
+  properties: { // свойства модели
     name: DataType.STRING,
     age: DataType.NUMBER,
   },
 });
 ```
 
-## Properties
+## Свойства
 
-The `properties` parameter in a model definition accepts an object
-where keys are model properties and values are either a property
-type or an object with additional parameters.
+Параметр `properties` находится в определении модели и принимает объект, ключи
+которого являются свойствами этой модели, а значением тип свойства или объект
+с дополнительными параметрами.
 
-**Data Type**
+**Тип данных**
 
-- `DataType.ANY` any value allowed
-- `DataType.STRING` only `string` type value
-- `DataType.NUMBER` only `number` type value
-- `DataType.BOOLEAN` only `boolean` type value
-- `DataType.ARRAY` only `array` type value
-- `DataType.OBJECT` only `object` type value
+- `DataType.ANY` разрешено любое значение
+- `DataType.STRING` только значение типа `string`
+- `DataType.NUMBER` только значение типа `number`
+- `DataType.BOOLEAN` только значение типа `boolean`
+- `DataType.ARRAY` только значение типа `array`
+- `DataType.OBJECT` только значение типа `object`
 
-**Parameters**
+**Параметры**
 
-- `type: string` type of allowed value (required)
-- `itemType: string` array item type (for `type: 'array'`)
-- `model: string` object model (for `type: 'object'`)
-- `primaryKey: boolean` mark property as primary key
-- `columnName: string` override column name
-- `columnType: string` column type (defined by adapter)
-- `required: boolean` mark property as required
-- `default: any` default value
-- `validate: string | array | object` see [Validators](#Validators)
-- `unique: boolean | string` check value uniqueness
+- `type: string` тип допустимого значения (обязательно)
+- `itemType: string` тип элемента массива (для `type: 'array'`)
+- `model: string` модель объекта (для `type: 'object'`)
+- `primaryKey: boolean` объявить свойство первичным ключом
+- `columnName: string` переопределение названия колонки
+- `columnType: string` тип колонки (определяется адаптером)
+- `required: boolean` объявить свойство обязательным
+- `default: any` значение по умолчанию
+- `validate: string | array | object` см. [Валидаторы](#Валидаторы)
+- `unique: boolean | string` проверять значение на уникальность
 
-**`unique`**
+**Параметр `unique`**
 
-When `unique` is set to `true` or `'strict'`, strict uniqueness
-checking is performed. In this mode, [empty values](#Empty-Values)
-are also validated, where `null` and `undefined` cannot appear more
-than once.
+Если значением параметра `unique` является `true` или `'strict'`, то выполняется
+строгая проверка на уникальность. В этом режиме [пустые значения](#Пустые-значения)
+так же подлежат проверке, где `null` и `undefined` не могут повторяться более одного
+раза.
 
-The `'sparse'` mode only checks non-empty values, excluding
-[empty values](#Empty-Values) which vary by property type.
-For example, for `string` type, empty values include `undefined`,
-`null` and `''` (empty string).
+Режим `'sparse'` проверяет только значения с полезной нагрузкой, исключая
+[пустые значения](#Пустые-значения), список которых отличается в зависимости
+от типа свойства. Например, для типа `string` пустым значением будет `undefined`,
+`null` и `''` (пустая строка).
 
-- `unique: true | 'strict'` strict uniqueness check
-- `unique: 'sparse'` exclude [empty values](#Empty-Values) from check
-- `unique: false | 'nonUnique'` no uniqueness check (default)
+- `unique: true | 'strict'` строгая проверка на уникальность
+- `unique: 'sparse'` исключить из проверки [пустые значения](#Пустые-значения)
+- `unique: false | 'nonUnique'` не проверять на уникальность (по умолчанию)
 
-Predefined constants can be used as `unique` parameter values,
-equivalent to the string values `strict`, `sparse` and `nonUnique`:
+В качестве значений параметра `unique` можно использовать предопределенные
+константы как эквивалент строковых значений `strict`, `sparse` и `nonUnique`.
 
 - `PropertyUniqueness.STRICT`
 - `PropertyUniqueness.SPARSE`
 - `PropertyUniqueness.NON_UNIQUE`
 
-**Examples**
+**Примеры**
 
-Short model property definition.
+Краткое определение свойств модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // model properties
-    name: DataType.STRING, // "string" property type
-    population: DataType.NUMBER, // "number" property type
+  properties: { // свойства модели
+    name: DataType.STRING, // тип свойства "string"
+    population: DataType.NUMBER, // тип свойства "number"
   },
 });
 ```
 
-Full model property definition.
+Расширенное определение свойств модели.
 
 ```js
 schema.defineModel({
   name: 'city',
-  properties: { // model properties
+  properties: { // свойства модели
     name: {
-      type: DataType.STRING, // "string" property type (required)
-      required: true, // exclude undefined and null values
+      type: DataType.STRING, // тип свойства "string" (обязательно)
+      required: true, // исключение значений undefined и null
     },
     population: {
-      type: DataType.NUMBER, // "number" property type (required)
-      default: 0, // default value
+      type: DataType.NUMBER, // тип свойства "number" (обязательно)
+      default: 0, // значение по умолчанию
     },
     code: {
-      type: DataType.NUMBER, // "number" property type (required)
-      unique: PropertyUniqueness.UNIQUE, // check uniqueness
+      type: DataType.NUMBER, // тип свойства "number" (обязательно)
+      unique: PropertyUniqueness.UNIQUE, // проверять уникальность
     },
   },
 });
 ```
 
-Factory default values. The function's return value is determined
-when writing the document.
+Фабричное значение по умолчанию. Возвращаемое значение функции будет
+определено в момент записи документа.
 
 ```js
 schema.defineModel({
   name: 'article',
-  properties: { // model properties
+  properties: { // свойства модели
     tags: {
-      type: DataType.ARRAY, // "array" property type (required)
-      itemType: DataType.STRING, // "string" item type
-      default: () => [], // factory value
+      type: DataType.ARRAY, // тип свойства "array" (обязательно)
+      itemType: DataType.STRING, // тип элемента "string"
+      default: () => [], // фабричное значение
     },
     createdAt: {
-      type: DataType.STRING, // "string" property type (required)
-      default: () => new Date().toISOString(), // factory value
+      type: DataType.STRING, // тип свойства "string" (обязательно)
+      default: () => new Date().toISOString(), // фабричное значение
     },
   },
 });
 ```
 
-## Validators
+## Валидаторы
 
-In addition to type checking, properties can have validators
-that process values before they are written to the database.
-[Empty values](#Empty-Values) are exempt from validation.
+Кроме проверки типа, дополнительные условия можно задать с помощью
+валидаторов, через которые будет проходить значение свойства перед
+записью в базу. Исключением являются [пустые значения](#Пустые-значения),
+которые не подлежат проверке.
 
-- `minLength: number` minimum length for strings or arrays
-- `maxLength: number` maximum length for strings or arrays
-- `regexp: string | RegExp` regular expression pattern check
+- `minLength: number` минимальная длинна строки или массива
+- `maxLength: number` максимальная длинна строки или массива
+- `regexp: string | RegExp` проверка по регулярному выражению
 
-**Example**
+**Пример**
 
-Validators are specified in the model property definition using
-the `validate` parameter, which accepts an object with validator
-names and settings.
+Валидаторы указываются в объявлении свойства модели параметром
+`validate`, который принимает объект с их названиями и настройками.
 
 ```js
 schema.defineModel({
@@ -393,42 +387,42 @@ schema.defineModel({
   properties: {
     name: {
       type: DataType.STRING,
-      validate: { // validators for "name" property
-        minLength: 2, // minimum string length
-        maxLength: 24, // maximum string length
+      validate: { // валидаторы свойства "name"
+        minLength: 2, // минимальная длинна строки
+        maxLength: 24, // максимальная длинна строки
       },
     },
   },
 });
 ```
 
-### Custom Validators
+### Пользовательские валидаторы
 
-A validator is a function that receives a property value before
-it is written to the database. If validation returns `false`,
-a standard error is thrown. Custom errors can be thrown directly
-within the validator function.
+Валидатором является функция, в которую передается значение соответствующего
+поля перед записью в базу. Если во время проверки функция возвращает `false`,
+то выбрасывается стандартная ошибка. Подмена стандартной ошибки возможна
+с помощью выброса пользовательской ошибки непосредственно внутри функции.
 
-Custom validators are registered using the `addValidator` method
-of the `PropertyValidatorRegistry` service, which accepts a new
-validator name and validation function.
+Регистрация пользовательского валидатора выполняется методом `addValidator`
+сервиса `PropertyValidatorRegistry`, который принимает новое название
+и функцию для проверки значения.
 
-**Example**
+**Пример**
 
 ```js
-// create validator to allow
-// only numeric characters
+// создание валидатора для запрета
+// всех символов кроме чисел
 const numericValidator = (input) => {
   return /^[0-9]+$/.test(String(input));
 }
 
-// register "numeric" validator
+// регистрация валидатора "numeric"
 schema
   .get(PropertyValidatorRegistry)
   .addValidator('numeric', numericValidator);
 
-// use validator in "code" property
-// definition for new model
+// использование валидатора в определении
+// свойства "code" для новой модели
 schema.defineModel({
   name: 'document',
   properties: {
@@ -440,24 +434,25 @@ schema.defineModel({
 });
 ```
 
-## Transformers
+## Трансформеры
 
-Transformers modify property values before they are written
-to the database. They define how incoming data should be processed.
-[Empty values](#Empty-Values) are exempt from transformation.
+С помощью трансформеров производится модификация значений определенных
+полей перед записью в базу. Трансформеры позволяют указать какие изменения
+нужно производить с входящими данными. Исключением являются
+[пустые значения](#Пустые-значения), которые не подлежат трансформации.
 
-- `trim` removes whitespace from both ends of string
-- `toUpperCase` converts string to uppercase
-- `toLowerCase` converts string to lowercase
-- `toTitleCase` converts string to title case
+- `trim` удаление пробельных символов с начала и конца строки
+- `toUpperCase` перевод строки в верхний регистр
+- `toLowerCase` перевод строки в нижний регистр
+- `toTitleCase` перевод строки в регистр заголовка
 
-**Example**
+**Пример**
 
-Transformers are specified in the model property definition using
-the `transform` parameter. It accepts a transformer name as a string.
-For multiple transformers, use an array. If a transformer has settings,
-use an object where the key is the transformer name and the value contains
-its parameters.
+Трансформеры указываются в объявлении свойства модели параметром
+`transform`, который принимает название трансформера. Если требуется
+указать несколько названий, то используется массив. Если трансформер
+имеет настройки, то используется объект, где ключом является название
+трансформера, а значением его параметры.
 
 ```js
 schema.defineModel({
@@ -465,25 +460,26 @@ schema.defineModel({
   properties: {
     name: {
       type: DataType.STRING,
-      transform: [ // transformers for "name" property
-        'trim', // remove spaces from both ends of string
-        'toTitleCase', // convert string to title case
+      transform: [ // трансформеры свойства "name"
+        'trim', // удалить пробелы в начале и конце строки
+        'toTitleCase', // перевод строки в регистр заголовка
       ],
     },
   },
 });
 ```
 
-## Empty Values
+## Пустые значения
 
-Different property types have their own sets of empty values. These sets
-determine whether a property value has meaningful content. For example,
-the `default` parameter in a property definition only sets the default
-value if the incoming value is empty. The `required` parameter excludes
-empty values by throwing an error. The `unique` parameter in `sparse`
-mode allows duplicate empty values for a unique property.
+Разные типы свойств имеют свои наборы пустых значений. Эти наборы
+используются для определения наличия полезной нагрузки в значении
+свойства. Например, параметр `default` в определении свойства
+устанавливает значение по умолчанию, только если входящее значение
+является пустым. Параметр `required` исключает пустые значения
+выбрасывая ошибку. А параметр `unique` в режиме `sparse` наоборот
+допускает дублирование пустых значений уникального свойства.
 
-| type        | empty values              |
+| тип         | пустые значения           |
 |-------------|---------------------------|
 | `'any'`     | `undefined`, `null`       |
 | `'string'`  | `undefined`, `null`, `''` |
@@ -492,43 +488,42 @@ mode allows duplicate empty values for a unique property.
 | `'array'`   | `undefined`, `null`, `[]` |
 | `'object'`  | `undefined`, `null`, `{}` |
 
-## Repository
+## Репозиторий
 
-A repository performs read and write operations on documents
-of a specific model. You can get a repository using the schema
-instance's `getRepository` method.
+Выполняет операции чтения и записи документов определенной модели.
+Получить репозиторий можно методом `getRepository` экземпляра схемы.
 
-**Methods**
+**Методы**
 
-- `create(data, filter = undefined)` add new document
-- `replaceById(id, data, filter = undefined)` replace entire document
-- `replaceOrCreate(data, filter = undefined)` replace or create new
-- `patchById(id, data, filter = undefined)` partially update document
-- `patch(data, where = undefined)` update all documents or by condition
-- `find(filter = undefined)` find all documents or by condition
-- `findOne(filter = undefined)` find first document or by condition
-- `findById(id, filter = undefined)` find document by identifier
-- `delete(where = undefined)` delete all documents or by condition
-- `deleteById(id)` delete document by identifier
-- `exists(id)` check existence by identifier
-- `count(where = undefined)` count all documents or by condition
+- `create(data, filter = undefined)` добавить новый документ
+- `replaceById(id, data, filter = undefined)` заменить весь документ
+- `replaceOrCreate(data, filter = undefined)` заменить или создать новый
+- `patchById(id, data, filter = undefined)` частично обновить документ
+- `patch(data, where = undefined)` обновить все документы или по условию
+- `find(filter = undefined)` найти все документы или по условию
+- `findOne(filter = undefined)` найти первый документ или по условию
+- `findById(id, filter = undefined)` найти документ по идентификатору
+- `delete(where = undefined)` удалить все документы или по условию
+- `deleteById(id)` удалить документ по идентификатору
+- `exists(id)` проверить существование по идентификатору
+- `count(where = undefined)` подсчет всех документов или по условию
 
-**Arguments**
+**Аргументы**
 
-- `id: number|string` identifier (primary key)
-- `data: object` object representing document structure
-- `where: object` query parameters (see [Filtering](#Filtering))
-- `filter: object` result parameters (see [Filtering](#Filtering))
+- `id: number|string` идентификатор (первичный ключ)
+- `data: object` объект отражающий состав документа
+- `where: object` параметры выборки (см. [Фильтрация](#Фильтрация))
+- `filter: object` параметры возвращаемого результата (см. [Фильтрация](#Фильтрация))
 
-**Examples**
+**Примеры**
 
-Get repository by model name.
+Получение репозитория по названию модели.
 
 ```js
 const countryRep = schema.getRepository('country');
 ```
 
-Add new document to collection.
+Добавление нового документа в коллекцию.
 
 ```js
 const res = await countryRep.create({
@@ -544,7 +539,7 @@ console.log(res);
 // }
 ```
 
-Find document by identifier.
+Поиск документа по идентификатору.
 
 ```js
 const res = await countryRep.findById(1);
@@ -557,7 +552,7 @@ console.log(res);
 // }
 ```
 
-Delete document by identifier.
+Удаление документа по идентификатору.
 
 ```js
 const res = await countryRep.deleteById(1);
@@ -565,47 +560,48 @@ const res = await countryRep.deleteById(1);
 console.log(res); // true
 ```
 
-## Filtering
+## Фильтрация
 
-Some repository methods accept a settings object that affects
-the returned result. The `find` method's first parameter accepts
-the widest range of options, which are listed below.
+Некоторые методы репозитория принимают объект настроек влияющий
+на возвращаемый результат. Максимально широкий набор таких настроек
+имеет первый параметр метода `find`, где ожидается объект содержащий
+набор опций указанных ниже.
 
-- `where: object` selection object
-- `order: string[]` order specification
-- `limit: number` limit number of documents
-- `skip: number` skip documents
-- `fields: string[]` select required model properties
-- `include: object` include related data in result
+- `where: object` объект выборки
+- `order: string[]` указание порядка
+- `limit: number` ограничение количества документов
+- `skip: number` пропуск документов
+- `fields: string[]` выбор необходимых свойств модели
+- `include: object` включение связанных данных в результат
 
 ### where
 
-The parameter accepts an object with selection conditions and supports
-a wide range of comparison operators.
+Параметр принимает объект с условиями выборки и поддерживает широкий
+набор операторов сравнения.
 
-`{foo: 'bar'}` search by property `foo` value  
-`{foo: {eq: 'bar'}}` equality operator `eq`  
-`{foo: {neq: 'bar'}}` inequality operator `neq`  
-`{foo: {gt: 5}}` "greater than" operator `gt`  
-`{foo: {lt: 10}}` "less than" operator `lt`  
-`{foo: {gte: 5}}` "greater than or equal" operator `gte`  
-`{foo: {lte: 10}}` "less than or equal" operator `lte`  
-`{foo: {inq: ['bar', 'baz']}}` equality to one of values `inq`  
-`{foo: {nin: ['bar', 'baz']}}` exclude array values `nin`  
-`{foo: {between: [5, 10]}}` range operator `between`  
-`{foo: {exists: true}}` value existence operator `exists`  
-`{foo: {like: 'bar'}}` substring search operator `like`  
-`{foo: {ilike: 'BaR'}}` case-insensitive version `ilike`  
-`{foo: {nlike: 'bar'}}` substring exclusion operator `nlike`  
-`{foo: {nilike: 'BaR'}}` case-insensitive version `nilike`  
-`{foo: {regexp: 'ba.+'}}` regular expression operator `regexp`  
-`{foo: {regexp: 'ba.+', flags: 'i'}}` regular expression flags
+`{foo: 'bar'}` поиск по значению свойства `foo`  
+`{foo: {eq: 'bar'}}` оператор равенства `eq`  
+`{foo: {neq: 'bar'}}` оператор неравенства `neq`  
+`{foo: {gt: 5}}` оператор "больше" `gt`  
+`{foo: {lt: 10}}` оператор "меньше" `lt`  
+`{foo: {gte: 5}}` оператор "больше или равно" `gte`  
+`{foo: {lte: 10}}` оператор "меньше или равно" `lte`  
+`{foo: {inq: ['bar', 'baz']}}` равенство одного из значений `inq`  
+`{foo: {nin: ['bar', 'baz']}}` исключение значений массива `nin`  
+`{foo: {between: [5, 10]}}` оператор диапазона `between`  
+`{foo: {exists: true}}` оператор наличия значения `exists`  
+`{foo: {like: 'bar'}}` оператор поиска подстроки `like`  
+`{foo: {ilike: 'BaR'}}` регистронезависимая версия `ilike`  
+`{foo: {nlike: 'bar'}}` оператор исключения подстроки `nlike`  
+`{foo: {nilike: 'BaR'}}` регистронезависимая версия `nilike`  
+`{foo: {regexp: 'ba.+'}}` оператор регулярного выражения `regexp`  
+`{foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения
 
-*Note: Conditions can be combined with `and`, `or` and `nor` operators.*
+*i. Условия можно объединять операторами `and`, `or` и `nor`.*
 
-**Examples**
+**Примеры**
 
-Apply selection conditions when counting documents.
+Применение условий выборки при подсчете документов.
 
 ```js
 const res = await rep.count({
@@ -616,7 +612,7 @@ const res = await rep.count({
 });
 ```
 
-Apply `or` operator when deleting documents.
+Применение оператора `or` при удалении документов.
 
 ```js
 const res = await rep.delete({
@@ -629,13 +625,12 @@ const res = await rep.delete({
 
 ### order
 
-The parameter orders the selection by specified model properties.
-Reverse order can be specified with the `DESC` suffix in
-the property name.
+Параметр упорядочивает выборку по указанным свойствам модели. Обратное
+направление порядка можно задать постфиксом `DESC` в названии свойства.
 
-**Examples**
+**Примеры**
 
-Order by `createdAt` field.
+Упорядочить по полю `createdAt`
 
 ```js
 const res = await rep.find({
@@ -643,7 +638,7 @@ const res = await rep.find({
 });
 ```
 
-Order by `createdAt` field in reverse order.
+Упорядочить по полю `createdAt` в обратном порядке.
 
 ```js
 const res = await rep.find({
@@ -651,7 +646,7 @@ const res = await rep.find({
 });
 ```
 
-Order by multiple properties in different directions.
+Упорядочить по нескольким свойствам в разных направлениях.
 
 ```js
 const res = await rep.find({
@@ -663,17 +658,17 @@ const res = await rep.find({
 });
 ```
 
-*Note: The `ASC` order direction is optional.*
+*i. Направление порядка `ASC` указывать необязательно.*
 
 ### include
 
-The parameter includes related documents in the method result.
-The included relation names must be defined in the current model
-(see [Relations](#Relations)).
+Параметр включает связанные документы в результат вызываемого метода.
+Названия включаемых связей должны быть определены в текущей модели.
+(см. [Связи](#Связи))
 
-**Examples**
+**Примеры**
 
-Include relation by name.
+Включение связи по названию.
 
 ```js
 const res = await rep.find({
@@ -681,7 +676,7 @@ const res = await rep.find({
 });
 ```
 
-Include nested relations.
+Включение вложенных связей.
 
 ```js
 const res = await rep.find({
@@ -691,7 +686,7 @@ const res = await rep.find({
 });
 ```
 
-Include multiple relations using array.
+Включение нескольких связей массивом.
 
 ```js
 const res = await rep.find({
@@ -703,171 +698,174 @@ const res = await rep.find({
 });
 ```
 
-Use filtering of included documents.
+Использование фильтрации включаемых документов.
 
 ```js
 const res = await rep.find({
   include: {
-    relation: 'employees', // relation name
-    scope: { // filter "employees" documents
-      where: {hidden: false}, // query conditions
-      order: 'id', // document order
-      limit: 10, // limit number
-      skip: 5, // skip documents
-      fields: ['name', 'surname'], // only specified fields
-      include: 'city', // include relations for "employees"
+    relation: 'employees', // название связи
+    scope: { // фильтрация документов "employees"
+      where: {hidden: false}, // условия выборки
+      order: 'id', // порядок документов
+      limit: 10, // ограничение количества
+      skip: 5, // пропуск документов
+      fields: ['name', 'surname'], // только указанные поля
+      include: 'city', // включение связей для "employees"
     },
   },
 });
 ```
 
-## Relations
+## Связи
 
-The `relations` parameter in a model definition accepts an object where
-the key is the relation name and the value is an object with parameters.
+Параметр `relations` находится в определении модели и принимает
+объект, ключ которого является названием связи, а значением объект
+с параметрами.
 
-**Parameters**
+**Параметры**
 
-- `type: string` relation type
-- `model: string` target model name
-- `foreignKey: string` current model property for target identifier
-- `polymorphic: boolean|string` declare relation as polymorphic*
-- `discriminator: string` current model property for target name*
+- `type: string` тип связи
+- `model: string` название целевой модели
+- `foreignKey: string` свойство текущей модели для идентификатора цели
+- `polymorphic: boolean|string` объявить связь полиморфной*
+- `discriminator: string` свойство текущей модели для названия целевой*
 
-*Note: Polymorphic mode allows dynamically determining the target
-model by its name, which is stored in the discriminator property.*
+*i. Полиморфный режим позволяет динамически определять целевую модель
+по ее названию, которое хранит документ в свойстве-дискриминаторе.*
 
-**Relation Type**
+**Тип связи**
 
-- `belongsTo` - current model contains property for target identifier
-- `hasOne` - reverse side of `belongsTo` using "one-to-one" principle
-- `hasMany` - reverse side of `belongsTo` using "one-to-many" principle
-- `referencesMany` - document contains array with target model identifiers
+- `belongsTo` - текущая модель содержит свойство для идентификатора цели
+- `hasOne` - обратная сторона `belongsTo` по принципу "один к одному"
+- `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим"
+- `referencesMany` - документ содержит массив с идентификаторами целевой модели
 
-**Examples**
+**Примеры**
 
-Declare `belongsTo` relation.
+Объявление связи `belongsTo`
 
 ```js
 schema.defineModel({
   name: 'user',
   relations: {
-    role: { // relation name
-      type: RelationType.BELONGS_TO, // current model references target
-      model: 'role', // target model name
-      foreignKey: 'roleId', // foreign key (optional)
-      // if "foreignKey" is not specified, then foreign key
-      // property is formed from relation name with "Id" suffix
+    role: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      model: 'role', // название целевой модели
+      foreignKey: 'roleId', // внешний ключ (необязательно)
+      // если "foreignKey" не указан, то свойство внешнего
+      // ключа формируется согласно названию связи
+      // с добавлением постфикса "Id"
     },
   },
 });
 ```
 
-Declare `hasMany` relation.
+Объявление связи `hasMany`
 
 ```js
 schema.defineModel({
   name: 'role',
   relations: {
-    users: { // relation name
-      type: RelationType.HAS_MANY, // target model references current
-      model: 'user', // target model name
-      foreignKey: 'roleId', // foreign key from target model to current
+    users: { // название связи
+      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
+      model: 'user', // название целевой модели
+      foreignKey: 'roleId', // внешний ключ из целевой модели на текущую
     },
   },
 });
 ```
 
-Declare `referencesMany` relation.
+Объявление связи `referencesMany`
 
 ```js
 schema.defineModel({
   name: 'article',
   relations: {
-    categories: { // relation name
-      type: RelationType.REFERENCES_MANY, // relation through array of identifiers
-      model: 'category', // target model name
-      foreignKey: 'categoryIds', // foreign key (optional)
-      // if "foreignKey" is not specified, then foreign key
-      // property is formed from relation name with "Ids" suffix
+    categories: { // название связи
+      type: RelationType.REFERENCES_MANY, // связь через массив идентификаторов
+      model: 'category', // название целевой модели
+      foreignKey: 'categoryIds', // внешний ключ (необязательно)
+      // если "foreignKey" не указан, то свойство внешнего
+      // ключа формируется согласно названию связи
+      // с добавлением постфикса "Ids"
     },
   },
 });
 ```
 
-Polymorphic version of `belongsTo`
+Полиморфная версия `belongsTo`
 
 ```js
 schema.defineModel({
   name: 'file',
   relations: {
-    reference: { // relation name
-      type: RelationType.BELONGS_TO, // current model references target
-      // polymorphic mode allows storing target model name
-      // in discriminator property, formed from relation name
-      // with "Type" suffix, so in this case target model name
-      // is stored in "referenceType" and document identifier
-      // in "referenceId"
+    reference: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      // полиморфный режим позволяет хранить название целевой модели
+      // в свойстве-дискриминаторе, которое формируется согласно
+      // названию связи с постфиксом "Type", и в данном случае
+      // название целевой модели хранит "referenceType",
+      // а идентификатор документа "referenceId"
       polymorphic: true,
     },
   },
 });
 ```
 
-Polymorphic version of `belongsTo` with properties specification.
+Полиморфная версия `belongsTo` с указанием свойств.
 
 ```js
 schema.defineModel({
   name: 'file',
   relations: {
-    reference: { // relation name
-      type: RelationType.BELONGS_TO, // current model references target
-      polymorphic: true, // target model name stored in discriminator
-      foreignKey: 'referenceId', // property for target identifier
-      discriminator: 'referenceType', // property for target model name
+    reference: { // название связи
+      type: RelationType.BELONGS_TO, // текущая модель ссылается на целевую
+      polymorphic: true, // название целевой модели хранит дискриминатор
+      foreignKey: 'referenceId', // свойство для идентификатора цели
+      discriminator: 'referenceType', // свойство для названия целевой модели
     },
   },
 });
 ```
 
-Polymorphic version of `hasMany` with target model relation name.
+Полиморфная версия `hasMany` с указанием названия связи целевой модели.
 
 ```js
 schema.defineModel({
   name: 'letter',
   relations: {
-    attachments: { // relation name
-      type: RelationType.HAS_MANY, // target model references current
-      model: 'file', // target model name
-      polymorphic: 'reference', // target model polymorphic relation name
+    attachments: { // название связи
+      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
+      model: 'file', // название целевой модели
+      polymorphic: 'reference', // название полиморфной связи целевой модели
     },
   },
 });
 ```
 
-Polymorphic version of `hasMany` with target model property.
+Полиморфная версия `hasMany` с указанием свойств целевой модели.
 
 ```js
 schema.defineModel({
   name: 'letter',
   relations: {
-    attachments: { // relation name
-      type: RelationType.HAS_MANY, // target model references current
-      model: 'file', // target model name
-      polymorphic: true, // current model name is in discriminator
-      foreignKey: 'referenceId', // target model property for identifier
-      discriminator: 'referenceType', // target model property for current name
+    attachments: { // название связи
+      type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
+      model: 'file', // название целевой модели
+      polymorphic: true, // название текущей модели находится в дискриминаторе
+      foreignKey: 'referenceId', // свойство целевой модели для идентификатора
+      discriminator: 'referenceType', // свойство целевой модели для названия текущей
     },
   },
 });
 ```
 
-## Extension
+## Расширение
 
-The `getRepository` method of a schema instance checks for
-an existing repository for the specified model and returns it.
-Otherwise, a new instance is created and cached for subsequent
-calls to the method.
+Метод `getRepository` экземпляра схемы проверяет наличие существующего
+репозитория для указанной модели и возвращает его. В противном случае
+создается новый экземпляр, который будет сохранен для последующих
+обращений к методу.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -882,10 +880,10 @@ const rep2 = schema.getRepository('model');
 console.log(rep1 === rep2); // true
 ```
 
-To replace the default repository constructor, use the `setRepositoryCtor`
-method of the `RepositoryRegistry` service, which is available in
-the schema instance container. After this, all new repositories will
-be created using the specified constructor instead of the default one.
+Подмена стандартного конструктора репозитория выполняется методом
+`setRepositoryCtor` сервиса `RepositoryRegistry`, который находится
+в контейнере экземпляра схемы. После чего все новые репозитории будут
+создаваться указанным конструктором вместо стандартного.
 
 ```js
 import {Schema} from '@e22m4u/js-repository';
@@ -905,12 +903,12 @@ const rep = schema.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
 
-*Note: Since repository instances are cached, constructor replacement
-should be done before calling the `getRepository` method.*
+*i. Так как экземпляры репозитория кэшируется, то замену конструктора
+следует выполнять до обращения к методу `getRepository`.*
 
 ## TypeScript
 
-Get a typed repository with model interface specification.
+Получение типизированного репозитория с указанием интерфейса модели.
 
 ```ts
 import {Schema} from '@e22m4u/js-repository';
@@ -921,7 +919,7 @@ import {RelationType} from '@e22m4u/js-repository';
 // schema.defineDatasource ...
 // schema.defineModel ...
 
-// define "city" model
+// определение модели "city"
 schema.defineModel({
   name: 'city',
   datasource: 'myDatasource',
@@ -937,7 +935,7 @@ schema.defineModel({
   },
 });
 
-// define "city" interface
+// определение интерфейса "city"
 interface City {
   id: number;
   title?: string;
@@ -946,15 +944,17 @@ interface City {
   country?: Country;
 }
 
-// get repository by model name
-// specifying its type and identifier type
+// получаем репозиторий по названию модели
+// указывая ее тип и тип идентификатора
 const cityRep = schema.getRepository<City, number>('city');
 ```
 
-## Tests
+## Тесты
 
+```bash
 npm run test
+```
 
-## License
+## Лицензия
 
 MIT
