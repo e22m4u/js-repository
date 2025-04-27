@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
-import {EmptyValuesDefiner} from './properties/index.js';
+import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {ModelDataValidator} from './model-data-validator.js';
 import {DefinitionRegistry} from '../definition-registry.js';
 import {PropertyValidatorRegistry} from './properties/index.js';
@@ -127,7 +127,7 @@ describe('ModelDataValidator', function () {
         },
       });
       schema
-        .getService(EmptyValuesDefiner)
+        .getService(EmptyValuesService)
         .setEmptyValuesOf(DataType.STRING, ['empty']);
       const throwable = () =>
         schema.getService(ModelDataValidator).validate('model', {foo: 'empty'});
@@ -205,7 +205,7 @@ describe('ModelDataValidator', function () {
           },
         });
         schema
-          .getService(EmptyValuesDefiner)
+          .getService(EmptyValuesService)
           .setEmptyValuesOf(DataType.STRING, [5]);
         const throwable = () =>
           schema
@@ -229,7 +229,7 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        S.getService(EmptyValuesDefiner).setEmptyValuesOf(DataType.STRING, [5]);
+        S.getService(EmptyValuesService).setEmptyValuesOf(DataType.STRING, [5]);
         S.getService(ModelDataValidator).validate('model', {foo: 5});
       });
 
@@ -2089,7 +2089,7 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        S.getService(EmptyValuesDefiner).setEmptyValuesOf(DataType.STRING, [5]);
+        S.getService(EmptyValuesService).setEmptyValuesOf(DataType.STRING, [5]);
         S.getService(ModelDataValidator).validate('model', {foo: 5});
       });
 

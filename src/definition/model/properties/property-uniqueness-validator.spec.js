@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {Schema} from '../../../schema.js';
+import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
-import {EmptyValuesDefiner} from './empty-values-definer.js';
 import {PropertyUniquenessValidator} from './property-uniqueness-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
 
@@ -1856,7 +1856,7 @@ describe('PropertyUniquenessValidator', function () {
           const S = schema.getService(PropertyUniquenessValidator);
           let invoked = 0;
           schema
-            .getService(EmptyValuesDefiner)
+            .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -1970,7 +1970,7 @@ describe('PropertyUniquenessValidator', function () {
           const S = schema.getService(PropertyUniquenessValidator);
           let invoked = 0;
           schema
-            .getService(EmptyValuesDefiner)
+            .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -2229,7 +2229,7 @@ describe('PropertyUniquenessValidator', function () {
               });
               const S = schema.getService(PropertyUniquenessValidator);
               schema
-                .getService(EmptyValuesDefiner)
+                .getService(EmptyValuesService)
                 .setEmptyValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
@@ -2408,7 +2408,7 @@ describe('PropertyUniquenessValidator', function () {
               });
               const S = schema.getService(PropertyUniquenessValidator);
               schema
-                .getService(EmptyValuesDefiner)
+                .getService(EmptyValuesService)
                 .setEmptyValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
@@ -2542,7 +2542,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           const S = schema.getService(PropertyUniquenessValidator);
           schema
-            .getService(EmptyValuesDefiner)
+            .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -2682,7 +2682,7 @@ describe('PropertyUniquenessValidator', function () {
           const S = schema.getService(PropertyUniquenessValidator);
           let invoked = 0;
           schema
-            .getService(EmptyValuesDefiner)
+            .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {

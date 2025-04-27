@@ -2,7 +2,7 @@ import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../../utils/index.js';
 import {isPureObject} from '../../utils/index.js';
 import {transformPromise} from '../../utils/index.js';
-import {EmptyValuesDefiner} from './properties/index.js';
+import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
 import {PropertyTransformerRegistry} from './properties/index.js';
@@ -26,7 +26,7 @@ export class ModelDataTransformer extends Service {
         modelName,
         modelData,
       );
-    const emptyValuesDefiner = this.getService(EmptyValuesDefiner);
+    const emptyValuesService = this.getService(EmptyValuesService);
     const modelDefinitionUtils = this.getService(ModelDefinitionUtils);
     const propDefs =
       modelDefinitionUtils.getPropertiesDefinitionInBaseModelHierarchy(
@@ -40,7 +40,7 @@ export class ModelDataTransformer extends Service {
       const propType =
         modelDefinitionUtils.getDataTypeFromPropertyDefinition(propDef);
       const propValue = modelData[propName];
-      const isEmpty = emptyValuesDefiner.isEmpty(propType, propValue);
+      const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
       if (isEmpty) return transformedDataOrPromise;
       const newPropValueOrPromise = this._transformPropertyValue(
         modelName,

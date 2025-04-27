@@ -4,7 +4,7 @@ import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
 import {RelationType} from './relations/index.js';
-import {EmptyValuesDefiner} from './properties/index.js';
+import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from './model-definition-utils.js';
@@ -489,7 +489,7 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       schema
-        .getService(EmptyValuesDefiner)
+        .getService(EmptyValuesService)
         .setEmptyValuesOf(DataType.STRING, ['empty']);
       const result = schema
         .getService(ModelDefinitionUtils)
