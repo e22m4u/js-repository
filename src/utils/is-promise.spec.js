@@ -1,8 +1,7 @@
 import {expect} from 'chai';
-import {describe} from 'mocha';
 import {isPromise} from './is-promise.js';
 
-describe('isPromise', () => {
+describe('isPromise', function () {
   it('returns true if the given value has type of PromiseLike', function () {
     expect(isPromise(Promise.resolve())).to.be.true;
     expect(isPromise('string')).to.be.false;

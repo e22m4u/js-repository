@@ -1,5 +1,4 @@
 import {expect} from 'chai';
-import {describe} from 'mocha';
 import {transformPromise} from './transform-promise.js';
 
 describe('transformPromise', function () {
