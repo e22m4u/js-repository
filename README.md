@@ -2,24 +2,24 @@
 
 Реализация паттерна «Репозиторий» для работы с базами данных в Node.js
 
-- [Установка](#Установка)
-- [Импорт](#Импорт)
-- [Описание](#Описание)
-- [Пример](#Пример)
-- [Схема](#Схема)
-- [Источник данных](#Источник-данных)
-- [Модель](#Модель)
-- [Свойства](#Свойства)
-- [Валидаторы](#Валидаторы)
-- [Трансформеры](#Трансформеры)
-- [Пустые значения](#Пустые-значения)
-- [Репозиторий](#Репозиторий)
-- [Фильтрация](#Фильтрация)
-- [Связи](#Связи)
-- [Расширение](#Расширение)
-- [TypeScript](#TypeScript)
-- [Тесты](#Тесты)
-- [Лицензия](#Лицензия)
+- [Установка](#установка)
+- [Импорт](#импорт)
+- [Описание](#описание)
+- [Пример](#пример)
+- [Схема баз данных](#схема-баз-данных)
+- [Источник данных](#источник-данных)
+- [Модель](#модель)
+- [Свойства](#свойства)
+- [Валидаторы](#валидаторы)
+- [Трансформеры](#трансформеры)
+- [Пустые значения](#пустые-значения)
+- [Репозиторий](#репозиторий)
+- [Фильтрация](#фильтрация)
+- [Связи](#связи)
+- [Расширение](#расширение)
+- [TypeScript](#typescript)
+- [Тесты](#тесты)
+- [Лицензия](#лицензия)
 
 ## Установка
 
@@ -41,13 +41,13 @@ npm install @e22m4u/js-repository
 *ESM*
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 ```
 
 *CommonJS*
 
 ```js
-const {Schema} = require('@e22m4u/js-repository');
+const {DatabaseSchema} = require('@e22m4u/js-repository');
 ```
 
 ## Описание
@@ -107,20 +107,20 @@ flowchart TD
 Объявление источника данных, модели и добавление нового документа в коллекцию.
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
 import {DataType} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 
-// создание экземпляра Schema
-const schema = new Schema();
+// создание экземпляра DatabaseSchema
+const dbs = new DatabaseSchema();
 
 // объявление источника "myMemory"
-schema.defineDatasource({
+dbs.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
 
 // объявление модели "country"
-schema.defineModel({
+dbs.defineModel({
   name: 'country', // название новой модели
   datasource: 'myMemory', // выбранный источник
   properties: { // свойства модели
@@ -130,7 +130,7 @@ schema.defineModel({
 })
 
 // получение репозитория модели "country"
-const countryRep = schema.getRepository('country');
+const countryRep = dbs.getRepository('country');
 
 // добавление нового документа в коллекцию "country"
 const country = await countryRep.create({
@@ -147,9 +147,9 @@ console.log(country);
 // }
 ```
 
-## Схема
+## Схема баз данных
 
-Экземпляр класса `Schema` хранит определения источников данных и моделей.
+Экземпляр класса `DatabaseSchema` хранит определения источников данных и моделей.
 
 **Методы**
 
@@ -162,15 +162,15 @@ console.log(country);
 Импорт класса и создание экземпляра схемы.
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 
-const schema = new Schema();
+const dbs = new DatabaseSchema();
 ```
 
 Определение нового источника.
 
 ```js
-schema.defineDatasource({
+dbs.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
@@ -179,7 +179,7 @@ schema.defineDatasource({
 Определение новой модели.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'product', // название новой модели
   datasource: 'myMemory', // выбранный источник
   properties: { // свойства модели
@@ -192,13 +192,14 @@ schema.defineModel({
 Получение репозитория по названию модели.
 
 ```js
-const productRep = schema.getRepository('product');
+const productRep = dbs.getRepository('product');
 ```
 
 ## Источник данных
 
 Источник хранит название выбранного адаптера и его настройки. Определение
-нового источника выполняется методом `defineDatasource` экземпляра схемы.
+нового источника выполняется методом `defineDatasource` экземпляра
+`DatabaseSchema`.
 
 **Параметры**
 
@@ -211,7 +212,7 @@ const productRep = schema.getRepository('product');
 Определение нового источника.
 
 ```js
-schema.defineDatasource({
+dbs.defineDatasource({
   name: 'myMemory', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
@@ -220,7 +221,7 @@ schema.defineDatasource({
 Передача дополнительных параметров адаптера.
 
 ```js
-schema.defineDatasource({
+dbs.defineDatasource({
   name: 'myMongodb',
   adapter: 'mongodb',
   // параметры адаптера "mongodb"
@@ -233,7 +234,7 @@ schema.defineDatasource({
 ## Модель
 
 Описывает структуру документа коллекции и связи к другим моделям. Определение
-новой модели выполняется методом `defineModel` экземпляра схемы.
+новой модели выполняется методом `defineModel` экземпляра `DatabaseSchema`.
 
 **Параметры**
 
@@ -249,7 +250,7 @@ schema.defineDatasource({
 Определение модели со свойствами указанного типа.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'user', // название новой модели
   properties: { // свойства модели
     name: DataType.STRING,
@@ -314,7 +315,7 @@ schema.defineModel({
 Краткое определение свойств модели.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'city',
   properties: { // свойства модели
     name: DataType.STRING, // тип свойства "string"
@@ -326,7 +327,7 @@ schema.defineModel({
 Расширенное определение свойств модели.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'city',
   properties: { // свойства модели
     name: {
@@ -349,7 +350,7 @@ schema.defineModel({
 определено в момент записи документа.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'article',
   properties: { // свойства модели
     tags: {
@@ -382,7 +383,7 @@ schema.defineModel({
 `validate`, который принимает объект с их названиями и настройками.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'user',
   properties: {
     name: {
@@ -417,13 +418,11 @@ const numericValidator = (input) => {
 }
 
 // регистрация валидатора "numeric"
-schema
-  .get(PropertyValidatorRegistry)
-  .addValidator('numeric', numericValidator);
+dbs.get(PropertyValidatorRegistry).addValidator('numeric', numericValidator);
 
 // использование валидатора в определении
 // свойства "code" для новой модели
-schema.defineModel({
+dbs.defineModel({
   name: 'document',
   properties: {
     code: {
@@ -455,7 +454,7 @@ schema.defineModel({
 трансформера, а значением его параметры.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'user',
   properties: {
     name: {
@@ -491,7 +490,7 @@ schema.defineModel({
 ## Репозиторий
 
 Выполняет операции чтения и записи документов определенной модели.
-Получить репозиторий можно методом `getRepository` экземпляра схемы.
+Получить репозиторий можно методом `getRepository` экземпляра `DatabaseSchema`.
 
 **Методы**
 
@@ -520,7 +519,7 @@ schema.defineModel({
 Получение репозитория по названию модели.
 
 ```js
-const countryRep = schema.getRepository('country');
+const countryRep = dbs.getRepository('country');
 ```
 
 Добавление нового документа в коллекцию.
@@ -745,7 +744,7 @@ const res = await rep.find({
 Объявление связи `belongsTo`
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'user',
   relations: {
     role: { // название связи
@@ -763,7 +762,7 @@ schema.defineModel({
 Объявление связи `hasMany`
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'role',
   relations: {
     users: { // название связи
@@ -778,7 +777,7 @@ schema.defineModel({
 Объявление связи `referencesMany`
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'article',
   relations: {
     categories: { // название связи
@@ -796,7 +795,7 @@ schema.defineModel({
 Полиморфная версия `belongsTo`
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'file',
   relations: {
     reference: { // название связи
@@ -815,7 +814,7 @@ schema.defineModel({
 Полиморфная версия `belongsTo` с указанием свойств.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'file',
   relations: {
     reference: { // название связи
@@ -831,7 +830,7 @@ schema.defineModel({
 Полиморфная версия `hasMany` с указанием названия связи целевой модели.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'letter',
   relations: {
     attachments: { // название связи
@@ -846,7 +845,7 @@ schema.defineModel({
 Полиморфная версия `hasMany` с указанием свойств целевой модели.
 
 ```js
-schema.defineModel({
+dbs.defineModel({
   name: 'letter',
   relations: {
     attachments: { // название связи
@@ -862,44 +861,44 @@ schema.defineModel({
 
 ## Расширение
 
-Метод `getRepository` экземпляра схемы проверяет наличие существующего
-репозитория для указанной модели и возвращает его. В противном случае
-создается новый экземпляр, который будет сохранен для последующих
-обращений к методу.
+Метод `getRepository` экземпляра `DatabaseSchema` проверяет наличие
+существующего  репозитория для указанной модели и возвращает его.
+В противном случае создается новый экземпляр, который будет сохранен
+для последующих обращений к методу.
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
 import {Repository} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 
-// const schema = new Schema();
-// schema.defineDatasource ...
-// schema.defineModel ...
+// const dbs = new DatabaseSchema();
+// dbs.defineDatasource ...
+// dbs.defineModel ...
 
-const rep1 = schema.getRepository('model');
-const rep2 = schema.getRepository('model');
+const rep1 = dbs.getRepository('model');
+const rep2 = dbs.getRepository('model');
 console.log(rep1 === rep2); // true
 ```
 
 Подмена стандартного конструктора репозитория выполняется методом
 `setRepositoryCtor` сервиса `RepositoryRegistry`, который находится
-в контейнере экземпляра схемы. После чего все новые репозитории будут
-создаваться указанным конструктором вместо стандартного.
+в сервис-контейнере экземпляра `DatabaseSchema`. После чего все новые
+репозитории будут создаваться указанным конструктором вместо стандартного.
 
 ```js
-import {Schema} from '@e22m4u/js-repository';
 import {Repository} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 import {RepositoryRegistry} from '@e22m4u/js-repository';
 
 class MyRepository extends Repository {
   /*...*/
 }
 
-// const schema = new Schema();
-// schema.defineDatasource ...
-// schema.defineModel ...
+// const dbs = new DatabaseSchema();
+// dbs.defineDatasource ...
+// dbs.defineModel ...
 
-schema.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
-const rep = schema.getRepository('model');
+dbs.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
+const rep = dbs.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
 
@@ -911,16 +910,16 @@ console.log(rep instanceof MyRepository); // true
 Получение типизированного репозитория с указанием интерфейса модели.
 
 ```ts
-import {Schema} from '@e22m4u/js-repository';
 import {DataType} from '@e22m4u/js-repository';
 import {RelationType} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
 
-// const schema = new Schema();
-// schema.defineDatasource ...
-// schema.defineModel ...
+// const dbs = new DatabaseSchema();
+// dbs.defineDatasource ...
+// dbs.defineModel ...
 
 // определение модели "city"
-schema.defineModel({
+dbs.defineModel({
   name: 'city',
   datasource: 'myDatasource',
   properties: {
@@ -946,7 +945,7 @@ interface City {
 
 // получаем репозиторий по названию модели
 // указывая ее тип и тип идентификатора
-const cityRep = schema.getRepository<City, number>('city');
+const cityRep = dbs.getRepository<City, number>('city');
 ```
 
 ## Тесты

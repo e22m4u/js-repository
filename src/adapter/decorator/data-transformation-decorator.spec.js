@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {chai} from '../../chai.js';
 import {Adapter} from '../adapter.js';
-import {Schema} from '../../schema.js';
+import {DatabaseSchema} from '../../database-schema.js';
 import {ModelDataTransformer} from '../../definition/index.js';
 
 const MODEL_NAME = 'myModel';
@@ -46,7 +46,7 @@ class TestAdapter extends Adapter {
   }
 }
 
-const S = new Schema();
+const S = new DatabaseSchema();
 S.defineModel({name: MODEL_NAME});
 const A = S.getService(TestAdapter);
 const T = S.getService(ModelDataTransformer);

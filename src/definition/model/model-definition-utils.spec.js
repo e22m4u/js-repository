@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import {chai} from '../../chai.js';
-import {Schema} from '../../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
 import {RelationType} from './relations/index.js';
+import {DatabaseSchema} from '../../database-schema.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {ModelDefinitionUtils} from './model-definition-utils.js';
@@ -18,7 +18,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPrimaryKeyAsPropertyName', function () {
     it('returns a default property name if no primary key defined', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -29,7 +29,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       sandbox.on(
         S,
@@ -51,7 +51,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property name if a primary key has a custom name and a default primary key is used as a regular property', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -69,7 +69,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property name of a primary key', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -89,7 +89,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a property name of a primary key', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -112,7 +112,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPrimaryKeyAsColumnName', function () {
     it('returns a property name of a primary key if a column name is not specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -132,7 +132,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a column name of a primary key if specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -153,7 +153,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a default property name if a primary key is not defined', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -164,7 +164,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       sandbox.on(
         S,
@@ -186,7 +186,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property name of a custom primary key when a default primary key is used as a regular property', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -204,7 +204,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a column name of a primary key', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -227,7 +227,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getTableNameByModelName', function () {
     it('returns a model name if no table name specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -238,7 +238,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a table name from a model definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         tableName: 'table',
@@ -252,7 +252,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getColumnNameByPropertyName', function () {
     it('returns a property name if a column name is not defined', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -266,7 +266,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a specified column name', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -283,7 +283,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a given property name does not exist', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -295,7 +295,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a specified column name', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -318,7 +318,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDefaultPropertyValue', function () {
     it('returns undefined if no default value specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -332,7 +332,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a default value from a property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -349,7 +349,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a value from a factory function', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -366,7 +366,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a given property name does not exist', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -378,7 +378,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a specified default value', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -401,7 +401,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('setDefaultValuesToEmptyProperties', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -412,7 +412,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('does nothing if no "default" option in property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -427,7 +427,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('sets a default value if a property does not exist', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -444,7 +444,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('sets a default value if a property is undefined', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -461,7 +461,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('sets a default value if a property is null', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -478,7 +478,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('sets a default value if a property has an empty value', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -498,7 +498,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('sets a value from a factory function', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -532,7 +532,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to set a default values', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -566,7 +566,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('an option "onlyProvidedProperties" is true', function () {
       it('does not set a default value if a property does not exist', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -583,7 +583,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('sets a default value if a property is undefined', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -600,7 +600,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('sets a default value if a property is null', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -620,7 +620,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('convertPropertyNamesToColumnNames', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -631,7 +631,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('does nothing if no column name specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -646,7 +646,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('replaces property names by column names', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -667,7 +667,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to replace property names by column names', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -693,7 +693,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded object with model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -715,7 +715,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -741,7 +741,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -777,7 +777,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded array with items model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -800,7 +800,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -835,7 +835,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -879,7 +879,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('convertColumnNamesToPropertyNames', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -890,7 +890,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('does nothing if no column name specified', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -905,7 +905,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('replaces column names by property names', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -926,7 +926,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to replace column names by property names', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -952,7 +952,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded object with model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -974,7 +974,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -1000,7 +1000,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -1034,7 +1034,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded array with items model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -1057,7 +1057,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -1092,7 +1092,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'modelA',
           properties: {
@@ -1136,7 +1136,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDataTypeByPropertyName', function () {
     it('returns a property type of a short property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -1150,7 +1150,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property type of a full property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -1166,7 +1166,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a property name does not exist', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1178,7 +1178,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a type from a short property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1196,7 +1196,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to get a type from a full property definition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1218,7 +1218,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDataTypeFromPropertyDefinition', function () {
     it('requires the given argument "propDef" must be an Object or DataType', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       const throwable = v => () => S.getDataTypeFromPropertyDefinition(v);
       const error = v =>
@@ -1240,7 +1240,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('requires the given Object to have the "type" property with the DataType enum', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       const throwable = v => () =>
         S.getDataTypeFromPropertyDefinition({type: v});
@@ -1263,14 +1263,14 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns the DataType from the given DataType enum', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       const res = S.getDataTypeFromPropertyDefinition(DataType.STRING);
       expect(res).to.be.eq(DataType.STRING);
     });
 
     it('returns the DataType from the given PropertyDefinition', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const S = schema.getService(ModelDefinitionUtils);
       const res = S.getDataTypeFromPropertyDefinition({type: DataType.STRING});
       expect(res).to.be.eq(DataType.STRING);
@@ -1279,7 +1279,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getOwnPropertiesDefinitionWithoutPrimaryKeys', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1290,7 +1290,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a properties definition without primary keys', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -1312,7 +1312,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own properties definition even it has a base model properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1346,7 +1346,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getOwnPropertiesDefinitionOfPrimaryKeys', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1357,7 +1357,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a properties definition of primary keys', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -1381,7 +1381,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own properties definition even it has a base model properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1418,7 +1418,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPropertiesDefinitionInBaseModelHierarchy', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1429,7 +1429,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a properties definition of a model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -1455,7 +1455,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a properties definition of an extended model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1479,7 +1479,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses child properties in priority over a base model properties', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1516,7 +1516,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses primary keys from a model closest to child model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         properties: {
@@ -1552,7 +1552,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error for a circular reference', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         base: 'model',
@@ -1569,7 +1569,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getOwnRelationsDefinition', function () {
     it('returns an empty object if a model does not have relations', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1580,7 +1580,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relations definition by a given model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         relations: {
@@ -1602,7 +1602,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own relations definition even it has a base model relations', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         relations: {
@@ -1636,7 +1636,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getRelationsDefinitionInBaseModelHierarchy', function () {
     it('returns an empty object if a model does not have relations', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1647,7 +1647,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relations definition of a model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         relations: {
@@ -1677,7 +1677,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relations definition of an extended model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         relations: {
@@ -1713,7 +1713,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses child relations in priority over a base model relations', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         relations: {
@@ -1753,7 +1753,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error for a circular reference', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         base: 'model',
@@ -1770,7 +1770,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getRelationDefinitionByName', function () {
     it('throws an error if a given model is not found', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const throwable = () =>
         schema
           .getService(ModelDefinitionUtils)
@@ -1779,7 +1779,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error if a given relation is not found', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
       });
@@ -1793,7 +1793,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relation definition by a given name', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         relations: {
@@ -1813,7 +1813,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a child relations in priority over a base model relations', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         relations: {
@@ -1843,7 +1843,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a base model relation if a given relation name is not found in a child model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'modelA',
         relations: {
@@ -1869,7 +1869,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('excludeObjectKeysByRelationNames', function () {
     it('excludes object keys by relation names', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         relations: {
@@ -1897,7 +1897,7 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('requires a given object as an object', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({name: 'model'});
       const throwable = v => () =>
         schema
@@ -1924,7 +1924,7 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getModelNameOfPropertyValueIfDefined', function () {
     it('returns undefined if a given property does not exist in the model', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({name: 'model'});
       const S = schema.getService(ModelDefinitionUtils);
       const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
@@ -1933,7 +1933,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('short property definition', function () {
       it('requires parameter "modelName" to be a non-empty String', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -1962,7 +1962,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('requires parameter "propertyName" to be a non-empty String', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -1992,7 +1992,7 @@ describe('ModelDefinitionUtils', function () {
 
       it('returns undefined if the property definition is DataType', function () {
         const fn = v => {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2013,7 +2013,7 @@ describe('ModelDefinitionUtils', function () {
 
     describe('full property definition', function () {
       it('requires parameter "modelName" to be a non-empty String', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -2044,7 +2044,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('requires parameter "propertyName" to be a non-empty String', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -2076,7 +2076,7 @@ describe('ModelDefinitionUtils', function () {
 
       it('return undefined if no model name specified', function () {
         const fn = v => {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2098,7 +2098,7 @@ describe('ModelDefinitionUtils', function () {
 
       it('return undefined if no model name specified in case of Array property', function () {
         const fn = v => {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2120,7 +2120,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('returns a model name from the option "model" in case of Object property', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {
@@ -2136,7 +2136,7 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('returns a model name from the option "itemModel" in case of Array property', function () {
-        const schema = new Schema();
+        const schema = new DatabaseSchema();
         schema.defineModel({
           name: 'model',
           properties: {

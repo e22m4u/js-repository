@@ -1,15 +1,15 @@
 import {expect} from 'chai';
-import {Schema} from '../schema.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from '../definition/index.js';
 import {RelationType} from '../definition/index.js';
+import {DatabaseSchema} from '../database-schema.js';
 import {HasManyResolver} from './has-many-resolver.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.js';
 
 describe('HasManyResolver', function () {
   describe('includeTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -36,7 +36,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       const R = S.getService(HasManyResolver);
       const error = v =>
@@ -58,7 +58,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -79,7 +79,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -100,7 +100,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -121,7 +121,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -142,7 +142,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -166,7 +166,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if a target model is not found', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       const R = S.getService(HasManyResolver);
       const promise = R.includeTo(
@@ -182,7 +182,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if a target model does not have datasource', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
       const R = S.getService(HasManyResolver);
@@ -199,7 +199,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not exist', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -214,7 +214,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -255,7 +255,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({
         name: 'source',
@@ -305,7 +305,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -355,7 +355,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -425,7 +425,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -488,7 +488,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
@@ -646,7 +646,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -721,7 +721,7 @@ describe('HasManyResolver', function () {
 
   describe('includePolymorphicTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -749,7 +749,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       const R = S.getService(HasManyResolver);
       const error = v =>
@@ -778,7 +778,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -806,7 +806,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -834,7 +834,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -862,7 +862,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -890,7 +890,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "discriminator" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -918,7 +918,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -943,7 +943,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model is not found', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
@@ -961,7 +961,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
       const R = S.getService(HasManyResolver);
@@ -980,7 +980,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not found', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1005,7 +1005,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not include an entity with a not matched discriminator value', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1040,7 +1040,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1102,7 +1102,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({
         name: 'source',
@@ -1173,7 +1173,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -1244,7 +1244,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1335,7 +1335,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1410,7 +1410,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
@@ -1584,7 +1584,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({name: 'target', datasource: 'datasource'});
@@ -1680,7 +1680,7 @@ describe('HasManyResolver', function () {
 
   describe('includePolymorphicByRelationName', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1707,7 +1707,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({
         name: 'target',
@@ -1744,7 +1744,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1771,7 +1771,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1798,7 +1798,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1825,7 +1825,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetRelationName" parameter to be a non-empty string', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1852,7 +1852,7 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       const R = S.getService(HasManyResolver);
       const error = v =>
         format(
@@ -1876,7 +1876,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model is not found', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       const R = S.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
@@ -1893,7 +1893,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have the given relation name', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({name: 'target'});
       const R = S.getService(HasManyResolver);
@@ -1911,7 +1911,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the target relation is not "belongsTo"', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({
         name: 'target',
@@ -1939,7 +1939,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the target relation is not polymorphic', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({
         name: 'target',
@@ -1967,7 +1967,7 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineModel({name: 'source'});
       S.defineModel({
         name: 'target',
@@ -1993,7 +1993,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not found', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2026,7 +2026,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not include an entity with a not matched discriminator value', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2069,7 +2069,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2139,7 +2139,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({
         name: 'source',
@@ -2218,7 +2218,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2294,7 +2294,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom "foreignKey"', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2371,7 +2371,7 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom "discriminator"', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2448,7 +2448,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2546,7 +2546,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({
@@ -2629,7 +2629,7 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
@@ -2808,7 +2808,7 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new Schema();
+      const S = new DatabaseSchema();
       S.defineDatasource({name: 'datasource', adapter: 'memory'});
       S.defineModel({name: 'source', datasource: 'datasource'});
       S.defineModel({

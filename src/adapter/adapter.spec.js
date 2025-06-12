@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {chai} from '../chai.js';
-import {Schema} from '../schema.js';
 import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/js-service';
 import {ADAPTER_CLASS_NAME} from './adapter.js';
 import {ServiceContainer} from '@e22m4u/js-service';
+import {DatabaseSchema} from '../database-schema.js';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
 import {DataValidationDecorator} from './decorator/index.js';
@@ -42,7 +42,7 @@ describe('Adapter', function () {
     });
 
     it('decorates only extended adapter', function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       const dec1 = schema.getService(DataSanitizingDecorator);
       const dec2 = schema.getService(DefaultValuesDecorator);
       const dec3 = schema.getService(DataTransformationDecorator);

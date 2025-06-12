@@ -38,140 +38,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
-// src/errors/not-implemented-error.js
-var import_js_format, _NotImplementedError, NotImplementedError;
-var init_not_implemented_error = __esm({
-  "src/errors/not-implemented-error.js"() {
-    "use strict";
-    import_js_format = require("@e22m4u/js-format");
-    _NotImplementedError = class _NotImplementedError extends import_js_format.Errorf {
-    };
-    __name(_NotImplementedError, "NotImplementedError");
-    NotImplementedError = _NotImplementedError;
-  }
-});
-
-// src/errors/invalid-argument-error.js
-var import_js_format2, _InvalidArgumentError, InvalidArgumentError;
-var init_invalid_argument_error = __esm({
-  "src/errors/invalid-argument-error.js"() {
-    "use strict";
-    import_js_format2 = require("@e22m4u/js-format");
-    _InvalidArgumentError = class _InvalidArgumentError extends import_js_format2.Errorf {
-    };
-    __name(_InvalidArgumentError, "InvalidArgumentError");
-    InvalidArgumentError = _InvalidArgumentError;
-  }
-});
-
-// src/errors/invalid-operator-value-error.js
-var import_js_format3, _InvalidOperatorValueError, InvalidOperatorValueError;
-var init_invalid_operator_value_error = __esm({
-  "src/errors/invalid-operator-value-error.js"() {
-    "use strict";
-    import_js_format3 = require("@e22m4u/js-format");
-    _InvalidOperatorValueError = class _InvalidOperatorValueError extends Error {
-      /**
-       * Constructor.
-       *
-       * @param {string} operator
-       * @param {string} expected
-       * @param {*} value
-       */
-      constructor(operator, expected, value) {
-        super(
-          (0, import_js_format3.format)(
-            "Condition of {%s: ...} should have %s, but %v given.",
-            operator,
-            expected,
-            value
-          )
-        );
-      }
-    };
-    __name(_InvalidOperatorValueError, "InvalidOperatorValueError");
-    InvalidOperatorValueError = _InvalidOperatorValueError;
-  }
-});
-
-// src/errors/index.js
-var init_errors = __esm({
-  "src/errors/index.js"() {
-    "use strict";
-    init_not_implemented_error();
-    init_invalid_argument_error();
-    init_invalid_operator_value_error();
-  }
-});
-
-// src/filter/slice-clause-tool.js
-var import_js_service, _SliceClauseTool, SliceClauseTool;
-var init_slice_clause_tool = __esm({
-  "src/filter/slice-clause-tool.js"() {
-    "use strict";
-    import_js_service = require("@e22m4u/js-service");
-    init_errors();
-    _SliceClauseTool = class _SliceClauseTool extends import_js_service.Service {
-      /**
-       * Slice.
-       *
-       * @param {object[]} entities
-       * @param {number|undefined} skip
-       * @param {number|undefined} limit
-       * @returns {object[]}
-       */
-      slice(entities, skip = void 0, limit = void 0) {
-        if (!Array.isArray(entities))
-          throw new InvalidArgumentError(
-            "The first argument of SliceClauseTool.slice should be an Array, but %v given.",
-            entities
-          );
-        if (skip != null && typeof skip !== "number")
-          throw new InvalidArgumentError(
-            'The provided option "skip" should be a Number, but %v given.',
-            skip
-          );
-        if (limit != null && typeof limit !== "number")
-          throw new InvalidArgumentError(
-            'The provided option "limit" should be a Number, but %v given.',
-            limit
-          );
-        skip = skip || 0;
-        limit = limit || entities.length;
-        return entities.slice(skip, skip + limit);
-      }
-      /**
-       * Validate skip clause.
-       *
-       * @param {number|undefined} skip
-       */
-      static validateSkipClause(skip) {
-        if (skip == null) return;
-        if (typeof skip !== "number")
-          throw new InvalidArgumentError(
-            'The provided option "skip" should be a Number, but %v given.',
-            skip
-          );
-      }
-      /**
-       * Validate limit clause.
-       *
-       * @param {number|undefined} limit
-       */
-      static validateLimitClause(limit) {
-        if (limit == null) return;
-        if (typeof limit !== "number")
-          throw new InvalidArgumentError(
-            'The provided option "limit" should be a Number, but %v given.',
-            limit
-          );
-      }
-    };
-    __name(_SliceClauseTool, "SliceClauseTool");
-    SliceClauseTool = _SliceClauseTool;
-  }
-});
-
 // src/utils/is-ctor.js
 function isCtor(value) {
   if (!value) return false;
@@ -410,6 +276,72 @@ var init_transform_promise = __esm({
   }
 });
 
+// src/errors/not-implemented-error.js
+var import_js_format, _NotImplementedError, NotImplementedError;
+var init_not_implemented_error = __esm({
+  "src/errors/not-implemented-error.js"() {
+    "use strict";
+    import_js_format = require("@e22m4u/js-format");
+    _NotImplementedError = class _NotImplementedError extends import_js_format.Errorf {
+    };
+    __name(_NotImplementedError, "NotImplementedError");
+    NotImplementedError = _NotImplementedError;
+  }
+});
+
+// src/errors/invalid-argument-error.js
+var import_js_format2, _InvalidArgumentError, InvalidArgumentError;
+var init_invalid_argument_error = __esm({
+  "src/errors/invalid-argument-error.js"() {
+    "use strict";
+    import_js_format2 = require("@e22m4u/js-format");
+    _InvalidArgumentError = class _InvalidArgumentError extends import_js_format2.Errorf {
+    };
+    __name(_InvalidArgumentError, "InvalidArgumentError");
+    InvalidArgumentError = _InvalidArgumentError;
+  }
+});
+
+// src/errors/invalid-operator-value-error.js
+var import_js_format3, _InvalidOperatorValueError, InvalidOperatorValueError;
+var init_invalid_operator_value_error = __esm({
+  "src/errors/invalid-operator-value-error.js"() {
+    "use strict";
+    import_js_format3 = require("@e22m4u/js-format");
+    _InvalidOperatorValueError = class _InvalidOperatorValueError extends Error {
+      /**
+       * Constructor.
+       *
+       * @param {string} operator
+       * @param {string} expected
+       * @param {*} value
+       */
+      constructor(operator, expected, value) {
+        super(
+          (0, import_js_format3.format)(
+            "Condition of {%s: ...} should have %s, but %v given.",
+            operator,
+            expected,
+            value
+          )
+        );
+      }
+    };
+    __name(_InvalidOperatorValueError, "InvalidOperatorValueError");
+    InvalidOperatorValueError = _InvalidOperatorValueError;
+  }
+});
+
+// src/errors/index.js
+var init_errors = __esm({
+  "src/errors/index.js"() {
+    "use strict";
+    init_not_implemented_error();
+    init_invalid_argument_error();
+    init_invalid_operator_value_error();
+  }
+});
+
 // src/utils/select-object-keys.js
 function selectObjectKeys(obj, keys) {
   if (!obj || typeof obj !== "object" || Array.isArray(obj))
@@ -521,6 +453,74 @@ var init_utils = __esm({
     init_select_object_keys();
     init_exclude_object_keys();
     init_get_decorator_target_type();
+  }
+});
+
+// src/filter/slice-clause-tool.js
+var import_js_service, _SliceClauseTool, SliceClauseTool;
+var init_slice_clause_tool = __esm({
+  "src/filter/slice-clause-tool.js"() {
+    "use strict";
+    import_js_service = require("@e22m4u/js-service");
+    init_errors();
+    _SliceClauseTool = class _SliceClauseTool extends import_js_service.Service {
+      /**
+       * Slice.
+       *
+       * @param {object[]} entities
+       * @param {number|undefined} skip
+       * @param {number|undefined} limit
+       * @returns {object[]}
+       */
+      slice(entities, skip = void 0, limit = void 0) {
+        if (!Array.isArray(entities))
+          throw new InvalidArgumentError(
+            "The first argument of SliceClauseTool.slice should be an Array, but %v given.",
+            entities
+          );
+        if (skip != null && typeof skip !== "number")
+          throw new InvalidArgumentError(
+            'The provided option "skip" should be a Number, but %v given.',
+            skip
+          );
+        if (limit != null && typeof limit !== "number")
+          throw new InvalidArgumentError(
+            'The provided option "limit" should be a Number, but %v given.',
+            limit
+          );
+        skip = skip || 0;
+        limit = limit || entities.length;
+        return entities.slice(skip, skip + limit);
+      }
+      /**
+       * Validate skip clause.
+       *
+       * @param {number|undefined} skip
+       */
+      static validateSkipClause(skip) {
+        if (skip == null) return;
+        if (typeof skip !== "number")
+          throw new InvalidArgumentError(
+            'The provided option "skip" should be a Number, but %v given.',
+            skip
+          );
+      }
+      /**
+       * Validate limit clause.
+       *
+       * @param {number|undefined} limit
+       */
+      static validateLimitClause(limit) {
+        if (limit == null) return;
+        if (typeof limit !== "number")
+          throw new InvalidArgumentError(
+            'The provided option "limit" should be a Number, but %v given.',
+            limit
+          );
+      }
+    };
+    __name(_SliceClauseTool, "SliceClauseTool");
+    SliceClauseTool = _SliceClauseTool;
   }
 });
 
@@ -3645,1209 +3645,16 @@ var init_fields_clause_tool = __esm({
   }
 });
 
-// src/relations/has-one-resolver.js
-var import_js_service19, _HasOneResolver, HasOneResolver;
-var init_has_one_resolver = __esm({
-  "src/relations/has-one-resolver.js"() {
-    "use strict";
-    import_js_service19 = require("@e22m4u/js-service");
-    init_utils();
-    init_definition();
-    init_errors();
-    init_repository2();
-    init_definition();
-    _HasOneResolver = class _HasOneResolver extends import_js_service19.Service {
-      /**
-       * Include to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} foreignKey
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!foreignKey || typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
-            foreignKey
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includeTo should be an Object, but %v given.',
-            scope
-          );
-        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          sourceName
-        );
-        const sourceIds = [];
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const sourceId = entity[sourcePkPropName];
-          if (sourceIds.includes(sourceId)) return;
-          sourceIds.push(sourceId);
-        });
-        const promises = [];
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        scope = scope ? cloneDeep(scope) : {};
-        const targetBySourceId = /* @__PURE__ */ new Map();
-        sourceIds.forEach((sourceId) => {
-          const filter = cloneDeep(scope);
-          filter.where = {
-            and: [{ [foreignKey]: sourceId }, ...scope.where ? [scope.where] : []]
-          };
-          filter.limit = 1;
-          promises.push(
-            targetRepository.find(filter).then((result) => {
-              if (result.length) targetBySourceId.set(sourceId, result[0]);
-            })
-          );
-        });
-        await Promise.all(promises);
-        Array.from(targetBySourceId.keys()).forEach((sourceId) => {
-          const sources = entities.filter((v) => v[sourcePkPropName] === sourceId);
-          sources.forEach((v) => v[relationName] = targetBySourceId.get(sourceId));
-        });
-      }
-      /**
-       * Include polymorphic to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} foreignKey
-       * @param {string} discriminator
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!foreignKey || typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            foreignKey
-          );
-        if (!discriminator || typeof discriminator !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            discriminator
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includePolymorphicTo should be an Object, but %v given.',
-            scope
-          );
-        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          sourceName
-        );
-        const sourceIds = [];
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const sourceId = entity[sourcePkPropName];
-          if (sourceIds.includes(sourceId)) return;
-          sourceIds.push(sourceId);
-        });
-        const promises = [];
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        scope = scope ? cloneDeep(scope) : {};
-        const targetBySourceId = /* @__PURE__ */ new Map();
-        sourceIds.forEach((sourceId) => {
-          const filter = cloneDeep(scope);
-          filter.where = {
-            and: [
-              { [foreignKey]: sourceId, [discriminator]: sourceName },
-              ...scope.where ? [scope.where] : []
-            ]
-          };
-          filter.limit = 1;
-          promises.push(
-            targetRepository.find(filter).then((result) => {
-              if (result.length) targetBySourceId.set(sourceId, result[0]);
-            })
-          );
-        });
-        await Promise.all(promises);
-        Array.from(targetBySourceId.keys()).forEach((sourceId) => {
-          const sources = entities.filter((v) => v[sourcePkPropName] === sourceId);
-          sources.forEach((v) => v[relationName] = targetBySourceId.get(sourceId));
-        });
-      }
-      /**
-       * Include polymorphic by relation name.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} targetRelationName
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!targetRelationName || typeof targetRelationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            targetRelationName
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName should be an Object, but %v given.',
-            scope
-          );
-        const targetRelationDef = this.getService(
-          ModelDefinitionUtils
-        ).getRelationDefinitionByName(targetName, targetRelationName);
-        if (targetRelationDef.type !== RelationType.BELONGS_TO)
-          throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type given.',
-            relationName,
-            sourceName,
-            targetRelationName,
-            targetRelationDef.type
-          );
-        if (!targetRelationDef.polymorphic)
-          throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic too.',
-            relationName,
-            sourceName,
-            targetRelationName
-          );
-        const foreignKey = targetRelationDef.foreignKey || `${targetRelationName}Id`;
-        const discriminator = targetRelationDef.discriminator || `${targetRelationName}Type`;
-        return this.includePolymorphicTo(
-          entities,
-          sourceName,
-          targetName,
-          relationName,
-          foreignKey,
-          discriminator,
-          scope
-        );
-      }
-    };
-    __name(_HasOneResolver, "HasOneResolver");
-    HasOneResolver = _HasOneResolver;
-  }
-});
-
-// src/relations/has-many-resolver.js
-var import_js_service20, _HasManyResolver, HasManyResolver;
-var init_has_many_resolver = __esm({
-  "src/relations/has-many-resolver.js"() {
-    "use strict";
-    import_js_service20 = require("@e22m4u/js-service");
-    init_utils();
-    init_definition();
-    init_errors();
-    init_repository2();
-    init_definition();
-    _HasManyResolver = class _HasManyResolver extends import_js_service20.Service {
-      /**
-       * Include to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} foreignKey
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!foreignKey || typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
-            foreignKey
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includeTo should be an Object, but %v given.',
-            scope
-          );
-        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          sourceName
-        );
-        const sourceIds = [];
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const sourceId = entity[sourcePkPropName];
-          if (sourceIds.includes(sourceId)) return;
-          sourceIds.push(sourceId);
-        });
-        const promises = [];
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        scope = scope ? cloneDeep(scope) : {};
-        const targetsBySourceId = /* @__PURE__ */ new Map();
-        sourceIds.forEach((sourceId) => {
-          const filter = cloneDeep(scope);
-          filter.where = {
-            and: [{ [foreignKey]: sourceId }, ...scope.where ? [scope.where] : []]
-          };
-          promises.push(
-            targetRepository.find(filter).then((result) => {
-              var _a;
-              if (result.length) {
-                let targets = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
-                targets = [...targets, ...result];
-                targetsBySourceId.set(sourceId, targets);
-              }
-            })
-          );
-        });
-        await Promise.all(promises);
-        entities.forEach((entity) => {
-          var _a;
-          const sourceId = entity[sourcePkPropName];
-          entity[relationName] = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
-        });
-      }
-      /**
-       * Include polymorphic to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} foreignKey
-       * @param {string} discriminator
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!foreignKey || typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            foreignKey
-          );
-        if (!discriminator || typeof discriminator !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            discriminator
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includePolymorphicTo should be an Object, but %v given.',
-            scope
-          );
-        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          sourceName
-        );
-        const sourceIds = [];
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const sourceId = entity[sourcePkPropName];
-          if (sourceIds.includes(sourceId)) return;
-          sourceIds.push(sourceId);
-        });
-        const promises = [];
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        scope = scope ? cloneDeep(scope) : {};
-        const targetsBySourceId = /* @__PURE__ */ new Map();
-        sourceIds.forEach((sourceId) => {
-          const filter = cloneDeep(scope);
-          filter.where = {
-            and: [
-              { [foreignKey]: sourceId, [discriminator]: sourceName },
-              ...scope.where ? [scope.where] : []
-            ]
-          };
-          promises.push(
-            targetRepository.find(filter).then((result) => {
-              var _a;
-              if (result.length) {
-                let targets = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
-                targets = [...targets, ...result];
-                targetsBySourceId.set(sourceId, targets);
-              }
-            })
-          );
-        });
-        await Promise.all(promises);
-        entities.forEach((entity) => {
-          var _a;
-          const sourceId = entity[sourcePkPropName];
-          entity[relationName] = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
-        });
-      }
-      /**
-       * Include polymorphic by relation name.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string} targetRelationName
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (!targetRelationName || typeof targetRelationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
-            targetRelationName
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName should be an Object, but %v given.',
-            scope
-          );
-        const targetRelationDef = this.getService(
-          ModelDefinitionUtils
-        ).getRelationDefinitionByName(targetName, targetRelationName);
-        if (targetRelationDef.type !== RelationType.BELONGS_TO)
-          throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type given.',
-            relationName,
-            sourceName,
-            targetRelationName,
-            targetRelationDef.type
-          );
-        if (!targetRelationDef.polymorphic)
-          throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic too.',
-            relationName,
-            sourceName,
-            targetRelationName
-          );
-        const foreignKey = targetRelationDef.foreignKey || `${targetRelationName}Id`;
-        const discriminator = targetRelationDef.discriminator || `${targetRelationName}Type`;
-        return this.includePolymorphicTo(
-          entities,
-          sourceName,
-          targetName,
-          relationName,
-          foreignKey,
-          discriminator,
-          scope
-        );
-      }
-    };
-    __name(_HasManyResolver, "HasManyResolver");
-    HasManyResolver = _HasManyResolver;
-  }
-});
-
-// src/relations/belongs-to-resolver.js
-var import_js_service21, _BelongsToResolver, BelongsToResolver;
-var init_belongs_to_resolver = __esm({
-  "src/relations/belongs-to-resolver.js"() {
-    "use strict";
-    import_js_service21 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
-    init_errors();
-    init_repository2();
-    init_definition();
-    _BelongsToResolver = class _BelongsToResolver extends import_js_service21.Service {
-      /**
-       * Include to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string|undefined} foreignKey
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (foreignKey && typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of BelongsToResolver.includeTo should be a String, but %v given.',
-            foreignKey
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of BelongsToResolver.includeTo should be an Object, but %v given.',
-            scope
-          );
-        if (foreignKey == null) foreignKey = `${relationName}Id`;
-        const targetIds = entities.reduce((acc, entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const targetId = entity[foreignKey];
-          return targetId != null ? [...acc, targetId] : acc;
-        }, []);
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          targetName
-        );
-        scope = scope ? cloneDeep(scope) : {};
-        const filter = cloneDeep(scope);
-        filter.where = {
-          and: [
-            { [targetPkPropName]: { inq: targetIds } },
-            ...scope.where ? [scope.where] : []
-          ]
-        };
-        const targets = await targetRepository.find(filter);
-        entities.forEach((entity) => {
-          const target = targets.find(
-            (e) => e[targetPkPropName] === entity[foreignKey]
-          );
-          if (target) entity[relationName] = target;
-        });
-      }
-      /**
-       * Include polymorphic to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} relationName
-       * @param {string|undefined} foreignKey
-       * @param {string|undefined} discriminator
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includePolymorphicTo(entities, sourceName, relationName, foreignKey = void 0, discriminator = void 0, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (foreignKey && typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo should be a String, but %v given.',
-            foreignKey
-          );
-        if (discriminator && typeof discriminator !== "string")
-          throw new InvalidArgumentError(
-            'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo should be a String, but %v given.',
-            discriminator
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo should be an Object, but %v given.',
-            scope
-          );
-        if (foreignKey == null) {
-          const singularRelationName = singularize(relationName);
-          foreignKey = `${singularRelationName}Id`;
-        }
-        if (discriminator == null) {
-          const singularRelationName = singularize(relationName);
-          discriminator = `${singularRelationName}Type`;
-        }
-        const targetIdsByTargetName = {};
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const targetId = entity[foreignKey];
-          const targetName = entity[discriminator];
-          if (targetId == null || targetName == null) return;
-          if (targetIdsByTargetName[targetName] == null)
-            targetIdsByTargetName[targetName] = [];
-          if (!targetIdsByTargetName[targetName].includes(targetId))
-            targetIdsByTargetName[targetName].push(targetId);
-        });
-        const promises = [];
-        const targetNames = Object.keys(targetIdsByTargetName);
-        scope = scope ? cloneDeep(scope) : {};
-        const targetEntitiesByTargetNames = {};
-        targetNames.forEach((targetName) => {
-          let targetRepository;
-          try {
-            targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-          } catch (error) {
-            if (error instanceof InvalidArgumentError) {
-              if (error.message === `The model "${targetName}" is not defined.` || error.message === `The model "${targetName}" does not have a specified datasource.`) {
-                return;
-              }
-            } else {
-              throw error;
-            }
-          }
-          const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-            targetName
-          );
-          const targetFilter = cloneDeep(scope);
-          const targetIds = targetIdsByTargetName[targetName];
-          targetFilter.where = {
-            and: [
-              { [targetPkPropName]: { inq: targetIds } },
-              ...scope.where ? [scope.where] : []
-            ]
-          };
-          const promise = targetRepository.find(targetFilter).then((result) => {
-            var _a;
-            targetEntitiesByTargetNames[targetName] = [
-              ...(_a = targetEntitiesByTargetNames[targetName]) != null ? _a : [],
-              ...result
-            ];
-          });
-          promises.push(promise);
-        });
-        await Promise.all(promises);
-        entities.forEach((entity) => {
-          var _a;
-          const targetId = entity[foreignKey];
-          const targetName = entity[discriminator];
-          if (targetId == null || targetName == null || targetEntitiesByTargetNames[targetName] == null) {
-            return;
-          }
-          const targetEntities = (_a = targetEntitiesByTargetNames[targetName]) != null ? _a : [];
-          const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-            targetName
-          );
-          const target = targetEntities.find((e) => e[targetPkPropName] === targetId);
-          if (target) entity[relationName] = target;
-        });
-      }
-    };
-    __name(_BelongsToResolver, "BelongsToResolver");
-    BelongsToResolver = _BelongsToResolver;
-  }
-});
-
-// src/relations/references-many-resolver.js
-var import_js_service22, _ReferencesManyResolver, ReferencesManyResolver;
-var init_references_many_resolver = __esm({
-  "src/relations/references-many-resolver.js"() {
-    "use strict";
-    import_js_service22 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
-    init_errors();
-    init_repository2();
-    init_definition();
-    _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service22.Service {
-      /**
-       * Include to.
-       *
-       * @param {object[]} entities
-       * @param {string} sourceName
-       * @param {string} targetName
-       * @param {string} relationName
-       * @param {string|undefined} foreignKey
-       * @param {object|undefined} scope
-       * @returns {Promise<void>}
-       */
-      async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
-        if (!entities || !Array.isArray(entities))
-          throw new InvalidArgumentError(
-            'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v given.',
-            entities
-          );
-        if (!sourceName || typeof sourceName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "sourceName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
-            sourceName
-          );
-        if (!targetName || typeof targetName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "targetName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
-            targetName
-          );
-        if (!relationName || typeof relationName !== "string")
-          throw new InvalidArgumentError(
-            'The parameter "relationName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
-            relationName
-          );
-        if (foreignKey && typeof foreignKey !== "string")
-          throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo should be a String, but %v given.',
-            foreignKey
-          );
-        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
-          throw new InvalidArgumentError(
-            'The provided parameter "scope" of ReferencesManyResolver.includeTo should be an Object, but %v given.',
-            scope
-          );
-        if (foreignKey == null) {
-          const singularRelationName = singularize(relationName);
-          foreignKey = `${singularRelationName}Ids`;
-        }
-        const targetIds = entities.reduce((acc, entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity))
-            throw new InvalidArgumentError(
-              'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v given.',
-              entity
-            );
-          const ids = entity[foreignKey];
-          if (Array.isArray(ids))
-            ids.forEach((id) => {
-              if (id == null || acc.includes(id)) return;
-              acc.push(id);
-            });
-          return acc;
-        }, []);
-        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
-        const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
-          targetName
-        );
-        scope = scope ? cloneDeep(scope) : {};
-        const filter = cloneDeep(scope);
-        filter.where = {
-          and: [
-            { [targetPkPropName]: { inq: targetIds } },
-            ...scope.where ? [scope.where] : []
-          ]
-        };
-        const targets = await targetRepository.find(filter);
-        entities.forEach((entity) => {
-          const ids = entity[foreignKey];
-          entity[relationName] = [];
-          if (Array.isArray(ids))
-            targets.forEach((target) => {
-              const targetId = target[targetPkPropName];
-              if (ids.includes(targetId)) entity[relationName].push(target);
-            });
-        });
-      }
-    };
-    __name(_ReferencesManyResolver, "ReferencesManyResolver");
-    ReferencesManyResolver = _ReferencesManyResolver;
-  }
-});
-
-// src/relations/index.js
-var init_relations2 = __esm({
-  "src/relations/index.js"() {
-    "use strict";
-    init_has_one_resolver();
-    init_has_many_resolver();
-    init_belongs_to_resolver();
-    init_references_many_resolver();
-  }
-});
-
-// src/filter/include-clause-tool.js
-var import_js_service23, _IncludeClauseTool, IncludeClauseTool;
-var init_include_clause_tool = __esm({
-  "src/filter/include-clause-tool.js"() {
-    "use strict";
-    import_js_service23 = require("@e22m4u/js-service");
-    init_definition();
-    init_relations2();
-    init_relations2();
-    init_where_clause_tool();
-    init_order_clause_tool();
-    init_slice_clause_tool();
-    init_errors();
-    init_relations2();
-    init_fields_clause_tool();
-    init_definition();
-    init_relations2();
-    _IncludeClauseTool = class _IncludeClauseTool extends import_js_service23.Service {
-      /**
-       * Include to.
-       *
-       * @param {object[]} entities
-       * @param {string} modelName
-       * @param {IncludeClause|undefined} clause
-       * @returns {Promise<void>}
-       */
-      async includeTo(entities, modelName, clause) {
-        clause = _IncludeClauseTool.normalizeIncludeClause(clause);
-        const promises = [];
-        clause.forEach((inclusion) => {
-          const relDef = this.getService(
-            ModelDefinitionUtils
-          ).getRelationDefinitionByName(modelName, inclusion.relation);
-          switch (relDef.type) {
-            // BELONGS_TO
-            case RelationType.BELONGS_TO:
-              if (relDef.polymorphic) {
-                promises.push(
-                  this.getService(BelongsToResolver).includePolymorphicTo(
-                    entities,
-                    modelName,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    relDef.discriminator,
-                    inclusion.scope
-                  )
-                );
-              } else {
-                promises.push(
-                  this.getService(BelongsToResolver).includeTo(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    inclusion.scope
-                  )
-                );
-              }
-              break;
-            // HAS_ONE
-            case RelationType.HAS_ONE:
-              if (relDef.polymorphic && typeof relDef.polymorphic === "string") {
-                promises.push(
-                  this.getService(HasOneResolver).includePolymorphicByRelationName(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.polymorphic,
-                    inclusion.scope
-                  )
-                );
-              } else if (relDef.polymorphic) {
-                promises.push(
-                  this.getService(HasOneResolver).includePolymorphicTo(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    relDef.discriminator,
-                    inclusion.scope
-                  )
-                );
-              } else {
-                promises.push(
-                  this.getService(HasOneResolver).includeTo(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    inclusion.scope
-                  )
-                );
-              }
-              break;
-            // HAS_MANY
-            case RelationType.HAS_MANY:
-              if (relDef.polymorphic && typeof relDef.polymorphic === "string") {
-                promises.push(
-                  this.getService(HasManyResolver).includePolymorphicByRelationName(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.polymorphic,
-                    inclusion.scope
-                  )
-                );
-              } else if (relDef.polymorphic) {
-                promises.push(
-                  this.getService(HasManyResolver).includePolymorphicTo(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    relDef.discriminator,
-                    inclusion.scope
-                  )
-                );
-              } else {
-                promises.push(
-                  this.getService(HasManyResolver).includeTo(
-                    entities,
-                    modelName,
-                    relDef.model,
-                    inclusion.relation,
-                    relDef.foreignKey,
-                    inclusion.scope
-                  )
-                );
-              }
-              break;
-            case RelationType.REFERENCES_MANY:
-              promises.push(
-                this.getService(ReferencesManyResolver).includeTo(
-                  entities,
-                  modelName,
-                  relDef.model,
-                  inclusion.relation,
-                  relDef.foreignKey,
-                  inclusion.scope
-                )
-              );
-              break;
-            default:
-              throw new InvalidArgumentError(
-                "The relation type %v does not have an inclusion resolver.",
-                relDef.type
-              );
-          }
-        });
-        await Promise.all(promises);
-      }
-      /**
-       * Validate include clause.
-       *
-       * @param {IncludeClause|undefined} clause
-       */
-      static validateIncludeClause(clause) {
-        if (clause == null) {
-        } else if (clause && typeof clause === "string") {
-        } else if (Array.isArray(clause)) {
-          const relNames = [];
-          clause.flat(Infinity).forEach((el) => {
-            this.validateIncludeClause(el);
-            if (typeof el === "string") {
-              relNames.push(el);
-            } else if (typeof el === "object") {
-              Object.keys(el).forEach((key) => {
-                if (Object.prototype.hasOwnProperty.call(el, key))
-                  relNames.push(key);
-              });
-            }
-          });
-          const duplicateNames = relNames.filter(
-            (name, i) => relNames.indexOf(name) !== i
-          );
-          if (duplicateNames.length)
-            throw new InvalidArgumentError(
-              'The provided option "include" has duplicates of %v.',
-              duplicateNames[0]
-            );
-        } else if (typeof clause === "object") {
-          if ("relation" in clause) {
-            if (!clause.relation || typeof clause.relation !== "string")
-              throw new InvalidArgumentError(
-                'The provided option "relation" should be a non-empty String, but %v given.',
-                clause.relation
-              );
-            if ("scope" in clause && clause) this.validateScopeClause(clause.scope);
-          } else {
-            Object.keys(clause).forEach((key) => {
-              if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
-              this.validateIncludeClause(key);
-              this.validateIncludeClause(clause[key]);
-            });
-          }
-        } else {
-          throw new InvalidArgumentError(
-            'The provided option "include" should have a non-empty String, an Object or an Array, but %v given.',
-            clause
-          );
-        }
-      }
-      /**
-       * Validate scope clause.
-       *
-       * @param {object|undefined} clause
-       */
-      static validateScopeClause(clause) {
-        if (clause == null) return;
-        if (typeof clause !== "object" || Array.isArray(clause))
-          throw new InvalidArgumentError(
-            'The provided option "scope" should be an Object, but %v given.',
-            clause
-          );
-        if (clause.where != null) {
-          WhereClauseTool.validateWhereClause(clause.where);
-        }
-        if (clause.order != null) {
-          OrderClauseTool.validateOrderClause(clause.order);
-        }
-        if (clause.skip != null) {
-          SliceClauseTool.validateSkipClause(clause.skip);
-        }
-        if (clause.limit != null) {
-          SliceClauseTool.validateLimitClause(clause.limit);
-        }
-        if (clause.fields != null) {
-          FieldsClauseTool.validateFieldsClause(clause.fields);
-        }
-        if (clause.include != null) {
-          _IncludeClauseTool.validateIncludeClause(clause.include);
-        }
-      }
-      /**
-       * Normalize include clause.
-       *
-       * @param {IncludeClause|undefined} clause
-       * @returns {object[]}
-       */
-      static normalizeIncludeClause(clause) {
-        let result = [];
-        if (clause == null) {
-          return result;
-        } else if (clause && typeof clause === "string") {
-          result.push({ relation: clause });
-        } else if (Array.isArray(clause)) {
-          clause.flat(Infinity).forEach((el) => {
-            el = this.normalizeIncludeClause(el);
-            result = [...result, ...el];
-          });
-          const relNames = result.map((v) => v.relation);
-          const duplicateNames = relNames.filter(
-            (name, i) => relNames.indexOf(name) !== i
-          );
-          if (duplicateNames.length)
-            throw new InvalidArgumentError(
-              'The provided option "include" has duplicates of %v.',
-              duplicateNames[0]
-            );
-        } else if (typeof clause === "object") {
-          if ("relation" in clause) {
-            if (!clause.relation || typeof clause.relation !== "string")
-              throw new InvalidArgumentError(
-                'The provided option "relation" should be a non-empty String, but %v given.',
-                clause.relation
-              );
-            const normalized = { relation: clause.relation };
-            const scope = this.normalizeScopeClause(clause.scope);
-            if (scope) normalized.scope = scope;
-            result.push(normalized);
-          } else {
-            Object.keys(clause).forEach((key) => {
-              if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
-              this.validateIncludeClause(key);
-              const normalized = { relation: key };
-              const include = this.normalizeIncludeClause(clause[key]);
-              if (include.length) normalized.scope = { include };
-              result.push(normalized);
-            });
-          }
-        } else {
-          throw new InvalidArgumentError(
-            'The provided option "include" should have a non-empty String, an Object or an Array, but %v given.',
-            clause
-          );
-        }
-        return result;
-      }
-      /**
-       * Normalize scope clause.
-       *
-       * @param {object|undefined} clause
-       * @returns {object|undefined}
-       */
-      static normalizeScopeClause(clause) {
-        if (clause == null) return;
-        if (typeof clause !== "object" || Array.isArray(clause))
-          throw new InvalidArgumentError(
-            'The provided option "scope" should be an Object, but %v given.',
-            clause
-          );
-        const result = {};
-        if (clause.where != null) {
-          WhereClauseTool.validateWhereClause(clause.where);
-          result.where = clause.where;
-        }
-        if (clause.order != null) {
-          OrderClauseTool.validateOrderClause(clause.order);
-          result.order = clause.order;
-        }
-        if (clause.skip != null) {
-          SliceClauseTool.validateSkipClause(clause.skip);
-          result.skip = clause.skip;
-        }
-        if (clause.limit != null) {
-          SliceClauseTool.validateLimitClause(clause.limit);
-          result.limit = clause.limit;
-        }
-        if (clause.fields != null) {
-          FieldsClauseTool.validateFieldsClause(clause.fields);
-          result.fields = clause.fields;
-        }
-        if (clause.include != null) {
-          result.include = this.normalizeIncludeClause(clause.include);
-        }
-        if (Object.keys(result).length) return result;
-        return void 0;
-      }
-    };
-    __name(_IncludeClauseTool, "IncludeClauseTool");
-    IncludeClauseTool = _IncludeClauseTool;
-  }
-});
-
-// src/filter/index.js
-var init_filter = __esm({
-  "src/filter/index.js"() {
-    "use strict";
-    init_slice_clause_tool();
-    init_order_clause_tool();
-    init_where_clause_tool();
-    init_fields_clause_tool();
-    init_include_clause_tool();
-    init_operator_clause_tool();
-  }
-});
-
 // src/adapter/decorator/inclusion-decorator.js
-var import_js_service24, _InclusionDecorator, InclusionDecorator;
+var import_js_service19, _InclusionDecorator, InclusionDecorator;
 var init_inclusion_decorator = __esm({
   "src/adapter/decorator/inclusion-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service24 = require("@e22m4u/js-service");
+    import_js_service19 = require("@e22m4u/js-service");
     init_filter();
     init_errors();
-    _InclusionDecorator = class _InclusionDecorator extends import_js_service24.Service {
+    _InclusionDecorator = class _InclusionDecorator extends import_js_service19.Service {
       /**
        * Decorate.
        *
@@ -4928,15 +3735,15 @@ var init_inclusion_decorator = __esm({
 });
 
 // src/adapter/decorator/default-values-decorator.js
-var import_js_service25, _DefaultValuesDecorator, DefaultValuesDecorator;
+var import_js_service20, _DefaultValuesDecorator, DefaultValuesDecorator;
 var init_default_values_decorator = __esm({
   "src/adapter/decorator/default-values-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service25 = require("@e22m4u/js-service");
+    import_js_service20 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DefaultValuesDecorator = class _DefaultValuesDecorator extends import_js_service25.Service {
+    _DefaultValuesDecorator = class _DefaultValuesDecorator extends import_js_service20.Service {
       /**
        * Decorate.
        *
@@ -4993,15 +3800,15 @@ var init_default_values_decorator = __esm({
 });
 
 // src/adapter/decorator/data-sanitizing-decorator.js
-var import_js_service26, _DataSanitizingDecorator, DataSanitizingDecorator;
+var import_js_service21, _DataSanitizingDecorator, DataSanitizingDecorator;
 var init_data_sanitizing_decorator = __esm({
   "src/adapter/decorator/data-sanitizing-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service26 = require("@e22m4u/js-service");
+    import_js_service21 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DataSanitizingDecorator = class _DataSanitizingDecorator extends import_js_service26.Service {
+    _DataSanitizingDecorator = class _DataSanitizingDecorator extends import_js_service21.Service {
       /**
        * Decorate.
        *
@@ -5048,15 +3855,15 @@ var init_data_sanitizing_decorator = __esm({
 });
 
 // src/adapter/decorator/data-validation-decorator.js
-var import_js_service27, _DataValidationDecorator, DataValidationDecorator;
+var import_js_service22, _DataValidationDecorator, DataValidationDecorator;
 var init_data_validation_decorator = __esm({
   "src/adapter/decorator/data-validation-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service27 = require("@e22m4u/js-service");
+    import_js_service22 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DataValidationDecorator = class _DataValidationDecorator extends import_js_service27.Service {
+    _DataValidationDecorator = class _DataValidationDecorator extends import_js_service22.Service {
       /**
        * Decorate.
        *
@@ -5102,15 +3909,15 @@ var init_data_validation_decorator = __esm({
 });
 
 // src/adapter/decorator/fields-filtering-decorator.js
-var import_js_service28, _FieldsFilteringDecorator, FieldsFilteringDecorator;
+var import_js_service23, _FieldsFilteringDecorator, FieldsFilteringDecorator;
 var init_fields_filtering_decorator = __esm({
   "src/adapter/decorator/fields-filtering-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service28 = require("@e22m4u/js-service");
+    import_js_service23 = require("@e22m4u/js-service");
     init_filter();
     init_errors();
-    _FieldsFilteringDecorator = class _FieldsFilteringDecorator extends import_js_service28.Service {
+    _FieldsFilteringDecorator = class _FieldsFilteringDecorator extends import_js_service23.Service {
       /**
        * Decorate.
        *
@@ -5185,15 +3992,15 @@ var init_fields_filtering_decorator = __esm({
 });
 
 // src/adapter/decorator/data-transformation-decorator.js
-var import_js_service29, _DataTransformationDecorator, DataTransformationDecorator;
+var import_js_service24, _DataTransformationDecorator, DataTransformationDecorator;
 var init_data_transformation_decorator = __esm({
   "src/adapter/decorator/data-transformation-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service29 = require("@e22m4u/js-service");
+    import_js_service24 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DataTransformationDecorator = class _DataTransformationDecorator extends import_js_service29.Service {
+    _DataTransformationDecorator = class _DataTransformationDecorator extends import_js_service24.Service {
       /**
        * Decorate.
        *
@@ -5239,15 +4046,15 @@ var init_data_transformation_decorator = __esm({
 });
 
 // src/adapter/decorator/property-uniqueness-decorator.js
-var import_js_service30, _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
+var import_js_service25, _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
 var init_property_uniqueness_decorator = __esm({
   "src/adapter/decorator/property-uniqueness-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service30 = require("@e22m4u/js-service");
+    import_js_service25 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _PropertyUniquenessDecorator = class _PropertyUniquenessDecorator extends import_js_service30.Service {
+    _PropertyUniquenessDecorator = class _PropertyUniquenessDecorator extends import_js_service25.Service {
       /**
        * Decorate.
        *
@@ -5329,11 +4136,11 @@ var init_decorator = __esm({
 });
 
 // src/adapter/adapter.js
-var import_js_service31, ADAPTER_CLASS_NAME, _Adapter, Adapter;
+var import_js_service26, ADAPTER_CLASS_NAME, _Adapter, Adapter;
 var init_adapter = __esm({
   "src/adapter/adapter.js"() {
     "use strict";
-    import_js_service31 = require("@e22m4u/js-service");
+    import_js_service26 = require("@e22m4u/js-service");
     init_errors();
     init_decorator();
     init_decorator();
@@ -5343,7 +4150,7 @@ var init_adapter = __esm({
     init_decorator();
     init_decorator();
     ADAPTER_CLASS_NAME = "Adapter";
-    _Adapter = class _Adapter extends import_js_service31.Service {
+    _Adapter = class _Adapter extends import_js_service26.Service {
       /**
        * Settings.
        *
@@ -5535,7 +4342,7 @@ var init_adapter = __esm({
      *
      * @type {string}
      */
-    __publicField(_Adapter, "kinds", [...import_js_service31.Service.kinds, ADAPTER_CLASS_NAME]);
+    __publicField(_Adapter, "kinds", [...import_js_service26.Service.kinds, ADAPTER_CLASS_NAME]);
     Adapter = _Adapter;
   }
 });
@@ -5944,16 +4751,16 @@ function findAdapterCtorInModule(module2) {
   }
   return adapterCtor;
 }
-var import_js_service32, _AdapterLoader, AdapterLoader;
+var import_js_service27, _AdapterLoader, AdapterLoader;
 var init_adapter_loader = __esm({
   "src/adapter/adapter-loader.js"() {
     "use strict";
     init_adapter();
-    import_js_service32 = require("@e22m4u/js-service");
+    import_js_service27 = require("@e22m4u/js-service");
     init_adapter();
     init_errors();
     init_();
-    _AdapterLoader = class _AdapterLoader extends import_js_service32.Service {
+    _AdapterLoader = class _AdapterLoader extends import_js_service27.Service {
       /**
        * Load by name.
        *
@@ -5994,15 +4801,15 @@ var init_adapter_loader = __esm({
 });
 
 // src/adapter/adapter-registry.js
-var import_js_service33, _AdapterRegistry, AdapterRegistry;
+var import_js_service28, _AdapterRegistry, AdapterRegistry;
 var init_adapter_registry = __esm({
   "src/adapter/adapter-registry.js"() {
     "use strict";
     init_adapter();
-    import_js_service33 = require("@e22m4u/js-service");
+    import_js_service28 = require("@e22m4u/js-service");
     init_adapter_loader();
     init_definition();
-    _AdapterRegistry = class _AdapterRegistry extends import_js_service33.Service {
+    _AdapterRegistry = class _AdapterRegistry extends import_js_service28.Service {
       /**
        * Adapters.
        *
@@ -6044,16 +4851,16 @@ var init_adapter2 = __esm({
 });
 
 // src/repository/repository.js
-var import_js_service34, _Repository, Repository;
+var import_js_service29, _Repository, Repository;
 var init_repository = __esm({
   "src/repository/repository.js"() {
     "use strict";
-    import_js_service34 = require("@e22m4u/js-service");
+    import_js_service29 = require("@e22m4u/js-service");
     init_adapter2();
     init_adapter2();
     init_errors();
     init_definition();
-    _Repository = class _Repository extends import_js_service34.Service {
+    _Repository = class _Repository extends import_js_service29.Service {
       /**
        * Model name.
        *
@@ -6247,14 +5054,14 @@ var init_repository = __esm({
 });
 
 // src/repository/repository-registry.js
-var import_js_service35, _RepositoryRegistry, RepositoryRegistry;
+var import_js_service30, _RepositoryRegistry, RepositoryRegistry;
 var init_repository_registry = __esm({
   "src/repository/repository-registry.js"() {
     "use strict";
-    import_js_service35 = require("@e22m4u/js-service");
+    import_js_service30 = require("@e22m4u/js-service");
     init_repository();
     init_errors();
-    _RepositoryRegistry = class _RepositoryRegistry extends import_js_service35.Service {
+    _RepositoryRegistry = class _RepositoryRegistry extends import_js_service30.Service {
       /**
        * Repositories.
        *
@@ -6310,6 +5117,1199 @@ var init_repository2 = __esm({
   }
 });
 
+// src/relations/has-one-resolver.js
+var import_js_service31, _HasOneResolver, HasOneResolver;
+var init_has_one_resolver = __esm({
+  "src/relations/has-one-resolver.js"() {
+    "use strict";
+    import_js_service31 = require("@e22m4u/js-service");
+    init_utils();
+    init_definition();
+    init_errors();
+    init_repository2();
+    init_definition();
+    _HasOneResolver = class _HasOneResolver extends import_js_service31.Service {
+      /**
+       * Include to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} foreignKey
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!foreignKey || typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "foreignKey" of HasOneResolver.includeTo requires a non-empty String, but %v given.',
+            foreignKey
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasOneResolver.includeTo should be an Object, but %v given.',
+            scope
+          );
+        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          sourceName
+        );
+        const sourceIds = [];
+        entities.forEach((entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const sourceId = entity[sourcePkPropName];
+          if (sourceIds.includes(sourceId)) return;
+          sourceIds.push(sourceId);
+        });
+        const promises = [];
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        scope = scope ? cloneDeep(scope) : {};
+        const targetBySourceId = /* @__PURE__ */ new Map();
+        sourceIds.forEach((sourceId) => {
+          const filter = cloneDeep(scope);
+          filter.where = {
+            and: [{ [foreignKey]: sourceId }, ...scope.where ? [scope.where] : []]
+          };
+          filter.limit = 1;
+          promises.push(
+            targetRepository.find(filter).then((result) => {
+              if (result.length) targetBySourceId.set(sourceId, result[0]);
+            })
+          );
+        });
+        await Promise.all(promises);
+        Array.from(targetBySourceId.keys()).forEach((sourceId) => {
+          const sources = entities.filter((v) => v[sourcePkPropName] === sourceId);
+          sources.forEach((v) => v[relationName] = targetBySourceId.get(sourceId));
+        });
+      }
+      /**
+       * Include polymorphic to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} foreignKey
+       * @param {string} discriminator
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!foreignKey || typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            foreignKey
+          );
+        if (!discriminator || typeof discriminator !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            discriminator
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasOneResolver.includePolymorphicTo should be an Object, but %v given.',
+            scope
+          );
+        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          sourceName
+        );
+        const sourceIds = [];
+        entities.forEach((entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const sourceId = entity[sourcePkPropName];
+          if (sourceIds.includes(sourceId)) return;
+          sourceIds.push(sourceId);
+        });
+        const promises = [];
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        scope = scope ? cloneDeep(scope) : {};
+        const targetBySourceId = /* @__PURE__ */ new Map();
+        sourceIds.forEach((sourceId) => {
+          const filter = cloneDeep(scope);
+          filter.where = {
+            and: [
+              { [foreignKey]: sourceId, [discriminator]: sourceName },
+              ...scope.where ? [scope.where] : []
+            ]
+          };
+          filter.limit = 1;
+          promises.push(
+            targetRepository.find(filter).then((result) => {
+              if (result.length) targetBySourceId.set(sourceId, result[0]);
+            })
+          );
+        });
+        await Promise.all(promises);
+        Array.from(targetBySourceId.keys()).forEach((sourceId) => {
+          const sources = entities.filter((v) => v[sourcePkPropName] === sourceId);
+          sources.forEach((v) => v[relationName] = targetBySourceId.get(sourceId));
+        });
+      }
+      /**
+       * Include polymorphic by relation name.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} targetRelationName
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!targetRelationName || typeof targetRelationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            targetRelationName
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName should be an Object, but %v given.',
+            scope
+          );
+        const targetRelationDef = this.getService(
+          ModelDefinitionUtils
+        ).getRelationDefinitionByName(targetName, targetRelationName);
+        if (targetRelationDef.type !== RelationType.BELONGS_TO)
+          throw new InvalidArgumentError(
+            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type given.',
+            relationName,
+            sourceName,
+            targetRelationName,
+            targetRelationDef.type
+          );
+        if (!targetRelationDef.polymorphic)
+          throw new InvalidArgumentError(
+            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic too.',
+            relationName,
+            sourceName,
+            targetRelationName
+          );
+        const foreignKey = targetRelationDef.foreignKey || `${targetRelationName}Id`;
+        const discriminator = targetRelationDef.discriminator || `${targetRelationName}Type`;
+        return this.includePolymorphicTo(
+          entities,
+          sourceName,
+          targetName,
+          relationName,
+          foreignKey,
+          discriminator,
+          scope
+        );
+      }
+    };
+    __name(_HasOneResolver, "HasOneResolver");
+    HasOneResolver = _HasOneResolver;
+  }
+});
+
+// src/relations/has-many-resolver.js
+var import_js_service32, _HasManyResolver, HasManyResolver;
+var init_has_many_resolver = __esm({
+  "src/relations/has-many-resolver.js"() {
+    "use strict";
+    import_js_service32 = require("@e22m4u/js-service");
+    init_utils();
+    init_definition();
+    init_errors();
+    init_repository2();
+    init_definition();
+    _HasManyResolver = class _HasManyResolver extends import_js_service32.Service {
+      /**
+       * Include to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} foreignKey
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!foreignKey || typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "foreignKey" of HasManyResolver.includeTo requires a non-empty String, but %v given.',
+            foreignKey
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasManyResolver.includeTo should be an Object, but %v given.',
+            scope
+          );
+        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          sourceName
+        );
+        const sourceIds = [];
+        entities.forEach((entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const sourceId = entity[sourcePkPropName];
+          if (sourceIds.includes(sourceId)) return;
+          sourceIds.push(sourceId);
+        });
+        const promises = [];
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        scope = scope ? cloneDeep(scope) : {};
+        const targetsBySourceId = /* @__PURE__ */ new Map();
+        sourceIds.forEach((sourceId) => {
+          const filter = cloneDeep(scope);
+          filter.where = {
+            and: [{ [foreignKey]: sourceId }, ...scope.where ? [scope.where] : []]
+          };
+          promises.push(
+            targetRepository.find(filter).then((result) => {
+              var _a;
+              if (result.length) {
+                let targets = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
+                targets = [...targets, ...result];
+                targetsBySourceId.set(sourceId, targets);
+              }
+            })
+          );
+        });
+        await Promise.all(promises);
+        entities.forEach((entity) => {
+          var _a;
+          const sourceId = entity[sourcePkPropName];
+          entity[relationName] = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
+        });
+      }
+      /**
+       * Include polymorphic to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} foreignKey
+       * @param {string} discriminator
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!foreignKey || typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            foreignKey
+          );
+        if (!discriminator || typeof discriminator !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            discriminator
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasManyResolver.includePolymorphicTo should be an Object, but %v given.',
+            scope
+          );
+        const sourcePkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          sourceName
+        );
+        const sourceIds = [];
+        entities.forEach((entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const sourceId = entity[sourcePkPropName];
+          if (sourceIds.includes(sourceId)) return;
+          sourceIds.push(sourceId);
+        });
+        const promises = [];
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        scope = scope ? cloneDeep(scope) : {};
+        const targetsBySourceId = /* @__PURE__ */ new Map();
+        sourceIds.forEach((sourceId) => {
+          const filter = cloneDeep(scope);
+          filter.where = {
+            and: [
+              { [foreignKey]: sourceId, [discriminator]: sourceName },
+              ...scope.where ? [scope.where] : []
+            ]
+          };
+          promises.push(
+            targetRepository.find(filter).then((result) => {
+              var _a;
+              if (result.length) {
+                let targets = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
+                targets = [...targets, ...result];
+                targetsBySourceId.set(sourceId, targets);
+              }
+            })
+          );
+        });
+        await Promise.all(promises);
+        entities.forEach((entity) => {
+          var _a;
+          const sourceId = entity[sourcePkPropName];
+          entity[relationName] = (_a = targetsBySourceId.get(sourceId)) != null ? _a : [];
+        });
+      }
+      /**
+       * Include polymorphic by relation name.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string} targetRelationName
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (!targetRelationName || typeof targetRelationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v given.',
+            targetRelationName
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName should be an Object, but %v given.',
+            scope
+          );
+        const targetRelationDef = this.getService(
+          ModelDefinitionUtils
+        ).getRelationDefinitionByName(targetName, targetRelationName);
+        if (targetRelationDef.type !== RelationType.BELONGS_TO)
+          throw new InvalidArgumentError(
+            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type given.',
+            relationName,
+            sourceName,
+            targetRelationName,
+            targetRelationDef.type
+          );
+        if (!targetRelationDef.polymorphic)
+          throw new InvalidArgumentError(
+            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic too.',
+            relationName,
+            sourceName,
+            targetRelationName
+          );
+        const foreignKey = targetRelationDef.foreignKey || `${targetRelationName}Id`;
+        const discriminator = targetRelationDef.discriminator || `${targetRelationName}Type`;
+        return this.includePolymorphicTo(
+          entities,
+          sourceName,
+          targetName,
+          relationName,
+          foreignKey,
+          discriminator,
+          scope
+        );
+      }
+    };
+    __name(_HasManyResolver, "HasManyResolver");
+    HasManyResolver = _HasManyResolver;
+  }
+});
+
+// src/relations/belongs-to-resolver.js
+var import_js_service33, _BelongsToResolver, BelongsToResolver;
+var init_belongs_to_resolver = __esm({
+  "src/relations/belongs-to-resolver.js"() {
+    "use strict";
+    import_js_service33 = require("@e22m4u/js-service");
+    init_utils();
+    init_utils();
+    init_errors();
+    init_repository2();
+    init_definition();
+    _BelongsToResolver = class _BelongsToResolver extends import_js_service33.Service {
+      /**
+       * Include to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string|undefined} foreignKey
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of BelongsToResolver.includeTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (foreignKey && typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The provided parameter "foreignKey" of BelongsToResolver.includeTo should be a String, but %v given.',
+            foreignKey
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of BelongsToResolver.includeTo should be an Object, but %v given.',
+            scope
+          );
+        if (foreignKey == null) foreignKey = `${relationName}Id`;
+        const targetIds = entities.reduce((acc, entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const targetId = entity[foreignKey];
+          return targetId != null ? [...acc, targetId] : acc;
+        }, []);
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          targetName
+        );
+        scope = scope ? cloneDeep(scope) : {};
+        const filter = cloneDeep(scope);
+        filter.where = {
+          and: [
+            { [targetPkPropName]: { inq: targetIds } },
+            ...scope.where ? [scope.where] : []
+          ]
+        };
+        const targets = await targetRepository.find(filter);
+        entities.forEach((entity) => {
+          const target = targets.find(
+            (e) => e[targetPkPropName] === entity[foreignKey]
+          );
+          if (target) entity[relationName] = target;
+        });
+      }
+      /**
+       * Include polymorphic to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} relationName
+       * @param {string|undefined} foreignKey
+       * @param {string|undefined} discriminator
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includePolymorphicTo(entities, sourceName, relationName, foreignKey = void 0, discriminator = void 0, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (foreignKey && typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo should be a String, but %v given.',
+            foreignKey
+          );
+        if (discriminator && typeof discriminator !== "string")
+          throw new InvalidArgumentError(
+            'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo should be a String, but %v given.',
+            discriminator
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo should be an Object, but %v given.',
+            scope
+          );
+        if (foreignKey == null) {
+          const singularRelationName = singularize(relationName);
+          foreignKey = `${singularRelationName}Id`;
+        }
+        if (discriminator == null) {
+          const singularRelationName = singularize(relationName);
+          discriminator = `${singularRelationName}Type`;
+        }
+        const targetIdsByTargetName = {};
+        entities.forEach((entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const targetId = entity[foreignKey];
+          const targetName = entity[discriminator];
+          if (targetId == null || targetName == null) return;
+          if (targetIdsByTargetName[targetName] == null)
+            targetIdsByTargetName[targetName] = [];
+          if (!targetIdsByTargetName[targetName].includes(targetId))
+            targetIdsByTargetName[targetName].push(targetId);
+        });
+        const promises = [];
+        const targetNames = Object.keys(targetIdsByTargetName);
+        scope = scope ? cloneDeep(scope) : {};
+        const targetEntitiesByTargetNames = {};
+        targetNames.forEach((targetName) => {
+          let targetRepository;
+          try {
+            targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+          } catch (error) {
+            if (error instanceof InvalidArgumentError) {
+              if (error.message === `The model "${targetName}" is not defined.` || error.message === `The model "${targetName}" does not have a specified datasource.`) {
+                return;
+              }
+            } else {
+              throw error;
+            }
+          }
+          const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+            targetName
+          );
+          const targetFilter = cloneDeep(scope);
+          const targetIds = targetIdsByTargetName[targetName];
+          targetFilter.where = {
+            and: [
+              { [targetPkPropName]: { inq: targetIds } },
+              ...scope.where ? [scope.where] : []
+            ]
+          };
+          const promise = targetRepository.find(targetFilter).then((result) => {
+            var _a;
+            targetEntitiesByTargetNames[targetName] = [
+              ...(_a = targetEntitiesByTargetNames[targetName]) != null ? _a : [],
+              ...result
+            ];
+          });
+          promises.push(promise);
+        });
+        await Promise.all(promises);
+        entities.forEach((entity) => {
+          var _a;
+          const targetId = entity[foreignKey];
+          const targetName = entity[discriminator];
+          if (targetId == null || targetName == null || targetEntitiesByTargetNames[targetName] == null) {
+            return;
+          }
+          const targetEntities = (_a = targetEntitiesByTargetNames[targetName]) != null ? _a : [];
+          const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+            targetName
+          );
+          const target = targetEntities.find((e) => e[targetPkPropName] === targetId);
+          if (target) entity[relationName] = target;
+        });
+      }
+    };
+    __name(_BelongsToResolver, "BelongsToResolver");
+    BelongsToResolver = _BelongsToResolver;
+  }
+});
+
+// src/relations/references-many-resolver.js
+var import_js_service34, _ReferencesManyResolver, ReferencesManyResolver;
+var init_references_many_resolver = __esm({
+  "src/relations/references-many-resolver.js"() {
+    "use strict";
+    import_js_service34 = require("@e22m4u/js-service");
+    init_utils();
+    init_utils();
+    init_errors();
+    init_repository2();
+    init_definition();
+    _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service34.Service {
+      /**
+       * Include to.
+       *
+       * @param {object[]} entities
+       * @param {string} sourceName
+       * @param {string} targetName
+       * @param {string} relationName
+       * @param {string|undefined} foreignKey
+       * @param {object|undefined} scope
+       * @returns {Promise<void>}
+       */
+      async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
+        if (!entities || !Array.isArray(entities))
+          throw new InvalidArgumentError(
+            'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v given.',
+            entities
+          );
+        if (!sourceName || typeof sourceName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "sourceName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
+            sourceName
+          );
+        if (!targetName || typeof targetName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "targetName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
+            targetName
+          );
+        if (!relationName || typeof relationName !== "string")
+          throw new InvalidArgumentError(
+            'The parameter "relationName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v given.',
+            relationName
+          );
+        if (foreignKey && typeof foreignKey !== "string")
+          throw new InvalidArgumentError(
+            'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo should be a String, but %v given.',
+            foreignKey
+          );
+        if (scope && (typeof scope !== "object" || Array.isArray(scope)))
+          throw new InvalidArgumentError(
+            'The provided parameter "scope" of ReferencesManyResolver.includeTo should be an Object, but %v given.',
+            scope
+          );
+        if (foreignKey == null) {
+          const singularRelationName = singularize(relationName);
+          foreignKey = `${singularRelationName}Ids`;
+        }
+        const targetIds = entities.reduce((acc, entity) => {
+          if (!entity || typeof entity !== "object" || Array.isArray(entity))
+            throw new InvalidArgumentError(
+              'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v given.',
+              entity
+            );
+          const ids = entity[foreignKey];
+          if (Array.isArray(ids))
+            ids.forEach((id) => {
+              if (id == null || acc.includes(id)) return;
+              acc.push(id);
+            });
+          return acc;
+        }, []);
+        const targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
+        const targetPkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
+          targetName
+        );
+        scope = scope ? cloneDeep(scope) : {};
+        const filter = cloneDeep(scope);
+        filter.where = {
+          and: [
+            { [targetPkPropName]: { inq: targetIds } },
+            ...scope.where ? [scope.where] : []
+          ]
+        };
+        const targets = await targetRepository.find(filter);
+        entities.forEach((entity) => {
+          const ids = entity[foreignKey];
+          entity[relationName] = [];
+          if (Array.isArray(ids))
+            targets.forEach((target) => {
+              const targetId = target[targetPkPropName];
+              if (ids.includes(targetId)) entity[relationName].push(target);
+            });
+        });
+      }
+    };
+    __name(_ReferencesManyResolver, "ReferencesManyResolver");
+    ReferencesManyResolver = _ReferencesManyResolver;
+  }
+});
+
+// src/relations/index.js
+var init_relations2 = __esm({
+  "src/relations/index.js"() {
+    "use strict";
+    init_has_one_resolver();
+    init_has_many_resolver();
+    init_belongs_to_resolver();
+    init_references_many_resolver();
+  }
+});
+
+// src/filter/include-clause-tool.js
+var import_js_service35, _IncludeClauseTool, IncludeClauseTool;
+var init_include_clause_tool = __esm({
+  "src/filter/include-clause-tool.js"() {
+    "use strict";
+    import_js_service35 = require("@e22m4u/js-service");
+    init_definition();
+    init_relations2();
+    init_relations2();
+    init_where_clause_tool();
+    init_order_clause_tool();
+    init_slice_clause_tool();
+    init_errors();
+    init_relations2();
+    init_fields_clause_tool();
+    init_definition();
+    init_relations2();
+    _IncludeClauseTool = class _IncludeClauseTool extends import_js_service35.Service {
+      /**
+       * Include to.
+       *
+       * @param {object[]} entities
+       * @param {string} modelName
+       * @param {IncludeClause|undefined} clause
+       * @returns {Promise<void>}
+       */
+      async includeTo(entities, modelName, clause) {
+        clause = _IncludeClauseTool.normalizeIncludeClause(clause);
+        const promises = [];
+        clause.forEach((inclusion) => {
+          const relDef = this.getService(
+            ModelDefinitionUtils
+          ).getRelationDefinitionByName(modelName, inclusion.relation);
+          switch (relDef.type) {
+            // BELONGS_TO
+            case RelationType.BELONGS_TO:
+              if (relDef.polymorphic) {
+                promises.push(
+                  this.getService(BelongsToResolver).includePolymorphicTo(
+                    entities,
+                    modelName,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    relDef.discriminator,
+                    inclusion.scope
+                  )
+                );
+              } else {
+                promises.push(
+                  this.getService(BelongsToResolver).includeTo(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    inclusion.scope
+                  )
+                );
+              }
+              break;
+            // HAS_ONE
+            case RelationType.HAS_ONE:
+              if (relDef.polymorphic && typeof relDef.polymorphic === "string") {
+                promises.push(
+                  this.getService(HasOneResolver).includePolymorphicByRelationName(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.polymorphic,
+                    inclusion.scope
+                  )
+                );
+              } else if (relDef.polymorphic) {
+                promises.push(
+                  this.getService(HasOneResolver).includePolymorphicTo(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    relDef.discriminator,
+                    inclusion.scope
+                  )
+                );
+              } else {
+                promises.push(
+                  this.getService(HasOneResolver).includeTo(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    inclusion.scope
+                  )
+                );
+              }
+              break;
+            // HAS_MANY
+            case RelationType.HAS_MANY:
+              if (relDef.polymorphic && typeof relDef.polymorphic === "string") {
+                promises.push(
+                  this.getService(HasManyResolver).includePolymorphicByRelationName(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.polymorphic,
+                    inclusion.scope
+                  )
+                );
+              } else if (relDef.polymorphic) {
+                promises.push(
+                  this.getService(HasManyResolver).includePolymorphicTo(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    relDef.discriminator,
+                    inclusion.scope
+                  )
+                );
+              } else {
+                promises.push(
+                  this.getService(HasManyResolver).includeTo(
+                    entities,
+                    modelName,
+                    relDef.model,
+                    inclusion.relation,
+                    relDef.foreignKey,
+                    inclusion.scope
+                  )
+                );
+              }
+              break;
+            case RelationType.REFERENCES_MANY:
+              promises.push(
+                this.getService(ReferencesManyResolver).includeTo(
+                  entities,
+                  modelName,
+                  relDef.model,
+                  inclusion.relation,
+                  relDef.foreignKey,
+                  inclusion.scope
+                )
+              );
+              break;
+            default:
+              throw new InvalidArgumentError(
+                "The relation type %v does not have an inclusion resolver.",
+                relDef.type
+              );
+          }
+        });
+        await Promise.all(promises);
+      }
+      /**
+       * Validate include clause.
+       *
+       * @param {IncludeClause|undefined} clause
+       */
+      static validateIncludeClause(clause) {
+        if (clause == null) {
+        } else if (clause && typeof clause === "string") {
+        } else if (Array.isArray(clause)) {
+          const relNames = [];
+          clause.flat(Infinity).forEach((el) => {
+            this.validateIncludeClause(el);
+            if (typeof el === "string") {
+              relNames.push(el);
+            } else if (typeof el === "object") {
+              Object.keys(el).forEach((key) => {
+                if (Object.prototype.hasOwnProperty.call(el, key))
+                  relNames.push(key);
+              });
+            }
+          });
+          const duplicateNames = relNames.filter(
+            (name, i) => relNames.indexOf(name) !== i
+          );
+          if (duplicateNames.length)
+            throw new InvalidArgumentError(
+              'The provided option "include" has duplicates of %v.',
+              duplicateNames[0]
+            );
+        } else if (typeof clause === "object") {
+          if ("relation" in clause) {
+            if (!clause.relation || typeof clause.relation !== "string")
+              throw new InvalidArgumentError(
+                'The provided option "relation" should be a non-empty String, but %v given.',
+                clause.relation
+              );
+            if ("scope" in clause && clause) this.validateScopeClause(clause.scope);
+          } else {
+            Object.keys(clause).forEach((key) => {
+              if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+              this.validateIncludeClause(key);
+              this.validateIncludeClause(clause[key]);
+            });
+          }
+        } else {
+          throw new InvalidArgumentError(
+            'The provided option "include" should have a non-empty String, an Object or an Array, but %v given.',
+            clause
+          );
+        }
+      }
+      /**
+       * Validate scope clause.
+       *
+       * @param {object|undefined} clause
+       */
+      static validateScopeClause(clause) {
+        if (clause == null) return;
+        if (typeof clause !== "object" || Array.isArray(clause))
+          throw new InvalidArgumentError(
+            'The provided option "scope" should be an Object, but %v given.',
+            clause
+          );
+        if (clause.where != null) {
+          WhereClauseTool.validateWhereClause(clause.where);
+        }
+        if (clause.order != null) {
+          OrderClauseTool.validateOrderClause(clause.order);
+        }
+        if (clause.skip != null) {
+          SliceClauseTool.validateSkipClause(clause.skip);
+        }
+        if (clause.limit != null) {
+          SliceClauseTool.validateLimitClause(clause.limit);
+        }
+        if (clause.fields != null) {
+          FieldsClauseTool.validateFieldsClause(clause.fields);
+        }
+        if (clause.include != null) {
+          _IncludeClauseTool.validateIncludeClause(clause.include);
+        }
+      }
+      /**
+       * Normalize include clause.
+       *
+       * @param {IncludeClause|undefined} clause
+       * @returns {object[]}
+       */
+      static normalizeIncludeClause(clause) {
+        let result = [];
+        if (clause == null) {
+          return result;
+        } else if (clause && typeof clause === "string") {
+          result.push({ relation: clause });
+        } else if (Array.isArray(clause)) {
+          clause.flat(Infinity).forEach((el) => {
+            el = this.normalizeIncludeClause(el);
+            result = [...result, ...el];
+          });
+          const relNames = result.map((v) => v.relation);
+          const duplicateNames = relNames.filter(
+            (name, i) => relNames.indexOf(name) !== i
+          );
+          if (duplicateNames.length)
+            throw new InvalidArgumentError(
+              'The provided option "include" has duplicates of %v.',
+              duplicateNames[0]
+            );
+        } else if (typeof clause === "object") {
+          if ("relation" in clause) {
+            if (!clause.relation || typeof clause.relation !== "string")
+              throw new InvalidArgumentError(
+                'The provided option "relation" should be a non-empty String, but %v given.',
+                clause.relation
+              );
+            const normalized = { relation: clause.relation };
+            const scope = this.normalizeScopeClause(clause.scope);
+            if (scope) normalized.scope = scope;
+            result.push(normalized);
+          } else {
+            Object.keys(clause).forEach((key) => {
+              if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+              this.validateIncludeClause(key);
+              const normalized = { relation: key };
+              const include = this.normalizeIncludeClause(clause[key]);
+              if (include.length) normalized.scope = { include };
+              result.push(normalized);
+            });
+          }
+        } else {
+          throw new InvalidArgumentError(
+            'The provided option "include" should have a non-empty String, an Object or an Array, but %v given.',
+            clause
+          );
+        }
+        return result;
+      }
+      /**
+       * Normalize scope clause.
+       *
+       * @param {object|undefined} clause
+       * @returns {object|undefined}
+       */
+      static normalizeScopeClause(clause) {
+        if (clause == null) return;
+        if (typeof clause !== "object" || Array.isArray(clause))
+          throw new InvalidArgumentError(
+            'The provided option "scope" should be an Object, but %v given.',
+            clause
+          );
+        const result = {};
+        if (clause.where != null) {
+          WhereClauseTool.validateWhereClause(clause.where);
+          result.where = clause.where;
+        }
+        if (clause.order != null) {
+          OrderClauseTool.validateOrderClause(clause.order);
+          result.order = clause.order;
+        }
+        if (clause.skip != null) {
+          SliceClauseTool.validateSkipClause(clause.skip);
+          result.skip = clause.skip;
+        }
+        if (clause.limit != null) {
+          SliceClauseTool.validateLimitClause(clause.limit);
+          result.limit = clause.limit;
+        }
+        if (clause.fields != null) {
+          FieldsClauseTool.validateFieldsClause(clause.fields);
+          result.fields = clause.fields;
+        }
+        if (clause.include != null) {
+          result.include = this.normalizeIncludeClause(clause.include);
+        }
+        if (Object.keys(result).length) return result;
+        return void 0;
+      }
+    };
+    __name(_IncludeClauseTool, "IncludeClauseTool");
+    IncludeClauseTool = _IncludeClauseTool;
+  }
+});
+
+// src/filter/index.js
+var init_filter = __esm({
+  "src/filter/index.js"() {
+    "use strict";
+    init_slice_clause_tool();
+    init_order_clause_tool();
+    init_where_clause_tool();
+    init_fields_clause_tool();
+    init_include_clause_tool();
+    init_operator_clause_tool();
+  }
+});
+
 // src/index.js
 var index_exports = {};
 __export(index_exports, {
@@ -6320,6 +6320,7 @@ __export(index_exports, {
   BelongsToResolver: () => BelongsToResolver,
   DEFAULT_PRIMARY_KEY_PROPERTY_NAME: () => DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   DataType: () => DataType,
+  DatabaseSchema: () => DatabaseSchema,
   DatasourceDefinitionValidator: () => DatasourceDefinitionValidator,
   DecoratorTargetType: () => DecoratorTargetType,
   DefinitionRegistry: () => DefinitionRegistry,
@@ -6348,7 +6349,6 @@ __export(index_exports, {
   RelationsDefinitionValidator: () => RelationsDefinitionValidator,
   Repository: () => Repository,
   RepositoryRegistry: () => RepositoryRegistry,
-  Schema: () => Schema,
   SliceClauseTool: () => SliceClauseTool,
   WhereClauseTool: () => WhereClauseTool,
   capitalize: () => capitalize,
@@ -6367,13 +6367,17 @@ __export(index_exports, {
   transformPromise: () => transformPromise
 });
 module.exports = __toCommonJS(index_exports);
+init_utils();
+init_errors();
+init_filter();
+init_adapter2();
 
-// src/schema.js
+// src/database-schema.js
 var import_js_service36 = require("@e22m4u/js-service");
 init_repository2();
 init_definition();
 init_repository2();
-var _Schema = class _Schema extends import_js_service36.Service {
+var _DatabaseSchema = class _DatabaseSchema extends import_js_service36.Service {
   /**
    * Define datasource.
    *
@@ -6404,14 +6408,10 @@ var _Schema = class _Schema extends import_js_service36.Service {
     return this.getService(RepositoryRegistry).getRepository(modelName);
   }
 };
-__name(_Schema, "Schema");
-var Schema = _Schema;
+__name(_DatabaseSchema, "DatabaseSchema");
+var DatabaseSchema = _DatabaseSchema;
 
 // src/index.js
-init_utils();
-init_errors();
-init_filter();
-init_adapter2();
 init_relations2();
 init_definition();
 init_repository2();
@@ -6424,6 +6424,7 @@ init_repository2();
   BelongsToResolver,
   DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   DataType,
+  DatabaseSchema,
   DatasourceDefinitionValidator,
   DecoratorTargetType,
   DefinitionRegistry,
@@ -6452,7 +6453,6 @@ init_repository2();
   RelationsDefinitionValidator,
   Repository,
   RepositoryRegistry,
-  Schema,
   SliceClauseTool,
   WhereClauseTool,
   capitalize,

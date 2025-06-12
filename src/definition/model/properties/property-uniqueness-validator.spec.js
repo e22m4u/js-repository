@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
-import {Schema} from '../../../schema.js';
+import {DatabaseSchema} from '../../../database-schema.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertyUniquenessValidator} from './property-uniqueness-validator.js';
@@ -10,7 +10,7 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-u
 describe('PropertyUniquenessValidator', function () {
   describe('validate', function () {
     it('requires the parameter "countMethod" to be a Function', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -45,7 +45,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "methodName" to be a non-empty String', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -80,7 +80,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "modelName" to be a non-empty String', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -115,7 +115,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "modelData" to be a pure Object', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -149,7 +149,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is not provided', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -165,7 +165,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is undefined', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -181,7 +181,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is null', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -197,7 +197,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is false', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -213,7 +213,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is "nonUnique"', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -229,7 +229,7 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('throws an error for unsupported method', async function () {
-      const schema = new Schema();
+      const schema = new DatabaseSchema();
       schema.defineModel({
         name: 'model',
         properties: {
@@ -250,7 +250,7 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is true', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -269,7 +269,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -284,7 +284,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -321,7 +321,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -346,7 +346,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -361,7 +361,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -409,7 +409,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('can use a custom primary key', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -449,7 +449,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -470,7 +470,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -485,7 +485,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -522,7 +522,7 @@ describe('PropertyUniquenessValidator', function () {
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -555,7 +555,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -593,7 +593,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -634,7 +634,7 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -676,7 +676,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -720,7 +720,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -775,7 +775,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -794,7 +794,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -809,7 +809,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -840,7 +840,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -863,7 +863,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -888,7 +888,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -903,7 +903,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -945,7 +945,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -970,7 +970,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1012,7 +1012,7 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is "strict"', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1031,7 +1031,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1046,7 +1046,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1083,7 +1083,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1108,7 +1108,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1123,7 +1123,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1171,7 +1171,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('can use a custom primary key', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1211,7 +1211,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1232,7 +1232,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1247,7 +1247,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1284,7 +1284,7 @@ describe('PropertyUniquenessValidator', function () {
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1317,7 +1317,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1355,7 +1355,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1396,7 +1396,7 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1438,7 +1438,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1482,7 +1482,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -1537,7 +1537,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1556,7 +1556,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1571,7 +1571,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1602,7 +1602,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1625,7 +1625,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1650,7 +1650,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1665,7 +1665,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1707,7 +1707,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1732,7 +1732,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1774,7 +1774,7 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is "sparse"', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1793,7 +1793,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1808,7 +1808,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1839,7 +1839,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1871,7 +1871,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1896,7 +1896,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1911,7 +1911,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1953,7 +1953,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -1994,7 +1994,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2034,7 +2034,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2055,7 +2055,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2070,7 +2070,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2103,7 +2103,7 @@ describe('PropertyUniquenessValidator', function () {
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2136,7 +2136,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2174,7 +2174,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2213,7 +2213,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('skips uniqueness checking for empty values', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2255,7 +2255,7 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2297,7 +2297,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2341,7 +2341,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2392,7 +2392,7 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('skips uniqueness checking for empty values', async function () {
-              const schema = new Schema();
+              const schema = new DatabaseSchema();
               schema.defineModel({
                 name: 'model',
                 properties: {
@@ -2440,7 +2440,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2459,7 +2459,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2474,7 +2474,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2505,7 +2505,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2526,7 +2526,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2558,7 +2558,7 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2583,7 +2583,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2598,7 +2598,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2640,7 +2640,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2665,7 +2665,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {
@@ -2699,7 +2699,7 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new Schema();
+          const schema = new DatabaseSchema();
           schema.defineModel({
             name: 'model',
             properties: {

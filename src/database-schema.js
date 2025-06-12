@@ -4,9 +4,9 @@ import {DefinitionRegistry} from './definition/index.js';
 import {RepositoryRegistry} from './repository/index.js';
 
 /**
- * Schema.
+ * Database schema.
  */
-export class Schema extends Service {
+export class DatabaseSchema extends Service {
   /**
    * Define datasource.
    *

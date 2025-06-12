@@ -7,9 +7,9 @@ import {DatasourceDefinition} from './definition/index.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from './definition/index.js';
 
 /**
- * Schema.
+ * Database schema.
  */
-export declare class Schema extends Service {
+export declare class DatabaseSchema extends Service {
   /**
    * Define datasource.
    *
