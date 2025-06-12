@@ -6,9 +6,9 @@ import {MemoryAdapter} from './builtin/memory-adapter.js';
 describe('AdapterRegistry', function () {
   describe('getAdapter', function () {
     it('instantiates a new or returns an existing adapter by a given datasource name', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      const R = S.getService(AdapterRegistry);
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      const R = dbs.getService(AdapterRegistry);
       const adapter = await R.getAdapter('datasource');
       expect(adapter).to.be.instanceof(MemoryAdapter);
       const sameAdapter = await R.getAdapter('datasource');
@@ -24,9 +24,9 @@ describe('AdapterRegistry', function () {
     });
 
     it('throws an error if an adapter is not exists', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'unknown'});
-      const R = S.getService(AdapterRegistry);
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'unknown'});
+      const R = dbs.getService(AdapterRegistry);
       const promise = R.getAdapter('datasource');
       await expect(promise).to.be.rejectedWith(
         'The adapter "unknown" is not found.',

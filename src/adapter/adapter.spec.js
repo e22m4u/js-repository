@@ -42,14 +42,14 @@ describe('Adapter', function () {
     });
 
     it('decorates only extended adapter', function () {
-      const schema = new DatabaseSchema();
-      const dec1 = schema.getService(DataSanitizingDecorator);
-      const dec2 = schema.getService(DefaultValuesDecorator);
-      const dec3 = schema.getService(DataTransformationDecorator);
-      const dec4 = schema.getService(DataValidationDecorator);
-      const dec5 = schema.getService(PropertyUniquenessDecorator);
-      const dec6 = schema.getService(FieldsFilteringDecorator);
-      const dec7 = schema.getService(InclusionDecorator);
+      const dbs = new DatabaseSchema();
+      const dec1 = dbs.getService(DataSanitizingDecorator);
+      const dec2 = dbs.getService(DefaultValuesDecorator);
+      const dec3 = dbs.getService(DataTransformationDecorator);
+      const dec4 = dbs.getService(DataValidationDecorator);
+      const dec5 = dbs.getService(PropertyUniquenessDecorator);
+      const dec6 = dbs.getService(FieldsFilteringDecorator);
+      const dec7 = dbs.getService(InclusionDecorator);
       const order = [];
       const decorate = function (ctx) {
         expect(ctx).to.be.instanceof(Adapter);
@@ -62,7 +62,7 @@ describe('Adapter', function () {
       sandbox.on(dec5, 'decorate', decorate);
       sandbox.on(dec6, 'decorate', decorate);
       sandbox.on(dec7, 'decorate', decorate);
-      new Adapter(schema.container);
+      new Adapter(dbs.container);
       expect(order).to.be.empty;
       expect(dec1.decorate).to.be.not.called;
       expect(dec2.decorate).to.be.not.called;
@@ -72,7 +72,7 @@ describe('Adapter', function () {
       expect(dec6.decorate).to.be.not.called;
       expect(dec7.decorate).to.be.not.called;
       class ExtendedAdapter extends Adapter {}
-      new ExtendedAdapter(schema.container);
+      new ExtendedAdapter(dbs.container);
       expect(order[0]).to.be.eql(dec1);
       expect(order[1]).to.be.eql(dec2);
       expect(order[2]).to.be.eql(dec3);

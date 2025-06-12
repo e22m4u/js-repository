@@ -9,15 +9,15 @@ import {PropertyTransformerRegistry} from './properties/index.js';
 describe('ModelDataTransformer', function () {
   describe('transform', function () {
     it('throws an error if the given model name is not defined', function () {
-      const schema = new DatabaseSchema();
-      const T = schema.getService(ModelDataTransformer);
+      const dbs = new DatabaseSchema();
+      const T = dbs.getService(ModelDataTransformer);
       const throwable = () => T.transform('model', {});
       expect(throwable).to.throw('The model "model" is not defined.');
     });
 
     it('throws an error if the given model data is not a pure object', function () {
-      const schema = new DatabaseSchema();
-      const T = schema.getService(ModelDataTransformer);
+      const dbs = new DatabaseSchema();
+      const T = dbs.getService(ModelDataTransformer);
       const throwable = v => () => T.transform('model', v);
       const error = v =>
         format(
@@ -37,8 +37,8 @@ describe('ModelDataTransformer', function () {
     });
 
     it('does nothing with the given model if no transformers are set', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
@@ -48,7 +48,7 @@ describe('ModelDataTransformer', function () {
           },
         },
       });
-      const T = schema.getService(ModelDataTransformer);
+      const T = dbs.getService(ModelDataTransformer);
       const modelData = {baz: 'qux'};
       const res = T.transform('model', modelData);
       expect(res).to.be.eql(modelData);
@@ -56,12 +56,12 @@ describe('ModelDataTransformer', function () {
 
     describe('the option "transform" with a string value', function () {
       it('transforms the property value by its transformer', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = value => String(value);
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -70,13 +70,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 10});
         expect(res).to.be.eql({foo: '10'});
       });
 
       it('passes specific arguments to the transformer function', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = (value, options, context) => {
           expect(value).to.be.eq('input');
           expect(options).to.be.undefined;
@@ -87,10 +87,10 @@ describe('ModelDataTransformer', function () {
           });
           return 'transformed';
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -99,18 +99,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 'input'});
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
       it('does not transform a property value if it is not provided', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -119,18 +119,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {});
         expect(res).to.be.eql({});
       });
 
       it('does not transform undefined and null values', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -139,7 +139,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
         expect(res1).to.be.eql({foo: undefined});
@@ -147,12 +147,12 @@ describe('ModelDataTransformer', function () {
       });
 
       it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -161,13 +161,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
       });
 
       it('transforms the property value by its asynchronous transformer', async function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer1 = (value, options) => {
           expect(options).to.be.undefined;
           return Promise.resolve(`${value}2`);
@@ -176,11 +176,11 @@ describe('ModelDataTransformer', function () {
           expect(options).to.be.undefined;
           return Promise.resolve(`${value}3`);
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer1', myTransformer1)
           .addTransformer('myTransformer2', myTransformer2);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -193,7 +193,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const promise = T.transform('model', {foo: '1', bar: '2'});
         expect(promise).to.be.instanceof(Promise);
         const res = await promise;
@@ -203,12 +203,12 @@ describe('ModelDataTransformer', function () {
 
     describe('the option "transform" with an array value', function () {
       it('transforms given properties by their transformers', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = value => String(value);
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -225,13 +225,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 1, bar: 2, baz: 3});
         expect(res).to.be.eql({foo: '1', bar: '2', baz: '3'});
       });
 
       it('transforms the property value by its transformers in specified order', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const order = [];
         const myTransformer1 = value => {
           order.push('myTransformer1');
@@ -241,11 +241,11 @@ describe('ModelDataTransformer', function () {
           order.push('myTransformer2');
           return value + '2';
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer1', myTransformer1)
           .addTransformer('myTransformer2', myTransformer2);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -254,14 +254,14 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 'value'});
         expect(res).to.be.eql({foo: 'value12'});
         expect(order).to.be.eql(['myTransformer1', 'myTransformer2']);
       });
 
       it('passes specific arguments to the transformer function', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = (value, options, context) => {
           expect(value).to.be.eq('input');
           expect(options).to.be.undefined;
@@ -272,10 +272,10 @@ describe('ModelDataTransformer', function () {
           });
           return 'transformed';
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -284,18 +284,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 'input'});
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
       it('does not transform a property value if it is not provided', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -304,18 +304,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {});
         expect(res).to.be.eql({});
       });
 
       it('transforms undefined and null values', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -324,7 +324,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
         expect(res1).to.be.eql({foo: undefined});
@@ -332,12 +332,12 @@ describe('ModelDataTransformer', function () {
       });
 
       it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -346,13 +346,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
       });
 
       it('transforms the property value by its asynchronous transformers', async function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer1 = (value, options) => {
           expect(options).to.be.undefined;
           return Promise.resolve(`${value}2`);
@@ -365,12 +365,12 @@ describe('ModelDataTransformer', function () {
           expect(options).to.be.undefined;
           return Promise.resolve(`${value}4`);
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer1', myTransformer1)
           .addTransformer('myTransformer2', myTransformer2)
           .addTransformer('myTransformer3', myTransformer3);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -383,7 +383,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const promise = T.transform('model', {foo: '1', bar: '2'});
         expect(promise).to.be.instanceof(Promise);
         const res = await promise;
@@ -393,12 +393,12 @@ describe('ModelDataTransformer', function () {
 
     describe('the option "transform" with an object value', function () {
       it('transforms given properties by their transformers', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = value => String(value);
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -415,13 +415,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 1, bar: 2, baz: 3});
         expect(res).to.be.eql({foo: '1', bar: '2', baz: '3'});
       });
 
       it('transforms the property value by its transformers in specified order', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const order = [];
         const myTransformer1 = value => {
           order.push('myTransformer1');
@@ -431,11 +431,11 @@ describe('ModelDataTransformer', function () {
           order.push('myTransformer2');
           return value + '2';
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer1', myTransformer1)
           .addTransformer('myTransformer2', myTransformer2);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -447,14 +447,14 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 'value'});
         expect(res).to.be.eql({foo: 'value12'});
         expect(order).to.be.eql(['myTransformer1', 'myTransformer2']);
       });
 
       it('passes specific arguments to the transformer function', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = (value, options, context) => {
           expect(value).to.be.eq('input');
           expect(options).to.be.eql({
@@ -468,10 +468,10 @@ describe('ModelDataTransformer', function () {
           });
           return 'transformed';
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -485,18 +485,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {foo: 'input'});
         expect(res).to.be.eql({foo: 'transformed'});
       });
 
       it('does not transform a property value if it is not provided', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -507,18 +507,18 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {});
         expect(res).to.be.eql({});
       });
 
       it('transforms undefined and null values', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -529,7 +529,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res1 = T.transform('model', {foo: undefined});
         const res2 = T.transform('model', {foo: null});
         expect(res1).to.be.eql({foo: undefined});
@@ -537,12 +537,12 @@ describe('ModelDataTransformer', function () {
       });
 
       it('the parameter "isPartial" prevents to transform values of not provided properties', function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer = () => 'transformed';
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer', myTransformer);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -553,13 +553,13 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const res = T.transform('model', {}, true);
         expect(res).to.be.eql({});
       });
 
       it('transforms the property value by its asynchronous transformers', async function () {
-        const schema = new DatabaseSchema();
+        const dbs = new DatabaseSchema();
         const myTransformer1 = (value, options) => {
           expect(options).to.be.eq('foo');
           return Promise.resolve(`${value}2`);
@@ -572,12 +572,12 @@ describe('ModelDataTransformer', function () {
           expect(options).to.be.eq('baz');
           return Promise.resolve(`${value}4`);
         };
-        schema
+        dbs
           .getService(PropertyTransformerRegistry)
           .addTransformer('myTransformer1', myTransformer1)
           .addTransformer('myTransformer2', myTransformer2)
           .addTransformer('myTransformer3', myTransformer3);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -596,7 +596,7 @@ describe('ModelDataTransformer', function () {
             },
           },
         });
-        const T = schema.getService(ModelDataTransformer);
+        const T = dbs.getService(ModelDataTransformer);
         const promise = T.transform('model', {foo: '1', bar: '2'});
         expect(promise).to.be.instanceof(Promise);
         const res = await promise;
@@ -605,11 +605,11 @@ describe('ModelDataTransformer', function () {
     });
 
     it('the option "transform" requires a non-empty String, an Array or an Object', function () {
-      const schema = new DatabaseSchema();
-      schema
+      const dbs = new DatabaseSchema();
+      dbs
         .getService(PropertyTransformerRegistry)
         .addTransformer('myTransformer', () => 'transformed');
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -618,9 +618,9 @@ describe('ModelDataTransformer', function () {
           },
         },
       });
-      const T = schema.getService(ModelDataTransformer);
+      const T = dbs.getService(ModelDataTransformer);
       const throwable = v => () => {
-        const models = schema.getService(DefinitionRegistry)['_models'];
+        const models = dbs.getService(DefinitionRegistry)['_models'];
         models.model.properties.foo.transform = v;
         T.transform('model', {foo: 'bar'});
       };

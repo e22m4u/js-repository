@@ -3,7 +3,7 @@ import {Repository} from './repository/index.js';
 import {DatabaseSchema} from './database-schema.js';
 import {DefinitionRegistry} from './definition/index.js';
 
-describe('Schema', function () {
+describe('DatabaseSchema', function () {
   describe('defineDatasource', function () {
     it('returns this', function () {
       const dbs = new DatabaseSchema();

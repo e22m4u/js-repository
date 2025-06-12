@@ -9,8 +9,8 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.j
 describe('HasManyResolver', function () {
   describe('includeTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
@@ -36,9 +36,9 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
@@ -58,8 +58,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includeTo requires ' +
@@ -79,8 +79,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includeTo requires ' +
@@ -100,8 +100,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includeTo requires ' +
@@ -121,8 +121,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includeTo requires ' +
@@ -142,8 +142,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includeTo ' +
@@ -166,9 +166,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if a target model is not found', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      const R = dbs.getService(HasManyResolver);
       const promise = R.includeTo(
         [],
         'source',
@@ -182,10 +182,10 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if a target model does not have datasource', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({name: 'target'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({name: 'target'});
+      const R = dbs.getService(HasManyResolver);
       const promise = R.includeTo(
         [],
         'source',
@@ -199,13 +199,13 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not exist', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRel = S.getRepository('source');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRel = dbs.getRepository('source');
       const source = await sourceRel.create({});
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -214,12 +214,12 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({parentId: source[DEF_PK]});
@@ -237,7 +237,7 @@ describe('HasManyResolver', function () {
         [DEF_PK]: target3[DEF_PK],
         parentId: -1,
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -255,9 +255,9 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({
         name: 'source',
         datasource: 'datasource',
         properties: {
@@ -267,9 +267,9 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({myId: source.myId});
       const target1 = await targetRep.create({parentId: source.myId});
@@ -287,7 +287,7 @@ describe('HasManyResolver', function () {
         [DEF_PK]: target3[DEF_PK],
         parentId: -1,
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         myId: source.myId,
@@ -305,10 +305,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         properties: {
@@ -318,8 +318,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({parentId: source[DEF_PK]});
@@ -337,7 +337,7 @@ describe('HasManyResolver', function () {
         myId: target3.myId,
         parentId: -1,
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId');
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -355,12 +355,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -390,7 +390,7 @@ describe('HasManyResolver', function () {
         featured: true,
         parentId: source[DEF_PK],
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         where: {featured: false},
       });
@@ -425,12 +425,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -468,7 +468,7 @@ describe('HasManyResolver', function () {
         bar: 'barVal3',
         parentId: -1,
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         fields: [DEF_PK, 'bar'],
       });
@@ -488,12 +488,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelA',
         datasource: 'datasource',
         properties: {
@@ -514,7 +514,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         datasource: 'datasource',
         properties: {
@@ -535,7 +535,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelC',
         datasource: 'datasource',
         properties: {
@@ -549,9 +549,9 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const aRep = S.getRepository('modelA');
-      const bRep = S.getRepository('modelB');
-      const cRep = S.getRepository('modelC');
+      const aRep = dbs.getRepository('modelA');
+      const bRep = dbs.getRepository('modelB');
+      const cRep = dbs.getRepository('modelC');
       const a = await aRep.create({});
       const b1 = await bRep.create({parentId: a.id});
       const b2 = await bRep.create({parentId: a.id});
@@ -599,7 +599,7 @@ describe('HasManyResolver', function () {
         source: 'modelC',
         parentId: b2.id,
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([a], 'modelA', 'modelB', 'children', 'parentId', {
         include: 'children',
       });
@@ -646,12 +646,12 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -683,7 +683,7 @@ describe('HasManyResolver', function () {
         featured: true,
         parentId: source[DEF_PK],
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includeTo([source], 'source', 'target', 'children', 'parentId', {
         where: {and: [{featured: false}]},
       });
@@ -721,8 +721,8 @@ describe('HasManyResolver', function () {
 
   describe('includePolymorphicTo', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -749,9 +749,9 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -778,8 +778,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -806,8 +806,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -834,8 +834,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
@@ -862,8 +862,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "foreignKey" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
@@ -890,8 +890,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "discriminator" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
@@ -918,8 +918,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicTo ' +
@@ -943,9 +943,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model is not found', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicTo(
         [entity],
@@ -961,10 +961,10 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({name: 'target'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({name: 'target'});
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicTo(
         [entity],
@@ -980,16 +980,16 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not found', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRel = S.getRepository('source');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRel = dbs.getRepository('source');
       const source = await sourceRel.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1005,12 +1005,12 @@ describe('HasManyResolver', function () {
     });
 
     it('does not include an entity with a not matched discriminator value', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRel = S.getRepository('source');
-      const targetRel = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRel = dbs.getRepository('source');
+      const targetRel = dbs.getRepository('target');
       const source = await sourceRel.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -1024,7 +1024,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'unknown',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1040,12 +1040,12 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -1075,7 +1075,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1102,9 +1102,9 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({
         name: 'source',
         datasource: 'datasource',
         properties: {
@@ -1114,9 +1114,9 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({myId: source.myId});
       const target1 = await targetRep.create({
@@ -1146,7 +1146,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1173,10 +1173,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         properties: {
@@ -1186,8 +1186,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -1217,7 +1217,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1244,12 +1244,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -1285,7 +1285,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1335,12 +1335,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -1384,7 +1384,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1410,12 +1410,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelA',
         datasource: 'datasource',
         properties: {
@@ -1438,7 +1438,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         datasource: 'datasource',
         properties: {
@@ -1461,7 +1461,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelC',
         datasource: 'datasource',
         properties: {
@@ -1475,9 +1475,9 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const aRep = S.getRepository('modelA');
-      const bRep = S.getRepository('modelB');
-      const cRep = S.getRepository('modelC');
+      const aRep = dbs.getRepository('modelA');
+      const bRep = dbs.getRepository('modelB');
+      const cRep = dbs.getRepository('modelC');
       const a = await aRep.create({});
       const b1 = await bRep.create({parentId: a.id, parentType: 'modelA'});
       const b2 = await bRep.create({parentId: a.id, parentType: 'modelA'});
@@ -1525,7 +1525,7 @@ describe('HasManyResolver', function () {
         parentId: b2.id,
         parentType: 'modelB',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [a],
         'modelA',
@@ -1584,12 +1584,12 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({name: 'target', datasource: 'datasource'});
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({name: 'target', datasource: 'datasource'});
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -1627,7 +1627,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicTo(
         [source],
         'source',
@@ -1680,8 +1680,8 @@ describe('HasManyResolver', function () {
 
   describe('includePolymorphicByRelationName', function () {
     it('requires the "entities" parameter to be an array', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1707,9 +1707,9 @@ describe('HasManyResolver', function () {
     });
 
     it('requires elements of the "entities" parameter to be an Object', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({
         name: 'target',
         relations: {
           parent: {
@@ -1718,7 +1718,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
@@ -1744,8 +1744,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "sourceName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1771,8 +1771,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1798,8 +1798,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "relationName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1825,8 +1825,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the "targetRelationName" parameter to be a non-empty string', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
@@ -1852,8 +1852,8 @@ describe('HasManyResolver', function () {
     });
 
     it('requires the provided parameter "scope" to be an object', async function () {
-      const S = new DatabaseSchema();
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
@@ -1876,9 +1876,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model is not found', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1893,10 +1893,10 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have the given relation name', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({name: 'target'});
-      const R = S.getService(HasManyResolver);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({name: 'target'});
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1911,9 +1911,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the target relation is not "belongsTo"', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({
         name: 'target',
         relations: {
           parent: {
@@ -1922,7 +1922,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1939,9 +1939,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the target relation is not polymorphic', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({
         name: 'target',
         relations: {
           parent: {
@@ -1950,7 +1950,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1967,9 +1967,9 @@ describe('HasManyResolver', function () {
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'source'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'source'});
+      dbs.defineModel({
         name: 'target',
         relations: {
           parent: {
@@ -1978,7 +1978,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       const entity = {[DEF_PK]: 1};
       const promise = R.includePolymorphicByRelationName(
         [entity],
@@ -1993,10 +1993,10 @@ describe('HasManyResolver', function () {
     });
 
     it('does not throw an error if a relation target is not found', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2006,12 +2006,12 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRel = S.getRepository('source');
+      const sourceRel = dbs.getRepository('source');
       const source = await sourceRel.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2026,10 +2026,10 @@ describe('HasManyResolver', function () {
     });
 
     it('does not include an entity with a not matched discriminator value', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2039,8 +2039,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRel = S.getRepository('source');
-      const targetRel = S.getRepository('target');
+      const sourceRel = dbs.getRepository('source');
+      const targetRel = dbs.getRepository('target');
       const source = await sourceRel.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -2054,7 +2054,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'unknown',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2069,10 +2069,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if a primary key is not defined in the source model', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2082,8 +2082,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -2113,7 +2113,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2139,9 +2139,9 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the source model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({
         name: 'source',
         datasource: 'datasource',
         properties: {
@@ -2151,7 +2151,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2161,8 +2161,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({myId: source.myId});
       const target1 = await targetRep.create({
@@ -2192,7 +2192,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2218,10 +2218,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom primary key', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         properties: {
@@ -2237,8 +2237,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -2268,7 +2268,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2294,10 +2294,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom "foreignKey"', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         properties: {
@@ -2314,8 +2314,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -2345,7 +2345,7 @@ describe('HasManyResolver', function () {
         relationId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2371,10 +2371,10 @@ describe('HasManyResolver', function () {
     });
 
     it('includes if the target model has a custom "discriminator"', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         properties: {
@@ -2391,8 +2391,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -2422,7 +2422,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         relationType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2448,10 +2448,10 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a where clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2461,8 +2461,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({[DEF_PK]: source[DEF_PK]});
       const target1 = await targetRep.create({
@@ -2498,7 +2498,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2546,10 +2546,10 @@ describe('HasManyResolver', function () {
     });
 
     it('uses a fields clause of the given scope to filter the relation target', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2559,8 +2559,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -2604,7 +2604,7 @@ describe('HasManyResolver', function () {
         parentId: -1,
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',
@@ -2629,12 +2629,12 @@ describe('HasManyResolver', function () {
     });
 
     it('uses an include clause of the given scope to resolve target relations', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'datasource',
         adapter: 'memory',
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelA',
         datasource: 'datasource',
         properties: {
@@ -2655,7 +2655,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         datasource: 'datasource',
         properties: {
@@ -2680,7 +2680,7 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      S.defineModel({
+      dbs.defineModel({
         name: 'modelC',
         datasource: 'datasource',
         properties: {
@@ -2700,9 +2700,9 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const aRep = S.getRepository('modelA');
-      const bRep = S.getRepository('modelB');
-      const cRep = S.getRepository('modelC');
+      const aRep = dbs.getRepository('modelA');
+      const bRep = dbs.getRepository('modelB');
+      const cRep = dbs.getRepository('modelC');
       const a = await aRep.create({});
       const b1 = await bRep.create({parentId: a.id, parentType: 'modelA'});
       const b2 = await bRep.create({parentId: a.id, parentType: 'modelA'});
@@ -2750,7 +2750,7 @@ describe('HasManyResolver', function () {
         parentId: b2.id,
         parentType: 'modelB',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [a],
         'modelA',
@@ -2808,10 +2808,10 @@ describe('HasManyResolver', function () {
     });
 
     it('does not break the "and" operator of the given "where" clause', async function () {
-      const S = new DatabaseSchema();
-      S.defineDatasource({name: 'datasource', adapter: 'memory'});
-      S.defineModel({name: 'source', datasource: 'datasource'});
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'source', datasource: 'datasource'});
+      dbs.defineModel({
         name: 'target',
         datasource: 'datasource',
         relations: {
@@ -2821,8 +2821,8 @@ describe('HasManyResolver', function () {
           },
         },
       });
-      const sourceRep = S.getRepository('source');
-      const targetRep = S.getRepository('target');
+      const sourceRep = dbs.getRepository('source');
+      const targetRep = dbs.getRepository('target');
       const source = await sourceRep.create({});
       expect(source).to.be.eql({
         [DEF_PK]: source[DEF_PK],
@@ -2860,7 +2860,7 @@ describe('HasManyResolver', function () {
         parentId: source[DEF_PK],
         parentType: 'source',
       });
-      const R = S.getService(HasManyResolver);
+      const R = dbs.getService(HasManyResolver);
       await R.includePolymorphicByRelationName(
         [source],
         'source',

@@ -46,10 +46,10 @@ class TestAdapter extends Adapter {
   }
 }
 
-const S = new DatabaseSchema();
-S.defineModel({name: MODEL_NAME});
-const A = S.getService(TestAdapter);
-const T = S.getService(ModelDataTransformer);
+const dbs = new DatabaseSchema();
+dbs.defineModel({name: MODEL_NAME});
+const A = dbs.getService(TestAdapter);
+const T = dbs.getService(ModelDataTransformer);
 const sandbox = chai.spy.sandbox();
 
 describe('DataTransformationDecorator', function () {

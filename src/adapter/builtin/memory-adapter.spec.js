@@ -8,9 +8,9 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../../definition/inde
 describe('MemoryAdapter', function () {
   describe('_getTableOrCreate', function () {
     it('returns an existing table or creates a new', function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'model'});
-      const A = S.getService(MemoryAdapter);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const A = dbs.getService(MemoryAdapter);
       const table = A._getTableOrCreate('model');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._getTableOrCreate('model');
@@ -18,12 +18,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a model name to find a table, even a table name is specified', function () {
-      const S = new DatabaseSchema();
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'myModel',
         tableName: 'myTable',
       });
-      const A = S.getService(MemoryAdapter);
+      const A = dbs.getService(MemoryAdapter);
       const table = A._getTableOrCreate('myModel');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._getTableOrCreate('myModel');
@@ -31,12 +31,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('stores a table by specified table name', function () {
-      const S = new DatabaseSchema();
-      S.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'myModel',
         tableName: 'myTable',
       });
-      const A = S.getService(MemoryAdapter);
+      const A = dbs.getService(MemoryAdapter);
       const table = A._getTableOrCreate('myModel');
       expect(table).to.be.instanceof(Map);
       const sameTable = A._tables.get('myTable');
@@ -46,9 +46,9 @@ describe('MemoryAdapter', function () {
 
   describe('_genNextIdValue', function () {
     it('returns an unique number identifier', function () {
-      const S = new DatabaseSchema();
-      S.defineModel({name: 'model'});
-      const A = S.getService(MemoryAdapter);
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const A = dbs.getService(MemoryAdapter);
       const id1 = A._genNextIdValue('model', DEF_PK);
       const id2 = A._genNextIdValue('model', DEF_PK);
       const id3 = A._genNextIdValue('model', DEF_PK);
@@ -60,16 +60,16 @@ describe('MemoryAdapter', function () {
 
   describe('create', function () {
     it('skips existing values when generating a new identifier for a default primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {[DEF_PK]: 3});
@@ -81,12 +81,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('skips existing values when generating a new identifier for a specified primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -96,7 +96,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {myId: 3});
@@ -108,12 +108,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key has not provided', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -121,7 +121,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const created = await adapter.create('model', input);
       const idValue = created[DEF_PK];
@@ -132,12 +132,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -145,7 +145,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: undefined,
         foo: 'string',
@@ -160,12 +160,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -173,7 +173,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: null,
         foo: 'string',
@@ -188,12 +188,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is an empty string', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -201,7 +201,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: '',
         foo: 'string',
@@ -217,12 +217,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is zero', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -230,7 +230,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: 0,
         foo: 'string',
@@ -246,12 +246,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier for a primary key of a "number" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -261,7 +261,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {});
@@ -271,12 +271,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier for a primary key of an "any" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -286,7 +286,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.create('model', {});
       const result2 = await adapter.create('model', {});
       const result3 = await adapter.create('model', {});
@@ -296,12 +296,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of a "string" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -311,7 +311,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -323,12 +323,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of a "boolean" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -338,7 +338,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -350,12 +350,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of an "array" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -366,7 +366,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -378,12 +378,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of an "object" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -393,7 +393,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -405,12 +405,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify an identifier value for a new item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -418,7 +418,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const idValue = 5;
       const input = {foo: 'string', bar: 10};
       const created = await adapter.create('model', {
@@ -432,19 +432,19 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error if a given identifier value already exists', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {foo: 'string'});
       const promise = adapter.create('model', created);
       await expect(promise).to.be.rejectedWith(
@@ -456,12 +456,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values if they are not provided for a new item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -475,7 +475,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 10, bar: 'string'};
@@ -486,12 +486,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values for properties provided with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -505,7 +505,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {foo: undefined});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -516,12 +516,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values for properties provided with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -535,7 +535,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {foo: null});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -546,12 +546,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -562,7 +562,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       expect(created).to.be.eql({foo: created.foo});
       const table = adapter._getTableOrCreate('model');
@@ -571,12 +571,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -586,7 +586,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {foo: 10});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -596,12 +596,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -612,7 +612,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -622,12 +622,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -635,7 +635,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const filter = {fields: 'foo'};
       const result = await adapter.create('model', input, filter);
@@ -643,12 +643,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -657,7 +657,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.create('model', input, filter);
@@ -669,12 +669,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -692,7 +692,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.create('model', input, filter);
@@ -706,12 +706,12 @@ describe('MemoryAdapter', function () {
 
   describe('replaceById', function () {
     it('removes properties when replacing an item by a given identifier', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -719,7 +719,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const created = await adapter.create('model', input);
       const idValue = created[DEF_PK];
@@ -732,16 +732,16 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a default primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {[DEF_PK]: 10});
       expect(createdModelData).to.be.eql({[DEF_PK]: 10});
       const table = adapter._getTableOrCreate('model');
@@ -756,12 +756,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a specified primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -771,7 +771,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {myId: 10});
       expect(createdModelData).to.be.eql({myId: 10});
       const table = adapter._getTableOrCreate('model');
@@ -786,12 +786,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for removed properties when replacing an item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -805,7 +805,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -827,12 +827,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for replaced properties with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -846,7 +846,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -861,12 +861,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for replaced properties with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -880,7 +880,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -895,12 +895,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error if a given identifier does not exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -908,7 +908,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
@@ -919,12 +919,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -937,7 +937,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {bar: 1, baz: 2};
       const createdModelData = await adapter.create('model', input);
       expect(createdModelData).to.be.eql({
@@ -968,12 +968,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -984,7 +984,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1011,12 +1011,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1031,7 +1031,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1063,12 +1063,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1076,7 +1076,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1096,12 +1096,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1110,7 +1110,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1134,12 +1134,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1157,7 +1157,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -1193,12 +1193,12 @@ describe('MemoryAdapter', function () {
 
   describe('replaceOrCreate', function () {
     it('generates a new identifier when a value of a primary key has not provided', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1206,7 +1206,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const created = await adapter.replaceOrCreate('model', input);
       const idValue = created[DEF_PK];
@@ -1217,12 +1217,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1230,7 +1230,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: undefined,
         foo: 'string',
@@ -1245,12 +1245,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1258,7 +1258,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: null,
         foo: 'string',
@@ -1273,12 +1273,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is an empty string', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1286,7 +1286,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: '',
         foo: 'string',
@@ -1302,12 +1302,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier when a value of a primary key is zero', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1315,7 +1315,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {
         [DEF_PK]: 0,
         foo: 'string',
@@ -1331,12 +1331,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier for a primary key of a "number" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1346,7 +1346,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.replaceOrCreate('model', {});
       const result2 = await adapter.replaceOrCreate('model', {});
       const result3 = await adapter.replaceOrCreate('model', {});
@@ -1356,12 +1356,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('generates a new identifier for a primary key of an "any" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1371,7 +1371,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result1 = await adapter.replaceOrCreate('model', {});
       const result2 = await adapter.replaceOrCreate('model', {});
       const result3 = await adapter.replaceOrCreate('model', {});
@@ -1381,12 +1381,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of a "string" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1396,7 +1396,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {
         foo: 'string',
         bar: 10,
@@ -1411,12 +1411,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of a "boolean" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1426,7 +1426,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {
         foo: 'string',
         bar: 10,
@@ -1441,12 +1441,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of an "array" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1457,7 +1457,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -1469,12 +1469,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error when generating a new value for a primary key of an "object" type', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1484,7 +1484,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {});
       await expect(promise).to.be.rejectedWith(
         'The memory adapter able to generate only Number identifiers, ' +
@@ -1496,12 +1496,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify an identifier value for a new item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1509,7 +1509,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const idValue = 5;
       const input = {foo: 'string', bar: 10};
       const created = await adapter.replaceOrCreate('model', {
@@ -1523,12 +1523,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values if they are not provided for a new item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1542,7 +1542,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 10, bar: 'string'};
@@ -1553,12 +1553,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values for properties provided with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1572,7 +1572,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {foo: undefined});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1583,12 +1583,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets default values for properties provided with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1602,7 +1602,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {foo: null});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1613,12 +1613,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1629,7 +1629,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {});
       expect(created).to.be.eql({foo: created.foo});
       const table = adapter._getTableOrCreate('model');
@@ -1638,12 +1638,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1653,7 +1653,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {foo: 10});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -1663,12 +1663,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1679,7 +1679,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.replaceOrCreate('model', {});
       const idValue = created[DEF_PK];
       expect(created).to.be.eql({[DEF_PK]: idValue, foo: 10});
@@ -1689,12 +1689,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1702,7 +1702,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const filter = {fields: 'foo'};
       const result = await adapter.replaceOrCreate('model', input, filter);
@@ -1710,12 +1710,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1724,7 +1724,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.replaceOrCreate('model', input, filter);
@@ -1736,12 +1736,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1759,7 +1759,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const filter = {fields: ['foo', 'bar']};
       const result = await adapter.replaceOrCreate('model', input, filter);
@@ -1771,12 +1771,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('removes properties when replacing an item by a given identifier', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1784,7 +1784,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const created = await adapter.create('model', input);
       const idValue = created[DEF_PK];
@@ -1798,12 +1798,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for removed properties when replacing an item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1817,7 +1817,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1831,12 +1831,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for replaced properties with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1850,7 +1850,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1866,12 +1866,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for replaced properties with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1885,7 +1885,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -1903,12 +1903,12 @@ describe('MemoryAdapter', function () {
 
   describe('patch', function () {
     it('updates only provided properties for all items and returns their number', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1916,7 +1916,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -1944,12 +1944,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('does not throw an error if a partial data does not have required property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -1960,7 +1960,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -1988,12 +1988,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a default primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2001,7 +2001,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2029,12 +2029,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a specified primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2046,7 +2046,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2074,12 +2074,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for patched properties with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2093,7 +2093,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2121,12 +2121,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for patched properties with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2140,7 +2140,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2168,12 +2168,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2187,7 +2187,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2215,12 +2215,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2236,7 +2236,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2264,12 +2264,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('returns zero if nothing matched by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2277,7 +2277,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a1', bar: 'a2'};
       const input2 = {foo: 'b1', bar: 'b2'};
       const input3 = {foo: 'c1', bar: 'c2'};
@@ -2305,12 +2305,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses the "where" clause to patch specific items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2318,7 +2318,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a', bar: '1'};
       const input2 = {foo: 'b', bar: '2'};
       const input3 = {foo: 'c', bar: '2'};
@@ -2346,12 +2346,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2365,7 +2365,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 'a', bar: '1'};
       const input2 = {foo: 'b', bar: '2'};
       const input3 = {foo: 'c', bar: '2'};
@@ -2393,12 +2393,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses a persisted data instead of default values in case of undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2409,7 +2409,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {[DEF_PK]: 1, foo: 'a', bar: undefined};
       const input2 = {[DEF_PK]: 2, foo: 'b', bar: undefined};
       const input3 = {[DEF_PK]: 3, foo: 'c', bar: 10};
@@ -2431,12 +2431,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses a persisted data instead of default values in case of null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2447,7 +2447,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {[DEF_PK]: 1, foo: 'a', bar: undefined};
       const input2 = {[DEF_PK]: 2, foo: 'b', bar: undefined};
       const input3 = {[DEF_PK]: 3, foo: 'c', bar: 10};
@@ -2471,12 +2471,12 @@ describe('MemoryAdapter', function () {
 
   describe('patchById', function () {
     it('updates only provided properties by a given identifier', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2484,7 +2484,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2508,12 +2508,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('does not throw an error if a partial data does not have required property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2524,7 +2524,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2548,16 +2548,16 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a default primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const idValue = 10;
       const createdModelData = await adapter.create('model', {
         [DEF_PK]: idValue,
@@ -2575,12 +2575,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('ignores identifier value in a given data in case of a specified primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2590,7 +2590,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const idValue = 10;
       const createdModelData = await adapter.create('model', {myId: idValue});
       expect(createdModelData).to.be.eql({myId: idValue});
@@ -2606,12 +2606,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for patched properties with an undefined value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2625,7 +2625,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -2642,12 +2642,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('sets a default values for patched properties with a null value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2661,7 +2661,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -2678,12 +2678,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('throws an error if a given identifier does not exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2691,7 +2691,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.patchById('model', 1, {foo: 2});
       await expect(promise).to.be.rejectedWith(
         format(
@@ -2702,12 +2702,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2720,7 +2720,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {bar: 1, baz: 2};
       const createdModelData = await adapter.create('model', input);
       expect(createdModelData).to.be.eql({foo: createdModelData.foo, ...input});
@@ -2747,12 +2747,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2763,7 +2763,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 1, bar: 2};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2795,12 +2795,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2815,7 +2815,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const createdModelData = await adapter.create('model', {});
       const idValue = createdModelData[DEF_PK];
       const defaults = {foo: 1, bar: 2};
@@ -2847,12 +2847,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2860,7 +2860,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2883,12 +2883,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2897,7 +2897,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2921,12 +2921,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -2944,7 +2944,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       const createdModelData = await adapter.create('model', input);
       const idValue = createdModelData[DEF_PK];
@@ -2980,32 +2980,32 @@ describe('MemoryAdapter', function () {
 
   describe('find', function () {
     it('returns an empty array if a table does not have an items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result = await adapter.find('model');
       expect(result).to.be.instanceof(Array);
       expect(result).to.be.empty;
     });
 
     it('returns an array of table items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -3018,12 +3018,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for non-existent properties', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3033,7 +3033,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1});
       table.set(2, {[DEF_PK]: 2});
@@ -3052,12 +3052,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for properties of an undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3067,7 +3067,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});
@@ -3086,12 +3086,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for properties of a null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3101,7 +3101,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: null});
       table.set(2, {[DEF_PK]: 2, foo: null});
@@ -3120,12 +3120,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3133,7 +3133,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string1', bar: 10};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -3153,12 +3153,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3167,7 +3167,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string1', bar: 10, baz: true};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -3199,12 +3199,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3222,7 +3222,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {foo: 'string', bar: 10, baz: true};
       await adapter.create('model', input);
       await adapter.create('model', input);
@@ -3255,19 +3255,19 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a short form of an order clause to sort a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -3289,12 +3289,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a full form of an order clause to sort a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3302,7 +3302,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {foo: 2, bar: 20});
       await adapter.create('model', {foo: 2, bar: 10});
       await adapter.create('model', {foo: 1, bar: 15});
@@ -3333,12 +3333,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('an order clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3352,7 +3352,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput1 = {fooCol: 2, barCol: 20};
       const tableInput2 = {fooCol: 2, barCol: 10};
@@ -3387,12 +3387,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify the "where" clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3401,7 +3401,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.STRING,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input1 = {foo: 20, bar: true, baz: 'abc'};
       const input2 = {foo: 10, bar: true, baz: 'abc'};
       const input3 = {foo: 15, bar: false, baz: 'abe'};
@@ -3424,12 +3424,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3447,7 +3447,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput1 = {fooCol: 20, barCol: true, bazCol: 'abc'};
       const tableInput2 = {fooCol: 10, barCol: true, bazCol: 'abc'};
@@ -3481,12 +3481,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses a persisted data instead of default values', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3496,7 +3496,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});
@@ -3514,19 +3514,19 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a limit clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -3545,19 +3545,19 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a skip clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -3578,16 +3578,16 @@ describe('MemoryAdapter', function () {
 
   describe('findById', function () {
     it('throws an error if a given identifier does not exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.findById('model', 1);
       await expect(promise).to.be.rejectedWith(
         format(
@@ -3598,12 +3598,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for non-existent properties', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3613,7 +3613,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {[DEF_PK]: idValue});
@@ -3624,12 +3624,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for properties of an undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3639,7 +3639,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: undefined};
@@ -3651,12 +3651,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses default values for properties of a null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3666,7 +3666,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: null};
@@ -3678,12 +3678,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3696,7 +3696,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const input = {bar: 1, baz: 2};
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
@@ -3706,12 +3706,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3722,7 +3722,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       const input = {foo: 1, bar: 2};
@@ -3736,12 +3736,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a regular property with a default value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3756,7 +3756,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {[DEF_PK]: idValue});
@@ -3766,12 +3766,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a short form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3779,7 +3779,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const input = {foo: 'string', bar: 10};
       const idValue = 1;
@@ -3789,12 +3789,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('allows to specify a full form of a fields clause to filter a return value', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3803,7 +3803,7 @@ describe('MemoryAdapter', function () {
           baz: DataType.BOOLEAN,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const input = {foo: 'string', bar: 10, baz: true};
       const idValue = 1;
@@ -3818,12 +3818,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('a fields clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3841,7 +3841,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const tableInput = {fooCol: 'string', barCol: 10, bazCol: true};
       const idValue = 1;
@@ -3861,16 +3861,16 @@ describe('MemoryAdapter', function () {
 
   describe('delete', function () {
     it('removes all table items and returns their number', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1});
       table.set(2, {[DEF_PK]: 2});
@@ -3882,34 +3882,34 @@ describe('MemoryAdapter', function () {
     });
 
     it('returns zero if nothing to remove', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result = await adapter.delete('model');
       expect(result).to.be.eq(0);
     });
 
     it('uses a given where clause to remove specific items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -3922,12 +3922,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3937,7 +3937,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, fooCol: 20});
       table.set(2, {[DEF_PK]: 2, fooCol: 10});
@@ -3949,12 +3949,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses a persisted data instead of default values', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -3964,7 +3964,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const input1 = {[DEF_PK]: 1, foo: undefined};
       const input2 = {[DEF_PK]: 2, foo: undefined};
@@ -3993,31 +3993,31 @@ describe('MemoryAdapter', function () {
 
   describe('deleteById', function () {
     it('returns false if a given identifier is not exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result = await adapter.deleteById('model', 1);
       expect(result).to.be.false;
     });
 
     it('returns true if an item has removed by a given identifier', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const created = await adapter.create('model', {});
       const idValue = created[DEF_PK];
       const result = await adapter.deleteById('model', idValue);
@@ -4025,12 +4025,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -4042,7 +4042,7 @@ describe('MemoryAdapter', function () {
           bar: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {qux: idValue, bar: 10});
@@ -4055,43 +4055,43 @@ describe('MemoryAdapter', function () {
 
   describe('exists', function () {
     it('returns false if a given identifier is not exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result = await adapter.exists('model', 1);
       expect(result).to.be.false;
     });
 
     it('returns true if a given identifier is exist', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {});
       const result = await adapter.exists('model', 1);
       expect(result).to.be.true;
     });
 
     it('uses a specified column name for a primary key', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -4102,7 +4102,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       const idValue = 1;
       table.set(idValue, {qux: idValue});
@@ -4113,34 +4113,34 @@ describe('MemoryAdapter', function () {
 
   describe('count', function () {
     it('returns zero if nothing to count', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const result = await adapter.count('model');
       expect(result).to.be.eq(0);
     });
 
     it('returns zero if a given where clause does not met', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -4155,16 +4155,16 @@ describe('MemoryAdapter', function () {
     });
 
     it('returns a number of table items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {});
       await adapter.create('model', {});
       await adapter.create('model', {});
@@ -4173,19 +4173,19 @@ describe('MemoryAdapter', function () {
     });
 
     it('uses a given where clause to count specific items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
           foo: DataType.NUMBER,
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       await adapter.create('model', {foo: 20});
       await adapter.create('model', {foo: 10});
       await adapter.create('model', {foo: 15});
@@ -4200,12 +4200,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses property names instead of column names', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -4215,7 +4215,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, fooCol: 20});
       table.set(2, {[DEF_PK]: 2, fooCol: 10});
@@ -4230,12 +4230,12 @@ describe('MemoryAdapter', function () {
     });
 
     it('the "where" clause uses a persisted data instead of default values', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({
         name: 'memory',
         adapter: 'memory',
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'model',
         datasource: 'memory',
         properties: {
@@ -4245,7 +4245,7 @@ describe('MemoryAdapter', function () {
           },
         },
       });
-      const adapter = new MemoryAdapter(schema.container, {});
+      const adapter = new MemoryAdapter(dbs.container, {});
       const table = adapter._getTableOrCreate('model');
       table.set(1, {[DEF_PK]: 1, foo: undefined});
       table.set(2, {[DEF_PK]: 2, foo: undefined});

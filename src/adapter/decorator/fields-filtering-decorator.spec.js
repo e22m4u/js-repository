@@ -4,9 +4,9 @@ import {Adapter} from '../adapter.js';
 import {FieldsClauseTool} from '../../filter/index.js';
 import {DatabaseSchema} from '../../database-schema.js';
 
-const S = new DatabaseSchema();
+const dbs = new DatabaseSchema();
 const MODEL_NAME = 'model';
-S.defineModel({name: MODEL_NAME});
+dbs.defineModel({name: MODEL_NAME});
 
 const FILTER = {fields: ['foo', 'bar']};
 const MODEL_DATA = {
@@ -53,8 +53,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.getService(TestAdapter);
-const T = S.getService(FieldsClauseTool);
+const A = dbs.getService(TestAdapter);
+const T = dbs.getService(FieldsClauseTool);
 const sandbox = chai.spy.sandbox();
 
 describe('FieldsFilteringDecorator', function () {

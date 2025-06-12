@@ -9,8 +9,8 @@ import {PropertyTransformerRegistry} from './property-transformer-registry.js';
 describe('PropertyTransformerRegistry', function () {
   describe('addTransformer', function () {
     it('has builtin transformers', function () {
-      const S = new PropertyTransformerRegistry();
-      expect(S['_transformers']).to.be.eql({
+      const ptr = new PropertyTransformerRegistry();
+      expect(ptr['_transformers']).to.be.eql({
         trim: trimTransformer,
         toUpperCase: toUpperCaseTransformer,
         toLowerCase: toLowerCaseTransformer,
@@ -19,16 +19,16 @@ describe('PropertyTransformerRegistry', function () {
     });
 
     it('adds a given transformer with the name', function () {
-      const S = new PropertyTransformerRegistry();
+      const ptr = new PropertyTransformerRegistry();
       const myTransformer = () => undefined;
-      const res = S.addTransformer('myTransformer', myTransformer);
-      expect(res).to.be.eq(S);
-      expect(S['_transformers']['myTransformer']).to.be.eq(myTransformer);
+      const res = ptr.addTransformer('myTransformer', myTransformer);
+      expect(res).to.be.eq(ptr);
+      expect(ptr['_transformers']['myTransformer']).to.be.eq(myTransformer);
     });
 
     it('requires the given name to be a non-empty string', function () {
-      const S = new PropertyTransformerRegistry();
-      const throwable = v => () => S.addTransformer(v, () => undefined);
+      const ptr = new PropertyTransformerRegistry();
+      const throwable = v => () => ptr.addTransformer(v, () => undefined);
       const error = v =>
         format(
           'A name of the property transformer must ' +
@@ -48,17 +48,17 @@ describe('PropertyTransformerRegistry', function () {
     });
 
     it('throws an error if the given name already exists', function () {
-      const S = new PropertyTransformerRegistry();
-      S.addTransformer('test', () => undefined);
-      const throwable = () => S.addTransformer('test', () => undefined);
+      const ptr = new PropertyTransformerRegistry();
+      ptr.addTransformer('test', () => undefined);
+      const throwable = () => ptr.addTransformer('test', () => undefined);
       expect(throwable).to.throw(
         'The property transformer "test" is already defined.',
       );
     });
 
     it('requires the given transformer to be a function', function () {
-      const S = new PropertyTransformerRegistry();
-      const throwable = v => () => S.addTransformer('test', v);
+      const ptr = new PropertyTransformerRegistry();
+      const throwable = v => () => ptr.addTransformer('test', v);
       const error = v =>
         format(
           'The property transformer "test" must be a Function, but %s given.',
@@ -79,44 +79,44 @@ describe('PropertyTransformerRegistry', function () {
 
   describe('hasTransformer', function () {
     it('returns false for a not existing name', function () {
-      const S = new PropertyTransformerRegistry();
-      expect(S.hasTransformer('str')).to.be.false;
-      expect(S.hasTransformer('')).to.be.false;
-      expect(S.hasTransformer(10)).to.be.false;
-      expect(S.hasTransformer(0)).to.be.false;
-      expect(S.hasTransformer(true)).to.be.false;
-      expect(S.hasTransformer(false)).to.be.false;
-      expect(S.hasTransformer(null)).to.be.false;
-      expect(S.hasTransformer(undefined)).to.be.false;
-      expect(S.hasTransformer({})).to.be.false;
-      expect(S.hasTransformer([])).to.be.false;
-      expect(S.hasTransformer(() => undefined)).to.be.false;
+      const ptr = new PropertyTransformerRegistry();
+      expect(ptr.hasTransformer('str')).to.be.false;
+      expect(ptr.hasTransformer('')).to.be.false;
+      expect(ptr.hasTransformer(10)).to.be.false;
+      expect(ptr.hasTransformer(0)).to.be.false;
+      expect(ptr.hasTransformer(true)).to.be.false;
+      expect(ptr.hasTransformer(false)).to.be.false;
+      expect(ptr.hasTransformer(null)).to.be.false;
+      expect(ptr.hasTransformer(undefined)).to.be.false;
+      expect(ptr.hasTransformer({})).to.be.false;
+      expect(ptr.hasTransformer([])).to.be.false;
+      expect(ptr.hasTransformer(() => undefined)).to.be.false;
     });
 
     it('returns true for an existing name', function () {
-      const S = new PropertyTransformerRegistry();
-      expect(S.hasTransformer('test')).to.be.false;
-      S.addTransformer('test', () => undefined);
-      expect(S.hasTransformer('test')).to.be.true;
+      const ptr = new PropertyTransformerRegistry();
+      expect(ptr.hasTransformer('test')).to.be.false;
+      ptr.addTransformer('test', () => undefined);
+      expect(ptr.hasTransformer('test')).to.be.true;
     });
   });
 
   describe('getTransformer', function () {
     it('returns transformer by its name', function () {
-      const S = new PropertyTransformerRegistry();
+      const ptr = new PropertyTransformerRegistry();
       const myTransformer1 = () => undefined;
       const myTransformer2 = () => undefined;
-      S.addTransformer('foo', myTransformer1);
-      S.addTransformer('bar', myTransformer2);
-      const res1 = S.getTransformer('foo');
-      const res2 = S.getTransformer('bar');
+      ptr.addTransformer('foo', myTransformer1);
+      ptr.addTransformer('bar', myTransformer2);
+      const res1 = ptr.getTransformer('foo');
+      const res2 = ptr.getTransformer('bar');
       expect(res1).to.be.eq(myTransformer1);
       expect(res2).to.be.eq(myTransformer2);
     });
 
     it('throws an error for a not existed name', function () {
-      const S = new PropertyTransformerRegistry();
-      const throwable = v => () => S.getTransformer(v);
+      const ptr = new PropertyTransformerRegistry();
+      const throwable = v => () => ptr.getTransformer(v);
       const error = v =>
         format('The property transformer %s is not defined.', v);
       expect(throwable('str')).to.throw(error('"str"'));

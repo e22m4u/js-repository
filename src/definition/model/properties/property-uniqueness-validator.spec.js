@@ -10,8 +10,8 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-u
 describe('PropertyUniquenessValidator', function () {
   describe('validate', function () {
     it('requires the parameter "countMethod" to be a Function', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -20,8 +20,8 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const throwable = v => S.validate(v, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const throwable = v => puv.validate(v, 'create', 'model', {});
       const error = v =>
         format(
           'The parameter "countMethod" of the PropertyUniquenessValidator ' +
@@ -45,8 +45,8 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "methodName" to be a non-empty String', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -55,8 +55,8 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const throwable = v => S.validate(() => 0, v, 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const throwable = v => puv.validate(() => 0, v, 'model', {});
       const error = v =>
         format(
           'The parameter "methodName" of the PropertyUniquenessValidator ' +
@@ -80,8 +80,8 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "modelName" to be a non-empty String', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -90,8 +90,8 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const throwable = v => S.validate(() => 0, 'create', v, {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const throwable = v => puv.validate(() => 0, 'create', v, {});
       const error = v =>
         format(
           'The parameter "modelName" of the PropertyUniquenessValidator ' +
@@ -115,8 +115,8 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('requires the parameter "modelData" to be a pure Object', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -125,8 +125,8 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const throwable = v => S.validate(() => 0, 'create', 'model', v);
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const throwable = v => puv.validate(() => 0, 'create', 'model', v);
       const error = v =>
         format(
           'The data of the model "model" should be an Object, but %s given.',
@@ -149,8 +149,8 @@ describe('PropertyUniquenessValidator', function () {
     });
 
     it('skips checking if the option "unique" is not provided', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.ANY,
@@ -159,14 +159,14 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'create', 'model', {});
       await expect(promise).not.to.be.rejected;
     });
 
     it('skips checking if the option "unique" is undefined', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -175,14 +175,14 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'create', 'model', {});
       await expect(promise).not.to.be.rejected;
     });
 
     it('skips checking if the option "unique" is null', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -191,14 +191,14 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'create', 'model', {});
       await expect(promise).not.to.be.rejected;
     });
 
     it('skips checking if the option "unique" is false', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -207,14 +207,14 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'create', 'model', {});
       await expect(promise).not.to.be.rejected;
     });
 
     it('skips checking if the option "unique" is "nonUnique"', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -223,14 +223,14 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'create', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'create', 'model', {});
       await expect(promise).not.to.be.rejected;
     });
 
     it('throws an error for unsupported method', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -239,8 +239,8 @@ describe('PropertyUniquenessValidator', function () {
           },
         },
       });
-      const S = schema.getService(PropertyUniquenessValidator);
-      const promise = S.validate(() => 1, 'unsupported', 'model', {});
+      const puv = dbs.getService(PropertyUniquenessValidator);
+      const promise = puv.validate(() => 1, 'unsupported', 'model', {});
       await expect(promise).to.be.rejectedWith(
         'The PropertyUniquenessValidator does not ' +
           'support the adapter method "unsupported".',
@@ -250,8 +250,8 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is true', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -260,8 +260,10 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'create', 'model', {
+            foo: 'bar',
+          });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -269,8 +271,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -279,13 +281,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'create', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -302,7 +304,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -314,15 +316,15 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'create', 'model', modelData);
+          await puv.validate(countMethod, 'create', 'model', modelData);
           expect(invoked).to.be.eq(2);
         });
       });
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -331,8 +333,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'replaceById',
             'model',
@@ -346,8 +348,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -356,13 +358,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -379,7 +381,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -398,7 +400,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -409,8 +411,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('can use a custom primary key', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -423,7 +425,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -436,7 +438,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -449,8 +451,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -459,8 +461,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'replaceOrCreate', 'model', {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
@@ -470,8 +472,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -480,13 +482,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -503,7 +505,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -515,15 +517,20 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          await puv.validate(
+            countMethod,
+            'replaceOrCreate',
+            'model',
+            modelData,
+          );
           expect(invoked).to.be.eq(2);
         });
 
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -532,7 +539,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'bar'};
@@ -545,7 +552,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -555,8 +562,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -569,7 +576,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -582,7 +589,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -593,8 +600,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -607,7 +614,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
@@ -622,7 +629,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -634,8 +641,8 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -644,7 +651,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -666,7 +673,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -676,8 +683,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -690,7 +697,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -709,7 +716,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -720,8 +727,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -734,7 +741,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -761,7 +768,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -775,8 +782,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -785,8 +792,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -794,8 +801,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -804,13 +811,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -827,7 +834,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -835,13 +842,13 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'patch', 'model', modelData);
+          await puv.validate(countMethod, 'patch', 'model', modelData);
           expect(invoked).to.be.eq(1);
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -850,9 +857,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
-          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patch', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = puv.validate(() => 1, 'patch', 'model', {
+            baz: 'qux',
+          });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -863,8 +874,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -873,8 +884,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'patchById',
             'model',
@@ -888,8 +899,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -898,13 +909,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -921,7 +932,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -934,7 +945,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',
@@ -945,8 +956,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -955,11 +966,11 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patchById', 'model', {
             foo: 'bar',
           });
-          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+          const promise2 = puv.validate(() => 1, 'patchById', 'model', {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
@@ -970,8 +981,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -984,7 +995,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -997,7 +1008,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',
@@ -1012,8 +1023,8 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is "strict"', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1022,8 +1033,10 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'create', 'model', {
+            foo: 'bar',
+          });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -1031,8 +1044,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1041,13 +1054,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'create', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1064,7 +1077,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -1076,15 +1089,15 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'create', 'model', modelData);
+          await puv.validate(countMethod, 'create', 'model', modelData);
           expect(invoked).to.be.eq(2);
         });
       });
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1093,8 +1106,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'replaceById',
             'model',
@@ -1108,8 +1121,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1118,13 +1131,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1141,7 +1154,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -1160,7 +1173,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -1171,8 +1184,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('can use a custom primary key', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -1185,7 +1198,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -1198,7 +1211,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -1211,8 +1224,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1221,8 +1234,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'replaceOrCreate', 'model', {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
@@ -1232,8 +1245,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1242,13 +1255,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for each unique property of the model', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1265,7 +1278,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -1277,15 +1290,20 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          await puv.validate(
+            countMethod,
+            'replaceOrCreate',
+            'model',
+            modelData,
+          );
           expect(invoked).to.be.eq(2);
         });
 
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -1294,7 +1312,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'bar'};
@@ -1307,7 +1325,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1317,8 +1335,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -1331,7 +1349,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -1344,7 +1362,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1355,8 +1373,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -1369,7 +1387,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
@@ -1384,7 +1402,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1396,8 +1414,8 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -1406,7 +1424,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -1428,7 +1446,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1438,8 +1456,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -1452,7 +1470,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -1471,7 +1489,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1482,8 +1500,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -1496,7 +1514,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -1523,7 +1541,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -1537,8 +1555,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1547,8 +1565,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -1556,8 +1574,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1566,13 +1584,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1589,7 +1607,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -1597,13 +1615,13 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'patch', 'model', modelData);
+          await puv.validate(countMethod, 'patch', 'model', modelData);
           expect(invoked).to.be.eq(1);
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1612,9 +1630,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
-          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patch', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = puv.validate(() => 1, 'patch', 'model', {
+            baz: 'qux',
+          });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -1625,8 +1647,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1635,8 +1657,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'patchById',
             'model',
@@ -1650,8 +1672,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1660,13 +1682,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1683,7 +1705,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -1696,7 +1718,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',
@@ -1707,8 +1729,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1717,11 +1739,11 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patchById', 'model', {
             foo: 'bar',
           });
-          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+          const promise2 = puv.validate(() => 1, 'patchById', 'model', {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
@@ -1732,8 +1754,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -1746,7 +1768,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -1759,7 +1781,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',
@@ -1774,8 +1796,8 @@ describe('PropertyUniquenessValidator', function () {
     describe('the "unique" option is "sparse"', function () {
       describe('create', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1784,8 +1806,10 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'create', 'model', {
+            foo: 'bar',
+          });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -1793,8 +1817,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1803,13 +1827,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'create', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'create', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1826,7 +1850,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -1834,13 +1858,13 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'create', 'model', modelData);
+          await puv.validate(countMethod, 'create', 'model', modelData);
           expect(invoked).to.be.eq(1);
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1853,9 +1877,9 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          schema
+          dbs
             .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -1864,15 +1888,15 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'create', 'model', modelData);
+          await puv.validate(countMethod, 'create', 'model', modelData);
           expect(invoked).to.be.eql(1);
         });
       });
 
       describe('replaceById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1881,8 +1905,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'replaceById',
             'model',
@@ -1896,8 +1920,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1906,13 +1930,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1929,7 +1953,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -1942,7 +1966,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -1953,8 +1977,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -1967,9 +1991,9 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          schema
+          dbs
             .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const idValue = 1;
@@ -1983,7 +2007,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -1994,8 +2018,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -2008,7 +2032,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -2021,7 +2045,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'replaceById',
             'model',
@@ -2034,8 +2058,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('replaceOrCreate', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2044,8 +2068,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'replaceOrCreate', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'replaceOrCreate', 'model', {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
@@ -2055,8 +2079,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2065,13 +2089,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2088,7 +2112,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -2096,15 +2120,20 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'replaceOrCreate', 'model', modelData);
+          await puv.validate(
+            countMethod,
+            'replaceOrCreate',
+            'model',
+            modelData,
+          );
           expect(invoked).to.be.eq(1);
         });
 
         describe('in case that the given model has a document identifier', function () {
           describe('a document of the given identifier does not exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2113,7 +2142,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'bar'};
@@ -2126,7 +2155,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2136,8 +2165,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -2150,7 +2179,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -2163,7 +2192,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2174,8 +2203,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2188,7 +2217,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
@@ -2203,7 +2232,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2213,8 +2242,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('skips uniqueness checking for empty values', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2227,8 +2256,8 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
-              schema
+              const puv = dbs.getService(PropertyUniquenessValidator);
+              dbs
                 .getService(EmptyValuesService)
                 .setEmptyValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
@@ -2243,7 +2272,7 @@ describe('PropertyUniquenessValidator', function () {
                 invoked++;
                 return 0;
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2255,8 +2284,8 @@ describe('PropertyUniquenessValidator', function () {
 
           describe('a document of the given identifier already exist', function () {
             it('uses the default primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2265,7 +2294,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -2287,7 +2316,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2297,8 +2326,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('uses a custom primary key to check existence of the given identifier', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   myId: {
@@ -2311,7 +2340,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {myId: idValue, foo: 'bar'};
@@ -2330,7 +2359,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2341,8 +2370,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('checks the given identifier only once', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2355,7 +2384,7 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
+              const puv = dbs.getService(PropertyUniquenessValidator);
               let invoked = 0;
               const idValue = 1;
               const modelData = {
@@ -2382,7 +2411,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2392,8 +2421,8 @@ describe('PropertyUniquenessValidator', function () {
             });
 
             it('skips uniqueness checking for empty values', async function () {
-              const schema = new DatabaseSchema();
-              schema.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -2406,8 +2435,8 @@ describe('PropertyUniquenessValidator', function () {
                   },
                 },
               });
-              const S = schema.getService(PropertyUniquenessValidator);
-              schema
+              const puv = dbs.getService(PropertyUniquenessValidator);
+              dbs
                 .getService(EmptyValuesService)
                 .setEmptyValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
@@ -2426,7 +2455,7 @@ describe('PropertyUniquenessValidator', function () {
                   return 0;
                 }
               };
-              await S.validate(
+              await puv.validate(
                 countMethod,
                 'replaceOrCreate',
                 'model',
@@ -2440,8 +2469,8 @@ describe('PropertyUniquenessValidator', function () {
 
       describe('patch', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2450,8 +2479,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -2459,8 +2488,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2469,13 +2498,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patch', 'model', {foo: 'bar'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2492,7 +2521,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -2500,13 +2529,13 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'patch', 'model', modelData);
+          await puv.validate(countMethod, 'patch', 'model', modelData);
           expect(invoked).to.be.eq(1);
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2515,9 +2544,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patch', 'model', {foo: 'bar'});
-          const promise2 = S.validate(() => 1, 'patch', 'model', {baz: 'qux'});
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patch', 'model', {
+            foo: 'bar',
+          });
+          const promise2 = puv.validate(() => 1, 'patch', 'model', {
+            baz: 'qux',
+          });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and should be unique.',
@@ -2526,8 +2559,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2540,8 +2573,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          schema
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          dbs
             .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           let invoked = 0;
@@ -2551,15 +2584,15 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'patch', 'model', modelData);
+          await puv.validate(countMethod, 'patch', 'model', modelData);
           expect(invoked).to.be.eql(1);
         });
       });
 
       describe('patchById', function () {
         it('throws an error if the "countMethod" returns a positive number', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2568,8 +2601,8 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise = S.validate(
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise = puv.validate(
             () => 1,
             'patchById',
             'model',
@@ -2583,8 +2616,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('passes validation if the "countMethod" returns zero', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2593,13 +2626,13 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          await S.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
         it('invokes the "countMethod" for given properties which should be unique', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2616,7 +2649,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -2629,7 +2662,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',
@@ -2640,8 +2673,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for non-provided fields', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2650,11 +2683,11 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
-          const promise1 = S.validate(() => 1, 'patchById', 'model', {
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          const promise1 = puv.validate(() => 1, 'patchById', 'model', {
             foo: 'bar',
           });
-          const promise2 = S.validate(() => 1, 'patchById', 'model', {
+          const promise2 = puv.validate(() => 1, 'patchById', 'model', {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
@@ -2665,8 +2698,8 @@ describe('PropertyUniquenessValidator', function () {
         });
 
         it('skips uniqueness checking for empty values', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2679,9 +2712,9 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          schema
+          dbs
             .getService(EmptyValuesService)
             .setEmptyValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
@@ -2694,13 +2727,13 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(countMethod, 'patchById', 'model', modelData, 1);
+          await puv.validate(countMethod, 'patchById', 'model', modelData, 1);
           expect(invoked).to.be.eql(1);
         });
 
         it('uses a custom primary key to check existence of the given identifier', async function () {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               myId: {
@@ -2713,7 +2746,7 @@ describe('PropertyUniquenessValidator', function () {
               },
             },
           });
-          const S = schema.getService(PropertyUniquenessValidator);
+          const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           const idValue = 1;
           const modelData = {foo: 'bar'};
@@ -2726,7 +2759,7 @@ describe('PropertyUniquenessValidator', function () {
             invoked++;
             return 0;
           };
-          await S.validate(
+          await puv.validate(
             countMethod,
             'patchById',
             'model',

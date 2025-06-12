@@ -7,10 +7,10 @@ describe('RepositoryRegistry', function () {
   describe('setRepositoryCtor', function () {
     it('sets a given class as the repository constructor', function () {
       class MyRepository extends Repository {}
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const registry = schema.getService(RepositoryRegistry);
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const registry = dbs.getService(RepositoryRegistry);
       registry.setRepositoryCtor(MyRepository);
       const rep = registry.getRepository('model');
       expect(rep).to.be.instanceof(Repository);
@@ -20,11 +20,11 @@ describe('RepositoryRegistry', function () {
 
   describe('getRepository', function () {
     it('uses a given model name to return an existing repository or create the new', function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'modelA', datasource: 'datasource'});
-      schema.defineModel({name: 'modelB', datasource: 'datasource'});
-      const registry = schema.getService(RepositoryRegistry);
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'modelA', datasource: 'datasource'});
+      dbs.defineModel({name: 'modelB', datasource: 'datasource'});
+      const registry = dbs.getService(RepositoryRegistry);
       const repA1 = registry.getRepository('modelA');
       const repA2 = registry.getRepository('modelA');
       const repB1 = registry.getRepository('modelB');

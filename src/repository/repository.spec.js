@@ -5,11 +5,11 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../definition/index.j
 describe('Repository', function () {
   describe('create', function () {
     it('creates a new item from the given data', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
       const data = {foo: 'bar'};
-      const rep = schema.getRepository('model');
+      const rep = dbs.getRepository('model');
       const result = await rep.create(data);
       expect(result).to.be.eql({[DEF_PK]: result[DEF_PK], ...data});
     });
@@ -17,10 +17,10 @@ describe('Repository', function () {
 
   describe('replaceById', function () {
     it('replaces an item by the given id', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const result = await rep.replaceById(created[DEF_PK], {baz: 'qux'});
       expect(result).to.be.eql({[DEF_PK]: created[DEF_PK], baz: 'qux'});
@@ -29,20 +29,20 @@ describe('Repository', function () {
 
   describe('replaceOrCreate', function () {
     it('creates a new item from the given data', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
       const data = {foo: 'bar'};
-      const rep = schema.getRepository('model');
+      const rep = dbs.getRepository('model');
       const result = await rep.replaceOrCreate(data);
       expect(result).to.be.eql({[DEF_PK]: result[DEF_PK], ...data});
     });
 
     it('replaces an existing item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const replacer = {[DEF_PK]: created[DEF_PK], bar: 'qux'};
       const result = await rep.replaceOrCreate(replacer);
@@ -52,10 +52,10 @@ describe('Repository', function () {
 
   describe('patch', function () {
     it('patches all items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'a1', bar: 'b1'});
       await rep.create({foo: 'a2', bar: 'b2'});
       await rep.create({foo: 'a3', bar: 'b3'});
@@ -64,10 +64,10 @@ describe('Repository', function () {
     });
 
     it('patches found items by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'a', bar: '1'});
       await rep.create({foo: 'b', bar: '2'});
       await rep.create({foo: 'c', bar: '2'});
@@ -78,10 +78,10 @@ describe('Repository', function () {
 
   describe('patchById', function () {
     it('patches an item by the given id', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const result = await rep.patchById(created[DEF_PK], {baz: 'qux'});
       expect(result).to.be.eql({
@@ -94,10 +94,10 @@ describe('Repository', function () {
 
   describe('find', function () {
     it('returns all items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created1 = await rep.create({foo: 'bar'});
       const created2 = await rep.create({baz: 'qux'});
       const result = await rep.find();
@@ -105,10 +105,10 @@ describe('Repository', function () {
     });
 
     it('returns found items by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       const created = await rep.create({baz: 'qux'});
       const result = await rep.find({where: {baz: 'qux'}});
@@ -118,10 +118,10 @@ describe('Repository', function () {
 
   describe('findOne', function () {
     it('returns a first item', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       await rep.create({baz: 'qux'});
       const result = await rep.findOne();
@@ -129,10 +129,10 @@ describe('Repository', function () {
     });
 
     it('returns a found item by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       const created = await rep.create({baz: 'qux'});
       const result = await rep.findOne({where: {baz: 'qux'}});
@@ -142,10 +142,10 @@ describe('Repository', function () {
 
   describe('findById', function () {
     it('returns an item by the given id', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const result = await rep.findById(created[DEF_PK]);
       expect(result).to.be.eql(created);
@@ -154,10 +154,10 @@ describe('Repository', function () {
 
   describe('delete', function () {
     it('removes all items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       await rep.create({baz: 'qux'});
       const result = await rep.delete();
@@ -165,10 +165,10 @@ describe('Repository', function () {
     });
 
     it('removes found items by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       await rep.create({foo: 'bar'});
       await rep.create({baz: 'qux'});
@@ -179,10 +179,10 @@ describe('Repository', function () {
 
   describe('deleteById', function () {
     it('removes an item by the given id', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const result = await rep.deleteById(created[DEF_PK]);
       expect(result).to.be.true;
@@ -191,10 +191,10 @@ describe('Repository', function () {
 
   describe('exists', function () {
     it('returns true if the given id exists', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       const created = await rep.create({foo: 'bar'});
       const result = await rep.exists(created[DEF_PK]);
       expect(result).to.be.true;
@@ -203,10 +203,10 @@ describe('Repository', function () {
 
   describe('count', function () {
     it('counts all items', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       await rep.create({baz: 'qux'});
       const result = await rep.count();
@@ -214,10 +214,10 @@ describe('Repository', function () {
     });
 
     it('counts found items by the "where" clause', async function () {
-      const schema = new DatabaseSchema();
-      schema.defineDatasource({name: 'datasource', adapter: 'memory'});
-      schema.defineModel({name: 'model', datasource: 'datasource'});
-      const rep = schema.getRepository('model');
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      const rep = dbs.getRepository('model');
       await rep.create({foo: 'bar'});
       await rep.create({foo: 'bar'});
       await rep.create({baz: 'qux'});

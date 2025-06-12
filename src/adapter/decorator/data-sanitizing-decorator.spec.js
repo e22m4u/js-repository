@@ -4,8 +4,8 @@ import {Adapter} from '../adapter.js';
 import {DatabaseSchema} from '../../database-schema.js';
 import {ModelDataSanitizer} from '../../definition/index.js';
 
-const S = new DatabaseSchema();
-S.defineModel({name: 'model'});
+const dbs = new DatabaseSchema();
+dbs.defineModel({name: 'model'});
 
 class TestAdapter extends Adapter {
   // eslint-disable-next-line no-unused-vars
@@ -34,8 +34,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.getService(TestAdapter);
-const V = S.getService(ModelDataSanitizer);
+const A = dbs.getService(TestAdapter);
+const V = dbs.getService(ModelDataSanitizer);
 const sandbox = chai.spy.sandbox();
 
 describe('DataSanitizingDecorator', function () {

@@ -4,8 +4,8 @@ import {Adapter} from '../adapter.js';
 import {DatabaseSchema} from '../../database-schema.js';
 import {IncludeClauseTool} from '../../filter/index.js';
 
-const S = new DatabaseSchema();
-S.defineModel({name: 'model'});
+const dbs = new DatabaseSchema();
+dbs.defineModel({name: 'model'});
 const FILTER = {include: 'parent'};
 
 const MODEL_DATA = {
@@ -51,8 +51,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.getService(TestAdapter);
-const T = S.getService(IncludeClauseTool);
+const A = dbs.getService(TestAdapter);
+const T = dbs.getService(IncludeClauseTool);
 const sandbox = chai.spy.sandbox();
 
 describe('InclusionDecorator', function () {

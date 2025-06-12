@@ -10,19 +10,19 @@ import {PropertyValidatorRegistry} from './properties/index.js';
 describe('ModelDataValidator', function () {
   describe('validate', function () {
     it('does not throw an error if a model does not have a property of a given data', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({name: 'model'});
-      schema.getService(ModelDataValidator).validate('model', {foo: 'bar'});
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      dbs.getService(ModelDataValidator).validate('model', {foo: 'bar'});
     });
 
     it('throws an error if a given data is not a pure object', function () {
       const throwable = modelData => () => {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           datasource: 'datasource',
         });
-        schema.getService(ModelDataValidator).validate('model', modelData);
+        dbs.getService(ModelDataValidator).validate('model', modelData);
       };
       const error = v =>
         format(
@@ -39,19 +39,19 @@ describe('ModelDataValidator', function () {
     });
 
     it('uses a base model hierarchy to validate a given data', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
       const throwable = () =>
-        schema.getService(ModelDataValidator).validate('modelB', {foo: 10});
+        dbs.getService(ModelDataValidator).validate('modelB', {foo: 10});
       expect(throwable).to.throw(
         'The property "foo" of the model "modelB" must ' +
           'have a String, but Number given.',
@@ -59,8 +59,8 @@ describe('ModelDataValidator', function () {
     });
 
     it('throws an error if a given data does not have a required property', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -70,7 +70,7 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema.getService(ModelDataValidator).validate('model', {});
+        dbs.getService(ModelDataValidator).validate('model', {});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" ' +
           'is required, but undefined given.',
@@ -78,8 +78,8 @@ describe('ModelDataValidator', function () {
     });
 
     it('throws an error if a required property is undefined', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -89,17 +89,15 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema
-          .getService(ModelDataValidator)
-          .validate('model', {foo: undefined});
+        dbs.getService(ModelDataValidator).validate('model', {foo: undefined});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" is required, but undefined given.',
       );
     });
 
     it('throws an error if a required property is null', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -109,15 +107,15 @@ describe('ModelDataValidator', function () {
         },
       });
       const throwable = () =>
-        schema.getService(ModelDataValidator).validate('model', {foo: null});
+        dbs.getService(ModelDataValidator).validate('model', {foo: null});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" is required, but null given.',
       );
     });
 
     it('throws an error if a required property has an empty value', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -126,11 +124,11 @@ describe('ModelDataValidator', function () {
           },
         },
       });
-      schema
+      dbs
         .getService(EmptyValuesService)
         .setEmptyValuesOf(DataType.STRING, ['empty']);
       const throwable = () =>
-        schema.getService(ModelDataValidator).validate('model', {foo: 'empty'});
+        dbs.getService(ModelDataValidator).validate('model', {foo: 'empty'});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" ' +
           'is required, but "empty" given.',
@@ -139,8 +137,8 @@ describe('ModelDataValidator', function () {
 
     describe('an option "isPartial" is true', function () {
       it('does not throw an error if a given data does not have a required property', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -149,12 +147,12 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        schema.getService(ModelDataValidator).validate('model', {}, true);
+        dbs.getService(ModelDataValidator).validate('model', {}, true);
       });
 
       it('throws an error if a required property is undefined', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -164,7 +162,7 @@ describe('ModelDataValidator', function () {
           },
         });
         const throwable = () =>
-          schema
+          dbs
             .getService(ModelDataValidator)
             .validate('model', {foo: undefined}, true);
         expect(throwable).to.throw(
@@ -174,8 +172,8 @@ describe('ModelDataValidator', function () {
       });
 
       it('throws an error if a required property is null', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -185,7 +183,7 @@ describe('ModelDataValidator', function () {
           },
         });
         const throwable = () =>
-          schema
+          dbs
             .getService(ModelDataValidator)
             .validate('model', {foo: null}, true);
         expect(throwable).to.throw(
@@ -194,8 +192,8 @@ describe('ModelDataValidator', function () {
       });
 
       it('throws an error if a required property has an empty value', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -204,13 +202,11 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        schema
+        dbs
           .getService(EmptyValuesService)
           .setEmptyValuesOf(DataType.STRING, [5]);
         const throwable = () =>
-          schema
-            .getService(ModelDataValidator)
-            .validate('model', {foo: 5}, true);
+          dbs.getService(ModelDataValidator).validate('model', {foo: 5}, true);
         expect(throwable).to.throw(
           'The property "foo" of the model "model" is required, but 5 given.',
         );
@@ -219,8 +215,8 @@ describe('ModelDataValidator', function () {
 
     describe('validate by property type', function () {
       it('skips validation for an empty value', function () {
-        const S = new DatabaseSchema();
-        S.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           datasource: 'datasource',
           properties: {
@@ -229,120 +225,122 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        S.getService(EmptyValuesService).setEmptyValuesOf(DataType.STRING, [5]);
-        S.getService(ModelDataValidator).validate('model', {foo: 5});
+        dbs
+          .getService(EmptyValuesService)
+          .setEmptyValuesOf(DataType.STRING, [5]);
+        dbs.getService(ModelDataValidator).validate('model', {foo: 5});
       });
 
       describe('DataType.ANY', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('does not throw an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           });
 
           it('does not throw an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           });
 
           it('does not throw an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           });
 
           it('does not throw an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           });
 
           it('does not throw an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           });
 
           it('does not throw an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ANY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           });
@@ -350,8 +348,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -360,14 +358,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -376,14 +374,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('does not throw an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -392,14 +390,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           });
 
           it('does not throw an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -408,14 +406,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           });
 
           it('does not throw an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -424,14 +422,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           });
 
           it('does not throw an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -440,14 +438,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           });
 
           it('does not throw an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -456,14 +454,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           });
 
           it('does not throw an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -472,7 +470,7 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           });
@@ -482,50 +480,50 @@ describe('ModelDataValidator', function () {
       describe('DataType.STRING', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.STRING,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.STRING,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('does not throw an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.STRING,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -533,7 +531,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -543,8 +541,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -552,7 +550,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -562,8 +560,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -571,7 +569,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -581,8 +579,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -590,7 +588,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -600,8 +598,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -609,7 +607,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -621,8 +619,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -631,14 +629,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -647,14 +645,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('does not throw an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -663,14 +661,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'bar',
             });
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -680,7 +678,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -690,8 +688,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -701,7 +699,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -711,8 +709,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -722,7 +720,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -732,8 +730,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -743,7 +741,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -753,8 +751,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -764,7 +762,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -778,36 +776,36 @@ describe('ModelDataValidator', function () {
       describe('DataType.NUMBER', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.NUMBER,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.NUMBER,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -815,7 +813,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -825,22 +823,22 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.NUMBER,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -848,7 +846,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -858,8 +856,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -867,7 +865,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -877,8 +875,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -886,7 +884,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -896,8 +894,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -905,7 +903,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -917,8 +915,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -927,14 +925,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -943,14 +941,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -960,7 +958,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -970,8 +968,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -980,14 +978,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 10,
             });
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -997,7 +995,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -1007,8 +1005,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1018,7 +1016,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -1028,8 +1026,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1039,7 +1037,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -1049,8 +1047,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1060,7 +1058,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -1074,36 +1072,36 @@ describe('ModelDataValidator', function () {
       describe('DataType.BOOLEAN', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.BOOLEAN,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.BOOLEAN,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1111,7 +1109,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1121,8 +1119,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1130,7 +1128,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1140,36 +1138,36 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.BOOLEAN,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           });
 
           it('does not throw an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.BOOLEAN,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1177,7 +1175,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -1187,8 +1185,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1196,7 +1194,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -1208,8 +1206,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1218,14 +1216,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1234,14 +1232,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1251,7 +1249,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1261,8 +1259,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1272,7 +1270,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1282,8 +1280,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1292,14 +1290,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: true,
             });
           });
 
           it('does not throw an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1308,14 +1306,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: false,
             });
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1325,7 +1323,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -1335,8 +1333,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1346,7 +1344,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -1360,36 +1358,36 @@ describe('ModelDataValidator', function () {
       describe('DataType.ARRAY', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ARRAY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ARRAY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1397,7 +1395,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1407,8 +1405,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1416,7 +1414,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1426,8 +1424,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1435,7 +1433,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -1445,8 +1443,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1454,7 +1452,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -1464,22 +1462,22 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.ARRAY,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1487,7 +1485,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -1499,8 +1497,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1509,14 +1507,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1525,14 +1523,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1542,7 +1540,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1552,8 +1550,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1563,7 +1561,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1573,8 +1571,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1584,7 +1582,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -1594,8 +1592,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1605,7 +1603,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -1615,8 +1613,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1625,14 +1623,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: [],
             });
           });
 
           it('throws an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1642,7 +1640,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: {},
               });
             expect(throwable).to.throw(
@@ -1653,8 +1651,8 @@ describe('ModelDataValidator', function () {
 
           describe('the "itemModel" option', function () {
             it('does not throw an error if the option "itemModel" is not specified in case of Object item type', function () {
-              const S = new DatabaseSchema();
-              S.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'model',
                 properties: {
                   foo: {
@@ -1664,18 +1662,18 @@ describe('ModelDataValidator', function () {
                 },
               });
               const value = {foo: [{a: 1}, {b: 2}]};
-              S.getService(ModelDataValidator).validate('model', value);
+              dbs.getService(ModelDataValidator).validate('model', value);
             });
 
             it('throws an error when the given object element has an invalid model', function () {
-              const S = new DatabaseSchema();
-              S.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'modelA',
                 properties: {
                   foo: DataType.STRING,
                 },
               });
-              S.defineModel({
+              dbs.defineModel({
                 name: 'modelB',
                 datasource: 'datasource',
                 properties: {
@@ -1687,7 +1685,7 @@ describe('ModelDataValidator', function () {
                 },
               });
               const throwable = () =>
-                S.getService(ModelDataValidator).validate('modelB', {
+                dbs.getService(ModelDataValidator).validate('modelB', {
                   bar: [{foo: 10}],
                 });
               expect(throwable).to.throw(
@@ -1697,14 +1695,14 @@ describe('ModelDataValidator', function () {
             });
 
             it('does not throw an error when the given object element has a valid model', function () {
-              const S = new DatabaseSchema();
-              S.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'modelA',
                 properties: {
                   foo: DataType.STRING,
                 },
               });
-              S.defineModel({
+              dbs.defineModel({
                 name: 'modelB',
                 datasource: 'datasource',
                 properties: {
@@ -1715,7 +1713,7 @@ describe('ModelDataValidator', function () {
                   },
                 },
               });
-              S.getService(ModelDataValidator).validate('modelB', {
+              dbs.getService(ModelDataValidator).validate('modelB', {
                 bar: [{foo: '10'}],
               });
             });
@@ -1726,36 +1724,36 @@ describe('ModelDataValidator', function () {
       describe('DataType.OBJECT', function () {
         describe('ShortPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.OBJECT,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.OBJECT,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1763,7 +1761,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1773,8 +1771,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1782,7 +1780,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1792,8 +1790,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1801,7 +1799,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -1811,8 +1809,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1820,7 +1818,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -1830,8 +1828,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1839,7 +1837,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -1849,15 +1847,15 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
                 foo: DataType.OBJECT,
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           });
@@ -1865,8 +1863,8 @@ describe('ModelDataValidator', function () {
 
         describe('FullPropertyDefinition', function () {
           it('does not throw an error if an undefined given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1875,14 +1873,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: undefined,
             });
           });
 
           it('does not throw an error if a null given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1891,14 +1889,14 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: null,
             });
           });
 
           it('throws an error if a string given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1908,7 +1906,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'bar',
               });
             expect(throwable).to.throw(
@@ -1918,8 +1916,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if a number given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1929,7 +1927,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 10,
               });
             expect(throwable).to.throw(
@@ -1939,8 +1937,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if true given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1950,7 +1948,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: true,
               });
             expect(throwable).to.throw(
@@ -1960,8 +1958,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if false given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1971,7 +1969,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: false,
               });
             expect(throwable).to.throw(
@@ -1981,8 +1979,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('throws an error if an array given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -1992,7 +1990,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: [],
               });
             expect(throwable).to.throw(
@@ -2002,8 +2000,8 @@ describe('ModelDataValidator', function () {
           });
 
           it('does not throw an error if an object given', function () {
-            const S = new DatabaseSchema();
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
               name: 'model',
               datasource: 'datasource',
               properties: {
@@ -2012,21 +2010,21 @@ describe('ModelDataValidator', function () {
                 },
               },
             });
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: {},
             });
           });
 
           describe('the "model" option', function () {
             it('throws an error when the given object has an invalid model', function () {
-              const S = new DatabaseSchema();
-              S.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'modelA',
                 properties: {
                   foo: DataType.STRING,
                 },
               });
-              S.defineModel({
+              dbs.defineModel({
                 name: 'modelB',
                 datasource: 'datasource',
                 properties: {
@@ -2037,7 +2035,7 @@ describe('ModelDataValidator', function () {
                 },
               });
               const throwable = () =>
-                S.getService(ModelDataValidator).validate('modelB', {
+                dbs.getService(ModelDataValidator).validate('modelB', {
                   bar: {foo: 10},
                 });
               expect(throwable).to.throw(
@@ -2047,14 +2045,14 @@ describe('ModelDataValidator', function () {
             });
 
             it('does not throw an error when the given object has a valid model', function () {
-              const S = new DatabaseSchema();
-              S.defineModel({
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
                 name: 'modelA',
                 properties: {
                   foo: DataType.STRING,
                 },
               });
-              S.defineModel({
+              dbs.defineModel({
                 name: 'modelB',
                 datasource: 'datasource',
                 properties: {
@@ -2064,7 +2062,7 @@ describe('ModelDataValidator', function () {
                   },
                 },
               });
-              S.getService(ModelDataValidator).validate('modelB', {
+              dbs.getService(ModelDataValidator).validate('modelB', {
                 bar: {foo: '10'},
               });
             });
@@ -2075,12 +2073,11 @@ describe('ModelDataValidator', function () {
 
     describe('validate by property validators', function () {
       it('skips validation for an empty value', function () {
-        const S = new DatabaseSchema();
-        S.getService(PropertyValidatorRegistry).addValidator(
-          'myValidator',
-          () => false,
-        );
-        S.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs
+          .getService(PropertyValidatorRegistry)
+          .addValidator('myValidator', () => false);
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2089,18 +2086,19 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        S.getService(EmptyValuesService).setEmptyValuesOf(DataType.STRING, [5]);
-        S.getService(ModelDataValidator).validate('model', {foo: 5});
+        dbs
+          .getService(EmptyValuesService)
+          .setEmptyValuesOf(DataType.STRING, [5]);
+        dbs.getService(ModelDataValidator).validate('model', {foo: 5});
       });
 
       describe('the option "validate" with the string value', function () {
         it('does not validate a property value if it is not provided', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2109,17 +2107,16 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {});
         });
 
         it('does not validate undefined and null values', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2128,7 +2125,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {foo: undefined});
           validator.validate('model', {foo: null});
         });
@@ -2137,12 +2134,11 @@ describe('ModelDataValidator', function () {
           const myValidator = function () {
             throw Error('My error');
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2152,19 +2148,18 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw('My error');
         });
 
         it('allows the given value if the validator returns true', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => true,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => true);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2173,18 +2168,17 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
         });
 
         it('throws an error if the validator returns a promise', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => Promise.resolve(true),
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => Promise.resolve(true));
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2194,7 +2188,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw(
@@ -2205,12 +2199,11 @@ describe('ModelDataValidator', function () {
 
         it('throws an error for non-true result from the validator', function () {
           const testFn = v => {
-            const S = new DatabaseSchema();
-            S.getService(PropertyValidatorRegistry).addValidator(
-              'myValidator',
-              () => v,
-            );
-            S.defineModel({
+            const dbs = new DatabaseSchema();
+            dbs
+              .getService(PropertyValidatorRegistry)
+              .addValidator('myValidator', () => v);
+            dbs.defineModel({
               name: 'model',
               properties: {
                 foo: {
@@ -2220,7 +2213,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'test',
               });
             expect(throwable).to.throw(
@@ -2242,7 +2235,7 @@ describe('ModelDataValidator', function () {
 
         it('passes arguments to the validator', function () {
           let validated = false;
-          const S = new DatabaseSchema();
+          const dbs = new DatabaseSchema();
           const myValidator = function (value, options, context) {
             expect(value).to.be.eq('test');
             expect(options).to.be.undefined;
@@ -2254,11 +2247,10 @@ describe('ModelDataValidator', function () {
             validated = true;
             return true;
           };
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2267,7 +2259,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(validated).to.be.true;
@@ -2279,12 +2271,11 @@ describe('ModelDataValidator', function () {
             invoked++;
             return true;
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2293,7 +2284,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(invoked).to.be.eq(1);
@@ -2302,8 +2293,8 @@ describe('ModelDataValidator', function () {
 
       describe('the option "validate" with an array value', function () {
         it('does nothing for an empty array validators', function () {
-          const S = new DatabaseSchema();
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2312,18 +2303,17 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
         });
 
         it('does not validate a property value if it is not provided', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2332,17 +2322,16 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {});
         });
 
         it('does not validate undefined and null values', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2351,7 +2340,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {foo: undefined});
           validator.validate('model', {foo: null});
         });
@@ -2360,12 +2349,11 @@ describe('ModelDataValidator', function () {
           const myValidator = function () {
             throw Error('My error');
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2375,18 +2363,19 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw('My error');
         });
 
         it('allows the given value if validators returns true', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry)
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
             .addValidator('myValidator1', () => true)
             .addValidator('myValidator2', () => true);
-          S.defineModel({
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2395,18 +2384,17 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
         });
 
         it('throws an error if the validator returns a promise', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => Promise.resolve(true),
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => Promise.resolve(true));
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2416,7 +2404,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw(
@@ -2427,11 +2415,12 @@ describe('ModelDataValidator', function () {
 
         it('throws an error by non-true result from one of validators', function () {
           const testFn = v => {
-            const S = new DatabaseSchema();
-            S.getService(PropertyValidatorRegistry)
+            const dbs = new DatabaseSchema();
+            dbs
+              .getService(PropertyValidatorRegistry)
               .addValidator('myValidator1', () => true)
               .addValidator('myValidator2', () => v);
-            S.defineModel({
+            dbs.defineModel({
               name: 'model',
               properties: {
                 foo: {
@@ -2441,7 +2430,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'test',
               });
             expect(throwable).to.throw(
@@ -2463,7 +2452,7 @@ describe('ModelDataValidator', function () {
 
         it('passes arguments to the validator', function () {
           let validated = false;
-          const S = new DatabaseSchema();
+          const dbs = new DatabaseSchema();
           const myValidator = function (value, options, context) {
             expect(value).to.be.eq('test');
             expect(options).to.be.undefined;
@@ -2475,11 +2464,10 @@ describe('ModelDataValidator', function () {
             validated = true;
             return true;
           };
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2488,7 +2476,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(validated).to.be.true;
@@ -2504,11 +2492,12 @@ describe('ModelDataValidator', function () {
             invocation.push('myValidator2');
             return true;
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry)
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
             .addValidator('myValidator1', validator1)
             .addValidator('myValidator2', validator2);
-          S.defineModel({
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2517,7 +2506,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
@@ -2526,8 +2515,8 @@ describe('ModelDataValidator', function () {
 
       describe('the option "validate" with an object value', function () {
         it('does nothing for an empty validators object', function () {
-          const S = new DatabaseSchema();
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2536,18 +2525,17 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
         });
 
         it('does not validate a property value if it is not provided', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2558,17 +2546,16 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {});
         });
 
         it('does not validate undefined and null values', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => false,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => false);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2579,7 +2566,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          const validator = S.getService(ModelDataValidator);
+          const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {foo: undefined});
           validator.validate('model', {foo: null});
         });
@@ -2588,12 +2575,11 @@ describe('ModelDataValidator', function () {
           const myValidator = function () {
             throw Error('My error');
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2605,18 +2591,19 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw('My error');
         });
 
         it('allows the given value if validators returns true', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry)
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
             .addValidator('myValidator1', () => true)
             .addValidator('myValidator2', () => true);
-          S.defineModel({
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2628,18 +2615,17 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
         });
 
         it('throws an error if the validator returns a promise', function () {
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            () => Promise.resolve(true),
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', () => Promise.resolve(true));
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2651,7 +2637,7 @@ describe('ModelDataValidator', function () {
             },
           });
           const throwable = () =>
-            S.getService(ModelDataValidator).validate('model', {
+            dbs.getService(ModelDataValidator).validate('model', {
               foo: 'test',
             });
           expect(throwable).to.throw(
@@ -2662,11 +2648,12 @@ describe('ModelDataValidator', function () {
 
         it('throws an error by non-true result from one of validators', function () {
           const testFn = v => {
-            const S = new DatabaseSchema();
-            S.getService(PropertyValidatorRegistry)
+            const dbs = new DatabaseSchema();
+            dbs
+              .getService(PropertyValidatorRegistry)
               .addValidator('myValidator1', () => true)
               .addValidator('myValidator2', () => v);
-            S.defineModel({
+            dbs.defineModel({
               name: 'model',
               properties: {
                 foo: {
@@ -2679,7 +2666,7 @@ describe('ModelDataValidator', function () {
               },
             });
             const throwable = () =>
-              S.getService(ModelDataValidator).validate('model', {
+              dbs.getService(ModelDataValidator).validate('model', {
                 foo: 'test',
               });
             expect(throwable).to.throw(
@@ -2701,7 +2688,7 @@ describe('ModelDataValidator', function () {
 
         it('passes arguments to the validator', function () {
           let validated = false;
-          const S = new DatabaseSchema();
+          const dbs = new DatabaseSchema();
           const myValidator = function (value, options, context) {
             expect(value).to.be.eq('test');
             expect(options).to.be.eql({
@@ -2716,11 +2703,10 @@ describe('ModelDataValidator', function () {
             validated = true;
             return true;
           };
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2734,7 +2720,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(validated).to.be.true;
@@ -2750,11 +2736,12 @@ describe('ModelDataValidator', function () {
             invocation.push('myValidator2');
             return true;
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry)
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
             .addValidator('myValidator1', validator1)
             .addValidator('myValidator2', validator2);
-          S.defineModel({
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2766,7 +2753,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
@@ -2778,12 +2765,11 @@ describe('ModelDataValidator', function () {
             validated = true;
             return true;
           };
-          const S = new DatabaseSchema();
-          S.getService(PropertyValidatorRegistry).addValidator(
-            'myValidator',
-            myValidator,
-          );
-          S.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs
+            .getService(PropertyValidatorRegistry)
+            .addValidator('myValidator', myValidator);
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2794,7 +2780,7 @@ describe('ModelDataValidator', function () {
               },
             },
           });
-          S.getService(ModelDataValidator).validate('model', {
+          dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
           expect(validated).to.be.true;
@@ -2802,11 +2788,11 @@ describe('ModelDataValidator', function () {
       });
 
       it('the option "validate" requires a non-empty String, an Array or an Object', function () {
-        const schema = new DatabaseSchema();
-        schema
+        const dbs = new DatabaseSchema();
+        dbs
           .getService(PropertyValidatorRegistry)
           .addValidator('myValidator', () => true);
-        schema.defineModel({
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2815,9 +2801,9 @@ describe('ModelDataValidator', function () {
             },
           },
         });
-        const V = schema.getService(ModelDataValidator);
+        const V = dbs.getService(ModelDataValidator);
         const throwable = v => () => {
-          const models = schema.getService(DefinitionRegistry)['_models'];
+          const models = dbs.getService(DefinitionRegistry)['_models'];
           models.model.properties.foo.validate = v;
           V.validate('model', {foo: 'bar'});
         };

@@ -5,8 +5,8 @@ import {DataType} from '../../definition/index.js';
 import {DatabaseSchema} from '../../database-schema.js';
 import {ModelDefinitionUtils} from '../../definition/index.js';
 
-const S = new DatabaseSchema();
-S.defineModel({
+const dbs = new DatabaseSchema();
+dbs.defineModel({
   name: 'model',
   properties: {
     prop: {
@@ -56,8 +56,8 @@ class TestAdapter extends Adapter {
   }
 }
 
-const A = S.getService(TestAdapter);
-const U = S.getService(ModelDefinitionUtils);
+const A = dbs.getService(TestAdapter);
+const U = dbs.getService(ModelDefinitionUtils);
 const sandbox = chai.spy.sandbox();
 
 describe('DefaultValuesDecorator', function () {

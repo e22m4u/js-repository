@@ -18,28 +18,28 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPrimaryKeyAsPropertyName', function () {
     it('returns a default property name if no primary key defined', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eq(DEF_PK);
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
       sandbox.on(
-        S,
+        mdu,
         'getPropertiesDefinitionInBaseModelHierarchy',
         function (modelName) {
           expect(modelName).to.be.eq('model');
           return {[DEF_PK]: DataType.NUMBER};
         },
       );
-      const throwable = () => S.getPrimaryKeyAsPropertyName('model');
+      const throwable = () => mdu.getPrimaryKeyAsPropertyName('model');
       expect(throwable).to.throw(
         format(
           'The property name %v of the model "model" is defined as a regular property. ' +
@@ -51,8 +51,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property name if a primary key has a custom name and a default primary key is used as a regular property', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           myId: {
@@ -62,15 +62,15 @@ describe('ModelDefinitionUtils', function () {
           [DEF_PK]: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eql('myId');
     });
 
     it('returns a property name of a primary key', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -82,15 +82,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('model');
       expect(result).to.be.eq('foo');
     });
 
     it('uses a base model hierarchy to get a property name of a primary key', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -99,11 +99,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('modelB');
       expect(result).to.be.eq('foo');
@@ -112,8 +112,8 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPrimaryKeyAsColumnName', function () {
     it('returns a property name of a primary key if a column name is not specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -125,15 +125,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq('foo');
     });
 
     it('returns a column name of a primary key if specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -146,35 +146,35 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq('fooColumn');
     });
 
     it('returns a default property name if a primary key is not defined', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eq(DEF_PK);
     });
 
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
       sandbox.on(
-        S,
+        mdu,
         'getPropertiesDefinitionInBaseModelHierarchy',
         function (modelName) {
           expect(modelName).to.be.eq('model');
           return {[DEF_PK]: DataType.NUMBER};
         },
       );
-      const throwable = () => S.getPrimaryKeyAsColumnName('model');
+      const throwable = () => mdu.getPrimaryKeyAsColumnName('model');
       expect(throwable).to.throw(
         format(
           'The property name %v of the model "model" is defined as a regular property. ' +
@@ -186,8 +186,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a property name of a custom primary key when a default primary key is used as a regular property', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           myId: {
@@ -197,15 +197,15 @@ describe('ModelDefinitionUtils', function () {
           [DEF_PK]: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsColumnName('model');
       expect(result).to.be.eql('myId');
     });
 
     it('uses a base model hierarchy to get a column name of a primary key', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -214,11 +214,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPrimaryKeyAsPropertyName('modelB');
       expect(result).to.be.eq('foo');
@@ -227,23 +227,23 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getTableNameByModelName', function () {
     it('returns a model name if no table name specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getTableNameByModelName('model');
       expect(result).to.be.eq('model');
     });
 
     it('returns a table name from a model definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         tableName: 'table',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getTableNameByModelName('model');
       expect(result).to.be.eq('table');
@@ -252,22 +252,22 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getColumnNameByPropertyName', function () {
     it('returns a property name if a column name is not defined', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('model', 'foo');
       expect(result).to.be.eq('foo');
     });
 
     it('returns a specified column name', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -276,27 +276,27 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('model', 'foo');
       expect(result).to.be.eq('bar');
     });
 
     it('throws an error if a given property name does not exist', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getColumnNameByPropertyName('model', 'foo');
       expect(throwable).to.throw(InvalidArgumentError);
     });
 
     it('uses a base model hierarchy to get a specified column name', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -305,11 +305,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getColumnNameByPropertyName('modelB', 'foo');
       expect(result).to.be.eq('fooColumn');
@@ -318,22 +318,22 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDefaultPropertyValue', function () {
     it('returns undefined if no default value specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.undefined;
     });
 
     it('returns a default value from a property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -342,15 +342,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.eq('default');
     });
 
     it('returns a value from a factory function', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -359,27 +359,27 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('model', 'foo');
       expect(result).to.be.eq('default');
     });
 
     it('throws an error if a given property name does not exist', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getDefaultPropertyValue('model', 'foo');
       expect(throwable).to.throw(InvalidArgumentError);
     });
 
     it('uses a base model hierarchy to get a specified default value', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -388,11 +388,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDefaultPropertyValue('modelB', 'foo');
       expect(result).to.be.eq('default');
@@ -401,34 +401,34 @@ describe('ModelDefinitionUtils', function () {
 
   describe('setDefaultValuesToEmptyProperties', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('does nothing if no "default" option in property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           baz: DataType.STRING,
           qux: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('sets a default value if a property does not exist', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -437,15 +437,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('sets a default value if a property is undefined', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -454,15 +454,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: undefined});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('sets a default value if a property is null', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -471,15 +471,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: null});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('sets a default value if a property has an empty value', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -488,18 +488,18 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema
+      dbs
         .getService(EmptyValuesService)
         .setEmptyValuesOf(DataType.STRING, ['empty']);
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {foo: 'empty'});
       expect(result).to.be.eql({foo: 'placeholder'});
     });
 
     it('sets a value from a factory function', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -520,7 +520,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('model', {});
       expect(result).to.be.eql({
@@ -532,8 +532,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a base model hierarchy to set a default values', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -550,11 +550,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .setDefaultValuesToEmptyProperties('modelB', {});
       expect(result).to.be.eql({
@@ -566,8 +566,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('an option "onlyProvidedProperties" is true', function () {
       it('does not set a default value if a property does not exist', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -576,15 +576,15 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {}, true);
         expect(result).to.be.eql({});
       });
 
       it('sets a default value if a property is undefined', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -593,15 +593,15 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {foo: undefined}, true);
         expect(result).to.be.eql({foo: 'string'});
       });
 
       it('sets a default value if a property is null', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -610,7 +610,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .setDefaultValuesToEmptyProperties('model', {foo: null}, true);
         expect(result).to.be.eql({foo: 'string'});
@@ -620,34 +620,34 @@ describe('ModelDefinitionUtils', function () {
 
   describe('convertPropertyNamesToColumnNames', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('does nothing if no column name specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('replaces property names by column names', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -660,15 +660,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('model', {foo: 'string'});
       expect(result).to.be.eql({fooColumn: 'string'});
     });
 
     it('uses a base model hierarchy to replace property names by column names', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -681,11 +681,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertPropertyNamesToColumnNames('modelB', {foo: 'string'});
       expect(result).to.be.eql({fooColumn: 'string'});
@@ -693,8 +693,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded object with model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -703,10 +703,10 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: {foo: 'string'},
@@ -715,8 +715,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -725,14 +725,14 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: DataType.STRING,
             bar: DataType.NUMBER,
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: {foo: 'string', bar: 10},
@@ -741,8 +741,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -751,7 +751,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: {
@@ -764,7 +764,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: {foo: 'string', bar: 10},
@@ -777,8 +777,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded array with items model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -788,10 +788,10 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: [{foo: 'val'}, {bar: 10}],
@@ -800,8 +800,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -811,14 +811,14 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: DataType.STRING,
             bar: DataType.NUMBER,
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: [
@@ -835,8 +835,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -846,7 +846,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: {
@@ -859,7 +859,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertPropertyNamesToColumnNames('modelA', {
             embedded: [
@@ -879,34 +879,34 @@ describe('ModelDefinitionUtils', function () {
 
   describe('convertColumnNamesToPropertyNames', function () {
     it('does nothing if no property definitions', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('does nothing if no column name specified', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {foo: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('replaces column names by property names', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -919,15 +919,15 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('model', {fooColumn: 'string'});
       expect(result).to.be.eql({foo: 'string'});
     });
 
     it('uses a base model hierarchy to replace column names by property names', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -940,11 +940,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .convertColumnNamesToPropertyNames('modelA', {fooColumn: 'string'});
       expect(result).to.be.eql({foo: 'string'});
@@ -952,8 +952,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded object with model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -962,10 +962,10 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: {foo: 'string'},
@@ -974,8 +974,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -984,14 +984,14 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: DataType.STRING,
             bar: DataType.NUMBER,
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: {foo: 'string', bar: 10},
@@ -1000,8 +1000,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -1010,7 +1010,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: {
@@ -1023,7 +1023,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: {fooColumn: 'string', barColumn: 10},
@@ -1034,8 +1034,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('embedded array with items model', function () {
       it('does nothing if no property definitions', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -1045,10 +1045,10 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: [{foo: 'val'}, {bar: 10}],
@@ -1057,8 +1057,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('does nothing if no column name specified', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -1068,14 +1068,14 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: DataType.STRING,
             bar: DataType.NUMBER,
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: [
@@ -1092,8 +1092,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('replaces property names by column names', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'modelA',
           properties: {
             embedded: {
@@ -1103,7 +1103,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        schema.defineModel({
+        dbs.defineModel({
           name: 'modelB',
           properties: {
             foo: {
@@ -1116,7 +1116,7 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const result = schema
+        const result = dbs
           .getService(ModelDefinitionUtils)
           .convertColumnNamesToPropertyNames('modelA', {
             embedded: [
@@ -1136,22 +1136,22 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDataTypeByPropertyName', function () {
     it('returns a property type of a short property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: DataType.STRING,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('model', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
 
     it('returns a property type of a full property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           foo: {
@@ -1159,45 +1159,45 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('model', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
 
     it('throws an error if a property name does not exist', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getDataTypeByPropertyName('model', 'property');
       expect(throwable).to.throw(InvalidArgumentError);
     });
 
     it('uses a base model hierarchy to get a type from a short property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('modelB', 'foo');
       expect(result).to.be.eq(DataType.STRING);
     });
 
     it('uses a base model hierarchy to get a type from a full property definition', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: {
@@ -1205,11 +1205,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getDataTypeByPropertyName('modelB', 'foo');
       expect(result).to.be.eq(DataType.STRING);
@@ -1218,9 +1218,9 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getDataTypeFromPropertyDefinition', function () {
     it('requires the given argument "propDef" must be an Object or DataType', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
-      const throwable = v => () => S.getDataTypeFromPropertyDefinition(v);
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
+      const throwable = v => () => mdu.getDataTypeFromPropertyDefinition(v);
       const error = v =>
         format(
           'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
@@ -1240,10 +1240,10 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('requires the given Object to have the "type" property with the DataType enum', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
       const throwable = v => () =>
-        S.getDataTypeFromPropertyDefinition({type: v});
+        mdu.getDataTypeFromPropertyDefinition({type: v});
       const error = v =>
         format(
           'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
@@ -1263,35 +1263,37 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns the DataType from the given DataType enum', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
-      const res = S.getDataTypeFromPropertyDefinition(DataType.STRING);
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
+      const res = mdu.getDataTypeFromPropertyDefinition(DataType.STRING);
       expect(res).to.be.eq(DataType.STRING);
     });
 
     it('returns the DataType from the given PropertyDefinition', function () {
-      const schema = new DatabaseSchema();
-      const S = schema.getService(ModelDefinitionUtils);
-      const res = S.getDataTypeFromPropertyDefinition({type: DataType.STRING});
+      const dbs = new DatabaseSchema();
+      const mdu = dbs.getService(ModelDefinitionUtils);
+      const res = mdu.getDataTypeFromPropertyDefinition({
+        type: DataType.STRING,
+      });
       expect(res).to.be.eq(DataType.STRING);
     });
   });
 
   describe('getOwnPropertiesDefinitionWithoutPrimaryKeys', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('model');
       expect(result).to.be.eql({});
     });
 
     it('returns a properties definition without primary keys', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           id: {
@@ -1302,7 +1304,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.STRING,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('model');
       expect(result).to.be.eql({
@@ -1312,8 +1314,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own properties definition even it has a base model properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           id: {
@@ -1324,7 +1326,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         properties: {
@@ -1335,7 +1337,7 @@ describe('ModelDefinitionUtils', function () {
           foo: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionWithoutPrimaryKeys('modelB');
       expect(result).to.be.eql({
@@ -1346,19 +1348,19 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getOwnPropertiesDefinitionOfPrimaryKeys', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('model');
       expect(result).to.be.eql({});
     });
 
     it('returns a properties definition of primary keys', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           id: {
@@ -1369,7 +1371,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('model');
       expect(result).to.be.eql({
@@ -1381,8 +1383,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own properties definition even it has a base model properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           id: {
@@ -1393,7 +1395,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         properties: {
@@ -1404,7 +1406,7 @@ describe('ModelDefinitionUtils', function () {
           foo: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnPropertiesDefinitionOfPrimaryKeys('modelB');
       expect(result).to.be.eql({
@@ -1418,19 +1420,19 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getPropertiesDefinitionInBaseModelHierarchy', function () {
     it('returns an empty object if a model does not have properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({});
     });
 
     it('returns a properties definition of a model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         properties: {
           id: {
@@ -1441,7 +1443,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({
@@ -1455,21 +1457,21 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a properties definition of an extended model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           foo: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         properties: {
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
@@ -1479,8 +1481,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses child properties in priority over a base model properties', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           id: {
@@ -1491,7 +1493,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         properties: {
@@ -1502,7 +1504,7 @@ describe('ModelDefinitionUtils', function () {
           foo: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
@@ -1516,8 +1518,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses primary keys from a model closest to child model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         properties: {
           id1: {
@@ -1527,7 +1529,7 @@ describe('ModelDefinitionUtils', function () {
           foo: DataType.STRING,
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         properties: {
@@ -1538,7 +1540,7 @@ describe('ModelDefinitionUtils', function () {
           bar: DataType.NUMBER,
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getPropertiesDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
@@ -1552,13 +1554,13 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error for a circular reference', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         base: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getPropertiesDefinitionInBaseModelHierarchy('model');
       expect(throwable).to.throw(
@@ -1569,19 +1571,19 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getOwnRelationsDefinition', function () {
     it('returns an empty object if a model does not have relations', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('model');
       expect(result).to.be.eql({});
     });
 
     it('returns a relations definition by a given model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         relations: {
           foo: {
@@ -1590,7 +1592,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('model');
       expect(result).to.be.eql({
@@ -1602,8 +1604,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns its own relations definition even it has a base model relations', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         relations: {
           foo: {
@@ -1612,7 +1614,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         relations: {
@@ -1622,7 +1624,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getOwnRelationsDefinition('modelB');
       expect(result).to.be.eql({
@@ -1636,19 +1638,19 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getRelationsDefinitionInBaseModelHierarchy', function () {
     it('returns an empty object if a model does not have relations', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({});
     });
 
     it('returns a relations definition of a model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         relations: {
           foo: {
@@ -1661,7 +1663,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(result).to.be.eql({
@@ -1677,8 +1679,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relations definition of an extended model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         relations: {
           foo: {
@@ -1687,7 +1689,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         relations: {
@@ -1697,7 +1699,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
@@ -1713,8 +1715,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses child relations in priority over a base model relations', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         relations: {
           foo: {
@@ -1727,7 +1729,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         relations: {
@@ -1737,7 +1739,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationsDefinitionInBaseModelHierarchy('modelB');
       expect(result).to.be.eql({
@@ -1753,13 +1755,13 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('throws an error for a circular reference', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         base: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getRelationsDefinitionInBaseModelHierarchy('model');
       expect(throwable).to.throw(
@@ -1770,21 +1772,21 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getRelationDefinitionByName', function () {
     it('throws an error if a given model is not found', function () {
-      const schema = new DatabaseSchema();
+      const dbs = new DatabaseSchema();
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
       expect(throwable).to.throw('The model "model" is not defined.');
     });
 
     it('throws an error if a given relation is not found', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
       });
       const throwable = () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
       expect(throwable).to.throw(
@@ -1793,8 +1795,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a relation definition by a given name', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         relations: {
           myRelation: {
@@ -1803,7 +1805,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('model', 'myRelation');
       expect(result).to.be.eql({
@@ -1813,8 +1815,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('uses a child relations in priority over a base model relations', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         relations: {
           myRelation: {
@@ -1823,7 +1825,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
         relations: {
@@ -1833,7 +1835,7 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('modelB', 'myRelation');
       expect(result).to.be.eql({
@@ -1843,8 +1845,8 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('returns a base model relation if a given relation name is not found in a child model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'modelA',
         relations: {
           myRelation: {
@@ -1853,11 +1855,11 @@ describe('ModelDefinitionUtils', function () {
           },
         },
       });
-      schema.defineModel({
+      dbs.defineModel({
         name: 'modelB',
         base: 'modelA',
       });
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .getRelationDefinitionByName('modelB', 'myRelation');
       expect(result).to.be.eql({
@@ -1869,8 +1871,8 @@ describe('ModelDefinitionUtils', function () {
 
   describe('excludeObjectKeysByRelationNames', function () {
     it('excludes object keys by relation names', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
         name: 'model',
         relations: {
           baz: {
@@ -1889,7 +1891,7 @@ describe('ModelDefinitionUtils', function () {
         baz: 'bazVal',
         qux: {val: 'quxVal'},
       };
-      const result = schema
+      const result = dbs
         .getService(ModelDefinitionUtils)
         .excludeObjectKeysByRelationNames('model', input);
       expect(result).to.be.eql({foo: 'fooVal', bar: {val: 'barVal'}});
@@ -1897,10 +1899,10 @@ describe('ModelDefinitionUtils', function () {
     });
 
     it('requires a given object as an object', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({name: 'model'});
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
       const throwable = v => () =>
-        schema
+        dbs
           .getService(ModelDefinitionUtils)
           .excludeObjectKeysByRelationNames('model', v);
       const error = v =>
@@ -1924,25 +1926,25 @@ describe('ModelDefinitionUtils', function () {
 
   describe('getModelNameOfPropertyValueIfDefined', function () {
     it('returns undefined if a given property does not exist in the model', function () {
-      const schema = new DatabaseSchema();
-      schema.defineModel({name: 'model'});
-      const S = schema.getService(ModelDefinitionUtils);
-      const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const mdu = dbs.getService(ModelDefinitionUtils);
+      const res = mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
       expect(res).to.be.undefined;
     });
 
     describe('short property definition', function () {
       it('requires parameter "modelName" to be a non-empty String', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: DataType.OBJECT,
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
+        const mdu = dbs.getService(ModelDefinitionUtils);
         const throwable = v => () =>
-          S.getModelNameOfPropertyValueIfDefined(v, 'foo');
+          mdu.getModelNameOfPropertyValueIfDefined(v, 'foo');
         const error = v =>
           format(
             'Parameter "modelName" of ' +
@@ -1962,16 +1964,16 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('requires parameter "propertyName" to be a non-empty String', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: DataType.OBJECT,
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
+        const mdu = dbs.getService(ModelDefinitionUtils);
         const throwable = v => () =>
-          S.getModelNameOfPropertyValueIfDefined('model', v);
+          mdu.getModelNameOfPropertyValueIfDefined('model', v);
         const error = v =>
           format(
             'Parameter "propertyName" of ' +
@@ -1992,15 +1994,15 @@ describe('ModelDefinitionUtils', function () {
 
       it('returns undefined if the property definition is DataType', function () {
         const fn = v => {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: v,
             },
           });
-          const S = schema.getService(ModelDefinitionUtils);
-          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+          const mdu = dbs.getService(ModelDefinitionUtils);
+          return mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
         };
         expect(fn(DataType.ANY)).to.be.undefined;
         expect(fn(DataType.STRING)).to.be.undefined;
@@ -2013,8 +2015,8 @@ describe('ModelDefinitionUtils', function () {
 
     describe('full property definition', function () {
       it('requires parameter "modelName" to be a non-empty String', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2022,9 +2024,9 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
+        const mdu = dbs.getService(ModelDefinitionUtils);
         const throwable = v => () =>
-          S.getModelNameOfPropertyValueIfDefined(v, 'foo');
+          mdu.getModelNameOfPropertyValueIfDefined(v, 'foo');
         const error = v =>
           format(
             'Parameter "modelName" of ' +
@@ -2044,8 +2046,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('requires parameter "propertyName" to be a non-empty String', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2053,9 +2055,9 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
+        const mdu = dbs.getService(ModelDefinitionUtils);
         const throwable = v => () =>
-          S.getModelNameOfPropertyValueIfDefined('model', v);
+          mdu.getModelNameOfPropertyValueIfDefined('model', v);
         const error = v =>
           format(
             'Parameter "propertyName" of ' +
@@ -2076,8 +2078,8 @@ describe('ModelDefinitionUtils', function () {
 
       it('return undefined if no model name specified', function () {
         const fn = v => {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2085,8 +2087,8 @@ describe('ModelDefinitionUtils', function () {
               },
             },
           });
-          const S = schema.getService(ModelDefinitionUtils);
-          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+          const mdu = dbs.getService(ModelDefinitionUtils);
+          return mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
         };
         expect(fn(DataType.ANY)).to.be.undefined;
         expect(fn(DataType.STRING)).to.be.undefined;
@@ -2098,8 +2100,8 @@ describe('ModelDefinitionUtils', function () {
 
       it('return undefined if no model name specified in case of Array property', function () {
         const fn = v => {
-          const schema = new DatabaseSchema();
-          schema.defineModel({
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
@@ -2108,8 +2110,8 @@ describe('ModelDefinitionUtils', function () {
               },
             },
           });
-          const S = schema.getService(ModelDefinitionUtils);
-          return S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+          const mdu = dbs.getService(ModelDefinitionUtils);
+          return mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
         };
         expect(fn(DataType.ANY)).to.be.undefined;
         expect(fn(DataType.STRING)).to.be.undefined;
@@ -2120,8 +2122,8 @@ describe('ModelDefinitionUtils', function () {
       });
 
       it('returns a model name from the option "model" in case of Object property', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2130,14 +2132,14 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
-        const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        const mdu = dbs.getService(ModelDefinitionUtils);
+        const res = mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
         expect(res).to.be.eq('myModel');
       });
 
       it('returns a model name from the option "itemModel" in case of Array property', function () {
-        const schema = new DatabaseSchema();
-        schema.defineModel({
+        const dbs = new DatabaseSchema();
+        dbs.defineModel({
           name: 'model',
           properties: {
             foo: {
@@ -2147,8 +2149,8 @@ describe('ModelDefinitionUtils', function () {
             },
           },
         });
-        const S = schema.getService(ModelDefinitionUtils);
-        const res = S.getModelNameOfPropertyValueIfDefined('model', 'foo');
+        const mdu = dbs.getService(ModelDefinitionUtils);
+        const res = mdu.getModelNameOfPropertyValueIfDefined('model', 'foo');
         expect(res).to.be.eq('myModel');
       });
     });
