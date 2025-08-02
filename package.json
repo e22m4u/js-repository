@@ -2,7 +2,7 @@
   "name": "@e22m4u/js-repository",
   "version": "0.3.1",
   "description": "Реализация репозитория для работы с базами данных в Node.js",
-  "author": "e22m4u <e22m4u@yandex.ru>",
+  "author": "Mikhail Evstropov <e22m4u@yandex.ru>",
   "license": "MIT",
   "keywords": [
     "Repository",
@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "@e22m4u/js-empty-values": "~0.0.1",
-    "@e22m4u/js-format": "~0.1.0",
-    "@e22m4u/js-service": "~0.3.0"
+    "@e22m4u/js-format": "~0.1.8",
+    "@e22m4u/js-service": "~0.3.2"
   },
   "devDependencies": {
     "@commitlint/cli": "~19.8.1",
