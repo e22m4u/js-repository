@@ -39,9 +39,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@e22m4u/js-empty-values": "~0.0.1",
+    "@e22m4u/js-empty-values": "~0.0.2",
     "@e22m4u/js-format": "~0.1.8",
-    "@e22m4u/js-service": "~0.3.2"
+    "@e22m4u/js-service": "~0.3.3"
   },
   "devDependencies": {
     "@commitlint/cli": "~19.8.1",
@@ -64,8 +64,8 @@
     "mocha": "~11.7.1",
     "prettier": "~3.6.2",
     "rimraf": "~6.0.1",
-    "tsx": "~4.20.3",
+    "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "~8.38.0"
+    "typescript-eslint": "~8.39.0"
   }
 }
