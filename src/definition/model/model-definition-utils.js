@@ -372,28 +372,27 @@ export class ModelDefinitionUtils extends Service {
    * @returns {object}
    */
   getPropertiesDefinitionInBaseModelHierarchy(modelName) {
-    let result = {};
     let pkPropDefs = {};
+    let regularPropDefs = {};
     const recursion = (currModelName, prevModelName = undefined) => {
       if (currModelName === prevModelName)
         throw new InvalidArgumentError(
           'The model %v has a circular inheritance.',
           currModelName,
         );
-      if (Object.keys(pkPropDefs).length === 0) {
+      if (Object.keys(pkPropDefs).length === 0)
         pkPropDefs =
           this.getOwnPropertiesDefinitionOfPrimaryKeys(currModelName);
-        result = {...result, ...pkPropDefs};
-      }
-      const regularPropDefs =
-        this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName);
-      result = {...regularPropDefs, ...result};
+      regularPropDefs = {
+        ...this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName),
+        ...regularPropDefs,
+      };
       const modelDef =
         this.getService(DefinitionRegistry).getModel(currModelName);
       if (modelDef.base) recursion(modelDef.base, currModelName);
     };
     recursion(modelName);
-    return result;
+    return {...pkPropDefs, ...regularPropDefs};
   }
 
   /**

@@ -1567,6 +1567,25 @@ describe('ModelDefinitionUtils', function () {
         'The model "model" has a circular inheritance.',
       );
     });
+
+    it('places a primary key definition at the start of the result', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
+        name: 'model',
+        properties: {
+          foo: DataType.STRING,
+          id: {
+            type: DataType.STRING,
+            primaryKey: true,
+          },
+          bar: DataType.NUMBER,
+        },
+      });
+      const result = dbs
+        .getService(ModelDefinitionUtils)
+        .getPropertiesDefinitionInBaseModelHierarchy('model');
+      expect(Object.keys(result)).to.be.eql(['id', 'foo', 'bar']);
+    });
   });
 
   describe('getOwnRelationsDefinition', function () {

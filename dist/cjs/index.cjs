@@ -2415,25 +2415,25 @@ var init_model_definition_utils = __esm({
        * @returns {object}
        */
       getPropertiesDefinitionInBaseModelHierarchy(modelName) {
-        let result = {};
         let pkPropDefs = {};
+        let regularPropDefs = {};
         const recursion = /* @__PURE__ */ __name((currModelName, prevModelName = void 0) => {
           if (currModelName === prevModelName)
             throw new InvalidArgumentError(
               "The model %v has a circular inheritance.",
               currModelName
             );
-          if (Object.keys(pkPropDefs).length === 0) {
+          if (Object.keys(pkPropDefs).length === 0)
             pkPropDefs = this.getOwnPropertiesDefinitionOfPrimaryKeys(currModelName);
-            result = { ...result, ...pkPropDefs };
-          }
-          const regularPropDefs = this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName);
-          result = { ...regularPropDefs, ...result };
+          regularPropDefs = {
+            ...this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName),
+            ...regularPropDefs
+          };
           const modelDef = this.getService(DefinitionRegistry).getModel(currModelName);
           if (modelDef.base) recursion(modelDef.base, currModelName);
         }, "recursion");
         recursion(modelName);
-        return result;
+        return { ...pkPropDefs, ...regularPropDefs };
       }
       /**
        * Get own relations definition.
