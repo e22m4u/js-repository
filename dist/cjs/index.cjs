@@ -396,6 +396,23 @@ var init_exclude_object_keys = __esm({
   }
 });
 
+// src/utils/model-name-to-model-key.js
+function modelNameToModelKey(modelName) {
+  if (!modelName || typeof modelName !== "string" || /\s/.test(modelName))
+    throw new InvalidArgumentError(
+      "The model name should be a non-empty String without spaces, but %v given.",
+      modelName
+    );
+  return modelName.toLowerCase().replace(/[-_]/g, "");
+}
+var init_model_name_to_model_key = __esm({
+  "src/utils/model-name-to-model-key.js"() {
+    "use strict";
+    init_errors();
+    __name(modelNameToModelKey, "modelNameToModelKey");
+  }
+});
+
 // src/utils/get-decorator-target-type.js
 function getDecoratorTargetType(target, propertyKey, descriptorOrIndex) {
   const isCtor2 = typeof target === "function";
@@ -452,6 +469,7 @@ var init_utils = __esm({
     init_transform_promise();
     init_select_object_keys();
     init_exclude_object_keys();
+    init_model_name_to_model_key();
     init_get_decorator_target_type();
   }
 });
@@ -2040,6 +2058,7 @@ var init_definition_registry = __esm({
   "src/definition/definition-registry.js"() {
     "use strict";
     import_js_service8 = require("@e22m4u/js-service");
+    init_utils();
     init_errors();
     init_model();
     init_definition();
@@ -2099,10 +2118,13 @@ var init_definition_registry = __esm({
        */
       addModel(modelDef) {
         this.getService(ModelDefinitionValidator).validate(modelDef);
-        const name = modelDef.name;
-        if (name in this._models)
-          throw new InvalidArgumentError("The model %v is already defined.", name);
-        this._models[name] = modelDef;
+        const modelKey = modelNameToModelKey(modelDef.name);
+        if (modelKey in this._models)
+          throw new InvalidArgumentError(
+            "The model %v is already defined.",
+            modelDef.name
+          );
+        this._models[modelKey] = modelDef;
       }
       /**
        * Has model.
@@ -2111,7 +2133,8 @@ var init_definition_registry = __esm({
        * @returns {boolean}
        */
       hasModel(name) {
-        return Boolean(this._models[name]);
+        const modelKey = modelNameToModelKey(name);
+        return Boolean(this._models[modelKey]);
       }
       /**
        * Get model.
@@ -2120,7 +2143,8 @@ var init_definition_registry = __esm({
        * @returns {object}
        */
       getModel(name) {
-        const modelDef = this._models[name];
+        const modelKey = modelNameToModelKey(name);
+        const modelDef = this._models[modelKey];
         if (!modelDef)
           throw new InvalidArgumentError("The model %v is not defined.", name);
         return modelDef;
@@ -5060,6 +5084,7 @@ var init_repository_registry = __esm({
     "use strict";
     import_js_service30 = require("@e22m4u/js-service");
     init_repository();
+    init_utils();
     init_errors();
     _RepositoryRegistry = class _RepositoryRegistry extends import_js_service30.Service {
       /**
@@ -5096,10 +5121,11 @@ var init_repository_registry = __esm({
        * @returns {Repository}
        */
       getRepository(modelName) {
-        let repository = this._repositories[modelName];
+        const modelKey = modelNameToModelKey(modelName);
+        let repository = this._repositories[modelKey];
         if (repository) return repository;
         repository = new this._repositoryCtor(this.container, modelName);
-        this._repositories[modelName] = repository;
+        this._repositories[modelKey] = repository;
         return repository;
       }
     };
@@ -6361,6 +6387,7 @@ __export(index_exports, {
   isDeepEqual: () => isDeepEqual,
   isPromise: () => isPromise,
   isPureObject: () => isPureObject,
+  modelNameToModelKey: () => modelNameToModelKey,
   selectObjectKeys: () => selectObjectKeys,
   singularize: () => singularize,
   stringToRegexp: () => stringToRegexp,
@@ -6465,6 +6492,7 @@ init_repository2();
   isDeepEqual,
   isPromise,
   isPureObject,
+  modelNameToModelKey,
   selectObjectKeys,
   singularize,
   stringToRegexp,
