@@ -32,6 +32,6 @@ export declare class DatabaseSchema extends Service {
   getRepository<
     Data extends object = ModelData,
     IdType extends ModelId = ModelId,
-    IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
+    IdName extends string = typeof DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   >(modelName: string): Repository<Data, IdType, IdName>;
 }

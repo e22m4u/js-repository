@@ -9,7 +9,7 @@ import {RelationDefinitionMap} from './model-definition.js';
 /**
  * Default primary key property name.
  */
-export type DEFAULT_PRIMARY_KEY_PROPERTY_NAME = 'id';
+export const DEFAULT_PRIMARY_KEY_PROPERTY_NAME: 'id';
 
 /**
  * Model definition utils.

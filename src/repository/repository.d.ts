@@ -16,7 +16,7 @@ import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME} from '../definition/index.js';
 export declare class Repository<
   Data extends object = ModelData,
   IdType extends ModelId = ModelId,
-  IdName extends string = DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
+  IdName extends string = typeof DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
   FlatData extends ModelData = Flatten<Data>,
 > extends Service {
   // it fixes unused generic bug
