@@ -2217,7 +2217,7 @@ describe('ModelDataValidator', function () {
                 foo: 'test',
               });
             expect(throwable).to.throw(
-              'The property "foo" of the model "model" has an invalid value "test" ' +
+              'The property "foo" of the model "model" has the invalid value "test" ' +
                 'that caught by the validator "myValidator".',
             );
           };
@@ -2434,7 +2434,7 @@ describe('ModelDataValidator', function () {
                 foo: 'test',
               });
             expect(throwable).to.throw(
-              'The property "foo" of the model "model" has an invalid value "test" ' +
+              'The property "foo" of the model "model" has the invalid value "test" ' +
                 'that caught by the validator "myValidator2".',
             );
           };
@@ -2670,7 +2670,7 @@ describe('ModelDataValidator', function () {
                 foo: 'test',
               });
             expect(throwable).to.throw(
-              'The property "foo" of the model "model" has an invalid value "test" ' +
+              'The property "foo" of the model "model" has the invalid value "test" ' +
                 'that caught by the validator "myValidator2".',
             );
           };

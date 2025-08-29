@@ -3239,7 +3239,7 @@ var init_model_data_validator = __esm({
         const validateDef = propDef.validate;
         const validatorRegistry = this.getService(PropertyValidatorRegistry);
         const createError = /* @__PURE__ */ __name((validatorName) => new InvalidArgumentError(
-          "The property %v of the model %v has an invalid value %v that caught by the validator %v.",
+          "The property %v of the model %v has the invalid value %v that caught by the validator %v.",
           propName,
           modelName,
           propValue,

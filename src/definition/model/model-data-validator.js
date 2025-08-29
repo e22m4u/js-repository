@@ -184,7 +184,7 @@ export class ModelDataValidator extends Service {
     const validatorRegistry = this.getService(PropertyValidatorRegistry);
     const createError = validatorName =>
       new InvalidArgumentError(
-        'The property %v of the model %v has an invalid value %v ' +
+        'The property %v of the model %v has the invalid value %v ' +
           'that caught by the validator %v.',
         propName,
         modelName,
