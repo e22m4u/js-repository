@@ -14,7 +14,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -42,7 +42,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -63,7 +63,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -84,7 +84,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -105,7 +105,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -126,7 +126,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasOneResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -147,7 +147,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includeTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -557,7 +557,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -586,7 +586,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -614,7 +614,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -642,7 +642,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -670,7 +670,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -698,7 +698,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -726,7 +726,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -754,7 +754,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includePolymorphicTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1307,7 +1307,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1344,7 +1344,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1371,7 +1371,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1398,7 +1398,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1425,7 +1425,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1452,7 +1452,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1479,7 +1479,7 @@ describe('HasOneResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1556,7 +1556,7 @@ describe('HasOneResolver', function () {
       await expect(promise).to.be.rejectedWith(
         'The relation "child" of the model "source" is a polymorphic "hasOne" relation, ' +
           'so it requires the target relation "parent" to be a polymorphic "belongsTo", ' +
-          'but "referencesMany" type given.',
+          'but "referencesMany" type was given.',
       );
     });
 

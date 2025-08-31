@@ -41,7 +41,7 @@ describe('IncludeClauseTool', function () {
       const createError = v =>
         format(
           'The provided option "include" should have a non-empty String, ' +
-            'an Object or an Array, but %v given.',
+            'an Object or an Array, but %v was given.',
           v,
         );
       const testOf = v => {
@@ -105,7 +105,7 @@ describe('IncludeClauseTool', function () {
       const createError = v =>
         format(
           'The provided option "include" should have a non-empty String, ' +
-            'an Object or an Array, but %v given.',
+            'an Object or an Array, but %v was given.',
           v,
         );
       const testOf = v => {

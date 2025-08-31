@@ -317,7 +317,7 @@ export class ModelDefinitionUtils extends Service {
     ) {
       throw new InvalidArgumentError(
         'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-          'should be an Object or the DataType enum, but %v given.',
+          'should be an Object or the DataType enum, but %v was given.',
         propDef,
       );
     }
@@ -326,7 +326,7 @@ export class ModelDefinitionUtils extends Service {
     if (!Object.values(DataType).includes(dataType))
       throw new InvalidArgumentError(
         'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-          'should have the "type" property with one of values: %l, but %v given.',
+          'should have the "type" property with one of values: %l, but %v was given.',
         Object.values(DataType),
         propDef.type,
       );
@@ -467,7 +467,7 @@ export class ModelDefinitionUtils extends Service {
     if (!modelData || typeof modelData !== 'object' || Array.isArray(modelData))
       throw new InvalidArgumentError(
         'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         modelData,
       );
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);
@@ -487,14 +487,14 @@ export class ModelDefinitionUtils extends Service {
       throw new InvalidArgumentError(
         'Parameter "modelName" of ' +
           'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-          'requires a non-empty String, but %v given.',
+          'requires a non-empty String, but %v was given.',
         modelName,
       );
     if (!propertyName || typeof propertyName !== 'string')
       throw new InvalidArgumentError(
         'Parameter "propertyName" of ' +
           'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-          'requires a non-empty String, but %v given.',
+          'requires a non-empty String, but %v was given.',
         propertyName,
       );
     // если определение свойства не найдено,

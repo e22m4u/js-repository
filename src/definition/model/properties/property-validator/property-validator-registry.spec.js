@@ -30,7 +30,7 @@ describe('PropertyValidatorRegistry', function () {
       const error = v =>
         format(
           'A name of the property validator must ' +
-            'be a non-empty String, but %s given.',
+            'be a non-empty String, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));
@@ -59,7 +59,7 @@ describe('PropertyValidatorRegistry', function () {
       const throwable = v => () => pvr.addValidator('test', v);
       const error = v =>
         format(
-          'The property validator "test" must be a Function, but %s given.',
+          'The property validator "test" must be a Function, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));

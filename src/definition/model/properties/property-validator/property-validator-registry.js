@@ -30,7 +30,7 @@ export class PropertyValidatorRegistry extends Service {
     if (!name || typeof name !== 'string')
       throw new InvalidArgumentError(
         'A name of the property validator must ' +
-          'be a non-empty String, but %v given.',
+          'be a non-empty String, but %v was given.',
         name,
       );
     if (name in this._validators)
@@ -40,7 +40,7 @@ export class PropertyValidatorRegistry extends Service {
       );
     if (typeof validator !== 'function')
       throw new InvalidArgumentError(
-        'The property validator %v must be a Function, but %v given.',
+        'The property validator %v must be a Function, but %v was given.',
         name,
         validator,
       );

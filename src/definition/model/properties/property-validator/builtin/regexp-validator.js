@@ -14,7 +14,7 @@ export function regexpValidator(value, options, context) {
   if (typeof options !== 'string' && !(options instanceof RegExp))
     throw new InvalidArgumentError(
       'The validator %v requires the "options" argument ' +
-        'as a String or RegExp, but %v given.',
+        'as a String or RegExp, but %v was given.',
       context.validatorName,
       options,
     );
@@ -23,7 +23,7 @@ export function regexpValidator(value, options, context) {
     return regexp.test(value);
   }
   throw new InvalidArgumentError(
-    'The property validator %v requires ' + 'a String value, but %v given.',
+    'The property validator %v requires ' + 'a String value, but %v was given.',
     context.validatorName,
     value,
   );

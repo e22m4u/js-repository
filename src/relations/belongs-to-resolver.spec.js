@@ -14,7 +14,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of BelongsToResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -35,7 +35,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of BelongsToResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -56,7 +56,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of BelongsToResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], v, 'targetName', 'relationName');
@@ -76,7 +76,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of BelongsToResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', v, 'relationName');
@@ -96,7 +96,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of BelongsToResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', 'targetName', v);
@@ -116,7 +116,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The provided parameter "foreignKey" of BelongsToResolver.includeTo ' +
-            'should be a String, but %s given.',
+            'should be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -133,7 +133,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of BelongsToResolver.includeTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -528,7 +528,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -549,7 +549,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -570,7 +570,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -591,7 +591,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of BelongsToResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includePolymorphicTo([], 'sourceName', v);
@@ -611,7 +611,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
-            'should be a String, but %s given.',
+            'should be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -628,7 +628,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
-            'should be a String, but %s given.',
+            'should be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -645,7 +645,7 @@ describe('BelongsToResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>

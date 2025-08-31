@@ -37,7 +37,7 @@ describe('excludeObjectKeys', function () {
   it('throws an error for a non-object values', function () {
     const throwable = v => () => excludeObjectKeys(v, 'key');
     const error = v =>
-      format('Cannot exclude keys from a non-Object value, %s given.', v);
+      format('Cannot exclude keys from a non-Object value, %s was given.', v);
     expect(throwable('str')).to.throw(error('"str"'));
     expect(throwable(10)).to.throw(error('10'));
     expect(throwable(true)).to.throw(error('true'));

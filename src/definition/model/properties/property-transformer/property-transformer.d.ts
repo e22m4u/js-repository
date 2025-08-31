@@ -22,6 +22,6 @@ export declare type PropertyTransformer = (
  * Property transform options.
  */
 export type PropertyTransformOptions =
-  | string
-  | string[]
+  | (string | PropertyTransformer)
+  | (string | PropertyTransformer)[]
   | {[key: string]: unknown};

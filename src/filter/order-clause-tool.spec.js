@@ -602,7 +602,7 @@ describe('OrderClauseTool', function () {
         const error = v =>
           format(
             'The provided option "order" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -623,7 +623,7 @@ describe('OrderClauseTool', function () {
         const error = v =>
           format(
             'The provided option "order" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable([''])).to.throw(error('""'));
@@ -647,7 +647,7 @@ describe('OrderClauseTool', function () {
         const error = v =>
           format(
             'The provided option "order" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -673,7 +673,7 @@ describe('OrderClauseTool', function () {
         const error = v =>
           format(
             'The provided option "order" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable([''])).to.throw(error('""'));

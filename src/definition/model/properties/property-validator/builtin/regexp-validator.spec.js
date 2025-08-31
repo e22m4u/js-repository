@@ -23,7 +23,7 @@ describe('regexpValidator', function () {
     const error = v =>
       format(
         'The property validator "myValidator" requires ' +
-          'a String value, but %s given.',
+          'a String value, but %s was given.',
         v,
       );
     expect(throwable(true)).to.throw(error('true'));
@@ -45,7 +45,7 @@ describe('regexpValidator', function () {
     const error = v =>
       format(
         'The validator "myValidator" requires the "options" argument ' +
-          'as a String or RegExp, but %s given.',
+          'as a String or RegExp, but %s was given.',
         v,
       );
     expect(throwable(true)).to.throw(error('true'));

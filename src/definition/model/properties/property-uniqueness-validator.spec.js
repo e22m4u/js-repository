@@ -25,7 +25,7 @@ describe('PropertyUniquenessValidator', function () {
       const error = v =>
         format(
           'The parameter "countMethod" of the PropertyUniquenessValidator ' +
-            'must be a Function, but %s given.',
+            'must be a Function, but %s was given.',
           v,
         );
       await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
@@ -60,7 +60,7 @@ describe('PropertyUniquenessValidator', function () {
       const error = v =>
         format(
           'The parameter "methodName" of the PropertyUniquenessValidator ' +
-            'must be a non-empty String, but %s given.',
+            'must be a non-empty String, but %s was given.',
           v,
         );
       await expect(throwable('')).to.be.rejectedWith(error('""'));
@@ -95,7 +95,7 @@ describe('PropertyUniquenessValidator', function () {
       const error = v =>
         format(
           'The parameter "modelName" of the PropertyUniquenessValidator ' +
-            'must be a non-empty String, but %s given.',
+            'must be a non-empty String, but %s was given.',
           v,
         );
       await expect(throwable('')).to.be.rejectedWith(error('""'));
@@ -129,7 +129,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, 'create', 'model', v);
       const error = v =>
         format(
-          'The data of the model "model" should be an Object, but %s given.',
+          'The data of the model "model" should be an Object, but %s was given.',
           v,
         );
       await expect(throwable('str')).to.be.rejectedWith(error('"str"'));

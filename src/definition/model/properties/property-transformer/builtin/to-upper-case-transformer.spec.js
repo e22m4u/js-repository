@@ -22,7 +22,7 @@ describe('toUpperCaseTransformer', function () {
       });
     const error = v =>
       format(
-        'The property transformer "toUpperCase" requires a String value, but %s given.',
+        'The property transformer "toUpperCase" requires a String value, but %s was given.',
         v,
       );
     expect(throwable(10)).to.throw(error('10'));

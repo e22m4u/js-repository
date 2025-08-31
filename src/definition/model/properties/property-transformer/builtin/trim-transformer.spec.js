@@ -22,7 +22,7 @@ describe('trimTransformer', function () {
       });
     const error = v =>
       format(
-        'The property transformer "trim" requires a String value, but %s given.',
+        'The property transformer "trim" requires a String value, but %s was given.',
         v,
       );
     expect(throwable(10)).to.throw(error('10'));

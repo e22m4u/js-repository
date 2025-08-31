@@ -14,7 +14,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -35,7 +35,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -56,7 +56,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], v, 'targetName', 'relationName');
@@ -76,7 +76,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', v, 'relationName');
@@ -96,7 +96,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', 'targetName', v);
@@ -116,7 +116,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
-            'should be a String, but %s given.',
+            'should be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -133,7 +133,7 @@ describe('ReferencesManyResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of ReferencesManyResolver.includeTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>

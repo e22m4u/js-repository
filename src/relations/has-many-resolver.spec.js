@@ -14,7 +14,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -42,7 +42,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -63,7 +63,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -84,7 +84,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -105,7 +105,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -126,7 +126,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -147,7 +147,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includeTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -726,7 +726,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -755,7 +755,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -783,7 +783,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -811,7 +811,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -839,7 +839,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -867,7 +867,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -895,7 +895,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -923,7 +923,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicTo ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1685,7 +1685,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1722,7 +1722,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1749,7 +1749,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1776,7 +1776,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1803,7 +1803,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1830,7 +1830,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1857,7 +1857,7 @@ describe('HasManyResolver', function () {
       const error = v =>
         format(
           'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1934,7 +1934,7 @@ describe('HasManyResolver', function () {
       await expect(promise).to.be.rejectedWith(
         'The relation "children" of the model "source" is a polymorphic "hasMany" relation, ' +
           'so it requires the target relation "parent" to be a polymorphic "belongsTo", ' +
-          'but "referencesMany" type given.',
+          'but "referencesMany" type was given.',
       );
     });
 

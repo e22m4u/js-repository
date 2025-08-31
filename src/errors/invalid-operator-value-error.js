@@ -14,7 +14,7 @@ export class InvalidOperatorValueError extends Error {
   constructor(operator, expected, value) {
     super(
       format(
-        'Condition of {%s: ...} should have %s, but %v given.',
+        'Condition of {%s: ...} should have %s, but %v was given.',
         operator,
         expected,
         value,

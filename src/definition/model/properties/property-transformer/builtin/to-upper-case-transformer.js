@@ -12,7 +12,7 @@ export function toUpperCaseTransformer(value, options, context) {
   if (value == null) return value;
   if (typeof value === 'string') return value.toUpperCase();
   throw new InvalidArgumentError(
-    'The property transformer %v requires a String value, but %v given.',
+    'The property transformer %v requires a String value, but %v was given.',
     context.transformerName,
     value,
   );

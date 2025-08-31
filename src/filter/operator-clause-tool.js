@@ -59,7 +59,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testAll ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
 
@@ -137,7 +137,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testEqNeq ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('eq' in clause) return this.compare(clause.eq, value) === 0;
@@ -183,7 +183,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testGtLt ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('gt' in clause) return this.compare(value, clause.gt) > 0;
@@ -210,7 +210,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testInq ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('inq' in clause && clause.inq !== undefined) {
@@ -246,7 +246,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNin ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('nin' in clause && clause.nin !== undefined) {
@@ -282,7 +282,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testBetween ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('between' in clause && clause.between !== undefined) {
@@ -318,7 +318,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testExists ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('exists' in clause && clause.exists !== undefined) {
@@ -351,7 +351,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testLike ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('like' in clause && clause.like !== undefined) {
@@ -379,7 +379,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNlike ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('nlike' in clause && clause.nlike !== undefined) {
@@ -411,7 +411,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testIlike ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('ilike' in clause && clause.ilike !== undefined) {
@@ -443,7 +443,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNilike ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('nilike' in clause && clause.nilike !== undefined) {
@@ -487,7 +487,7 @@ export class OperatorClauseTool extends Service {
     if (!clause || typeof clause !== 'object')
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testRegexp ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         clause,
       );
     if ('regexp' in clause && clause.regexp !== undefined) {
@@ -504,7 +504,7 @@ export class OperatorClauseTool extends Service {
       const flags = clause.flags || undefined;
       if (flags && typeof flags !== 'string')
         throw new InvalidArgumentError(
-          'RegExp flags should be a String, but %v given.',
+          'RegExp flags should be a String, but %v was given.',
           clause.flags,
         );
       if (!value || typeof value !== 'string') return false;

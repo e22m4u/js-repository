@@ -22,7 +22,7 @@ export class FieldsClauseTool extends Service {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity))
         throw new InvalidArgumentError(
           'The first argument of FieldsClauseTool.filter should be an Object or ' +
-            'an Array of Object, but %v given.',
+            'an Array of Object, but %v was given.',
           entity,
         );
     });
@@ -30,7 +30,7 @@ export class FieldsClauseTool extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The second argument of FieldsClauseTool.filter should be ' +
-          'a non-empty String, but %v given.',
+          'a non-empty String, but %v was given.',
         modelName,
       );
 
@@ -42,7 +42,7 @@ export class FieldsClauseTool extends Service {
       if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v given.',
+            'or an Array of non-empty String, but %v was given.',
           field,
         );
     });
@@ -70,7 +70,7 @@ export class FieldsClauseTool extends Service {
       if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v given.',
+            'or an Array of non-empty String, but %v was given.',
           field,
         );
     });
@@ -90,7 +90,7 @@ export class FieldsClauseTool extends Service {
       if (!field || typeof field !== 'string')
         throw new InvalidArgumentError(
           'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v given.',
+            'or an Array of non-empty String, but %v was given.',
           field,
         );
     });

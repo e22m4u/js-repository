@@ -20,6 +20,6 @@ export type PropertyValidator = (
  * Property validate options.
  */
 export type PropertyValidateOptions =
-  | string
-  | string[]
+  | (string | PropertyValidator)
+  | (string | PropertyValidator)[]
   | {[key: string]: unknown};

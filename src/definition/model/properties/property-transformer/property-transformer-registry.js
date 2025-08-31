@@ -2,7 +2,6 @@ import {Service} from '@e22m4u/js-service';
 import {trimTransformer} from './builtin/index.js';
 import {toUpperCaseTransformer} from './builtin/index.js';
 import {toLowerCaseTransformer} from './builtin/index.js';
-import {toTitleCaseTransformer} from './builtin/index.js';
 import {InvalidArgumentError} from '../../../../errors/index.js';
 
 /**
@@ -18,7 +17,6 @@ export class PropertyTransformerRegistry extends Service {
     trim: trimTransformer,
     toUpperCase: toUpperCaseTransformer,
     toLowerCase: toLowerCaseTransformer,
-    toTitleCase: toTitleCaseTransformer,
   };
 
   /**
@@ -32,7 +30,7 @@ export class PropertyTransformerRegistry extends Service {
     if (!name || typeof name !== 'string')
       throw new InvalidArgumentError(
         'A name of the property transformer must ' +
-          'be a non-empty String, but %v given.',
+          'be a non-empty String, but %v was given.',
         name,
       );
     if (name in this._transformers)
@@ -42,7 +40,7 @@ export class PropertyTransformerRegistry extends Service {
       );
     if (typeof transformer !== 'function')
       throw new InvalidArgumentError(
-        'The property transformer %v must be a Function, but %v given.',
+        'The property transformer %v must be a Function, but %v was given.',
         name,
         transformer,
       );

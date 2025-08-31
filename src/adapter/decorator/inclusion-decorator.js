@@ -16,7 +16,7 @@ export class InclusionDecorator extends Service {
     if (!adapter || !(adapter instanceof Adapter))
       throw new InvalidArgumentError(
         'The first argument of InclusionDecorator.decorate should be ' +
-          'an Adapter instance, but %v given.',
+          'an Adapter instance, but %v was given.',
         adapter,
       );
 

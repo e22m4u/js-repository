@@ -13,7 +13,7 @@ export function minLengthValidator(value, options, context) {
   if (typeof options !== 'number')
     throw new InvalidArgumentError(
       'The validator %v requires the "options" argument ' +
-        'as a Number, but %v given.',
+        'as a Number, but %v was given.',
       context.validatorName,
       options,
     );
@@ -21,7 +21,7 @@ export function minLengthValidator(value, options, context) {
     return value.length >= options;
   throw new InvalidArgumentError(
     'The property validator %v requires a String ' +
-      'or an Array value, but %v given.',
+      'or an Array value, but %v was given.',
     context.validatorName,
     value,
   );

@@ -12,7 +12,7 @@ describe('RelationsDefinitionValidator', function () {
       const error = v =>
         format(
           'The first argument of RelationsDefinitionValidator.validate ' +
-            'should be a non-empty String, but %s given.',
+            'should be a non-empty String, but %s was given.',
           v,
         );
       expect(validate('')).to.throw(error('""'));
@@ -31,7 +31,7 @@ describe('RelationsDefinitionValidator', function () {
       const error = v =>
         format(
           'The provided option "relations" of the model "model" ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -49,7 +49,7 @@ describe('RelationsDefinitionValidator', function () {
       const error = v =>
         format(
           'The relation name of the model "model" should be ' +
-            'a non-empty String, but %s given.',
+            'a non-empty String, but %s was given.',
           v,
         );
       expect(validate({['']: {}})).to.throw(error('""'));
@@ -61,7 +61,7 @@ describe('RelationsDefinitionValidator', function () {
       const error = v =>
         format(
           'The relation "foo" of the model "model" should ' +
-            'be an Object, but %s given.',
+            'be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -82,7 +82,7 @@ describe('RelationsDefinitionValidator', function () {
       const error = v =>
         format(
           'The relation "foo" of the model "model" requires the option "type" ' +
-            'to have one of relation types: %l, but %s given.',
+            'to have one of relation types: %l, but %s was given.',
           Object.values(RelationType),
           v,
         );
@@ -111,7 +111,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -138,7 +138,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate(10)).to.throw(error('10'));
@@ -181,7 +181,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the option "polymorphic" to be a Boolean, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('str')).to.throw(error('"str"'));
@@ -204,7 +204,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate(10)).to.throw(error('10'));
@@ -231,7 +231,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "discriminator" to be a String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate(10)).to.throw(error('10'));
@@ -262,7 +262,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -289,7 +289,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -334,7 +334,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -399,7 +399,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -428,7 +428,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -457,7 +457,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -488,7 +488,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -515,7 +515,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -560,7 +560,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -625,7 +625,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
-                'but %s given.',
+                'but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -654,7 +654,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -683,7 +683,7 @@ describe('RelationsDefinitionValidator', function () {
             format(
               'The relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
-                'to be a non-empty String, but %s given.',
+                'to be a non-empty String, but %s was given.',
               v,
             );
           expect(validate('')).to.throw(error('""'));
@@ -712,7 +712,7 @@ describe('RelationsDefinitionValidator', function () {
           format(
             'The relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it requires the option "model" to be a non-empty String, ' +
-              'but %s given.',
+              'but %s was given.',
             v,
           );
         expect(validate('')).to.throw(error('""'));
@@ -739,7 +739,7 @@ describe('RelationsDefinitionValidator', function () {
           format(
             'The relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it expects the provided option "foreignKey" to be a String, ' +
-              'but %s given.',
+              'but %s was given.',
             v,
           );
         expect(validate(10)).to.throw(error('10'));

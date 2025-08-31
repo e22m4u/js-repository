@@ -21,13 +21,13 @@ export class PropertiesDefinitionValidator extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The first argument of PropertiesDefinitionValidator.validate ' +
-          'should be a non-empty String, but %v given.',
+          'should be a non-empty String, but %v was given.',
         modelName,
       );
     if (!propDefs || typeof propDefs !== 'object' || Array.isArray(propDefs)) {
       throw new InvalidArgumentError(
         'The provided option "properties" of the model %v ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         modelName,
         propDefs,
       );
@@ -54,20 +54,20 @@ export class PropertiesDefinitionValidator extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The first argument of PropertiesDefinitionValidator._validateProperty ' +
-          'should be a non-empty String, but %v given.',
+          'should be a non-empty String, but %v was given.',
         modelName,
       );
     if (!propName || typeof propName !== 'string')
       throw new InvalidArgumentError(
         'The property name of the model %v should be ' +
-          'a non-empty String, but %v given.',
+          'a non-empty String, but %v was given.',
         modelName,
         propName,
       );
     if (!propDef)
       throw new InvalidArgumentError(
         'The property %v of the model %v should have ' +
-          'a property definition, but %v given.',
+          'a property definition, but %v was given.',
         propName,
         modelName,
         propDef,
@@ -76,7 +76,7 @@ export class PropertiesDefinitionValidator extends Service {
       if (!Object.values(Type).includes(propDef))
         throw new InvalidArgumentError(
           'In case of a short property definition, the property %v ' +
-            'of the model %v should have one of data types: %l, but %v given.',
+            'of the model %v should have one of data types: %l, but %v was given.',
           propName,
           modelName,
           Object.values(Type),
@@ -87,7 +87,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (!propDef || typeof propDef !== 'object' || Array.isArray(propDef)) {
       throw new InvalidArgumentError(
         'In case of a full property definition, the property %v ' +
-          'of the model %v should be an Object, but %v given.',
+          'of the model %v should be an Object, but %v was given.',
         propName,
         modelName,
         propDef,
@@ -96,7 +96,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (!propDef.type || !Object.values(Type).includes(propDef.type))
       throw new InvalidArgumentError(
         'The property %v of the model %v requires the option "type" ' +
-          'to have one of data types: %l, but %v given.',
+          'to have one of data types: %l, but %v was given.',
         propName,
         modelName,
         Object.values(Type),
@@ -105,7 +105,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.itemType && !Object.values(Type).includes(propDef.itemType)) {
       throw new InvalidArgumentError(
         'The provided option "itemType" of the property %v in the model %v ' +
-          'should have one of data types: %l, but %v given.',
+          'should have one of data types: %l, but %v was given.',
         propName,
         modelName,
         Object.values(Type),
@@ -115,7 +115,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.itemModel && typeof propDef.itemModel !== 'string') {
       throw new InvalidArgumentError(
         'The provided option "itemModel" of the property %v in the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         propName,
         modelName,
         propDef.itemModel,
@@ -124,7 +124,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.model && typeof propDef.model !== 'string')
       throw new InvalidArgumentError(
         'The provided option "model" of the property %v in the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         propName,
         modelName,
         propDef.model,
@@ -132,7 +132,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.primaryKey && typeof propDef.primaryKey !== 'boolean')
       throw new InvalidArgumentError(
         'The provided option "primaryKey" of the property %v in the model %v ' +
-          'should be a Boolean, but %v given.',
+          'should be a Boolean, but %v was given.',
         propName,
         modelName,
         propDef.primaryKey,
@@ -140,7 +140,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.columnName && typeof propDef.columnName !== 'string')
       throw new InvalidArgumentError(
         'The provided option "columnName" of the property %v in the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         propName,
         modelName,
         propDef.columnName,
@@ -148,7 +148,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.columnType && typeof propDef.columnType !== 'string')
       throw new InvalidArgumentError(
         'The provided option "columnType" of the property %v in the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         propName,
         modelName,
         propDef.columnType,
@@ -156,7 +156,7 @@ export class PropertiesDefinitionValidator extends Service {
     if (propDef.required && typeof propDef.required !== 'boolean')
       throw new InvalidArgumentError(
         'The provided option "required" of the property %v in the model %v ' +
-          'should be a Boolean, but %v given.',
+          'should be a Boolean, but %v was given.',
         propName,
         modelName,
         propDef.required,
@@ -228,92 +228,167 @@ export class PropertiesDefinitionValidator extends Service {
         propName,
         modelName,
       );
+    // если определена опция "validate", то проверяется значение
+    // опции, которое может являться строкой, массивом или объектом
     if (propDef.validate != null) {
       const propertyValidatorRegistry = this.getService(
         PropertyValidatorRegistry,
       );
+      // если опция "validate" содержит строку, то проверяется
+      // наличие зарегистрированного валидатора по названию
       if (propDef.validate && typeof propDef.validate === 'string') {
+        // если название валидатора не зарегистрировано,
+        // то выбрасывается ошибка
         if (!propertyValidatorRegistry.hasValidator(propDef.validate))
           throw new InvalidArgumentError(
             'The property validator %v is not found.',
             propDef.validate,
           );
-      } else if (Array.isArray(propDef.validate)) {
-        for (const validatorName of propDef.validate) {
-          if (typeof validatorName !== 'string')
+      }
+      // если опция "validate" содержит функцию, то данная функция
+      // воспринимается как пользовательский валидатор
+      else if (propDef.validate && typeof propDef.validate === 'function') {
+        // (допустимо)
+      }
+      // если опция "validate" содержит массив, то проверяется
+      // каждый элемент массива
+      else if (Array.isArray(propDef.validate)) {
+        for (const validatorOrName of propDef.validate) {
+          // если элемент массива является строкой, то проверяется
+          // наличие зарегистрированного валидатора по названию
+          if (validatorOrName && typeof validatorOrName === 'string') {
+            if (!propertyValidatorRegistry.hasValidator(validatorOrName))
+              throw new InvalidArgumentError(
+                'The property validator %v is not found.',
+                validatorOrName,
+              );
+          }
+          // если элемент массива является функцией, то данная функция
+          // воспринимается как пользовательский валидатор
+          else if (validatorOrName && typeof validatorOrName === 'function') {
+            // (допустимо)
+          }
+          // если элемент массива не является названием зарегистрированного
+          // валидатора или функцией-валидатором, то выбрасывается ошибка
+          else {
             throw new InvalidArgumentError(
-              'The provided option "validate" of the property %v in the model %v ' +
-                'has an Array value that should have a non-empty String, ' +
-                'but %v given.',
+              'The provided option "validate" for the property %v in the model %v ' +
+                'has an Array value that should contain validator names or validator ' +
+                'functions, but %v was given.',
               propName,
               modelName,
-              validatorName,
+              validatorOrName,
             );
+          }
+        }
+      }
+      // если опция "validate" содержит объект, то проверяются ключи данного
+      // объекта, которые должны являться названиями зарегистрированных
+      // валидаторов, а значения их аргументами
+      else if (typeof propDef.validate === 'object') {
+        Object.keys(propDef.validate).forEach(validatorName => {
+          // если ключ объекта не является названием зарегистрированного
+          // валидатора, то выбрасывается ошибка
           if (!propertyValidatorRegistry.hasValidator(validatorName))
             throw new InvalidArgumentError(
               'The property validator %v is not found.',
               validatorName,
             );
-        }
-      } else if (typeof propDef.validate === 'object') {
-        for (const validatorName in propDef.validate) {
-          if (!propertyValidatorRegistry.hasValidator(validatorName))
-            throw new InvalidArgumentError(
-              'The property validator %v is not found.',
-              validatorName,
-            );
-        }
-      } else {
+        });
+      }
+      // если опция "validate" не является не пустой строкой, функцией,
+      // массивом и объектом, то выбрасывается ошибка
+      else {
         throw new InvalidArgumentError(
-          'The provided option "validate" of the property %v in the model %v ' +
-            'should be a non-empty String, an Array of String or an Object, ' +
-            'but %v given.',
+          'The provided option "validate" for the property %v in the model %v ' +
+            'should be either a validator name, a validator function, an array ' +
+            'of validator names or functions, or an object mapping validator ' +
+            'names to their arguments, but %v was given.',
           propName,
           modelName,
           propDef.validate,
         );
       }
     }
+    // если определена опция "transform", то проверяется значение
+    // опции, которое может являться строкой, массивом или объектом
     if (propDef.transform != null) {
       const propertyTransformerRegistry = this.getService(
         PropertyTransformerRegistry,
       );
+      // если опция "transform" содержит строку, то проверяется
+      // наличие зарегистрированного трансформера по названию
       if (propDef.transform && typeof propDef.transform === 'string') {
+        // если название трансформера не зарегистрировано,
+        // то выбрасывается ошибка
         if (!propertyTransformerRegistry.hasTransformer(propDef.transform))
           throw new InvalidArgumentError(
             'The property transformer %v is not found.',
             propDef.transform,
           );
-      } else if (Array.isArray(propDef.transform)) {
-        for (const transformerName of propDef.transform) {
-          if (typeof transformerName !== 'string')
+      }
+      // если опция "transform" содержит функцию, то данная функция
+      // воспринимается как пользовательский трансформер
+      else if (propDef.transform && typeof propDef.transform === 'function') {
+        // (допустимо)
+      }
+      // если опция "transform" содержит массив, то проверяется
+      // каждый элемент массива
+      else if (Array.isArray(propDef.transform)) {
+        for (const transformerOrName of propDef.transform) {
+          // если элемент массива является строкой, то проверяется
+          // наличие зарегистрированного трансформера по названию
+          if (transformerOrName && typeof transformerOrName === 'string') {
+            if (!propertyTransformerRegistry.hasTransformer(transformerOrName))
+              throw new InvalidArgumentError(
+                'The property transformer %v is not found.',
+                transformerOrName,
+              );
+          }
+          // если элемент массива является функцией, то данная функция
+          // воспринимается как пользовательский трансформер
+          else if (
+            transformerOrName &&
+            typeof transformerOrName === 'function'
+          ) {
+            // (допустимо)
+          }
+          // если элемент массива не является названием зарегистрированного
+          // трансформера или функцией-трансформером, то выбрасывается ошибка
+          else {
             throw new InvalidArgumentError(
-              'The provided option "transform" of the property %v in the model %v ' +
-                'has an Array value that should have a non-empty String, ' +
-                'but %v given.',
+              'The provided option "transform" for the property %v in the model %v ' +
+                'has an Array value that should contain transformer names or transformer ' +
+                'functions, but %v was given.',
               propName,
               modelName,
-              transformerName,
+              transformerOrName,
             );
+          }
+        }
+      }
+      // если опция "transform" содержит объект, то проверяются ключи данного
+      // объекта, которые должны являться названиями зарегистрированных
+      // трансформеров, а значения их аргументами
+      else if (typeof propDef.transform === 'object') {
+        Object.keys(propDef.transform).forEach(transformerName => {
+          // если ключ объекта не является названием зарегистрированного
+          // валидатора, то выбрасывается ошибка
           if (!propertyTransformerRegistry.hasTransformer(transformerName))
             throw new InvalidArgumentError(
               'The property transformer %v is not found.',
               transformerName,
             );
-        }
-      } else if (typeof propDef.transform === 'object') {
-        for (const transformerName in propDef.transform) {
-          if (!propertyTransformerRegistry.hasTransformer(transformerName))
-            throw new InvalidArgumentError(
-              'The property transformer %v is not found.',
-              transformerName,
-            );
-        }
-      } else {
+        });
+      }
+      // если опция "transform" не является не пустой строкой, функцией,
+      // массивом и объектом, то выбрасывается ошибка
+      else {
         throw new InvalidArgumentError(
-          'The provided option "transform" of the property %v in the model %v ' +
-            'should be a non-empty String, an Array of String or an Object, ' +
-            'but %v given.',
+          'The provided option "transform" for the property %v in the model %v ' +
+            'should be either a transformer name, a transformer function, an array ' +
+            'of transformer names or functions, or an object mapping transformer ' +
+            'names to their arguments, but %v was given.',
           propName,
           modelName,
           propDef.transform,
@@ -327,7 +402,7 @@ export class PropertiesDefinitionValidator extends Service {
       ) {
         throw new InvalidArgumentError(
           'The provided option "unique" of the property %v in the model %v ' +
-            'should be a Boolean or one of values: %l, but %v given.',
+            'should be a Boolean or one of values: %l, but %v was given.',
           propName,
           modelName,
           Object.values(PropertyUniqueness),

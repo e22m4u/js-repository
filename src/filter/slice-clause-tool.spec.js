@@ -11,7 +11,7 @@ describe('SliceClauseTool', function () {
       const error = v =>
         format(
           'The first argument of SliceClauseTool.slice ' +
-            'should be an Array, but %s given.',
+            'should be an Array, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -32,7 +32,7 @@ describe('SliceClauseTool', function () {
       const throwable = v => () => S.slice(items, v);
       const error = v =>
         format(
-          'The provided option "skip" should be a Number, but %s given.',
+          'The provided option "skip" should be a Number, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -52,7 +52,7 @@ describe('SliceClauseTool', function () {
       const throwable = v => () => S.slice(items, undefined, v);
       const error = v =>
         format(
-          'The provided option "limit" should be a Number, but %s given.',
+          'The provided option "limit" should be a Number, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -119,7 +119,7 @@ describe('SliceClauseTool', function () {
       const throwable = v => () => SliceClauseTool.validateSkipClause(v);
       const error = v =>
         format(
-          'The provided option "skip" should be a Number, but %s given.',
+          'The provided option "skip" should be a Number, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -140,7 +140,7 @@ describe('SliceClauseTool', function () {
       const throwable = v => () => SliceClauseTool.validateLimitClause(v);
       const error = v =>
         format(
-          'The provided option "limit" should be a Number, but %s given.',
+          'The provided option "limit" should be a Number, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));

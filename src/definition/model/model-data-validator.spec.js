@@ -26,7 +26,7 @@ describe('ModelDataValidator', function () {
       };
       const error = v =>
         format(
-          'The data of the model "model" should be an Object, but %s given.',
+          'The data of the model "model" should be an Object, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -54,7 +54,7 @@ describe('ModelDataValidator', function () {
         dbs.getService(ModelDataValidator).validate('modelB', {foo: 10});
       expect(throwable).to.throw(
         'The property "foo" of the model "modelB" must ' +
-          'have a String, but Number given.',
+          'have a String, but Number was given.',
       );
     });
 
@@ -73,7 +73,7 @@ describe('ModelDataValidator', function () {
         dbs.getService(ModelDataValidator).validate('model', {});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" ' +
-          'is required, but undefined given.',
+          'is required, but undefined was given.',
       );
     });
 
@@ -91,7 +91,7 @@ describe('ModelDataValidator', function () {
       const throwable = () =>
         dbs.getService(ModelDataValidator).validate('model', {foo: undefined});
       expect(throwable).to.throw(
-        'The property "foo" of the model "model" is required, but undefined given.',
+        'The property "foo" of the model "model" is required, but undefined was given.',
       );
     });
 
@@ -109,7 +109,7 @@ describe('ModelDataValidator', function () {
       const throwable = () =>
         dbs.getService(ModelDataValidator).validate('model', {foo: null});
       expect(throwable).to.throw(
-        'The property "foo" of the model "model" is required, but null given.',
+        'The property "foo" of the model "model" is required, but null was given.',
       );
     });
 
@@ -131,7 +131,32 @@ describe('ModelDataValidator', function () {
         dbs.getService(ModelDataValidator).validate('model', {foo: 'empty'});
       expect(throwable).to.throw(
         'The property "foo" of the model "model" ' +
-          'is required, but "empty" given.',
+          'is required, but "empty" was given.',
+      );
+    });
+
+    it('should validate property type before passing value through property validators', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({
+        name: 'model',
+        properties: {
+          foo: {
+            type: DataType.STRING,
+            validate: () => false,
+          },
+        },
+      });
+      const typeCheckFail = () =>
+        dbs.getService(ModelDataValidator).validate('model', {foo: 10});
+      expect(typeCheckFail).to.throw(
+        'The property "foo" of the model "model" must have ' +
+          'a String, but Number was given.',
+      );
+      const validatorCheckFail = () =>
+        dbs.getService(ModelDataValidator).validate('model', {foo: 'test'});
+      expect(validatorCheckFail).to.throw(
+        'The property "foo" of the model "model" has the invalid value "test" ' +
+          'that caught by a property validator.',
       );
     });
 
@@ -167,7 +192,7 @@ describe('ModelDataValidator', function () {
             .validate('model', {foo: undefined}, true);
         expect(throwable).to.throw(
           'The property "foo" of the model "model" ' +
-            'is required, but undefined given.',
+            'is required, but undefined was given.',
         );
       });
 
@@ -187,7 +212,7 @@ describe('ModelDataValidator', function () {
             .getService(ModelDataValidator)
             .validate('model', {foo: null}, true);
         expect(throwable).to.throw(
-          'The property "foo" of the model "model" is required, but null given.',
+          'The property "foo" of the model "model" is required, but null was given.',
         );
       });
 
@@ -208,13 +233,13 @@ describe('ModelDataValidator', function () {
         const throwable = () =>
           dbs.getService(ModelDataValidator).validate('model', {foo: 5}, true);
         expect(throwable).to.throw(
-          'The property "foo" of the model "model" is required, but 5 given.',
+          'The property "foo" of the model "model" is required, but 5 was given.',
         );
       });
     });
 
     describe('validate by property type', function () {
-      it('skips validation for an empty value', function () {
+      it('should not validate the empty value', function () {
         const dbs = new DatabaseSchema();
         dbs.defineModel({
           name: 'model',
@@ -536,7 +561,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Number given.',
+                'a String, but Number was given.',
             );
           });
 
@@ -555,7 +580,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Boolean given.',
+                'a String, but Boolean was given.',
             );
           });
 
@@ -574,7 +599,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Boolean given.',
+                'a String, but Boolean was given.',
             );
           });
 
@@ -593,7 +618,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Array given.',
+                'a String, but Array was given.',
             );
           });
 
@@ -612,7 +637,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Object given.',
+                'a String, but Object was given.',
             );
           });
         });
@@ -683,7 +708,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Number given.',
+                'a String, but Number was given.',
             );
           });
 
@@ -704,7 +729,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Boolean given.',
+                'a String, but Boolean was given.',
             );
           });
 
@@ -725,7 +750,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Boolean given.',
+                'a String, but Boolean was given.',
             );
           });
 
@@ -746,7 +771,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Array given.',
+                'a String, but Array was given.',
             );
           });
 
@@ -767,7 +792,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a String, but Object given.',
+                'a String, but Object was given.',
             );
           });
         });
@@ -818,7 +843,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but String given.',
+                'a Number, but String was given.',
             );
           });
 
@@ -851,7 +876,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Boolean given.',
+                'a Number, but Boolean was given.',
             );
           });
 
@@ -870,7 +895,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Boolean given.',
+                'a Number, but Boolean was given.',
             );
           });
 
@@ -889,7 +914,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Array given.',
+                'a Number, but Array was given.',
             );
           });
 
@@ -908,7 +933,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Object given.',
+                'a Number, but Object was given.',
             );
           });
         });
@@ -963,7 +988,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but String given.',
+                'a Number, but String was given.',
             );
           });
 
@@ -1000,7 +1025,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Boolean given.',
+                'a Number, but Boolean was given.',
             );
           });
 
@@ -1021,7 +1046,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Boolean given.',
+                'a Number, but Boolean was given.',
             );
           });
 
@@ -1042,7 +1067,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Array given.',
+                'a Number, but Array was given.',
             );
           });
 
@@ -1063,7 +1088,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Number, but Object given.',
+                'a Number, but Object was given.',
             );
           });
         });
@@ -1114,7 +1139,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but String given.',
+                'a Boolean, but String was given.',
             );
           });
 
@@ -1133,7 +1158,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Number given.',
+                'a Boolean, but Number was given.',
             );
           });
 
@@ -1180,7 +1205,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Array given.',
+                'a Boolean, but Array was given.',
             );
           });
 
@@ -1199,7 +1224,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Object given.',
+                'a Boolean, but Object was given.',
             );
           });
         });
@@ -1254,7 +1279,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but String given.',
+                'a Boolean, but String was given.',
             );
           });
 
@@ -1275,7 +1300,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Number given.',
+                'a Boolean, but Number was given.',
             );
           });
 
@@ -1328,7 +1353,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Array given.',
+                'a Boolean, but Array was given.',
             );
           });
 
@@ -1349,7 +1374,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'a Boolean, but Object given.',
+                'a Boolean, but Object was given.',
             );
           });
         });
@@ -1400,7 +1425,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but String given.',
+                'an Array, but String was given.',
             );
           });
 
@@ -1419,7 +1444,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Number given.',
+                'an Array, but Number was given.',
             );
           });
 
@@ -1438,7 +1463,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Boolean given.',
+                'an Array, but Boolean was given.',
             );
           });
 
@@ -1457,7 +1482,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Boolean given.',
+                'an Array, but Boolean was given.',
             );
           });
 
@@ -1490,7 +1515,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Object given.',
+                'an Array, but Object was given.',
             );
           });
         });
@@ -1545,7 +1570,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but String given.',
+                'an Array, but String was given.',
             );
           });
 
@@ -1566,7 +1591,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Number given.',
+                'an Array, but Number was given.',
             );
           });
 
@@ -1587,7 +1612,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Boolean given.',
+                'an Array, but Boolean was given.',
             );
           });
 
@@ -1608,7 +1633,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Boolean given.',
+                'an Array, but Boolean was given.',
             );
           });
 
@@ -1645,7 +1670,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Array, but Object given.',
+                'an Array, but Object was given.',
             );
           });
 
@@ -1690,7 +1715,7 @@ describe('ModelDataValidator', function () {
                 });
               expect(throwable).to.throw(
                 'The property "foo" of the model "modelA" must have ' +
-                  'a String, but Number given.',
+                  'a String, but Number was given.',
               );
             });
 
@@ -1766,7 +1791,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but String given.',
+                'an Object, but String was given.',
             );
           });
 
@@ -1785,7 +1810,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Number given.',
+                'an Object, but Number was given.',
             );
           });
 
@@ -1804,7 +1829,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Boolean given.',
+                'an Object, but Boolean was given.',
             );
           });
 
@@ -1823,7 +1848,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Boolean given.',
+                'an Object, but Boolean was given.',
             );
           });
 
@@ -1842,7 +1867,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Array given.',
+                'an Object, but Array was given.',
             );
           });
 
@@ -1911,7 +1936,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but String given.',
+                'an Object, but String was given.',
             );
           });
 
@@ -1932,7 +1957,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Number given.',
+                'an Object, but Number was given.',
             );
           });
 
@@ -1953,7 +1978,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Boolean given.',
+                'an Object, but Boolean was given.',
             );
           });
 
@@ -1974,7 +1999,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Boolean given.',
+                'an Object, but Boolean was given.',
             );
           });
 
@@ -1995,7 +2020,7 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" must have ' +
-                'an Object, but Array given.',
+                'an Object, but Array was given.',
             );
           });
 
@@ -2040,7 +2065,7 @@ describe('ModelDataValidator', function () {
                 });
               expect(throwable).to.throw(
                 'The property "foo" of the model "modelA" must have ' +
-                  'a String, but Number given.',
+                  'a String, but Number was given.',
               );
             });
 
@@ -2072,32 +2097,13 @@ describe('ModelDataValidator', function () {
     });
 
     describe('validate by property validators', function () {
-      it('skips validation for an empty value', function () {
-        const dbs = new DatabaseSchema();
-        dbs
-          .getService(PropertyValidatorRegistry)
-          .addValidator('myValidator', () => false);
-        dbs.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.STRING,
-              validate: 'myValidator',
-            },
-          },
-        });
-        dbs
-          .getService(EmptyValuesService)
-          .setEmptyValuesOf(DataType.STRING, [5]);
-        dbs.getService(ModelDataValidator).validate('model', {foo: 5});
-      });
-
-      describe('the option "validate" with the string value', function () {
-        it('does not validate a property value if it is not provided', function () {
+      describe('when the option "validate" is a String', function () {
+        it('should not validate the non-provided property', function () {
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            throw new Error('Should not to be called.');
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2111,11 +2117,12 @@ describe('ModelDataValidator', function () {
           validator.validate('model', {});
         });
 
-        it('does not validate undefined and null values', function () {
+        it('should not validate undefined and null values', function () {
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            throw new Error('Should not to be called.');
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2130,14 +2137,55 @@ describe('ModelDataValidator', function () {
           validator.validate('model', {foo: null});
         });
 
-        it('throws an error from the validator', function () {
-          const myValidator = function () {
-            throw Error('My error');
-          };
+        it('should not validate the empty value', function () {
           const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            throw new Error('Should not to be called.');
+          });
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                validate: 'myValidator',
+              },
+            },
+          });
           dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+            .getService(EmptyValuesService)
+            .setEmptyValuesOf(DataType.STRING, [5]);
+          dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+        });
+
+        it('should throw the error for the non-existent validator name', function () {
+          const dbs = new DatabaseSchema();
+          const modelDef = {
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                validate: undefined,
+              },
+            },
+          };
+          dbs.defineModel(modelDef);
+          modelDef.properties.foo.validate = 'myValidator';
+          const throwable = () =>
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+          expect(throwable).to.throw(
+            'The property validator "myValidator" is not defined.',
+          );
+        });
+
+        it('should throw the error from the validator', function () {
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            throw Error('My error');
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2154,11 +2202,14 @@ describe('ModelDataValidator', function () {
           expect(throwable).to.throw('My error');
         });
 
-        it('allows the given value if the validator returns true', function () {
+        it('should allow the given value if the validator returns true', function () {
+          let called = 0;
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => true);
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            called++;
+            return true;
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2171,13 +2222,17 @@ describe('ModelDataValidator', function () {
           dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
+          expect(called).to.be.eq(1);
         });
 
-        it('throws an error if the validator returns a promise', function () {
+        it('should throw the error if the validator returns a promise', function () {
+          let called = 0;
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => Promise.resolve(true));
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
+            called++;
+            return Promise.resolve(true);
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2193,16 +2248,21 @@ describe('ModelDataValidator', function () {
             });
           expect(throwable).to.throw(
             'Asynchronous property validators are not supported, ' +
-              'but the property validator "myValidator" returns a Promise.',
+              'but the property "foo" of the model "model" has the property ' +
+              'validator "myValidator" that returns a Promise.',
           );
+          expect(called).to.be.eq(1);
         });
 
-        it('throws an error for non-true result from the validator', function () {
+        it('should throw the error for a non-true result from the validator', function () {
           const testFn = v => {
+            let called = 0;
             const dbs = new DatabaseSchema();
-            dbs
-              .getService(PropertyValidatorRegistry)
-              .addValidator('myValidator', () => v);
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator', function () {
+              called++;
+              return v;
+            });
             dbs.defineModel({
               name: 'model',
               properties: {
@@ -2218,8 +2278,9 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" has the invalid value "test" ' +
-                'that caught by the validator "myValidator".',
+                'that caught by the property validator "myValidator".',
             );
+            expect(called).to.be.eq(1);
           };
           testFn('str');
           testFn('');
@@ -2233,10 +2294,11 @@ describe('ModelDataValidator', function () {
           testFn(() => undefined);
         });
 
-        it('passes arguments to the validator', function () {
-          let validated = false;
+        it('should pass arguments to the validator', function () {
+          let called = 0;
           const dbs = new DatabaseSchema();
-          const myValidator = function (value, options, context) {
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function (value, options, context) {
             expect(value).to.be.eq('test');
             expect(options).to.be.undefined;
             expect(context).to.be.eql({
@@ -2244,12 +2306,9 @@ describe('ModelDataValidator', function () {
               modelName: 'model',
               propName: 'foo',
             });
-            validated = true;
+            called++;
             return true;
-          };
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2262,19 +2321,17 @@ describe('ModelDataValidator', function () {
           dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
-          expect(validated).to.be.true;
+          expect(called).to.be.eq(1);
         });
 
-        it('invokes the validator only once per value', function () {
+        it('should invoke the validator only once per value', function () {
           let invoked = 0;
-          const myValidator = function () {
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator', function () {
             invoked++;
             return true;
-          };
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2291,7 +2348,431 @@ describe('ModelDataValidator', function () {
         });
       });
 
-      describe('the option "validate" with an array value', function () {
+      describe('when the option "validate" is a Function', function () {
+        describe('named validators', function () {
+          it('should not validate the non-provided property', function () {
+            const dbs = new DatabaseSchema();
+            const myValidator = function () {
+              throw new Error('Should not to be called.');
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {});
+          });
+
+          it('should not validate undefined and null values', function () {
+            const dbs = new DatabaseSchema();
+            const myValidator = () => {
+              throw new Error('Should not to be called.');
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {foo: undefined});
+            validator.validate('model', {foo: null});
+          });
+
+          it('should not validate the empty value', function () {
+            const dbs = new DatabaseSchema();
+            const myValidator = function () {
+              throw new Error('Should not to be called.');
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                  validate: myValidator,
+                },
+              },
+            });
+            dbs
+              .getService(EmptyValuesService)
+              .setEmptyValuesOf(DataType.STRING, [5]);
+            dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+          });
+
+          it('should throw the error from the validator', function () {
+            const dbs = new DatabaseSchema();
+            const myValidator = function () {
+              throw Error('My error');
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw('My error');
+          });
+
+          it('should allow the given value if the validator returns true', function () {
+            const dbs = new DatabaseSchema();
+            let called = 0;
+            const myValidator = function () {
+              called++;
+              return true;
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(1);
+          });
+
+          it('should throw the error if the validator returns a promise', function () {
+            const dbs = new DatabaseSchema();
+            const myValidator = function () {
+              return Promise.resolve(true);
+            };
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw(
+              'Asynchronous property validators are not supported, ' +
+                'but the property "foo" of the model "model" has the property ' +
+                'validator "myValidator" that returns a Promise.',
+            );
+          });
+
+          it('should throw the error for a non-true result from the validator', function () {
+            const testFn = v => {
+              const dbs = new DatabaseSchema();
+              const myValidator = function () {
+                return v;
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: myValidator,
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'The property "foo" of the model "model" has the invalid value "test" ' +
+                  'that caught by the property validator "myValidator".',
+              );
+            };
+            testFn('str');
+            testFn('');
+            testFn(10);
+            testFn(0);
+            testFn(false);
+            testFn(undefined);
+            testFn(null);
+            testFn({});
+            testFn([]);
+            testFn(() => undefined);
+          });
+
+          it('should pass arguments to the validator', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const myValidator = function (value, options, context) {
+              expect(value).to.be.eq('test');
+              expect(options).to.be.undefined;
+              expect(context).to.be.eql({
+                validatorName: 'myValidator',
+                modelName: 'model',
+                propName: 'foo',
+              });
+              called++;
+              return true;
+            };
+            dbs
+              .getService(PropertyValidatorRegistry)
+              .addValidator('myValidator', myValidator);
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: 'myValidator',
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(1);
+          });
+
+          it('should invoke the validator only once per value', function () {
+            let invoked = 0;
+            const myValidator = function () {
+              invoked++;
+              return true;
+            };
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: myValidator,
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(invoked).to.be.eq(1);
+          });
+        });
+
+        describe('anonymous validators', function () {
+          it('should not validate the non-provided property', function () {
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    throw new Error('Should not to be called.');
+                  },
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {});
+          });
+
+          it('should not validate undefined and null values', function () {
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    throw new Error('Should not to be called.');
+                  },
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {foo: undefined});
+            validator.validate('model', {foo: null});
+          });
+
+          it('should not validate the empty value', function () {
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                  validate() {
+                    throw new Error('Should not to be called.');
+                  },
+                },
+              },
+            });
+            dbs
+              .getService(EmptyValuesService)
+              .setEmptyValuesOf(DataType.STRING, [5]);
+            dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+          });
+
+          it('should throw the error from the validator', function () {
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    throw Error('My error');
+                  },
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw('My error');
+          });
+
+          it('should allow the given value if the validator returns true', function () {
+            const dbs = new DatabaseSchema();
+            let called = 0;
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    called++;
+                    return true;
+                  },
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(1);
+          });
+
+          it('should throw the error if the validator returns a promise', function () {
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    return Promise.resolve(true);
+                  },
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw(
+              'Asynchronous property validators are not supported, ' +
+                'but the property "foo" of the model "model" has a property ' +
+                'validator that returns a Promise.',
+            );
+          });
+
+          it('should throw the error for a non-true result from the validator', function () {
+            const testFn = v => {
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate() {
+                      return v;
+                    },
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'The property "foo" of the model "model" has the invalid value "test" ' +
+                  'that caught by a property validator.',
+              );
+            };
+            testFn('str');
+            testFn('');
+            testFn(10);
+            testFn(0);
+            testFn(false);
+            testFn(undefined);
+            testFn(null);
+            testFn({});
+            testFn([]);
+            testFn(() => undefined);
+          });
+
+          it('should pass arguments to the validator', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate(value, options, context) {
+                    expect(value).to.be.eq('test');
+                    expect(options).to.be.undefined;
+                    expect(context).to.be.eql({
+                      validatorName: undefined,
+                      modelName: 'model',
+                      propName: 'foo',
+                    });
+                    called++;
+                    return true;
+                  },
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(1);
+          });
+
+          it('should invoke the validator only once per value', function () {
+            let invoked = 0;
+            const dbs = new DatabaseSchema();
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate() {
+                    invoked++;
+                    return true;
+                  },
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(invoked).to.be.eq(1);
+          });
+        });
+      });
+
+      describe('when the option "validate" is an Array', function () {
         it('does nothing for an empty array validators', function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
@@ -2308,118 +2789,296 @@ describe('ModelDataValidator', function () {
           });
         });
 
-        it('does not validate a property value if it is not provided', function () {
+        it('the option "validate" requires a non-empty String, a Function, an Array or an Object', function () {
           const dbs = new DatabaseSchema();
           dbs
             .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
+            .addValidator('myValidator', () => true);
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
-                validate: ['myValidator'],
+                validate: undefined,
               },
             },
           });
-          const validator = dbs.getService(ModelDataValidator);
-          validator.validate('model', {});
-        });
-
-        it('does not validate undefined and null values', function () {
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: ['myValidator'],
-              },
-            },
-          });
-          const validator = dbs.getService(ModelDataValidator);
-          validator.validate('model', {foo: undefined});
-          validator.validate('model', {foo: null});
-        });
-
-        it('throws an error from the validator', function () {
-          const myValidator = function () {
-            throw Error('My error');
+          const V = dbs.getService(ModelDataValidator);
+          const throwable = v => () => {
+            const models = dbs.getService(DefinitionRegistry)['_models'];
+            models.model.properties.foo.validate = v;
+            V.validate('model', {foo: 'bar'});
           };
+          const error = v =>
+            format(
+              'The provided option "validate" for the property "foo" in the model "model" ' +
+                'should be either a validator name, a validator function, an array ' +
+                'of validator names or functions, or an object mapping validator ' +
+                'names to their arguments, but %s was given.',
+              v,
+            );
+          expect(throwable('')).to.throw(error('""'));
+          expect(throwable(10)).to.throw(error('10'));
+          expect(throwable(0)).to.throw(error('0'));
+          expect(throwable(true)).to.throw(error('true'));
+          expect(throwable(false)).to.throw(error('false'));
+          throwable('myValidator')();
+          throwable(() => true)();
+          throwable(['myValidator'])();
+          throwable([() => true])();
+          throwable([])();
+          throwable({myValidator: true})();
+          throwable({})();
+        });
+
+        it('the option "validate" with an Array value requires elements to be a non-empty String or a Function', function () {
           const dbs = new DatabaseSchema();
           dbs
             .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+            .addValidator('myValidator', () => true);
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
-                validate: ['myValidator'],
+                validate: undefined,
               },
             },
           });
-          const throwable = () =>
-            dbs.getService(ModelDataValidator).validate('model', {
-              foo: 'test',
-            });
-          expect(throwable).to.throw('My error');
+          const V = dbs.getService(ModelDataValidator);
+          const throwable = v => () => {
+            const models = dbs.getService(DefinitionRegistry)['_models'];
+            models.model.properties.foo.validate = [v];
+            V.validate('model', {foo: 'bar'});
+          };
+          const error = v =>
+            format(
+              'The provided option "validate" for the property "foo" in the model "model" ' +
+                'has an Array value that should contain validator names or validator ' +
+                'functions, but %s was given.',
+              v,
+            );
+          expect(throwable('')).to.throw(error('""'));
+          expect(throwable(10)).to.throw(error('10'));
+          expect(throwable(0)).to.throw(error('0'));
+          expect(throwable(true)).to.throw(error('true'));
+          expect(throwable(false)).to.throw(error('false'));
+          expect(throwable([1, 2, 3])).to.throw(error('Array'));
+          expect(throwable({foo: 'bar'})).to.throw(error('Object'));
+          expect(throwable(null)).to.throw(error('null'));
+          expect(throwable(undefined)).to.throw(error('undefined'));
+          throwable('myValidator')();
+          throwable(() => true)();
         });
 
-        it('allows the given value if validators returns true', function () {
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator1', () => true)
-            .addValidator('myValidator2', () => true);
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: ['myValidator1', 'myValidator2'],
-              },
-            },
-          });
-          dbs.getService(ModelDataValidator).validate('model', {
-            foo: 'test',
-          });
-        });
-
-        it('throws an error if the validator returns a promise', function () {
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => Promise.resolve(true));
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: ['myValidator'],
-              },
-            },
-          });
-          const throwable = () =>
-            dbs.getService(ModelDataValidator).validate('model', {
-              foo: 'test',
-            });
-          expect(throwable).to.throw(
-            'Asynchronous property validators are not supported, ' +
-              'but the property validator "myValidator" returns a Promise.',
-          );
-        });
-
-        it('throws an error by non-true result from one of validators', function () {
-          const testFn = v => {
+        describe('when an array element is a String', function () {
+          it('should not validate the non-provided property', function () {
+            let calls = 0;
             const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            reg.addValidator('myValidator2', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {});
+            expect(calls).to.be.eq(0);
+          });
+
+          it('should not validate undefined and null values', function () {
+            let calls = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            reg.addValidator('myValidator2', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            const validator = dbs.getService(ModelDataValidator);
+            validator.validate('model', {foo: undefined});
+            validator.validate('model', {foo: null});
+            expect(calls).to.be.eq(0);
+          });
+
+          it('should not validate the empty value', function () {
+            let calls = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            reg.addValidator('myValidator2', function () {
+              calls++;
+              throw new Error('Should not to be called.');
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.STRING,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
             dbs
-              .getService(PropertyValidatorRegistry)
-              .addValidator('myValidator1', () => true)
-              .addValidator('myValidator2', () => v);
+              .getService(EmptyValuesService)
+              .setEmptyValuesOf(DataType.STRING, [5]);
+            dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+            expect(calls).to.be.eq(0);
+          });
+
+          it('should throw the error for the non-existent validator name', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return true;
+            });
+            const modelDef = {
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1'],
+                },
+              },
+            };
+            dbs.defineModel(modelDef);
+            modelDef.properties.foo.validate.push('myValidator2');
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw(
+              'The property validator "myValidator2" is not defined.',
+            );
+            expect(called).to.be.eq(1);
+          });
+
+          it('should throw the error from the first validator', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              throw Error('My error');
+            });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return false;
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw('My error');
+            expect(called).to.be.eq(1);
+          });
+
+          it('should throw the error from the second validator', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return true;
+            });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              throw Error('My error');
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw('My error');
+            expect(called).to.be.eq(2);
+          });
+
+          it('should allow the given value if validators returns true', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return true;
+            });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return true;
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(2);
+          });
+
+          it('should throw the error if the first validator returns a promise', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return Promise.resolve(true);
+            });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return true;
+            });
             dbs.defineModel({
               name: 'model',
               properties: {
@@ -2434,134 +3093,1030 @@ describe('ModelDataValidator', function () {
                 foo: 'test',
               });
             expect(throwable).to.throw(
-              'The property "foo" of the model "model" has the invalid value "test" ' +
-                'that caught by the validator "myValidator2".',
+              'Asynchronous property validators are not supported, ' +
+                'but the property "foo" of the model "model" has the property ' +
+                'validator "myValidator1" that returns a Promise.',
             );
-          };
-          testFn('str');
-          testFn('');
-          testFn(10);
-          testFn(0);
-          testFn(false);
-          testFn(undefined);
-          testFn(null);
-          testFn({});
-          testFn([]);
-          testFn(() => undefined);
-        });
+            expect(called).to.be.eq(1);
+          });
 
-        it('passes arguments to the validator', function () {
-          let validated = false;
-          const dbs = new DatabaseSchema();
-          const myValidator = function (value, options, context) {
-            expect(value).to.be.eq('test');
-            expect(options).to.be.undefined;
-            expect(context).to.be.eql({
-              validatorName: 'myValidator',
-              modelName: 'model',
-              propName: 'foo',
+          it('should throw the error if the second validator returns a promise', function () {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return true;
             });
-            validated = true;
-            return true;
-          };
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: ['myValidator'],
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return Promise.resolve(true);
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
               },
-            },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw(
+              'Asynchronous property validators are not supported, ' +
+                'but the property "foo" of the model "model" has the property ' +
+                'validator "myValidator2" that returns a Promise.',
+            );
+            expect(called).to.be.eq(2);
           });
-          dbs.getService(ModelDataValidator).validate('model', {
-            foo: 'test',
+
+          it('should throw the error for a non-true result from the first validator', function () {
+            const testFn = v => {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const reg = dbs.getService(PropertyValidatorRegistry);
+              reg.addValidator('myValidator1', function () {
+                called++;
+                return v;
+              });
+              reg.addValidator('myValidator2', function () {
+                called++;
+                return true;
+              });
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: ['myValidator1', 'myValidator2'],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'The property "foo" of the model "model" has the invalid value "test" ' +
+                  'that caught by the property validator "myValidator1".',
+              );
+              expect(called).to.be.eq(1);
+            };
+            testFn('str');
+            testFn('');
+            testFn(10);
+            testFn(0);
+            testFn(false);
+            testFn(undefined);
+            testFn(null);
+            testFn({});
+            testFn([]);
+            testFn(() => undefined);
           });
-          expect(validated).to.be.true;
+
+          it('should throw the error for a non-true result from the second validator', function () {
+            const testFn = v => {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const reg = dbs.getService(PropertyValidatorRegistry);
+              reg.addValidator('myValidator1', function () {
+                called++;
+                return true;
+              });
+              reg.addValidator('myValidator2', function () {
+                called++;
+                return v;
+              });
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: ['myValidator1', 'myValidator2'],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'The property "foo" of the model "model" has the invalid value "test" ' +
+                  'that caught by the property validator "myValidator2".',
+              );
+              expect(called).to.be.eq(2);
+            };
+            testFn('str');
+            testFn('');
+            testFn(10);
+            testFn(0);
+            testFn(false);
+            testFn(undefined);
+            testFn(null);
+            testFn({});
+            testFn([]);
+            testFn(() => undefined);
+          });
+
+          it('should pass arguments to validators', function () {
+            let called = false;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator(
+              'myValidator1',
+              function (value, options, context) {
+                expect(value).to.be.eq('test');
+                expect(options).to.be.undefined;
+                expect(context).to.be.eql({
+                  validatorName: 'myValidator1',
+                  modelName: 'model',
+                  propName: 'foo',
+                });
+                called++;
+                return true;
+              },
+            );
+            reg.addValidator(
+              'myValidator2',
+              function (value, options, context) {
+                expect(value).to.be.eq('test');
+                expect(options).to.be.undefined;
+                expect(context).to.be.eql({
+                  validatorName: 'myValidator2',
+                  modelName: 'model',
+                  propName: 'foo',
+                });
+                called++;
+                return true;
+              },
+            );
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(called).to.be.eq(2);
+          });
+
+          it('should invoke validators in the correct order', function () {
+            const invocation = [];
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              invocation.push('myValidator1');
+              return true;
+            });
+            reg.addValidator('myValidator2', function () {
+              invocation.push('myValidator2');
+              return true;
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: ['myValidator1', 'myValidator2'],
+                },
+              },
+            });
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+            expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
+          });
         });
 
-        it('invokes validators by the given order', function () {
-          const invocation = [];
-          const validator1 = function () {
-            invocation.push('myValidator1');
-            return true;
-          };
-          const validator2 = function () {
-            invocation.push('myValidator2');
-            return true;
-          };
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator1', validator1)
-            .addValidator('myValidator2', validator2);
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: ['myValidator1', 'myValidator2'],
-              },
-            },
+        describe('when an array element is a Function', function () {
+          describe('named validators', function () {
+            it('should not validate the non-provided property', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              const myValidator2 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const validator = dbs.getService(ModelDataValidator);
+              validator.validate('model', {});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should not validate undefined and null values', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              const myValidator2 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const validator = dbs.getService(ModelDataValidator);
+              validator.validate('model', {foo: undefined});
+              validator.validate('model', {foo: null});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should not validate the empty value', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              const myValidator2 = function () {
+                calls++;
+                throw new Error('Should not to be called.');
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              dbs
+                .getService(EmptyValuesService)
+                .setEmptyValuesOf(DataType.STRING, [5]);
+              dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should throw the error from the first validator', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                called++;
+                throw Error('My error');
+              };
+              const myValidator2 = function () {
+                called++;
+                return false;
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw('My error');
+              expect(called).to.be.eq(1);
+            });
+
+            it('should throw the error from the second validator', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                called++;
+                return true;
+              };
+              const myValidator2 = function () {
+                called++;
+                throw Error('My error');
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw('My error');
+              expect(called).to.be.eq(2);
+            });
+
+            it('should allow the given value if validators returns true', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                called++;
+                return true;
+              };
+              const myValidator2 = function () {
+                called++;
+                return true;
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(called).to.be.eq(2);
+            });
+
+            it('should throw the error if the first validator returns a promise', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                called++;
+                return Promise.resolve(true);
+              };
+              const myValidator2 = function () {
+                called++;
+                return true;
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'Asynchronous property validators are not supported, ' +
+                  'but the property "foo" of the model "model" has the property ' +
+                  'validator "myValidator1" that returns a Promise.',
+              );
+              expect(called).to.be.eq(1);
+            });
+
+            it('should throw the error if the second validator returns a promise', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function () {
+                called++;
+                return true;
+              };
+              const myValidator2 = function () {
+                called++;
+                return Promise.resolve(true);
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'Asynchronous property validators are not supported, ' +
+                  'but the property "foo" of the model "model" has the property ' +
+                  'validator "myValidator2" that returns a Promise.',
+              );
+              expect(called).to.be.eq(2);
+            });
+
+            it('should throw the error for a non-true result from the first validator', function () {
+              const testFn = v => {
+                let called = 0;
+                const dbs = new DatabaseSchema();
+                const myValidator1 = function () {
+                  called++;
+                  return v;
+                };
+                const myValidator2 = function () {
+                  called++;
+                  return true;
+                };
+                dbs.defineModel({
+                  name: 'model',
+                  properties: {
+                    foo: {
+                      type: DataType.ANY,
+                      validate: [myValidator1, myValidator2],
+                    },
+                  },
+                });
+                const throwable = () =>
+                  dbs.getService(ModelDataValidator).validate('model', {
+                    foo: 'test',
+                  });
+                expect(throwable).to.throw(
+                  'The property "foo" of the model "model" has the invalid value "test" ' +
+                    'that caught by the property validator "myValidator1".',
+                );
+                expect(called).to.be.eq(1);
+              };
+              testFn('str');
+              testFn('');
+              testFn(10);
+              testFn(0);
+              testFn(false);
+              testFn(undefined);
+              testFn(null);
+              testFn({});
+              testFn([]);
+              testFn(() => undefined);
+            });
+
+            it('should throw the error for a non-true result from the second validator', function () {
+              const testFn = v => {
+                let called = 0;
+                const dbs = new DatabaseSchema();
+                const myValidator1 = function () {
+                  called++;
+                  return true;
+                };
+                const myValidator2 = function () {
+                  called++;
+                  return v;
+                };
+                dbs.defineModel({
+                  name: 'model',
+                  properties: {
+                    foo: {
+                      type: DataType.ANY,
+                      validate: [myValidator1, myValidator2],
+                    },
+                  },
+                });
+                const throwable = () =>
+                  dbs.getService(ModelDataValidator).validate('model', {
+                    foo: 'test',
+                  });
+                expect(throwable).to.throw(
+                  'The property "foo" of the model "model" has the invalid value "test" ' +
+                    'that caught by the property validator "myValidator2".',
+                );
+                expect(called).to.be.eq(2);
+              };
+              testFn('str');
+              testFn('');
+              testFn(10);
+              testFn(0);
+              testFn(false);
+              testFn(undefined);
+              testFn(null);
+              testFn({});
+              testFn([]);
+              testFn(() => undefined);
+            });
+
+            it('should pass arguments to validators', function () {
+              let called = false;
+              const dbs = new DatabaseSchema();
+              const myValidator1 = function (value, options, context) {
+                expect(value).to.be.eq('test');
+                expect(options).to.be.undefined;
+                expect(context).to.be.eql({
+                  validatorName: 'myValidator1',
+                  modelName: 'model',
+                  propName: 'foo',
+                });
+                called++;
+                return true;
+              };
+              const myValidator2 = function (value, options, context) {
+                expect(value).to.be.eq('test');
+                expect(options).to.be.undefined;
+                expect(context).to.be.eql({
+                  validatorName: 'myValidator2',
+                  modelName: 'model',
+                  propName: 'foo',
+                });
+                called++;
+                return true;
+              };
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(called).to.be.eq(2);
+            });
+
+            it('should invoke validators in the correct order', function () {
+              const invocation = [];
+              const myValidator1 = function () {
+                invocation.push('myValidator1');
+                return true;
+              };
+              const myValidator2 = function () {
+                invocation.push('myValidator2');
+                return true;
+              };
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [myValidator1, myValidator2],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
+            });
           });
-          dbs.getService(ModelDataValidator).validate('model', {
-            foo: 'test',
+
+          describe('anonymous validators', function () {
+            it('should not validate the non-provided property', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                    ],
+                  },
+                },
+              });
+              const validator = dbs.getService(ModelDataValidator);
+              validator.validate('model', {});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should not validate undefined and null values', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                    ],
+                  },
+                },
+              });
+              const validator = dbs.getService(ModelDataValidator);
+              validator.validate('model', {foo: undefined});
+              validator.validate('model', {foo: null});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should not validate the empty value', function () {
+              let calls = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    validate: [
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                      () => {
+                        calls++;
+                        throw new Error('Should not to be called.');
+                      },
+                    ],
+                  },
+                },
+              });
+              dbs
+                .getService(EmptyValuesService)
+                .setEmptyValuesOf(DataType.STRING, [5]);
+              dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+              expect(calls).to.be.eq(0);
+            });
+
+            it('should throw the error from the first validator', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        called++;
+                        throw Error('My error');
+                      },
+                      () => {
+                        called++;
+                        return false;
+                      },
+                    ],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw('My error');
+              expect(called).to.be.eq(1);
+            });
+
+            it('should throw the error from the second validator', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        called++;
+                        return true;
+                      },
+                      () => {
+                        called++;
+                        throw Error('My error');
+                      },
+                    ],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw('My error');
+              expect(called).to.be.eq(2);
+            });
+
+            it('should allow the given value if validators returns true', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        called++;
+                        return true;
+                      },
+                      () => {
+                        called++;
+                        return true;
+                      },
+                    ],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(called).to.be.eq(2);
+            });
+
+            it('should throw the error if the first validator returns a promise', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        called++;
+                        return Promise.resolve(true);
+                      },
+                      () => {
+                        called++;
+                        return true;
+                      },
+                    ],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'Asynchronous property validators are not supported, ' +
+                  'but the property "foo" of the model "model" has a property ' +
+                  'validator that returns a Promise.',
+              );
+              expect(called).to.be.eq(1);
+            });
+
+            it('should throw the error if the second validator returns a promise', function () {
+              let called = 0;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        called++;
+                        return true;
+                      },
+                      () => {
+                        called++;
+                        return Promise.resolve(true);
+                      },
+                    ],
+                  },
+                },
+              });
+              const throwable = () =>
+                dbs.getService(ModelDataValidator).validate('model', {
+                  foo: 'test',
+                });
+              expect(throwable).to.throw(
+                'Asynchronous property validators are not supported, ' +
+                  'but the property "foo" of the model "model" has a property ' +
+                  'validator that returns a Promise.',
+              );
+              expect(called).to.be.eq(2);
+            });
+
+            it('should throw the error for a non-true result from the first validator', function () {
+              const testFn = v => {
+                let called = 0;
+                const dbs = new DatabaseSchema();
+                dbs.defineModel({
+                  name: 'model',
+                  properties: {
+                    foo: {
+                      type: DataType.ANY,
+                      validate: [
+                        () => {
+                          called++;
+                          return v;
+                        },
+                        () => {
+                          called++;
+                          return true;
+                        },
+                      ],
+                    },
+                  },
+                });
+                const throwable = () =>
+                  dbs.getService(ModelDataValidator).validate('model', {
+                    foo: 'test',
+                  });
+                expect(throwable).to.throw(
+                  'The property "foo" of the model "model" has the invalid value "test" ' +
+                    'that caught by a property validator.',
+                );
+                expect(called).to.be.eq(1);
+              };
+              testFn('str');
+              testFn('');
+              testFn(10);
+              testFn(0);
+              testFn(false);
+              testFn(undefined);
+              testFn(null);
+              testFn({});
+              testFn([]);
+              testFn(() => undefined);
+            });
+
+            it('should throw the error for a non-true result from the second validator', function () {
+              const testFn = v => {
+                let called = 0;
+                const dbs = new DatabaseSchema();
+                dbs.defineModel({
+                  name: 'model',
+                  properties: {
+                    foo: {
+                      type: DataType.ANY,
+                      validate: [
+                        () => {
+                          called++;
+                          return true;
+                        },
+                        () => {
+                          called++;
+                          return v;
+                        },
+                      ],
+                    },
+                  },
+                });
+                const throwable = () =>
+                  dbs.getService(ModelDataValidator).validate('model', {
+                    foo: 'test',
+                  });
+                expect(throwable).to.throw(
+                  'The property "foo" of the model "model" has the invalid value "test" ' +
+                    'that caught by a property validator.',
+                );
+                expect(called).to.be.eq(2);
+              };
+              testFn('str');
+              testFn('');
+              testFn(10);
+              testFn(0);
+              testFn(false);
+              testFn(undefined);
+              testFn(null);
+              testFn({});
+              testFn([]);
+              testFn(() => undefined);
+            });
+
+            it('should pass arguments to validators', function () {
+              let called = false;
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      (value, options, context) => {
+                        expect(value).to.be.eq('test');
+                        expect(options).to.be.undefined;
+                        expect(context).to.be.eql({
+                          validatorName: undefined,
+                          modelName: 'model',
+                          propName: 'foo',
+                        });
+                        called++;
+                        return true;
+                      },
+                      (value, options, context) => {
+                        expect(value).to.be.eq('test');
+                        expect(options).to.be.undefined;
+                        expect(context).to.be.eql({
+                          validatorName: undefined,
+                          modelName: 'model',
+                          propName: 'foo',
+                        });
+                        called++;
+                        return true;
+                      },
+                    ],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(called).to.be.eq(2);
+            });
+
+            it('should invoke validators in the correct order', function () {
+              const invocation = [];
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.ANY,
+                    validate: [
+                      () => {
+                        invocation.push('myValidator1');
+                        return true;
+                      },
+                      () => {
+                        invocation.push('myValidator2');
+                        return true;
+                      },
+                    ],
+                  },
+                },
+              });
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+              expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
+            });
           });
-          expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
         });
       });
 
-      describe('the option "validate" with an object value', function () {
-        it('does nothing for an empty validators object', function () {
+      describe('when the option "validate" is an Object', function () {
+        it('should not validate the non-provided property', function () {
+          let calls = 0;
           const dbs = new DatabaseSchema();
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: {},
-              },
-            },
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            calls++;
+            throw new Error('Should not to be called.');
           });
-          dbs.getService(ModelDataValidator).validate('model', {
-            foo: 'test',
+          reg.addValidator('myValidator2', function () {
+            calls++;
+            throw new Error('Should not to be called.');
           });
-        });
-
-        it('does not validate a property value if it is not provided', function () {
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
                 validate: {
-                  myValidator: true,
+                  myValidator1: true,
+                  myValidator2: true,
                 },
               },
             },
           });
           const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {});
+          expect(calls).to.be.eq(0);
         });
 
-        it('does not validate undefined and null values', function () {
+        it('should not validate undefined and null values', function () {
+          let calls = 0;
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => false);
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            calls++;
+            throw new Error('Should not to be called.');
+          });
+          reg.addValidator('myValidator2', function () {
+            calls++;
+            throw new Error('Should not to be called.');
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
                 validate: {
-                  myValidator: true,
+                  myValidator1: true,
+                  myValidator2: true,
                 },
               },
             },
@@ -2569,23 +4124,91 @@ describe('ModelDataValidator', function () {
           const validator = dbs.getService(ModelDataValidator);
           validator.validate('model', {foo: undefined});
           validator.validate('model', {foo: null});
+          expect(calls).to.be.eq(0);
         });
 
-        it('throws an error from the validator', function () {
-          const myValidator = function () {
-            throw Error('My error');
-          };
+        it('should not validate the empty value', function () {
+          let calls = 0;
           const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            calls++;
+            throw new Error('Should not to be called.');
+          });
+          reg.addValidator('myValidator2', function () {
+            calls++;
+            throw new Error('Should not to be called.');
+          });
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                validate: {
+                  myValidator1: true,
+                  myValidator2: true,
+                },
+              },
+            },
+          });
           dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+            .getService(EmptyValuesService)
+            .setEmptyValuesOf(DataType.STRING, [5]);
+          dbs.getService(ModelDataValidator).validate('model', {foo: 5});
+          expect(calls).to.be.eq(0);
+        });
+
+        it('should throw the error for the non-existent validator name', function () {
+          let called = 0;
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            return true;
+          });
+          const modelDef = {
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                validate: {
+                  myValidator1: true,
+                },
+              },
+            },
+          };
+          dbs.defineModel(modelDef);
+          modelDef.properties.foo.validate['myValidator2'] = true;
+          const throwable = () =>
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+          expect(throwable).to.throw(
+            'The property validator "myValidator2" is not defined.',
+          );
+          expect(called).to.be.eq(1);
+        });
+
+        it('should throw the error from the first validator', function () {
+          let called = 0;
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            throw Error('My error');
+          });
+          reg.addValidator('myValidator2', function () {
+            called++;
+            return false;
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
                 validate: {
-                  myValidator: true,
+                  myValidator1: true,
+                  myValidator2: true,
                 },
               },
             },
@@ -2595,14 +4218,53 @@ describe('ModelDataValidator', function () {
               foo: 'test',
             });
           expect(throwable).to.throw('My error');
+          expect(called).to.be.eq(1);
         });
 
-        it('allows the given value if validators returns true', function () {
+        it('should throw the error from the second validator', function () {
+          let called = 0;
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator1', () => true)
-            .addValidator('myValidator2', () => true);
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            return true;
+          });
+          reg.addValidator('myValidator2', function () {
+            called++;
+            throw Error('My error');
+          });
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                validate: {
+                  myValidator1: true,
+                  myValidator2: true,
+                },
+              },
+            },
+          });
+          const throwable = () =>
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+          expect(throwable).to.throw('My error');
+          expect(called).to.be.eq(2);
+        });
+
+        it('should allow the given value if validators returns true', function () {
+          let called = 0;
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            return true;
+          });
+          reg.addValidator('myValidator2', function () {
+            called++;
+            return true;
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2618,20 +4280,29 @@ describe('ModelDataValidator', function () {
           dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
+          expect(called).to.be.eq(2);
         });
 
-        it('throws an error if the validator returns a promise', function () {
+        it('should throw the error if the first validator returns a promise', function () {
+          let called = 0;
           const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', () => Promise.resolve(true));
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            return Promise.resolve(true);
+          });
+          reg.addValidator('myValidator2', function () {
+            called++;
+            return true;
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
                 validate: {
-                  myValidator: true,
+                  myValidator1: true,
+                  myValidator2: true,
                 },
               },
             },
@@ -2642,17 +4313,61 @@ describe('ModelDataValidator', function () {
             });
           expect(throwable).to.throw(
             'Asynchronous property validators are not supported, ' +
-              'but the property validator "myValidator" returns a Promise.',
+              'but the property "foo" of the model "model" has the property ' +
+              'validator "myValidator1" that returns a Promise.',
           );
+          expect(called).to.be.eq(1);
         });
 
-        it('throws an error by non-true result from one of validators', function () {
+        it('should throw the error if the second validator returns a promise', function () {
+          let called = 0;
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
+            called++;
+            return true;
+          });
+          reg.addValidator('myValidator2', function () {
+            called++;
+            return Promise.resolve(true);
+          });
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.ANY,
+                validate: {
+                  myValidator1: true,
+                  myValidator2: true,
+                },
+              },
+            },
+          });
+          const throwable = () =>
+            dbs.getService(ModelDataValidator).validate('model', {
+              foo: 'test',
+            });
+          expect(throwable).to.throw(
+            'Asynchronous property validators are not supported, ' +
+              'but the property "foo" of the model "model" has the property ' +
+              'validator "myValidator2" that returns a Promise.',
+          );
+          expect(called).to.be.eq(2);
+        });
+
+        it('should throw the error for a non-true result from the first validator', function () {
           const testFn = v => {
+            let called = 0;
             const dbs = new DatabaseSchema();
-            dbs
-              .getService(PropertyValidatorRegistry)
-              .addValidator('myValidator1', () => true)
-              .addValidator('myValidator2', () => v);
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return v;
+            });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return true;
+            });
             dbs.defineModel({
               name: 'model',
               properties: {
@@ -2671,8 +4386,9 @@ describe('ModelDataValidator', function () {
               });
             expect(throwable).to.throw(
               'The property "foo" of the model "model" has the invalid value "test" ' +
-                'that caught by the validator "myValidator2".',
+                'that caught by the property validator "myValidator1".',
             );
+            expect(called).to.be.eq(1);
           };
           testFn('str');
           testFn('');
@@ -2686,36 +4402,87 @@ describe('ModelDataValidator', function () {
           testFn(() => undefined);
         });
 
-        it('passes arguments to the validator', function () {
-          let validated = false;
-          const dbs = new DatabaseSchema();
-          const myValidator = function (value, options, context) {
-            expect(value).to.be.eq('test');
-            expect(options).to.be.eql({
-              option1: 'value1',
-              option2: 'value2',
+        it('should throw the error for a non-true result from the second validator', function () {
+          const testFn = v => {
+            let called = 0;
+            const dbs = new DatabaseSchema();
+            const reg = dbs.getService(PropertyValidatorRegistry);
+            reg.addValidator('myValidator1', function () {
+              called++;
+              return true;
             });
+            reg.addValidator('myValidator2', function () {
+              called++;
+              return v;
+            });
+            dbs.defineModel({
+              name: 'model',
+              properties: {
+                foo: {
+                  type: DataType.ANY,
+                  validate: {
+                    myValidator1: true,
+                    myValidator2: true,
+                  },
+                },
+              },
+            });
+            const throwable = () =>
+              dbs.getService(ModelDataValidator).validate('model', {
+                foo: 'test',
+              });
+            expect(throwable).to.throw(
+              'The property "foo" of the model "model" has the invalid value "test" ' +
+                'that caught by the property validator "myValidator2".',
+            );
+            expect(called).to.be.eq(2);
+          };
+          testFn('str');
+          testFn('');
+          testFn(10);
+          testFn(0);
+          testFn(false);
+          testFn(undefined);
+          testFn(null);
+          testFn({});
+          testFn([]);
+          testFn(() => undefined);
+        });
+
+        it('should pass arguments to validators', function () {
+          let called = false;
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function (value, options, context) {
+            expect(value).to.be.eq('test');
+            expect(options).to.be.eq('foo');
             expect(context).to.be.eql({
-              validatorName: 'myValidator',
+              validatorName: 'myValidator1',
               modelName: 'model',
               propName: 'foo',
             });
-            validated = true;
+            called++;
             return true;
-          };
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
+          });
+          reg.addValidator('myValidator2', function (value, options, context) {
+            expect(value).to.be.eq('test');
+            expect(options).to.be.eq('bar');
+            expect(context).to.be.eql({
+              validatorName: 'myValidator2',
+              modelName: 'model',
+              propName: 'foo',
+            });
+            called++;
+            return true;
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
               foo: {
                 type: DataType.ANY,
                 validate: {
-                  myValidator: {
-                    option1: 'value1',
-                    option2: 'value2',
-                  },
+                  myValidator1: 'foo',
+                  myValidator2: 'bar',
                 },
               },
             },
@@ -2723,24 +4490,21 @@ describe('ModelDataValidator', function () {
           dbs.getService(ModelDataValidator).validate('model', {
             foo: 'test',
           });
-          expect(validated).to.be.true;
+          expect(called).to.be.eq(2);
         });
 
-        it('invokes validators by the given order', function () {
+        it('should invoke validators in the correct order', function () {
           const invocation = [];
-          const validator1 = function () {
+          const dbs = new DatabaseSchema();
+          const reg = dbs.getService(PropertyValidatorRegistry);
+          reg.addValidator('myValidator1', function () {
             invocation.push('myValidator1');
             return true;
-          };
-          const validator2 = function () {
+          });
+          reg.addValidator('myValidator2', function () {
             invocation.push('myValidator2');
             return true;
-          };
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator1', validator1)
-            .addValidator('myValidator2', validator2);
+          });
           dbs.defineModel({
             name: 'model',
             properties: {
@@ -2758,72 +4522,6 @@ describe('ModelDataValidator', function () {
           });
           expect(invocation).to.be.eql(['myValidator1', 'myValidator2']);
         });
-
-        it('validates even the validator options is false', function () {
-          let validated = false;
-          const myValidator = function () {
-            validated = true;
-            return true;
-          };
-          const dbs = new DatabaseSchema();
-          dbs
-            .getService(PropertyValidatorRegistry)
-            .addValidator('myValidator', myValidator);
-          dbs.defineModel({
-            name: 'model',
-            properties: {
-              foo: {
-                type: DataType.ANY,
-                validate: {
-                  myValidator: false,
-                },
-              },
-            },
-          });
-          dbs.getService(ModelDataValidator).validate('model', {
-            foo: 'test',
-          });
-          expect(validated).to.be.true;
-        });
-      });
-
-      it('the option "validate" requires a non-empty String, an Array or an Object', function () {
-        const dbs = new DatabaseSchema();
-        dbs
-          .getService(PropertyValidatorRegistry)
-          .addValidator('myValidator', () => true);
-        dbs.defineModel({
-          name: 'model',
-          properties: {
-            foo: {
-              type: DataType.ANY,
-              validate: undefined,
-            },
-          },
-        });
-        const V = dbs.getService(ModelDataValidator);
-        const throwable = v => () => {
-          const models = dbs.getService(DefinitionRegistry)['_models'];
-          models.model.properties.foo.validate = v;
-          V.validate('model', {foo: 'bar'});
-        };
-        const error = v =>
-          format(
-            'The provided option "validate" of the property "foo" in the model "model" ' +
-              'should be a non-empty String, an Array of String or an Object, ' +
-              'but %s given.',
-            v,
-          );
-        expect(throwable('')).to.throw(error('""'));
-        expect(throwable(10)).to.throw(error('10'));
-        expect(throwable(0)).to.throw(error('0'));
-        expect(throwable(true)).to.throw(error('true'));
-        expect(throwable(false)).to.throw(error('false'));
-        throwable('myValidator')();
-        throwable(['myValidator'])();
-        throwable([])();
-        throwable({myValidator: true})();
-        throwable({})();
       });
     });
   });

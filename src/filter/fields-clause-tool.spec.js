@@ -24,7 +24,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The first argument of FieldsClauseTool.filter should be an Object or ' +
-                'an Array of Object, but %s given.',
+                'an Array of Object, but %s was given.',
               v,
             );
           expect(throwable('str')).to.throw(error('"str"'));
@@ -45,7 +45,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The second argument of FieldsClauseTool.filter should be ' +
-                'a non-empty String, but %s given.',
+                'a non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -64,7 +64,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The provided option "fields" should be a non-empty String ' +
-                'or an Array of non-empty String, but %s given.',
+                'or an Array of non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -103,7 +103,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The first argument of FieldsClauseTool.filter should be an Object or ' +
-                'an Array of Object, but %s given.',
+                'an Array of Object, but %s was given.',
               v,
             );
           expect(throwable('str')).to.throw(error('"str"'));
@@ -124,7 +124,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The second argument of FieldsClauseTool.filter should be ' +
-                'a non-empty String, but %s given.',
+                'a non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -143,7 +143,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The provided option "fields" should be a non-empty String ' +
-                'or an Array of non-empty String, but %s given.',
+                'or an Array of non-empty String, but %s was given.',
               v,
             );
           expect(throwable([''])).to.throw(error('""'));
@@ -189,7 +189,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The first argument of FieldsClauseTool.filter should be an Object or ' +
-                'an Array of Object, but %s given.',
+                'an Array of Object, but %s was given.',
               v,
             );
           expect(throwable(['str'])).to.throw(error('"str"'));
@@ -216,7 +216,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The second argument of FieldsClauseTool.filter should be ' +
-                'a non-empty String, but %s given.',
+                'a non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -243,7 +243,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The provided option "fields" should be a non-empty String ' +
-                'or an Array of non-empty String, but %s given.',
+                'or an Array of non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -306,7 +306,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The first argument of FieldsClauseTool.filter should be an Object or ' +
-                'an Array of Object, but %s given.',
+                'an Array of Object, but %s was given.',
               v,
             );
           expect(throwable(['str'])).to.throw(error('"str"'));
@@ -333,7 +333,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The second argument of FieldsClauseTool.filter should be ' +
-                'a non-empty String, but %s given.',
+                'a non-empty String, but %s was given.',
               v,
             );
           expect(throwable('')).to.throw(error('""'));
@@ -360,7 +360,7 @@ describe('FieldsClauseTool', function () {
           const error = v =>
             format(
               'The provided option "fields" should be a non-empty String ' +
-                'or an Array of non-empty String, but %s given.',
+                'or an Array of non-empty String, but %s was given.',
               v,
             );
           expect(throwable([''])).to.throw(error('""'));
@@ -414,7 +414,7 @@ describe('FieldsClauseTool', function () {
         const error = v =>
           format(
             'The provided option "fields" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -435,7 +435,7 @@ describe('FieldsClauseTool', function () {
         const error = v =>
           format(
             'The provided option "fields" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable([''])).to.throw(error('""'));
@@ -460,7 +460,7 @@ describe('FieldsClauseTool', function () {
         const error = v =>
           format(
             'The provided option "fields" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -487,7 +487,7 @@ describe('FieldsClauseTool', function () {
         const error = v =>
           format(
             'The provided option "fields" should be a non-empty String ' +
-              'or an Array of non-empty String, but %s given.',
+              'or an Array of non-empty String, but %s was given.',
             v,
           );
         expect(throwable([''])).to.throw(error('""'));

@@ -10,7 +10,7 @@ import {InvalidArgumentError} from '../errors/index.js';
 export function excludeObjectKeys(obj, keys) {
   if (typeof obj !== 'object' || !obj || Array.isArray(obj))
     throw new InvalidArgumentError(
-      'Cannot exclude keys from a non-Object value, %v given.',
+      'Cannot exclude keys from a non-Object value, %v was given.',
       obj,
     );
   const result = {...obj};

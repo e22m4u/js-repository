@@ -12,7 +12,7 @@ export function toLowerCaseTransformer(value, options, context) {
   if (value == null) return value;
   if (typeof value === 'string') return value.toLowerCase();
   throw new InvalidArgumentError(
-    'The property transformer %v requires a String value, but %v given.',
+    'The property transformer %v requires a String value, but %v was given.',
     context.transformerName,
     value,
   );

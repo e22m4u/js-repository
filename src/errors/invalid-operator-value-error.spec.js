@@ -5,7 +5,7 @@ describe('InvalidOperatorValueError', function () {
   it('sets specific message', function () {
     const error = new InvalidOperatorValueError('exists', 'a boolean', '');
     const message =
-      'Condition of {exists: ...} should have a boolean, but "" given.';
+      'Condition of {exists: ...} should have a boolean, but "" was given.';
     expect(error.message).to.be.eq(message);
   });
 });

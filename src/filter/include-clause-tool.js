@@ -197,7 +197,7 @@ export class IncludeClauseTool extends Service {
         if (!clause.relation || typeof clause.relation !== 'string')
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
-              'a non-empty String, but %v given.',
+              'a non-empty String, but %v was given.',
             clause.relation,
           );
         if ('scope' in clause && clause) this.validateScopeClause(clause.scope);
@@ -213,7 +213,7 @@ export class IncludeClauseTool extends Service {
       // unsupported
       throw new InvalidArgumentError(
         'The provided option "include" should have a non-empty String, ' +
-          'an Object or an Array, but %v given.',
+          'an Object or an Array, but %v was given.',
         clause,
       );
     }
@@ -228,7 +228,7 @@ export class IncludeClauseTool extends Service {
     if (clause == null) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'The provided option "scope" should be an Object, but %v given.',
+        'The provided option "scope" should be an Object, but %v was given.',
         clause,
       );
     // {where: ...}
@@ -294,7 +294,7 @@ export class IncludeClauseTool extends Service {
         if (!clause.relation || typeof clause.relation !== 'string')
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
-              'a non-empty String, but %v given.',
+              'a non-empty String, but %v was given.',
             clause.relation,
           );
         const normalized = {relation: clause.relation};
@@ -316,7 +316,7 @@ export class IncludeClauseTool extends Service {
       // unsupported
       throw new InvalidArgumentError(
         'The provided option "include" should have a non-empty String, ' +
-          'an Object or an Array, but %v given.',
+          'an Object or an Array, but %v was given.',
         clause,
       );
     }
@@ -333,7 +333,7 @@ export class IncludeClauseTool extends Service {
     if (clause == null) return;
     if (typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
-        'The provided option "scope" should be an Object, but %v given.',
+        'The provided option "scope" should be an Object, but %v was given.',
         clause,
       );
     const result = {};

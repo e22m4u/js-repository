@@ -17,17 +17,17 @@ export class SliceClauseTool extends Service {
     if (!Array.isArray(entities))
       throw new InvalidArgumentError(
         'The first argument of SliceClauseTool.slice ' +
-          'should be an Array, but %v given.',
+          'should be an Array, but %v was given.',
         entities,
       );
     if (skip != null && typeof skip !== 'number')
       throw new InvalidArgumentError(
-        'The provided option "skip" should be a Number, but %v given.',
+        'The provided option "skip" should be a Number, but %v was given.',
         skip,
       );
     if (limit != null && typeof limit !== 'number')
       throw new InvalidArgumentError(
-        'The provided option "limit" should be a Number, but %v given.',
+        'The provided option "limit" should be a Number, but %v was given.',
         limit,
       );
     skip = skip || 0;
@@ -44,7 +44,7 @@ export class SliceClauseTool extends Service {
     if (skip == null) return;
     if (typeof skip !== 'number')
       throw new InvalidArgumentError(
-        'The provided option "skip" should be a Number, but %v given.',
+        'The provided option "skip" should be a Number, but %v was given.',
         skip,
       );
   }
@@ -58,7 +58,7 @@ export class SliceClauseTool extends Service {
     if (limit == null) return;
     if (typeof limit !== 'number')
       throw new InvalidArgumentError(
-        'The provided option "limit" should be a Number, but %v given.',
+        'The provided option "limit" should be a Number, but %v was given.',
         limit,
       );
   }

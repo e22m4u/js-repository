@@ -18,7 +18,7 @@ describe('selectObjectKeys', function () {
     const throwable = () => selectObjectKeys(10, ['key']);
     expect(throwable).to.throw(
       'The first argument of selectObjectKeys ' +
-        'should be an Object, but 10 given.',
+        'should be an Object, but 10 was given.',
     );
   });
 
@@ -26,7 +26,7 @@ describe('selectObjectKeys', function () {
     const throwable = () => selectObjectKeys({});
     expect(throwable).to.throw(
       'The second argument of selectObjectKeys ' +
-        'should be an Array of String, but undefined given.',
+        'should be an Array of String, but undefined was given.',
     );
   });
 
@@ -34,7 +34,7 @@ describe('selectObjectKeys', function () {
     const throwable = () => selectObjectKeys({}, [10]);
     expect(throwable).to.throw(
       'The second argument of selectObjectKeys ' +
-        'should be an Array of String, but 10 given.',
+        'should be an Array of String, but 10 was given.',
     );
   });
 });

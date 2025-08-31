@@ -17,13 +17,13 @@ export class RelationsDefinitionValidator extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The first argument of RelationsDefinitionValidator.validate ' +
-          'should be a non-empty String, but %v given.',
+          'should be a non-empty String, but %v was given.',
         modelName,
       );
     if (!relDefs || typeof relDefs !== 'object' || Array.isArray(relDefs))
       throw new InvalidArgumentError(
         'The provided option "relations" of the model %v ' +
-          'should be an Object, but %v given.',
+          'should be an Object, but %v was given.',
         modelName,
         relDefs,
       );
@@ -45,19 +45,19 @@ export class RelationsDefinitionValidator extends Service {
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The first argument of RelationsDefinitionValidator._validateRelation ' +
-          'should be a non-empty String, but %v given.',
+          'should be a non-empty String, but %v was given.',
         modelName,
       );
     if (!relName || typeof relName !== 'string')
       throw new InvalidArgumentError(
         'The relation name of the model %v should be ' +
-          'a non-empty String, but %v given.',
+          'a non-empty String, but %v was given.',
         modelName,
         relName,
       );
     if (!relDef || typeof relDef !== 'object' || Array.isArray(relDef))
       throw new InvalidArgumentError(
-        'The relation %v of the model %v should be an Object, but %v given.',
+        'The relation %v of the model %v should be an Object, but %v was given.',
         relName,
         modelName,
         relDef,
@@ -65,7 +65,7 @@ export class RelationsDefinitionValidator extends Service {
     if (!relDef.type || !Object.values(Type).includes(relDef.type))
       throw new InvalidArgumentError(
         'The relation %v of the model %v requires the option "type" ' +
-          'to have one of relation types: %l, but %v given.',
+          'to have one of relation types: %l, but %v was given.',
         relName,
         modelName,
         Object.values(Type),
@@ -112,7 +112,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it expects the option "polymorphic" to be a Boolean, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.polymorphic,
@@ -121,7 +121,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a polymorphic "belongsTo" relation, ' +
             'so it expects the provided option "foreignKey" to be a String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.foreignKey,
@@ -130,7 +130,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a polymorphic "belongsTo" relation, ' +
             'so it expects the provided option "discriminator" to be a String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.discriminator,
@@ -141,7 +141,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it requires the option "model" to be a non-empty String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.model,
@@ -150,7 +150,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it expects the provided option "foreignKey" to be a String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.foreignKey,
@@ -208,7 +208,7 @@ export class RelationsDefinitionValidator extends Service {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "hasOne", ' +
           'so it requires the option "model" to be a non-empty String, ' +
-          'but %v given.',
+          'but %v was given.',
         relName,
         modelName,
         relDef.model,
@@ -238,7 +238,7 @@ export class RelationsDefinitionValidator extends Service {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "foreignKey" ' +
-              'to be a non-empty String, but %v given.',
+              'to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.foreignKey,
@@ -247,7 +247,7 @@ export class RelationsDefinitionValidator extends Service {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "discriminator" ' +
-              'to be a non-empty String, but %v given.',
+              'to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.discriminator,
@@ -256,7 +256,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasOne", ' +
             'so it expects the provided option "polymorphic" to be ' +
-            'a String or a Boolean, but %v given.',
+            'a String or a Boolean, but %v was given.',
           relName,
           modelName,
           relDef.polymorphic,
@@ -268,7 +268,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasOne", ' +
             'so it requires the option "foreignKey" to be a non-empty String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.foreignKey,
@@ -326,7 +326,7 @@ export class RelationsDefinitionValidator extends Service {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "hasMany", ' +
           'so it requires the option "model" to be a non-empty String, ' +
-          'but %v given.',
+          'but %v was given.',
         relName,
         modelName,
         relDef.model,
@@ -356,7 +356,7 @@ export class RelationsDefinitionValidator extends Service {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "foreignKey" ' +
-              'to be a non-empty String, but %v given.',
+              'to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.foreignKey,
@@ -365,7 +365,7 @@ export class RelationsDefinitionValidator extends Service {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "discriminator" ' +
-              'to be a non-empty String, but %v given.',
+              'to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.discriminator,
@@ -374,7 +374,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasMany", ' +
             'so it expects the provided option "polymorphic" to be ' +
-            'a String or a Boolean, but %v given.',
+            'a String or a Boolean, but %v was given.',
           relName,
           modelName,
           relDef.polymorphic,
@@ -386,7 +386,7 @@ export class RelationsDefinitionValidator extends Service {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasMany", ' +
             'so it requires the option "foreignKey" to be a non-empty String, ' +
-            'but %v given.',
+            'but %v was given.',
           relName,
           modelName,
           relDef.foreignKey,
@@ -424,7 +424,7 @@ export class RelationsDefinitionValidator extends Service {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +
           'so it requires the option "model" to be a non-empty String, ' +
-          'but %v given.',
+          'but %v was given.',
         relName,
         modelName,
         relDef.model,
@@ -433,7 +433,7 @@ export class RelationsDefinitionValidator extends Service {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +
           'so it expects the provided option "foreignKey" to be a String, ' +
-          'but %v given.',
+          'but %v was given.',
         relName,
         modelName,
         relDef.foreignKey,

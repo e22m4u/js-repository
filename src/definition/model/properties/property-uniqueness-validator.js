@@ -30,24 +30,24 @@ export class PropertyUniquenessValidator extends Service {
     if (typeof countMethod !== 'function')
       throw new InvalidArgumentError(
         'The parameter "countMethod" of the PropertyUniquenessValidator ' +
-          'must be a Function, but %v given.',
+          'must be a Function, but %v was given.',
         countMethod,
       );
     if (!methodName || typeof methodName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "methodName" of the PropertyUniquenessValidator ' +
-          'must be a non-empty String, but %v given.',
+          'must be a non-empty String, but %v was given.',
         methodName,
       );
     if (!modelName || typeof modelName !== 'string')
       throw new InvalidArgumentError(
         'The parameter "modelName" of the PropertyUniquenessValidator ' +
-          'must be a non-empty String, but %v given.',
+          'must be a non-empty String, but %v was given.',
         modelName,
       );
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
-        'The data of the model %v should be an Object, but %v given.',
+        'The data of the model %v should be an Object, but %v was given.',
         modelName,
         modelData,
       );

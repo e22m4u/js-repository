@@ -15,33 +15,33 @@ export class ModelDefinitionValidator extends Service {
   validate(modelDef) {
     if (!modelDef || typeof modelDef !== 'object' || Array.isArray(modelDef))
       throw new InvalidArgumentError(
-        'The model definition should be an Object, but %v given.',
+        'The model definition should be an Object, but %v was given.',
         modelDef,
       );
     if (!modelDef.name || typeof modelDef.name !== 'string')
       throw new InvalidArgumentError(
         'The model definition requires the option "name" ' +
-          'as a non-empty String, but %v given.',
+          'as a non-empty String, but %v was given.',
         modelDef.name,
       );
     if (modelDef.datasource && typeof modelDef.datasource !== 'string')
       throw new InvalidArgumentError(
         'The provided option "datasource" of the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         modelDef.name,
         modelDef.datasource,
       );
     if (modelDef.base && typeof modelDef.base !== 'string')
       throw new InvalidArgumentError(
         'The provided option "base" of the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         modelDef.name,
         modelDef.base,
       );
     if (modelDef.tableName && typeof modelDef.tableName !== 'string')
       throw new InvalidArgumentError(
         'The provided option "tableName" of the model %v ' +
-          'should be a String, but %v given.',
+          'should be a String, but %v was given.',
         modelDef.name,
         modelDef.tableName,
       );
@@ -52,7 +52,7 @@ export class ModelDefinitionValidator extends Service {
       ) {
         throw new InvalidArgumentError(
           'The provided option "properties" of the model %v ' +
-            'should be an Object, but %v given.',
+            'should be an Object, but %v was given.',
           modelDef.name,
           modelDef.properties,
         );
@@ -69,7 +69,7 @@ export class ModelDefinitionValidator extends Service {
       ) {
         throw new InvalidArgumentError(
           'The provided option "relations" of the model %v ' +
-            'should be an Object, but %v given.',
+            'should be an Object, but %v was given.',
           modelDef.name,
           modelDef.relations,
         );

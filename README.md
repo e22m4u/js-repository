@@ -6,12 +6,18 @@
 - [Импорт](#импорт)
 - [Описание](#описание)
 - [Пример](#пример)
-- [Схема базы данных](#схема-базы-данных)
+- [Схема](#схема)
 - [Источник данных](#источник-данных)
 - [Модель](#модель)
 - [Свойства](#свойства)
 - [Валидаторы](#валидаторы)
+  - [Глобальные валидаторы](#глобальные-валидаторы)
+  - [Регистрация глобальных валидаторов](#регистрация-глобальных-валидаторов)
+  - [Локальные валидаторы](#локальные-валидаторы)
 - [Трансформеры](#трансформеры)
+  - [Глобальные трансформеры](#глобальные-трансформеры)
+  - [Регистрация глобальных трансформеров](#регистрация-глобальных-трансформеров)
+  - [Локальные трансформеры](#локальные-трансформеры)
 - [Пустые значения](#пустые-значения)
 - [Репозиторий](#репозиторий)
 - [Фильтрация](#фильтрация)
@@ -129,10 +135,10 @@ dbs.defineModel({
   },
 })
 
-// получение репозитория модели "country"
+// получение репозитория модели
 const countryRep = dbs.getRepository('country');
 
-// добавление нового документа в коллекцию "country"
+// добавление нового документа в коллекцию
 const country = await countryRep.create({
   name: 'Russia',
   population: 143400000,
@@ -141,16 +147,15 @@ const country = await countryRep.create({
 // вывод нового документа
 console.log(country);
 // {
-//   "id": 1,
-//   "name": "Russia",
-//   "population": 143400000,
+//   id: 1,
+//   name: 'Russia',
+//   population: 143400000,
 // }
 ```
 
-## Схема базы данных
+## Схема
 
-Экземпляр класса `DatabaseSchema` хранит определения источников и моделей
-данных.
+Экземпляр класса `DatabaseSchema` хранит определения источников данных и моделей.
 
 **Методы**
 
@@ -285,7 +290,7 @@ dbs.defineModel({
 - `columnType: string` тип колонки (определяется адаптером)
 - `required: boolean` объявить свойство обязательным
 - `default: any` значение по умолчанию
-- `validate: string | array | object` см. [Валидаторы](#Валидаторы)
+- `validate: string | Function | array | object` см. [Валидаторы](#Валидаторы)
 - `unique: boolean | string` проверять значение на уникальность
 
 **Параметр `unique`**
@@ -341,7 +346,7 @@ dbs.defineModel({
     },
     code: {
       type: DataType.NUMBER, // тип свойства "number" (обязательно)
-      unique: PropertyUniqueness.UNIQUE, // проверять уникальность
+      unique: PropertyUniqueness.STRICT, // проверять уникальность
     },
   },
 });
@@ -369,19 +374,64 @@ dbs.defineModel({
 
 ## Валидаторы
 
-Кроме проверки типа, дополнительные условия можно задать с помощью
-валидаторов, через которые будет проходить значение свойства перед
-записью в базу. Исключением являются [пустые значения](#Пустые-значения),
-которые не подлежат проверке.
+Валидаторы используются для проверки значения свойства перед записью в базу.
+Проверка значения валидатором выполняется сразу после проверки типа, указанного
+в определении свойства модели. [Пустые значения](#пустые-значения) пропускают
+проверку валидаторами, так как не имеют полезной нагрузки.
 
-- `minLength: number` минимальная длинна строки или массива
-- `maxLength: number` максимальная длинна строки или массива
-- `regexp: string | RegExp` проверка по регулярному выражению
+### Глобальные валидаторы
 
-**Пример**
+Модуль поставляется с набором глобальных валидаторов:
 
-Валидаторы указываются в объявлении свойства модели параметром
-`validate`, который принимает объект с их названиями и настройками.
+- `regexp` проверка по регулярному выражению,  
+  *параметр: `string | RegExp` - рег. выражение;*
+
+- `minLength` минимальная длина строки или массива,  
+  *параметр: `number` - минимальная длина;*
+
+- `maxLength` максимальная длина строки или массива,  
+  *параметр: `number` - максимальная длина;*
+
+Валидаторы указанные ниже находятся в разработке:
+
+- `isLowerCase` проверка регистра (только прописные буквы);
+- `isUpperCase` проверка регистра (только строчные буквы);
+- `isEmail` проверка формата электронного адреса;
+
+**Примеры**
+
+Использование глобального валидатора.
+
+```js
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    email: {
+      type: DataType.STRING,
+      validate: 'isEmail',
+    },
+  },
+});
+```
+
+Использование глобальных валидаторов в виде массива.
+
+```js
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    email: {
+      type: DataType.STRING,
+      validate: [
+        'isEmail',
+        'isLowerCase',
+      ],
+    },
+  },
+});
+```
+
+Использование глобальных валидаторов с передачей аргументов.
 
 ```js
 dbs.defineModel({
@@ -389,46 +439,206 @@ dbs.defineModel({
   properties: {
     name: {
       type: DataType.STRING,
-      validate: { // валидаторы свойства "name"
-        minLength: 2, // минимальная длинна строки
-        maxLength: 24, // максимальная длинна строки
+      validate: {
+        minLength: 2,
+        maxLength: 24,
+        regexp: /^[a-zA-Z-']+$/,
       },
     },
   },
 });
 ```
 
-### Пользовательские валидаторы
+Глобальные валидаторы без параметров могут принимать любые аргументы.
+
+```js
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    email: {
+      type: DataType.STRING,
+      validate: {
+        maxLength: 100,
+        // так как валидатор "isEmail" не имеет параметров,
+        // его определение допускает передачу любого значения
+        // в качестве аргумента
+        isEmail: true,
+      },
+    },
+  },
+});
+```
+
+### Регистрация глобальных валидаторов
 
 Валидатором является функция, в которую передается значение соответствующего
 поля перед записью в базу. Если во время проверки функция возвращает `false`,
 то выбрасывается стандартная ошибка. Подмена стандартной ошибки возможна
 с помощью выброса пользовательской ошибки непосредственно внутри функции.
 
-Регистрация пользовательского валидатора выполняется методом `addValidator`
-сервиса `PropertyValidatorRegistry`, который принимает новое название
-и функцию для проверки значения.
+Регистрация глобального валидатора выполняется методом `addValidator` сервиса
+`PropertyValidatorRegistry`, который принимает название валидатора и функцию
+для проверки значения.
 
-**Пример**
+**Примеры**
+
+Регистрация глобального валидатора для проверки формата UUID.
 
 ```js
-// создание валидатора для запрета
-// всех символов кроме чисел
-const numericValidator = (input) => {
-  return /^[0-9]+$/.test(String(input));
+import {createError} from 'http-errors';
+import {format} from '@e22m4u/js-format';
+import {Errorf} from '@e22m4u/js-format';
+import {PropertyValidatorRegistry} from '@e22m4u/js-repository';
+
+// получение экземпляра сервиса
+const pvr = dbs.get(PropertyValidatorRegistry);
+
+// регулярные выражения для разных версий UUID
+const uuidRegex = {
+  any: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+  v4: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+};
+
+// регистрация глобального валидатора "isUuid",
+// принимающего объект настроек со свойством "version"
+pvr.addValidator('isUuid', (value, options, context) => {
+  // value   - проверяемое значение;
+  // options - настройки валидатора;
+  // context - информация о проверяемом свойстве;
+  console.log(options);
+  // {
+  //   version: 'v4'
+  // }
+  console.log(context);
+  // {
+  //   validatorName: 'isUuid',
+  //   modelName: 'device',
+  //   propName: 'deviceId'
+  // }
+
+  // пустые значения не передаются в валидаторы
+  if (typeof value !== 'string') return false;
+  // поиск регулярного выражения для нужной версии
+  const version = options?.version || 'any';
+  const regex = uuidRegex[version];
+  // если регулярное выражение не найдено,
+  // то выбрасывается внутренняя ошибка
+  if (!regex)
+    throw new Errorf(
+      'Invalid UUID version %v specified for validator.',
+      version,
+    );
+  // при неудачной проверке выбрасывается
+  // ошибка 400 BadRequest
+  if (!regex.test(value)) {
+    const versionString = version !== 'any' ? ` (version ${version})` : '';
+    throw createError(400, format(
+      'The property %v of the model %v must be a valid UUID%s.',
+      context.propName,
+      context.modelName,
+      versionString,
+    ));
+  }
+  // при успешной проверке возвращается true,
+  // в противном случае выбрасывается стандартная
+  // ошибка проверки
+  return true;
+});
+```
+
+Использование глобального валидатора в определении свойства.
+
+```js
+// определение модели "device"
+dbs.defineModel({
+  name: 'device',
+  properties: {
+    deviceId: {
+      type: DataType.STRING,
+      required: true,
+      validate: {
+        // значение {version: 'v4'} будет передаваться
+        // вторым аргументом в функцию-валидатор
+        isUuid: {version: 'v4'},
+      },
+    },
+  },
+});
+```
+
+### Локальные валидаторы
+
+Функция-валидатор может быть передана непосредственно в определении свойства
+без предварительной регистрации. Для этого достаточно передать функцию
+в параметр `validate` в качестве значения или элемента массива наряду
+с другими валидаторами.
+
+**Примеры**
+
+Использование локального валидатора для проверки сложности пароля.
+
+```js
+// валидатор `passwordStrength` проверяет сложность пароля
+function passwordStrength(value, options, context) {
+  // value   - проверяемое значение;
+  // options - не используется;
+  // context - информация о проверяемом свойстве;
+  console.log(context);
+  // {
+  //   validatorName: 'passwordStrength',
+  //   modelName: 'user',
+  //   propName: 'password'
+  // }
+  const errors = [];
+  if (value.length < 8)
+    errors.push('must be at least 8 characters long');
+  if (!/\d/.test(value))
+    errors.push('must contain at least one number');
+  if (!/[a-zA-Z]/.test(value))
+    errors.push('must contain at least one letter');
+  // если одно из условий сработало,
+  // то выбрасывается ошибка
+  if (errors.length > 0)
+    throw createError(400, format(
+      'Value of the property %v of the model %v %s.',
+      context.propName,
+      context.modelName,
+      errors.join(', '),
+    ));
+  // при успешной проверке возвращается true,
+  // в противном случае выбрасывается стандартная
+  // ошибка проверки
+  return true;
 }
 
-// регистрация валидатора "numeric"
-dbs.get(PropertyValidatorRegistry).addValidator('numeric', numericValidator);
-
-// использование валидатора в определении
-// свойства "code" для новой модели
+// определение модели "user"
 dbs.defineModel({
-  name: 'document',
+  name: 'user',
   properties: {
-    code: {
+    password: { // <--- Правильное свойство
       type: DataType.STRING,
-      validate: 'numeric',
+      required: true, // Пароль обычно обязателен
+      validate: passwordStrength, // <=
+      // или
+      // validate: [passwordStrength, ...]
+    },
+  },
+});
+```
+
+Использование анонимной функции-валидатора.
+
+```js
+// определение модели "article"
+dbs.defineModel({
+  name: 'article',
+  properties: {
+    slug: {
+      type: DataType.STRING,
+      validate: (value) => {
+        const re = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+        return re.test(value);
+      },
     },
   },
 });
@@ -436,38 +646,243 @@ dbs.defineModel({
 
 ## Трансформеры
 
-С помощью трансформеров производится модификация значений определенных
-полей перед записью в базу. Трансформеры позволяют указать какие изменения
-нужно производить с входящими данными. Исключением являются
-[пустые значения](#Пустые-значения), которые не подлежат трансформации.
+Трансформеры используются для модификации значения свойства перед проверкой
+типа и передачей значения в базу. Трансформеры позволяют автоматически очищать
+или приводить данные к нужному формату.
 
-- `trim` удаление пробельных символов с начала и конца строки
-- `toUpperCase` перевод строки в верхний регистр
-- `toLowerCase` перевод строки в нижний регистр
-- `toTitleCase` перевод строки в регистр заголовка
+### Глобальные трансформеры
 
-**Пример**
+Модуль поставляется с набором глобальных трансформеров:
 
-Трансформеры указываются в объявлении свойства модели параметром
-`transform`, который принимает название трансформера. Если требуется
-указать несколько названий, то используется массив. Если трансформер
-имеет настройки, то используется объект, где ключом является название
-трансформера, а значением его параметры.
+- `trim` удаление пробельных символов с начала и конца строки;
+- `toUpperCase` перевод строки в верхний регистр;
+- `toLowerCase` перевод строки в нижний регистр;
+
+Трансформеры указанные ниже находятся в разработке:
+
+- `cut` усечение строки или массива до указанной длины,  
+  *параметр: `number` - максимальная длина;*
+
+- `truncate` усечение строки с добавлением троеточия,  
+  *параметр: `number` - максимальная длина;*
+
+- `capitalize` перевод первой буквы каждого слова в верхний регистр,  
+  *параметр: `{firstWordOnly?: boolean}`;*
+
+**Примеры**
+
+Использование глобального трансформера.
 
 ```js
 dbs.defineModel({
   name: 'user',
   properties: {
-    name: {
+    username: {
       type: DataType.STRING,
-      transform: [ // трансформеры свойства "name"
-        'trim', // удалить пробелы в начале и конце строки
-        'toTitleCase', // перевод строки в регистр заголовка
+      transform: 'toLowerCase',
+    },
+  },
+});
+```
+
+Использование глобальных трансформеров в виде массива.
+
+```js
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    firstName: {
+      type: DataType.STRING,
+      transform: [
+        'trim',
+        'capitalize',
       ],
     },
   },
 });
 ```
+
+Использование глобальных трансформеров с передачей аргументов.
+
+```js
+dbs.defineModel({
+  name: 'article',
+  properties: {
+    annotation: {
+      type: DataType.STRING,
+      transform: {
+        truncate: 200,
+        capitalize: {firstWordOnly: true},
+      },
+    },
+  },
+});
+```
+
+Глобальные трансформеры без параметров могут принимать любые аргументы.
+
+```js
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    firstName: {
+      type: DataType.STRING,
+      transform: {
+        cut: 60,
+        // так как трансформер "trim" не имеет параметров,
+        // его определение допускает передачу любого значения
+        // в качестве аргумента
+        trim: true,
+      },
+    },
+  },
+});
+```
+
+### Регистрация глобальных трансформеров
+
+Трансформером является функция, которая принимает значение свойства и возвращает
+новое значение. Функция может быть как синхронной, так и асинхронной (возвращать
+`Promise`).
+
+Регистрация глобального трансформера выполняется методом `addTransformer`
+сервиса `PropertyTransformerRegistry`, который принимает название трансформера
+и саму функцию.
+
+**Примеры**
+
+Регистрация глобального трансформера для удаления HTML-тегов.
+
+```js
+import {PropertyTransformerRegistry} from '@e22m4u/js-repository';
+
+// получение экземпляра сервиса
+const ptr = dbs.get(PropertyTransformerRegistry);
+
+// регистрация глобального трансформера "stripTags"
+ptr.addTransformer('stripTags', (value, options, context) => {
+  // value   - трансформируемое значение;
+  // options - настройки трансформера (если переданы);
+  // context - информация о свойстве;
+  console.log(context);
+  // {
+  //   transformerName: 'stripTags',
+  //   modelName: 'comment',
+  //   propName: 'text'
+  // }
+  
+  if (typeof value !== 'string')
+    return value; // возвращаем как есть, если не строка
+  
+  return value.replace(/<[^>]*>?/gm, '');
+});
+```
+
+Использование глобального трансформера в определении модели.
+
+```js
+dbs.defineModel({
+  name: 'comment',
+  properties: {
+    text: {
+      type: DataType.STRING,
+      transform: 'stripTags',
+    },
+  },
+});
+```
+
+### Локальные трансформеры
+
+Функция-трансформер может быть передана непосредственно в определении свойства без предварительной регистрации. Для этого достаточно передать функцию в параметр `transform` в качестве значения или элемента массива.
+
+**Примеры**
+
+Использование локального трансформера для нормализации имен.
+
+```js
+// функция для нормализации имени
+function normalizeName(value, options, context) {
+  // value   - трансформируемое значение
+  // options - не используется
+  // context - информация о свойстве
+  if (!value || typeof value !== 'string') return value;
+  return value
+    .trim()        // удаление пробелов в начале и конце
+    .toLowerCase() // перевод к нижнему регистру
+    .split(' ')    // разделение на слова
+    // перевод к верхнему регистру первой буквы каждого слова
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');    // сборка массива в строку
+}
+
+// определение модели "user"
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    firstName: {
+      type: DataType.STRING,
+      transform: normalizeName, // <=
+    },
+    lastName: {
+      type: DataType.STRING,
+      transform: normalizeName, // <=
+    },
+  },
+});
+```
+
+Использование локального асинхронного трансформера для хэширования пароля.
+
+```js
+import * as bcrypt from 'bcrypt';
+
+// асинхронная функция для хеширования значения
+async function hash(value, options, context) {
+  // value   - трансформируемое значение
+  // options - не используется
+  // context - информация о свойстве
+  console.log(context);
+  // {
+  //   transformerName: 'hash',
+  //   modelName: 'user',
+  //   propName: 'password'
+  // }
+  const saltRounds = 10;
+  return bcrypt.hash(value, saltRounds);
+}
+
+// определение модели "user"
+dbs.defineModel({
+  name: 'user',
+  properties: {
+    password: {
+      type: DataType.STRING,
+      transform: hash, // <=
+      // или
+      // transform: [hash, ...]
+    },
+  },
+});
+```
+
+Использование анонимной функции-трансформера.
+
+```js
+dbs.defineModel({
+  name: 'article',
+  properties: {
+    slug: {
+      type: DataType.STRING,
+      transform: (value) => {
+        if (typeof value !== 'string') return value;
+        return value.toLowerCase().replace(/\s+/g, '-');
+      },
+    },
+  },
+});
+```
+
 
 ## Пустые значения
 
@@ -924,7 +1339,7 @@ dbs.defineModel({
   name: 'city',
   datasource: 'myDatasource',
   properties: {
-    title: DataType.STRING,
+    name: DataType.STRING,
     timeZone: DataType.STRING,
   },
   relations: {
@@ -938,7 +1353,7 @@ dbs.defineModel({
 // определение интерфейса "city"
 interface City {
   id: number;
-  title?: string;
+  name?: string;
   timeZone?: string;
   countryId?: number;
   country?: Country;

@@ -1224,7 +1224,7 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-            'should be an Object or the DataType enum, but %s given.',
+            'should be an Object or the DataType enum, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -1247,7 +1247,7 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-            'should have the "type" property with one of values: %l, but %s given.',
+            'should have the "type" property with one of values: %l, but %s was given.',
           Object.values(DataType),
           v,
         );
@@ -1927,7 +1927,7 @@ describe('ModelDefinitionUtils', function () {
       const error = v =>
         format(
           'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-            'should be an Object, but %s given.',
+            'should be an Object, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));
@@ -1968,7 +1968,7 @@ describe('ModelDefinitionUtils', function () {
           format(
             'Parameter "modelName" of ' +
               'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-              'requires a non-empty String, but %s given.',
+              'requires a non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -1997,7 +1997,7 @@ describe('ModelDefinitionUtils', function () {
           format(
             'Parameter "propertyName" of ' +
               'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-              'requires a non-empty String, but %s given.',
+              'requires a non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -2050,7 +2050,7 @@ describe('ModelDefinitionUtils', function () {
           format(
             'Parameter "modelName" of ' +
               'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-              'requires a non-empty String, but %s given.',
+              'requires a non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));
@@ -2081,7 +2081,7 @@ describe('ModelDefinitionUtils', function () {
           format(
             'Parameter "propertyName" of ' +
               'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
-              'requires a non-empty String, but %s given.',
+              'requires a non-empty String, but %s was given.',
             v,
           );
         expect(throwable('')).to.throw(error('""'));

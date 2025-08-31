@@ -22,7 +22,7 @@ export class ModelDataValidator extends Service {
   validate(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
-        'The data of the model %v should be an Object, but %v given.',
+        'The data of the model %v should be an Object, but %v was given.',
         modelName,
         modelData,
       );
@@ -70,22 +70,21 @@ export class ModelDataValidator extends Service {
       // a required property should
       // not have an empty value
       throw new InvalidArgumentError(
-        'The property %v of the model %v is required, but %v given.',
+        'The property %v of the model %v is required, but %v was given.',
         propName,
         modelName,
         propValue,
       );
     }
-    // passes the property value
-    // through property validators
+    // проверка соответствия типа значения
+    this._validateValueByPropertyType(modelName, propName, propDef, propValue);
+    // проверка значения валидаторами
     this._validateValueByPropertyValidators(
       modelName,
       propName,
       propDef,
       propValue,
     );
-    // type checking of the property value
-    this._validateValueByPropertyType(modelName, propName, propDef, propValue);
   }
 
   /**
@@ -118,8 +117,8 @@ export class ModelDataValidator extends Service {
 
     const createError = expected => {
       const pattern = isArrayValue
-        ? 'The array property %v of the model %v must have %s element, but %s given.'
-        : 'The property %v of the model %v must have %s, but %s given.';
+        ? 'The array property %v of the model %v must have %s element, but %s was given.'
+        : 'The property %v of the model %v must have %s, but %s was given.';
       const ctorName = getCtorName(propValue);
       const givenStr = ctorName ?? typeof propValue;
       return new InvalidArgumentError(
@@ -182,45 +181,134 @@ export class ModelDataValidator extends Service {
     if (typeof propDef === 'string' || propDef.validate == null) return;
     const validateDef = propDef.validate;
     const validatorRegistry = this.getService(PropertyValidatorRegistry);
-    const createError = validatorName =>
-      new InvalidArgumentError(
-        'The property %v of the model %v has the invalid value %v ' +
-          'that caught by the validator %v.',
-        propName,
-        modelName,
-        propValue,
-        validatorName,
-      );
-    const validateBy = (validatorName, validatorOptions = undefined) => {
-      const validator = validatorRegistry.getValidator(validatorName);
-      const context = {validatorName, modelName, propName};
-      const valid = validator(propValue, validatorOptions, context);
-      if (valid instanceof Promise) {
-        throw new InvalidArgumentError(
-          'Asynchronous property validators are not supported, ' +
-            'but the property validator %v returns a Promise.',
+    const createError = validatorName => {
+      if (validatorName) {
+        return new InvalidArgumentError(
+          'The property %v of the model %v has the invalid value %v ' +
+            'that caught by the property validator %v.',
+          propName,
+          modelName,
+          propValue,
           validatorName,
         );
-      } else if (valid !== true) {
+      } else {
+        return new InvalidArgumentError(
+          'The property %v of the model %v has the invalid value %v ' +
+            'that caught by a property validator.',
+          propName,
+          modelName,
+          propValue,
+        );
+      }
+    };
+    // объявление функции для проверки значения
+    // с помощью указанного валидатора
+    const validateBy = (validatorOrName, validatorOptions = undefined) => {
+      let validatorName, validatorFn;
+      // если первый аргумент является строкой, то строка
+      // воспринимается как название зарегистрированного
+      // валидатора
+      if (typeof validatorOrName === 'string') {
+        validatorName = validatorOrName;
+        validatorFn = validatorRegistry.getValidator(validatorName);
+      }
+      // если первый аргумент является функцией,
+      // то функция воспринимается как валидатор
+      else if (typeof validatorOrName === 'function') {
+        validatorName =
+          validatorOrName.name && validatorOrName.name !== 'validate'
+            ? validatorOrName.name
+            : undefined;
+        validatorFn = validatorOrName;
+      }
+      // если первый аргумент не является строкой
+      // и функцией, то выбрасывается ошибка
+      else {
+        throw new InvalidArgumentError(
+          'Validator must be a non-empty String or ' +
+            'a Function, but %v was given.',
+          validatorOrName,
+        );
+      }
+      const context = {validatorName, modelName, propName};
+      const valid = validatorFn(propValue, validatorOptions, context);
+      // если валидатор возвращает Promise,
+      // то выбрасывается ошибка
+      if (valid instanceof Promise) {
+        if (validatorName) {
+          throw new InvalidArgumentError(
+            'Asynchronous property validators are not supported, ' +
+              'but the property %v of the model %v has the property ' +
+              'validator %v that returns a Promise.',
+            propName,
+            modelName,
+            validatorName,
+          );
+        } else {
+          throw new InvalidArgumentError(
+            'Asynchronous property validators are not supported, ' +
+              'but the property %v of the model %v has a property ' +
+              'validator that returns a Promise.',
+            propName,
+            modelName,
+          );
+        }
+      }
+      // если валидатор вернул значение отличное
+      // от true, то выбрасывается ошибка
+      else if (valid !== true) {
         throw createError(validatorName);
       }
     };
+    // если значением опции "validate" является строка,
+    // то строка воспринимается как название валидатора
     if (validateDef && typeof validateDef === 'string') {
       validateBy(validateDef);
-    } else if (Array.isArray(validateDef)) {
-      validateDef.forEach(validatorName => validateBy(validatorName));
-    } else if (validateDef !== null && typeof validateDef === 'object') {
-      Object.keys(validateDef).forEach(validatorName => {
-        if (Object.prototype.hasOwnProperty.call(validateDef, validatorName)) {
-          const validatorOptions = validateDef[validatorName];
-          validateBy(validatorName, validatorOptions);
+    }
+    // если значение опции "validate" является функция,
+    // то функция воспринимается как валидатор
+    else if (validateDef && typeof validateDef === 'function') {
+      validateBy(validateDef);
+    }
+    // если значение опции "validate" является массив, то каждый
+    // элемент массива воспринимается как название валидатора
+    // или функция-валидатор
+    else if (Array.isArray(validateDef)) {
+      validateDef.forEach(validatorOrName => {
+        if (
+          !validatorOrName ||
+          (typeof validatorOrName !== 'string' &&
+            typeof validatorOrName !== 'function')
+        ) {
+          throw new InvalidArgumentError(
+            'The provided option "validate" for the property %v in the model %v ' +
+              'has an Array value that should contain validator names or validator ' +
+              'functions, but %v was given.',
+            propName,
+            modelName,
+            validatorOrName,
+          );
         }
+        validateBy(validatorOrName);
       });
-    } else {
+    }
+    // если значение опции "validate" является объектом,
+    // то ключи объекта воспринимаются как названия валидаторов,
+    // а их значения аргументами
+    else if (validateDef !== null && typeof validateDef === 'object') {
+      Object.keys(validateDef).forEach(validatorName => {
+        const validatorOptions = validateDef[validatorName];
+        validateBy(validatorName, validatorOptions);
+      });
+    }
+    // если значение опции "validate" не является строкой,
+    // функцией и массивом, то выбрасывается ошибка
+    else {
       throw new InvalidArgumentError(
-        'The provided option "validate" of the property %v in the model %v ' +
-          'should be a non-empty String, an Array of String or an Object, ' +
-          'but %v given.',
+        'The provided option "validate" for the property %v in the model %v ' +
+          'should be either a validator name, a validator function, an array ' +
+          'of validator names or functions, or an object mapping validator ' +
+          'names to their arguments, but %v was given.',
         propName,
         modelName,
         validateDef,

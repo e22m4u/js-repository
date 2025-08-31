@@ -22,7 +22,7 @@ export class ModelDataTransformer extends Service {
   transform(modelName, modelData, isPartial = false) {
     if (!isPureObject(modelData))
       throw new InvalidArgumentError(
-        'The data of the model %v should be an Object, but %v given.',
+        'The data of the model %v should be an Object, but %v was given.',
         modelName,
         modelData,
       );
@@ -64,7 +64,7 @@ export class ModelDataTransformer extends Service {
    * @param {string} propName
    * @param {string|object} propDef
    * @param {*} propValue
-   * @returns {*}
+   * @returns {*|Promise<*>}
    */
   _transformPropertyValue(modelName, propName, propDef, propValue) {
     if (typeof propDef === 'string' || propDef.transform == null)
@@ -73,22 +73,76 @@ export class ModelDataTransformer extends Service {
     const transformerRegistry = this.getService(PropertyTransformerRegistry);
     const transformFn = (
       value,
-      transformerName,
+      transformerOrName,
       transformerOptions = undefined,
     ) => {
-      const transformer = transformerRegistry.getTransformer(transformerName);
+      let transformerName, transformerFn;
+      // если второй аргумент является строкой, то строка
+      // воспринимается как название зарегистрированного
+      // трансформера
+      if (typeof transformerOrName === 'string') {
+        transformerName = transformerOrName;
+        transformerFn = transformerRegistry.getTransformer(transformerName);
+      }
+      // если второй аргумент является функцией,
+      // то функция воспринимается как трансформер
+      else if (typeof transformerOrName === 'function') {
+        transformerName =
+          transformerOrName.name && transformerOrName.name !== 'transform'
+            ? transformerOrName.name
+            : undefined;
+        transformerFn = transformerOrName;
+      }
+      // если второй аргумент не является строкой
+      // и функцией, то выбрасывается ошибка
+      else {
+        throw new InvalidArgumentError(
+          'Transformer must be a non-empty String or ' +
+            'a Function, but %v was given.',
+          transformerOrName,
+        );
+      }
       const context = {transformerName, modelName, propName};
-      return transformer(value, transformerOptions, context);
+      return transformerFn(value, transformerOptions, context);
     };
+    // если значением опции "transform" является строка,
+    // то строка воспринимается как название трансформера
     if (transformDef && typeof transformDef === 'string') {
       return transformFn(propValue, transformDef);
-    } else if (Array.isArray(transformDef)) {
-      return transformDef.reduce((valueOrPromise, transformerName) => {
+    }
+    // если значением опции "transform" является функция,
+    // то функция воспринимается как трансформер
+    else if (transformDef && typeof transformDef === 'function') {
+      return transformFn(propValue, transformDef);
+    }
+    // если значение опции "transform" является массив, то каждый
+    // элемент массива воспринимается как название трансформера
+    // или функция-валидатор
+    else if (Array.isArray(transformDef)) {
+      return transformDef.reduce((valueOrPromise, transformerOrName) => {
+        if (
+          !transformerOrName ||
+          (typeof transformerOrName !== 'string' &&
+            typeof transformerOrName !== 'function')
+        ) {
+          throw new InvalidArgumentError(
+            'The provided option "transform" for the property %v ' +
+              'in the model %v has an Array value that should contain ' +
+              'transformer names or transformer functions, but %v was given.',
+            propName,
+            modelName,
+            transformerOrName,
+          );
+        }
         return transformPromise(valueOrPromise, value => {
-          return transformFn(value, transformerName);
+          return transformFn(value, transformerOrName);
         });
       }, propValue);
-    } else if (transformDef !== null && typeof transformDef === 'object') {
+    }
+    // если значение опции "transform" является объектом,
+    // то ключи объекта воспринимаются как названия трансформеров,
+    // а их значения аргументами
+    else if (transformDef !== null && typeof transformDef === 'object') {
       return Object.keys(transformDef).reduce(
         (valueOrPromise, transformerName) => {
           const transformerOptions = transformDef[transformerName];
@@ -98,11 +152,15 @@ export class ModelDataTransformer extends Service {
         },
         propValue,
       );
-    } else {
+    }
+    // если значение опции "transform" не является строкой,
+    // функцией и массивом, то выбрасывается ошибка
+    else {
       throw new InvalidArgumentError(
-        'The provided option "transform" of the property %v in the model %v ' +
-          'should be a non-empty String, an Array of String or an Object, ' +
-          'but %v given.',
+        'The provided option "transform" for the property %v in the model %v ' +
+          'should be either a transformer name, a transformer function, an array ' +
+          'of transformer names or functions, or an object mapping transformer ' +
+          'names to their arguments, but %v was given.',
         propName,
         modelName,
         transformDef,

@@ -23,7 +23,7 @@ describe('minLengthValidator', function () {
     const error = v =>
       format(
         'The property validator "myValidator" requires a String ' +
-          'or an Array value, but %s given.',
+          'or an Array value, but %s was given.',
         v,
       );
     expect(throwable(10)).to.throw(error('10'));
@@ -48,7 +48,7 @@ describe('minLengthValidator', function () {
     const error = v =>
       format(
         'The validator "myValidator" requires the "options" argument ' +
-          'as a Number, but %s given.',
+          'as a Number, but %s was given.',
         v,
       );
     expect(throwable('str')).to.throw(error('"str"'));

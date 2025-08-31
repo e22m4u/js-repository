@@ -10,7 +10,7 @@ describe('DatasourceDefinitionValidator', function () {
       const validate = v => () => S.validate(v);
       const error = v =>
         format(
-          'The datasource definition should be an Object, but %s given.',
+          'The datasource definition should be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -27,7 +27,7 @@ describe('DatasourceDefinitionValidator', function () {
       const error = v =>
         format(
           'The datasource definition requires the option "name" ' +
-            'as a non-empty String, but %s given.',
+            'as a non-empty String, but %s was given.',
           v,
         );
       expect(validate('')).to.throw(error('""'));
@@ -46,7 +46,7 @@ describe('DatasourceDefinitionValidator', function () {
       const error = v =>
         format(
           'The datasource "datasource" requires the option "adapter" ' +
-            'as a non-empty String, but %s given.',
+            'as a non-empty String, but %s was given.',
           v,
         );
       expect(validate('')).to.throw(error('""'));

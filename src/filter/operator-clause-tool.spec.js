@@ -116,7 +116,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testAll(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testAll ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
   });
@@ -131,7 +131,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testEqNeq(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testEqNeq ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -216,7 +216,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testGtLt(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testGtLt ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -391,7 +391,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testInq(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testInq ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -446,7 +446,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testNin(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testNin ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -515,7 +515,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testBetween(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testBetween ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -572,7 +572,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testExists(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testExists ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -695,7 +695,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testLike(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testLike ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -774,7 +774,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testNlike(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testNlike ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -853,7 +853,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testIlike(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testIlike ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -932,7 +932,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testNilike(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testNilike ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -1023,7 +1023,7 @@ describe('OperatorClauseTool', function () {
       const throwable = () => S.testRegexp(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testRegexp ' +
-          'should be an Object, but 10 given.',
+          'should be an Object, but 10 was given.',
       );
     });
 
@@ -1049,7 +1049,7 @@ describe('OperatorClauseTool', function () {
       const throwable = v => () =>
         S.testRegexp({regexp: 'Val.+', flags: v}, 'val');
       const error = v =>
-        format('RegExp flags should be a String, but %s given.', v);
+        format('RegExp flags should be a String, but %s was given.', v);
       expect(throwable(10)).to.throw(error('10'));
       expect(throwable(true)).to.throw(error('true'));
       expect(throwable([])).to.throw(error('Array'));

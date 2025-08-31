@@ -49,7 +49,7 @@ describe('WhereClauseTool', function () {
       const error = v =>
         format(
           'The first argument of WhereClauseTool.filter should be ' +
-            'an Array of Object, but %s given.',
+            'an Array of Object, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -69,7 +69,7 @@ describe('WhereClauseTool', function () {
       const throwable = v => () => S.filter(OBJECTS, v);
       const error = v =>
         format(
-          'The provided option "where" should be an Object, but %s given.',
+          'The provided option "where" should be an Object, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -284,7 +284,7 @@ describe('WhereClauseTool', function () {
       const throwable = v => () => WhereClauseTool.validateWhereClause(v);
       const error = v =>
         format(
-          'The provided option "where" should be an Object, but %s given.',
+          'The provided option "where" should be an Object, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));

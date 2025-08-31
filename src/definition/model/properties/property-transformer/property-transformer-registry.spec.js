@@ -3,7 +3,6 @@ import {format} from '@e22m4u/js-format';
 import {trimTransformer} from './builtin/index.js';
 import {toUpperCaseTransformer} from './builtin/index.js';
 import {toLowerCaseTransformer} from './builtin/index.js';
-import {toTitleCaseTransformer} from './builtin/index.js';
 import {PropertyTransformerRegistry} from './property-transformer-registry.js';
 
 describe('PropertyTransformerRegistry', function () {
@@ -14,7 +13,6 @@ describe('PropertyTransformerRegistry', function () {
         trim: trimTransformer,
         toUpperCase: toUpperCaseTransformer,
         toLowerCase: toLowerCaseTransformer,
-        toTitleCase: toTitleCaseTransformer,
       });
     });
 
@@ -32,7 +30,7 @@ describe('PropertyTransformerRegistry', function () {
       const error = v =>
         format(
           'A name of the property transformer must ' +
-            'be a non-empty String, but %s given.',
+            'be a non-empty String, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));
@@ -61,7 +59,7 @@ describe('PropertyTransformerRegistry', function () {
       const throwable = v => () => ptr.addTransformer('test', v);
       const error = v =>
         format(
-          'The property transformer "test" must be a Function, but %s given.',
+          'The property transformer "test" must be a Function, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));

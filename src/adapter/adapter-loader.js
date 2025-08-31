@@ -17,7 +17,7 @@ export class AdapterLoader extends Service {
   async loadByName(adapterName, settings = undefined) {
     if (!adapterName || typeof adapterName !== 'string')
       throw new InvalidArgumentError(
-        'The adapter name should be a non-empty String, but %v given.',
+        'The adapter name should be a non-empty String, but %v was given.',
         adapterName,
       );
     let adapterCtor;
