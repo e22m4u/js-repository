@@ -1230,7 +1230,7 @@ dbs.defineModel({
 
 **Примеры**
 
-Объявление связи `belongsTo`
+Объявление связи `belongsTo`.
 
 ```js
 dbs.defineModel({
@@ -1248,7 +1248,7 @@ dbs.defineModel({
 });
 ```
 
-Объявление связи `hasMany`
+Объявление связи `hasMany`.
 
 ```js
 dbs.defineModel({
@@ -1263,7 +1263,7 @@ dbs.defineModel({
 });
 ```
 
-Объявление связи `referencesMany`
+Объявление связи `referencesMany`.
 
 ```js
 dbs.defineModel({
@@ -1281,7 +1281,7 @@ dbs.defineModel({
 });
 ```
 
-Полиморфная версия `belongsTo`
+Полиморфная версия `belongsTo`.
 
 ```js
 dbs.defineModel({
