@@ -1139,15 +1139,67 @@ const res = await rep.find({
 
 Связи позволяют описывать отношения между моделями, что дает возможность
 автоматически встраивать связанные данные с помощью опции `include`
-в методах репозитория.
+в методах репозитория. Ниже приводится пример автоматического разрешения
+связи методом `findById`.
 
-Параметр `relations` в определении модели принимает объект, где ключ является
-названием связи, а значение - объект с параметрами.
+```js
+// запрос документа коллекции "users",
+// включая связанные данные (role и city)
+const user = await userRep.findById(1, {
+  include: ['role', 'city'],
+});
 
-**Общие параметры**
+console.log(user);
+// {
+//   id: 1,
+//   name: 'John Doe',
+//   roleId: 3,
+//   role: {
+//     id: 3,
+//     name: 'Manager'
+//   },
+//   cityId: 24,
+//   city: {
+//     id: 24,
+//     name: 'Moscow'
+//   }
+// }
+```
+
+### Определение связи
+
+Свойство `relations` в определении модели принимает объект, ключи которого
+являются названиями связей, а значения их параметрами.
+
+```js
+import {DataType} from '@e22m4u/js-repository';
+import {RelationType} from '@e22m4u/js-repository';
+
+dbs.defineModel({
+  name: 'user',
+  datasource: 'memory',
+  properties: {
+    name: DataType.STRING,
+  },
+  relations: {
+    // связь role -> параметры
+    role: {
+      type: RelationType.BELONGS_TO,
+      model: 'role',
+    },
+    // связь city -> параметры
+    city: {
+      type: RelationType.BELONGS_TO,
+      model: 'city',
+    },
+  },
+});
+```
+
+**Основные параметры**
 
 - `type: string` тип связи (обязательно);
-- `model: string` название целевой модели;
+- `model: string` название целевой модели (обязательно для некоторых типов);
 - `foreignKey: string` свойство текущей модели для идентификатора цели;
 
 **Полиморфный режим**
