@@ -7,8 +7,8 @@ import {PropertyTransformOptions} from './property-transformer/index.js';
  * Full property definition.
  */
 export declare type FullPropertyDefinition = {
-  type: `${DataType}`;
-  itemType?: `${DataType}`;
+  type: DataType;
+  itemType?: DataType;
   itemModel?: string;
   model?: string;
   primaryKey?: boolean;
@@ -18,7 +18,7 @@ export declare type FullPropertyDefinition = {
   default?: unknown;
   validate?: PropertyValidateOptions;
   transform?: PropertyTransformOptions;
-  unique?: boolean | `${PropertyUniqueness}`;
+  unique?: boolean | PropertyUniqueness;
 };
 
 /**

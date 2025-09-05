@@ -50,7 +50,7 @@ export declare type RelationDefinition =
  * ```
  */
 export declare type BelongsToDefinition = {
-  type: `${RelationType.BELONGS_TO}`;
+  type: typeof RelationType.BELONGS_TO;
   polymorphic?: false;
   model: string;
   foreignKey?: string;
@@ -78,7 +78,7 @@ export declare type BelongsToDefinition = {
  * ```
  */
 export declare type PolyBelongsToDefinition = {
-  type: `${RelationType.BELONGS_TO}`;
+  type: typeof RelationType.BELONGS_TO;
   polymorphic: true;
   foreignKey?: string;
   discriminator?: string;
@@ -97,7 +97,7 @@ export declare type PolyBelongsToDefinition = {
  * ```
  */
 export declare type HasOneDefinition = {
-  type: `${RelationType.HAS_ONE}`;
+  type: typeof RelationType.HAS_ONE;
   model: string;
   foreignKey: string;
   polymorphic?: false;
@@ -117,7 +117,7 @@ export declare type HasOneDefinition = {
  * ```
  */
 export declare type PolyHasOneDefinitionWithTargetRelationName = {
-  type: `${RelationType.HAS_ONE}`;
+  type: typeof RelationType.HAS_ONE;
   model: string;
   polymorphic: string;
   foreignKey?: undefined;
@@ -139,7 +139,7 @@ export declare type PolyHasOneDefinitionWithTargetRelationName = {
  * ```
  */
 export declare type PolyHasOneDefinitionWithTargetKeys = {
-  type: `${RelationType.HAS_ONE}`;
+  type: typeof RelationType.HAS_ONE;
   model: string;
   polymorphic: true;
   foreignKey: string;
@@ -159,7 +159,7 @@ export declare type PolyHasOneDefinitionWithTargetKeys = {
  * ```
  */
 export declare type HasManyDefinition = {
-  type: `${RelationType.HAS_MANY}`;
+  type: typeof RelationType.HAS_MANY;
   model: string;
   foreignKey: string;
   polymorphic?: false;
@@ -179,7 +179,7 @@ export declare type HasManyDefinition = {
  * ```
  */
 export declare type PolyHasManyDefinitionWithTargetRelationName = {
-  type: `${RelationType.HAS_MANY}`;
+  type: typeof RelationType.HAS_MANY;
   model: string;
   polymorphic: string;
   foreignKey?: undefined;
@@ -201,7 +201,7 @@ export declare type PolyHasManyDefinitionWithTargetRelationName = {
  * ```
  */
 export declare type PolyHasManyDefinitionWithTargetKeys = {
-  type: `${RelationType.HAS_MANY}`;
+  type: typeof RelationType.HAS_MANY;
   model: string;
   polymorphic: true;
   foreignKey: string;
@@ -229,7 +229,7 @@ export declare type PolyHasManyDefinitionWithTargetKeys = {
  * ```
  */
 export declare type ReferencesManyDefinition = {
-  type: `${RelationType.REFERENCES_MANY}`;
+  type: typeof RelationType.REFERENCES_MANY;
   model: string;
   foreignKey?: string;
   discriminator?: undefined;
