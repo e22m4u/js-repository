@@ -35,7 +35,7 @@ export declare type RelationDefinition =
  * @example Required options only.
  * ```
  * {
- *   type: RelationType.BELONGS_TO,
+ *   type: 'belongsTo',
  *   model: 'model',
  * }
  * ```
@@ -43,14 +43,14 @@ export declare type RelationDefinition =
  * @example Verbose definition.
  * ```
  * {
- *   type: RelationType.BELONGS_TO,
+ *   type: 'belongsTo',
  *   model: 'model',
  *   foreignKey: 'modelId',
  * }
  * ```
  */
 export declare type BelongsToDefinition = {
-  type: RelationType.BELONGS_TO;
+  type: `${RelationType.BELONGS_TO}`;
   polymorphic?: false;
   model: string;
   foreignKey?: string;
@@ -62,7 +62,7 @@ export declare type BelongsToDefinition = {
  * @example Required fields only.
  * ```
  * {
- *   type: RelationType.BELONGS_TO,
+ *   type: 'belongsTo',
  *   polymorphic: true,
  * }
  * ```
@@ -70,7 +70,7 @@ export declare type BelongsToDefinition = {
  * @example Verbose definition.
  * ```
  * {
- *   type: RelationType.BELONGS_TO,
+ *   type: 'belongsTo',
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
  *   discriminator: 'referenceType',
@@ -78,7 +78,7 @@ export declare type BelongsToDefinition = {
  * ```
  */
 export declare type PolyBelongsToDefinition = {
-  type: RelationType.BELONGS_TO;
+  type: `${RelationType.BELONGS_TO}`;
   polymorphic: true;
   foreignKey?: string;
   discriminator?: string;
@@ -90,14 +90,14 @@ export declare type PolyBelongsToDefinition = {
  * @example
  * ```ts
  * {
- *   type: RelationType.HAS_ONE,
+ *   type: 'hasOne',
  *   model: 'model',
  *   foreignKey: 'modelId',
  * }
  * ```
  */
 export declare type HasOneDefinition = {
-  type: RelationType.HAS_ONE;
+  type: `${RelationType.HAS_ONE}`;
   model: string;
   foreignKey: string;
   polymorphic?: false;
@@ -110,14 +110,14 @@ export declare type HasOneDefinition = {
  * @example
  * ```ts
  * {
- *   type: RelationType.HAS_ONE,
+ *   type: 'hasOne',
  *   model: 'model',
  *   polymorphic: 'reference',
  * }
  * ```
  */
 export declare type PolyHasOneDefinitionWithTargetRelationName = {
-  type: RelationType.HAS_ONE;
+  type: `${RelationType.HAS_ONE}`;
   model: string;
   polymorphic: string;
   foreignKey?: undefined;
@@ -130,7 +130,7 @@ export declare type PolyHasOneDefinitionWithTargetRelationName = {
  * @example
  * ```
  * {
- *   type: RelationType.HAS_ONE,
+ *   type: 'hasOne',
  *   model: 'model',
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
@@ -139,7 +139,7 @@ export declare type PolyHasOneDefinitionWithTargetRelationName = {
  * ```
  */
 export declare type PolyHasOneDefinitionWithTargetKeys = {
-  type: RelationType.HAS_ONE;
+  type: `${RelationType.HAS_ONE}`;
   model: string;
   polymorphic: true;
   foreignKey: string;
@@ -152,14 +152,14 @@ export declare type PolyHasOneDefinitionWithTargetKeys = {
  * @example
  * ```ts
  * {
- *   type: RelationType.HAS_MANY,
+ *   type: 'hasMany',
  *   model: 'model',
  *   foreignKey: 'modelId',
  * }
  * ```
  */
 export declare type HasManyDefinition = {
-  type: RelationType.HAS_MANY;
+  type: `${RelationType.HAS_MANY}`;
   model: string;
   foreignKey: string;
   polymorphic?: false;
@@ -172,14 +172,14 @@ export declare type HasManyDefinition = {
  * @example
  * ```ts
  * {
- *   type: RelationType.HAS_MANY,
+ *   type: 'hasMany',
  *   model: 'model',
  *   polymorphic: 'reference',
  * }
  * ```
  */
 export declare type PolyHasManyDefinitionWithTargetRelationName = {
-  type: RelationType.HAS_MANY;
+  type: `${RelationType.HAS_MANY}`;
   model: string;
   polymorphic: string;
   foreignKey?: undefined;
@@ -192,7 +192,7 @@ export declare type PolyHasManyDefinitionWithTargetRelationName = {
  * @example
  * ```
  * {
- *   type: RelationType.HAS_MANY,
+ *   type: 'hasMany',
  *   model: 'model',
  *   polymorphic: true,
  *   foreignKey: 'referenceId',
@@ -201,7 +201,7 @@ export declare type PolyHasManyDefinitionWithTargetRelationName = {
  * ```
  */
 export declare type PolyHasManyDefinitionWithTargetKeys = {
-  type: RelationType.HAS_MANY;
+  type: `${RelationType.HAS_MANY}`;
   model: string;
   polymorphic: true;
   foreignKey: string;
@@ -214,7 +214,7 @@ export declare type PolyHasManyDefinitionWithTargetKeys = {
  * @example Required options only.
  * ```
  * {
- *   type: RelationType.REFERENCES_MANY,
+ *   type: 'referencesMany',
  *   model: 'model',
  * }
  * ```
@@ -222,14 +222,14 @@ export declare type PolyHasManyDefinitionWithTargetKeys = {
  * @example Verbose definition.
  * ```
  * {
- *   type: RelationType.REFERENCES_MANY,
+ *   type: 'referencesMany',
  *   model: 'model',
  *   foreignKey: 'modelIds',
  * }
  * ```
  */
 export declare type ReferencesManyDefinition = {
-  type: RelationType.REFERENCES_MANY;
+  type: `${RelationType.REFERENCES_MANY}`;
   model: string;
   foreignKey?: string;
   discriminator?: undefined;
