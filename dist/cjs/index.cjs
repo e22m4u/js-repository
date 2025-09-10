@@ -403,6 +403,8 @@ function modelNameToModelKey(modelName) {
       "The model name should be a non-empty String without spaces, but %v was given.",
       modelName
     );
+  if (modelName.toLowerCase() !== "model")
+    modelName = modelName.replace(/[-_]?Model$/, "").replace(/[-_](MODEL|model)$/, "");
   return modelName.toLowerCase().replace(/[-_]/g, "");
 }
 var init_model_name_to_model_key = __esm({
