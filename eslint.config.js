@@ -28,6 +28,8 @@ export default [
       ...eslintChaiExpectPlugin.configs['recommended-flat'].rules,
       ...eslintJsdocPlugin.configs['flat/recommended-error'].rules,
       'no-unused-vars': ['error', {'caughtErrors': 'none'}],
+      'jsdoc/reject-any-type': 0,
+      'jsdoc/reject-function-type': 0,
       'jsdoc/require-param-description': 0,
       'jsdoc/require-returns-description': 0,
       'jsdoc/require-property-description': 0,
