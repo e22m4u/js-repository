@@ -161,7 +161,7 @@ export declare class Repository<
 /**
  * Removes id field.
  */
-type WithoutId<IdName extends string, Data extends ModelData> = Flatten<
+type WithoutId<IdName extends string, Data extends object> = Flatten<
   Omit<Data, IdName>
 >;
 
