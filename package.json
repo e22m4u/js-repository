@@ -1,6 +1,6 @@
 {
   "name": "@e22m4u/js-repository",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Реализация репозитория для работы с базами данных в Node.js",
   "author": "Mikhail Evstropov <e22m4u@yandex.ru>",
   "license": "MIT",
