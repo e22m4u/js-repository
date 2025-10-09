@@ -68,7 +68,7 @@ export declare class Repository<
    */
   replaceById(
     id: IdType,
-    data: WithoutId<IdName, FlatData>,
+    data: WithoutId<FlatData, IdName>,
     filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
@@ -90,7 +90,7 @@ export declare class Repository<
    * @param where
    */
   patch(
-    data: PartialWithoutId<IdName, Data>,
+    data: PartialWithoutId<Data, IdName>,
     where?: WhereClause,
   ): Promise<number>;
 
@@ -103,7 +103,7 @@ export declare class Repository<
    */
   patchById(
     id: IdType,
-    data: PartialWithoutId<IdName, Data>,
+    data: PartialWithoutId<Data, IdName>,
     filter?: ItemFilterClause,
   ): Promise<FlatData>;
 
@@ -161,16 +161,17 @@ export declare class Repository<
 /**
  * Removes id field.
  */
-type WithoutId<IdName extends string, Data extends object> = Flatten<
+type WithoutId<Data extends object, IdName extends string = 'id'> = Flatten<
   Omit<Data, IdName>
 >;
 
 /**
  * Makes fields as optional and remove id field.
  */
-type PartialWithoutId<IdName extends string, Data extends object> = Flatten<
-  Partial<Omit<Data, IdName>>
->;
+type PartialWithoutId<
+  Data extends object,
+  IdName extends string = 'id',
+> = Flatten<Partial<Omit<Data, IdName>>>;
 
 /**
  * Makes the required id field as optional.
