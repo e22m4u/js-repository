@@ -987,7 +987,7 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 **Аргументы**
 
 - `id: number|string` идентификатор (первичный ключ)
-- `data: object` объект отражающий состав документа
+- `data: object` данные документа (используется при записи)
 - `where: object` параметры выборки (см. [Фильтрация](#Фильтрация))
 - `filter: object` параметры возвращаемого результата (см. [Фильтрация](#Фильтрация))
 
