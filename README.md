@@ -1095,7 +1095,7 @@ const news = await newsRepository.find({
 // для запроса используется метод "findOne"
 // и вложенные фильтры в опции "include"
 const userProfile = await userRepository.findOne({
-  where: { username: 'john.doe' },
+  where: {username: 'john.doe'},
   fields: ['username', 'avatarUrl', 'bio'],
   include: {
     relation: 'posts',
