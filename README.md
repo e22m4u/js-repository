@@ -1130,8 +1130,8 @@ const userProfile = await userRepository.findOne({
 `{foo: {ilike: 'BaR'}}` регистронезависимая версия `ilike`  
 `{foo: {nlike: 'bar'}}` оператор исключения подстроки `nlike`  
 `{foo: {nilike: 'BaR'}}` регистронезависимая версия `nilike`  
-`{foo: {regexp: 'ba.+'}}` оператор регулярного выражения `regexp`  
-`{foo: {regexp: 'ba.+', flags: 'i'}}` флаги регулярного выражения
+`{foo: {regexp: '^ba.+'}}` оператор регулярного выражения `regexp`  
+`{foo: {regexp: '^ba.+', flags: 'i'}}` флаги регулярного выражения
 
 *i. Условия можно объединять операторами `and`, `or` и `nor`.*
 
