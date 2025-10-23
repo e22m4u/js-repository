@@ -55,7 +55,7 @@ export declare class Repository<
    * @param filter
    */
   create(
-    data: OptionalUnlessRequiredId<IdName, FlatData>,
+    data: WithOptionalId<FlatData, IdName>,
     filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
@@ -79,7 +79,7 @@ export declare class Repository<
    * @param filter
    */
   replaceOrCreate(
-    data: OptionalUnlessRequiredId<IdName, FlatData>,
+    data: WithOptionalId<FlatData, IdName>,
     filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
@@ -177,7 +177,7 @@ export declare type PartialWithoutId<
 /**
  * Makes the required id field as optional.
  */
-export declare type OptionalUnlessRequiredId<
-  IdName extends string,
+export declare type WithOptionalId<
   Data extends object,
+  IdName extends string = 'id',
 > = Flatten<Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data>;
