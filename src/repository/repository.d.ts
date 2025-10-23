@@ -17,7 +17,7 @@ export declare class Repository<
   Data extends object = ModelData,
   IdType extends ModelId = ModelId,
   IdName extends string = typeof DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
-  FlatData extends ModelData = Flatten<Data>,
+  FlatData extends object = Flatten<Data>,
 > extends Service {
   // it fixes unused generic bug
   private _Data?: Data;
@@ -56,7 +56,7 @@ export declare class Repository<
    */
   create(
     data: OptionalUnlessRequiredId<IdName, FlatData>,
-    filter?: ItemFilterClause,
+    filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
   /**
@@ -69,7 +69,7 @@ export declare class Repository<
   replaceById(
     id: IdType,
     data: WithoutId<FlatData, IdName>,
-    filter?: ItemFilterClause,
+    filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
   /**
@@ -79,8 +79,8 @@ export declare class Repository<
    * @param filter
    */
   replaceOrCreate(
-    data: OptionalUnlessRequiredId<IdName, Data>,
-    filter?: ItemFilterClause,
+    data: OptionalUnlessRequiredId<IdName, FlatData>,
+    filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
   /**
@@ -90,8 +90,8 @@ export declare class Repository<
    * @param where
    */
   patch(
-    data: PartialWithoutId<Data, IdName>,
-    where?: WhereClause,
+    data: PartialWithoutId<FlatData, IdName>,
+    where?: WhereClause<FlatData>,
   ): Promise<number>;
 
   /**
@@ -103,8 +103,8 @@ export declare class Repository<
    */
   patchById(
     id: IdType,
-    data: PartialWithoutId<Data, IdName>,
-    filter?: ItemFilterClause,
+    data: PartialWithoutId<FlatData, IdName>,
+    filter?: ItemFilterClause<FlatData>,
   ): Promise<FlatData>;
 
   /**
@@ -112,14 +112,14 @@ export declare class Repository<
    *
    * @param filter
    */
-  find(filter?: FilterClause): Promise<FlatData[]>;
+  find(filter?: FilterClause<FlatData>): Promise<FlatData[]>;
 
   /**
    * Find one.
    *
    * @param filter
    */
-  findOne(filter?: FilterClause): Promise<FlatData | undefined>;
+  findOne(filter?: FilterClause<FlatData>): Promise<FlatData | undefined>;
 
   /**
    * Find by id.
@@ -127,14 +127,14 @@ export declare class Repository<
    * @param id
    * @param filter
    */
-  findById(id: IdType, filter?: ItemFilterClause): Promise<FlatData>;
+  findById(id: IdType, filter?: ItemFilterClause<FlatData>): Promise<FlatData>;
 
   /**
    * Delete.
    *
    * @param where
    */
-  delete(where?: WhereClause): Promise<number>;
+  delete(where?: WhereClause<FlatData>): Promise<number>;
 
   /**
    * Delete by id.
@@ -155,20 +155,21 @@ export declare class Repository<
    *
    * @param where
    */
-  count(where?: WhereClause): Promise<number>;
+  count(where?: WhereClause<FlatData>): Promise<number>;
 }
 
 /**
  * Removes id field.
  */
-type WithoutId<Data extends object, IdName extends string = 'id'> = Flatten<
-  Omit<Data, IdName>
->;
+export declare type WithoutId<
+  Data extends object,
+  IdName extends string = 'id',
+> = Flatten<Omit<Data, IdName>>;
 
 /**
  * Makes fields as optional and remove id field.
  */
-type PartialWithoutId<
+export declare type PartialWithoutId<
   Data extends object,
   IdName extends string = 'id',
 > = Flatten<Partial<Omit<Data, IdName>>>;
@@ -176,7 +177,7 @@ type PartialWithoutId<
 /**
  * Makes the required id field as optional.
  */
-type OptionalUnlessRequiredId<
+export declare type OptionalUnlessRequiredId<
   IdName extends string,
   Data extends object,
 > = Flatten<Data extends {[K in IdName]: any} ? PartialBy<Data, IdName> : Data>;

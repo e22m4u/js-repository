@@ -1,19 +1,24 @@
+import {ModelData} from '../types.js';
+
 /**
  * Filter clause.
  */
-export declare type FilterClause = {
-  where?: WhereClause;
-  order?: OrderClause;
+export declare type FilterClause<M extends object = ModelData> = {
+  where?: WhereClause<M>;
+  order?: OrderClause<M>;
   limit?: number;
   skip?: number;
-  fields?: FieldsClause;
-  include?: IncludeClause;
+  fields?: FieldsClause<M>;
+  include?: IncludeClause<M>;
 };
 
 /**
  * Item filter clause.
  */
-export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
+export declare type ItemFilterClause<M extends object = ModelData> = Pick<
+  FilterClause<M>,
+  'fields' | 'include'
+>;
 
 /**
  * Where clause.
@@ -42,10 +47,21 @@ export declare type ItemFilterClause = Pick<FilterClause, 'fields' | 'include'>;
  * {or: [...]}
  * ```
  */
-export declare type WhereClause =
-  & Partial<AndClause>
-  & Partial<OrClause>
-  & PropertiesClause;
+export declare type WhereClause<M extends object = ModelData> = Partial<
+  AndClause<M>
+> &
+  Partial<OrClause<M>> &
+  PropertiesClause<M>;
+
+/**
+ * Primitive values.
+ */
+export declare type PrimitiveValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined;
 
 /**
  * Properties clause.
@@ -59,16 +75,8 @@ export declare type WhereClause =
  * }
  * ```
  */
-export type PropertiesClause = {
-  [property: string]:
-    | OperatorClause
-    | string
-    | number
-    | boolean
-    | RegExp
-    | null
-    | undefined
-    | object;
+export declare type PropertiesClause<M extends object = ModelData> = {
+  [property in keyof M]?: OperatorClause | PrimitiveValue | RegExp;
 };
 
 /**
@@ -95,14 +103,14 @@ export type PropertiesClause = {
  * ```
  */
 export declare type OperatorClause = {
-  eq?: unknown;
-  neq?: unknown;
+  eq?: PrimitiveValue;
+  neq?: PrimitiveValue;
   gt?: string | number;
   gte?: string | number;
   lt?: string | number;
   lte?: string | number;
-  inq?: unknown[];
-  nin?: unknown[];
+  inq?: PrimitiveValue[];
+  nin?: PrimitiveValue[];
   between?: readonly [string | number, string | number];
   exists?: boolean;
   like?: string | RegExp;
@@ -123,8 +131,8 @@ export declare type OperatorClause = {
  * }
  * ```
  */
-export interface AndClause {
-  and: WhereClause[];
+export interface AndClause<M extends object = ModelData> {
+  and: WhereClause<M>[];
 }
 
 /**
@@ -137,9 +145,23 @@ export interface AndClause {
  * }
  * ```
  */
-export interface OrClause {
-  or: WhereClause[];
+export interface OrClause<M extends object = ModelData> {
+  or: WhereClause<M>[];
 }
+
+/**
+ * Order clause item.
+ *
+ * @example
+ * ```ts
+ * 'prop'
+ * 'prop ASC'
+ * 'prop DESC';
+ * ```
+ */
+export declare type OrderClauseItem<M extends object = ModelData> = {
+  [prop in keyof M]: prop | `${prop & string} ASC` | `${prop & string} DESC`;
+}[keyof M];
 
 /**
  * Order clause.
@@ -153,7 +175,9 @@ export interface OrClause {
  * ['prop1 ASC', 'prop2 DESC'];
  * ```
  */
-export type OrderClause = string | string[];
+export declare type OrderClause<M extends object = ModelData> =
+  | OrderClauseItem<M>
+  | OrderClauseItem<M>[];
 
 /**
  * Fields.
@@ -164,7 +188,9 @@ export type OrderClause = string | string[];
  * ['prop1', 'prop2']
  * ```
  */
-export type FieldsClause = string | NormalizedFieldsClause;
+export declare type FieldsClause<M extends object = ModelData> =
+  | keyof M
+  | NormalizedFieldsClause<M>;
 
 /**
  * Normalized fields clause.
@@ -177,7 +203,8 @@ export type FieldsClause = string | NormalizedFieldsClause;
  * ]
  * ```
  */
-export type NormalizedFieldsClause = string[];
+export declare type NormalizedFieldsClause<M extends object = ModelData> =
+  (keyof M)[];
 
 /**
  * Include clause.
@@ -236,10 +263,11 @@ export type NormalizedFieldsClause = string[];
  * }
  * ```
  */
-export declare type IncludeClause =
-  | string
-  | NestedIncludeClause
-  | NormalizedIncludeClause
+export declare type IncludeClause<M extends object = ModelData> =
+  | keyof M
+  | (keyof M)[]
+  | NestedIncludeClause<M>
+  | NormalizedIncludeClause<M>
   | IncludeClause[];
 
 /**
@@ -286,8 +314,8 @@ export declare type IncludeClause =
  * }
  * ```
  */
-export declare type NestedIncludeClause = {
-  [property: string]: IncludeClause;
+export declare type NestedIncludeClause<M extends object = ModelData> = {
+  [property in keyof M]?: IncludeClause;
 };
 
 /**
@@ -315,7 +343,7 @@ export declare type NestedIncludeClause = {
  * }
  * ```
  */
-export declare type NormalizedIncludeClause = {
-  relation: string;
+export declare interface NormalizedIncludeClause<M extends object = ModelData> {
+  relation: keyof M;
   scope?: FilterClause;
-};
+}

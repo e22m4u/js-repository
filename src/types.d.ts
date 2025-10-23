@@ -14,9 +14,7 @@ export declare type PartialBy<T, K extends keyof T> = Omit<T, K> &
 /**
  * Model data.
  */
-export declare type ModelData = {
-  [property: string]: unknown;
-};
+export declare type ModelData = Record<string, unknown>;
 
 /**
  * Model id.
