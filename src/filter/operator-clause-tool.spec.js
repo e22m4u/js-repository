@@ -271,6 +271,19 @@ describe('OperatorClauseTool', function () {
         expect(S.testEqNeq({eq: false}, null)).to.be.false;
         expect(S.testEqNeq({eq: false}, undefined)).to.be.false;
       });
+
+      it('returns true for deeply equal objects and arrays', function () {
+        expect(S.testEqNeq({eq: {a: 1, b: {c: 2}}}, {a: 1, b: {c: 2}})).to.be
+          .true;
+        expect(S.testEqNeq({eq: [1, {a: 2}]}, [1, {a: 2}])).to.be.true;
+      });
+
+      it('returns false for different objects and arrays', function () {
+        expect(S.testEqNeq({eq: {a: 1}}, {a: 2})).to.be.false;
+        expect(S.testEqNeq({eq: {a: 1}}, {b: 1})).to.be.false;
+        expect(S.testEqNeq({eq: [1, 2]}, [1, 3])).to.be.false;
+        expect(S.testEqNeq({eq: [1, 2]}, [1, 2, 3])).to.be.false;
+      });
     });
 
     describe('neq', function () {
@@ -317,6 +330,19 @@ describe('OperatorClauseTool', function () {
         expect(S.testEqNeq({neq: false}, true)).to.be.true;
         expect(S.testEqNeq({neq: false}, null)).to.be.true;
         expect(S.testEqNeq({neq: false}, undefined)).to.be.true;
+      });
+
+      it('returns false for deeply equal objects and arrays', function () {
+        expect(S.testEqNeq({neq: {a: 1, b: {c: 2}}}, {a: 1, b: {c: 2}})).to.be
+          .false;
+        expect(S.testEqNeq({neq: [1, {a: 2}]}, [1, {a: 2}])).to.be.false;
+      });
+
+      it('returns true for different objects and arrays', function () {
+        expect(S.testEqNeq({neq: {a: 1}}, {a: 2})).to.be.true;
+        expect(S.testEqNeq({neq: {a: 1}}, {b: 1})).to.be.true;
+        expect(S.testEqNeq({neq: [1, 2]}, [1, 3])).to.be.true;
+        expect(S.testEqNeq({neq: [1, 2]}, [1, 2, 3])).to.be.true;
       });
     });
   });
@@ -502,6 +528,28 @@ describe('OperatorClauseTool', function () {
       expect(S.testInq({inq: [-1, 0]}, false)).to.be.false;
     });
 
+    it('returns true if a given object is deeply equal to an element in the array', function () {
+      const clause = {inq: [{a: 1}, {b: 2}]};
+      expect(S.testInq(clause, {a: 1})).to.be.true;
+    });
+
+    it('returns false if a given object is not deeply equal to any element in the array', function () {
+      const clause = {inq: [{a: 1}, {b: 2}]};
+      expect(S.testInq(clause, {c: 3})).to.be.false;
+    });
+
+    it('returns true if a given array is deeply equal to an element in the array', function () {
+      // prettier-ignore
+      const clause = {inq: [[1, 2], [3, 4]]};
+      expect(S.testInq(clause, [1, 2])).to.be.true;
+    });
+
+    it('returns false if a given array is not deeply equal to any element in the array', function () {
+      // prettier-ignore
+      const clause = {inq: [[1, 2], [3, 4]]};
+      expect(S.testInq(clause, [5, 6])).to.be.false;
+    });
+
     it('throws an error if a first argument is not an object', function () {
       const throwable = () => S.testInq(10);
       expect(throwable).to.throw(
@@ -556,6 +604,28 @@ describe('OperatorClauseTool', function () {
       expect(S.testNin({nin: [-1, 0]}, false)).to.be.true;
       expect(S.testNin({nin: [1, 2]}, true)).to.be.true;
       expect(S.testNin({nin: [1, 2]}, false)).to.be.true;
+    });
+
+    it('returns false if a given object is deeply equal to an element in the array', function () {
+      const clause = {nin: [{a: 1}, {b: 2}]};
+      expect(S.testNin(clause, {a: 1})).to.be.false;
+    });
+
+    it('returns true if a given object is not deeply equal to any element in the array', function () {
+      const clause = {nin: [{a: 1}, {b: 2}]};
+      expect(S.testNin(clause, {c: 3})).to.be.true;
+    });
+
+    it('returns false if a given array is deeply equal to an element in the array', function () {
+      // prettier-ignore
+      const clause = {nin: [[1, 2], [3, 4]]};
+      expect(S.testNin(clause, [1, 2])).to.be.false;
+    });
+
+    it('returns true if a given array is not deeply equal to any element in the array', function () {
+      // prettier-ignore
+      const clause = {nin: [[1, 2], [3, 4]]};
+      expect(S.testNin(clause, [5, 6])).to.be.true;
     });
 
     it('throws an error if a first argument is not an object', function () {
