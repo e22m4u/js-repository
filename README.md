@@ -1126,10 +1126,10 @@ const userProfile = await userRepository.findOne({
 `{foo: {nin: ['bar', 'baz']}}` исключение значений массива `nin`  
 `{foo: {between: [5, 10]}}` оператор диапазона `between`  
 `{foo: {exists: true}}` оператор наличия значения `exists`  
-`{foo: {like: 'bar'}}` оператор поиска подстроки `like`  
-`{foo: {ilike: 'BaR'}}` регистронезависимая версия `ilike`  
-`{foo: {nlike: 'bar'}}` оператор исключения подстроки `nlike`  
-`{foo: {nilike: 'BaR'}}` регистронезависимая версия `nilike`  
+`{foo: {like: '%bar%'}}` SQL-подобный оператор поиска `like`  
+`{foo: {ilike: '%BaR%'}}` регистронезависимая версия `ilike`  
+`{foo: {nlike: '%bar%'}}` SQL-подобный оператор поиска `nlike`  
+`{foo: {nilike: '%BaR%'}}` регистронезависимая версия `nilike`  
 `{foo: {regexp: '^ba.+'}}` оператор регулярного выражения `regexp`  
 `{foo: {regexp: '^ba.+', flags: 'i'}}` флаги регулярного выражения
 
@@ -1154,7 +1154,7 @@ const res = await rep.count({
 const res = await rep.delete({
   or: [
     {draft: true},
-    {title: {like: 'draft'}},
+    {title: {ilike: '%draft%'}},
   ],
 });
 ```
