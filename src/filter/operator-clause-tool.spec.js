@@ -47,14 +47,14 @@ describe('OperatorClauseTool', function () {
   });
 
   describe('testAll', function () {
-    it('tests "eq" and "neq" operators', function () {
+    it('should test "eq" and "neq" operators', function () {
       expect(S.testAll({eq: 10}, 10)).to.be.true;
       expect(S.testAll({eq: 10}, 9)).to.be.false;
       expect(S.testAll({neq: 10}, 9)).to.be.true;
       expect(S.testAll({neq: 10}, 10)).to.be.false;
     });
 
-    it('tests "gt", "gte", "lt" and "lte" operators', function () {
+    it('should test "gt", "gte", "lt" and "lte" operators', function () {
       expect(S.testAll({gt: 5}, 6)).to.be.true;
       expect(S.testAll({gte: 5}, 5)).to.be.true;
       expect(S.testAll({lt: 5}, 4)).to.be.true;
@@ -65,54 +65,68 @@ describe('OperatorClauseTool', function () {
       expect(S.testAll({lte: 5}, 6)).to.be.false;
     });
 
-    it('tests the "inq" operator', function () {
+    it('should test the "inq" operator', function () {
       expect(S.testAll({inq: [1, 2, 3]}, 2)).to.be.true;
       expect(S.testAll({inq: [1, 2, 3]}, 'a')).to.be.false;
     });
 
-    it('tests the "nin" operator', function () {
+    it('should test the "nin" operator', function () {
       expect(S.testAll({nin: [1, 2, 3]}, 'a')).to.be.true;
       expect(S.testAll({nin: [1, 2, 3]}, 2)).to.be.false;
     });
 
-    it('tests the "between" operator', function () {
+    it('should test the "between" operator', function () {
       expect(S.testAll({between: [-2, 2]}, 0)).to.be.true;
       expect(S.testAll({between: [-2, 2]}, 10)).to.be.false;
     });
 
-    it('tests the "exists" operator', function () {
+    it('should test the "exists" operator', function () {
       expect(S.testAll({exists: true}, 10)).to.be.true;
       expect(S.testAll({exists: false}, undefined)).to.be.true;
       expect(S.testAll({exists: true}, undefined)).to.be.false;
       expect(S.testAll({exists: false}, 10)).to.be.false;
     });
 
-    it('tests the "like" operator', function () {
+    it('should test the "like" operator', function () {
       expect(S.testAll({like: '%World%'}, 'Hello World!')).to.be.true;
       expect(S.testAll({like: '%world%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests the "nlike" operator', function () {
+    it('should test the "nlike" operator', function () {
       expect(S.testAll({nlike: '%John%'}, 'Hello World!')).to.be.true;
       expect(S.testAll({nlike: '%World%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests the "ilike" operator', function () {
+    it('should test the "ilike" operator', function () {
       expect(S.testAll({ilike: '%WORLD%'}, 'Hello World!')).to.be.true;
       expect(S.testAll({ilike: '%John%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests the "nilike" operator', function () {
+    it('should test the "nilike" operator', function () {
       expect(S.testAll({nilike: '%John%'}, 'Hello World!')).to.be.true;
       expect(S.testAll({nilike: '%world%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests the "regexp" operator', function () {
+    it('should test the "regexp" operator', function () {
       expect(S.testAll({regexp: 'Wo.+'}, 'Hello World!')).to.be.true;
       expect(S.testAll({regexp: 'Fo.+'}, 'Hello World!')).to.be.false;
+      expect(S.testAll({regexp: 'wo.+', flags: 'i'}, 'World')).to.be.true;
+      expect(S.testAll({regexp: 'fo.+', flags: 'i'}, 'World')).to.be.false;
     });
 
-    it('throws an error if a first argument is not an object', function () {
+    it('should allow to combine operators', function () {
+      const clause = {gt: 20, lt: 30};
+      expect(S.testAll(clause, 10)).to.be.false;
+      expect(S.testAll(clause, 25)).to.be.true;
+      expect(S.testAll(clause, 40)).to.be.false;
+    });
+
+    it('should return undefined for an empty clause or non-operator key', function () {
+      expect(S.testAll({}, 'value')).to.be.undefined;
+      expect(S.testAll({foo: 'bar'}, 'value')).to.be.undefined;
+    });
+
+    it('should throws an error if a first argument is not an object', function () {
       const throwable = () => S.testAll(10);
       expect(throwable).to.throw(
         'The first argument of OperatorUtils.testAll ' +

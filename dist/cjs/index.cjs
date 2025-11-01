@@ -738,28 +738,37 @@ var init_operator_clause_tool = __esm({
             "The first argument of OperatorUtils.testAll should be an Object, but %v was given.",
             clause
           );
-        const eqNeqTest = this.testEqNeq(clause, value);
-        if (eqNeqTest !== void 0) return eqNeqTest;
-        const gtLtTest = this.testGtLt(clause, value);
-        if (gtLtTest !== void 0) return gtLtTest;
-        const incTest = this.testInq(clause, value);
-        if (incTest !== void 0) return incTest;
-        const ninTest = this.testNin(clause, value);
-        if (ninTest !== void 0) return ninTest;
-        const betweenTest = this.testBetween(clause, value);
-        if (betweenTest !== void 0) return betweenTest;
-        const existsTest = this.testExists(clause, value);
-        if (existsTest !== void 0) return existsTest;
-        const likeTest = this.testLike(clause, value);
-        if (likeTest !== void 0) return likeTest;
-        const nlikeTest = this.testNlike(clause, value);
-        if (nlikeTest !== void 0) return nlikeTest;
-        const ilikeTest = this.testIlike(clause, value);
-        if (ilikeTest !== void 0) return ilikeTest;
-        const nilikeTest = this.testNilike(clause, value);
-        if (nilikeTest !== void 0) return nilikeTest;
-        const regExpTest = this.testRegexp(clause, value);
-        if (regExpTest !== void 0) return regExpTest;
+        const operatorMap = {
+          eq: this.testEqNeq,
+          neq: this.testEqNeq,
+          gt: this.testGtLt,
+          gte: this.testGtLt,
+          lt: this.testGtLt,
+          lte: this.testGtLt,
+          inq: this.testInq,
+          nin: this.testNin,
+          between: this.testBetween,
+          exists: this.testExists,
+          like: this.testLike,
+          nlike: this.testNlike,
+          ilike: this.testIlike,
+          nilike: this.testNilike,
+          regexp: this.testRegexp
+        };
+        const clauseKeys = Object.keys(clause);
+        const knownOperators = clauseKeys.filter((key) => operatorMap[key]);
+        if (knownOperators.length === 0) {
+          return void 0;
+        }
+        return knownOperators.every((op) => {
+          const singleOpClause = { [op]: clause[op] };
+          if (op === "regexp" && "flags" in clause) {
+            singleOpClause.flags = clause.flags;
+          }
+          const testFn = operatorMap[op];
+          const result = testFn.call(this, singleOpClause, value);
+          return result;
+        });
       }
       /**
        * Test eq/neq operator.

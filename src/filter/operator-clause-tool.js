@@ -63,54 +63,44 @@ export class OperatorClauseTool extends Service {
           'should be an Object, but %v was given.',
         clause,
       );
-
-    // {eq: ...}
-    // {neq: ...}
-    const eqNeqTest = this.testEqNeq(clause, value);
-    if (eqNeqTest !== undefined) return eqNeqTest;
-
-    // {gt: ...}
-    // {gte: ...}
-    // {lt: ...}
-    // {lte: ...}
-    const gtLtTest = this.testGtLt(clause, value);
-    if (gtLtTest !== undefined) return gtLtTest;
-
-    // {inc: ...}
-    const incTest = this.testInq(clause, value);
-    if (incTest !== undefined) return incTest;
-
-    // {nin: ...}
-    const ninTest = this.testNin(clause, value);
-    if (ninTest !== undefined) return ninTest;
-
-    // {between: ...}
-    const betweenTest = this.testBetween(clause, value);
-    if (betweenTest !== undefined) return betweenTest;
-
-    // {exists: ...}
-    const existsTest = this.testExists(clause, value);
-    if (existsTest !== undefined) return existsTest;
-
-    // {like: ...}
-    const likeTest = this.testLike(clause, value);
-    if (likeTest !== undefined) return likeTest;
-
-    // {nlike: ...}
-    const nlikeTest = this.testNlike(clause, value);
-    if (nlikeTest !== undefined) return nlikeTest;
-
-    // {ilike: ...}
-    const ilikeTest = this.testIlike(clause, value);
-    if (ilikeTest !== undefined) return ilikeTest;
-
-    // {nilike: ...}
-    const nilikeTest = this.testNilike(clause, value);
-    if (nilikeTest !== undefined) return nilikeTest;
-
-    // {regexp: ...}
-    const regExpTest = this.testRegexp(clause, value);
-    if (regExpTest !== undefined) return regExpTest;
+    const operatorMap = {
+      eq: this.testEqNeq,
+      neq: this.testEqNeq,
+      gt: this.testGtLt,
+      gte: this.testGtLt,
+      lt: this.testGtLt,
+      lte: this.testGtLt,
+      inq: this.testInq,
+      nin: this.testNin,
+      between: this.testBetween,
+      exists: this.testExists,
+      like: this.testLike,
+      nlike: this.testNlike,
+      ilike: this.testIlike,
+      nilike: this.testNilike,
+      regexp: this.testRegexp,
+    };
+    const clauseKeys = Object.keys(clause);
+    // поиск ключей, которые являются известными операторами
+    const knownOperators = clauseKeys.filter(key => operatorMap[key]);
+    // если в объекте clause нет ни одного известного оператора,
+    // то возвращается undefined, чтобы _test() продолжил сравнение
+    if (knownOperators.length === 0) {
+      return undefined;
+    }
+    // проверка каждого из операторов
+    return knownOperators.every(op => {
+      // временный объект с текущим оператором для передачи в тестер
+      const singleOpClause = {[op]: clause[op]};
+      // обработка для regexp, для передачи флагов
+      if (op === 'regexp' && 'flags' in clause) {
+        singleOpClause.flags = clause.flags;
+      }
+      // вызов тестера с передачей контекста
+      const testFn = operatorMap[op];
+      const result = testFn.call(this, singleOpClause, value);
+      return result;
+    });
   }
 
   /**
