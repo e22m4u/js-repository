@@ -13,6 +13,7 @@ const OBJECTS = [
     hobbies: ['bicycle', 'yoga'],
     nickname: 'Spear',
     birthdate: '2002-04-14',
+    address: {city: 'New York', street: '5th Avenue'},
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const OBJECTS = [
     hobbies: ['yoga', 'meditation'],
     nickname: 'Flower',
     birthdate: '2002-01-12',
+    address: {city: 'London', street: 'Baker Street'},
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const OBJECTS = [
     hobbies: [],
     nickname: null,
     birthdate: '2002-03-01',
+    address: {city: 'Paris', street: 'Champs-Élysées'},
   },
   {
     id: 4,
@@ -39,6 +42,18 @@ const OBJECTS = [
     age: 32,
     hobbies: ['bicycle'],
     birthdate: '1991-06-24',
+    // нет nickname
+    address: {city: 'New York', street: 'Wall Street'},
+  },
+  {
+    id: 5,
+    name: 'Peter',
+    surname: 'Jones',
+    age: 45,
+    hobbies: ['fishing'],
+    birthdate: '1978-11-05',
+    // нет nickname
+    address: {city: 'New York', street: '5th Avenue'},
   },
 ];
 
@@ -154,32 +169,36 @@ describe('WhereClauseTool', function () {
 
     it('uses the "neq" operator to match non-equality', function () {
       const result = S.filter(OBJECTS, {name: {neq: 'John'}});
-      expect(result).to.have.length(3);
+      expect(result).to.have.length(4);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
       expect(result[2]).to.be.eql(OBJECTS[3]);
+      expect(result[3]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "neq" operator to match an empty array', function () {
       const result = S.filter(OBJECTS, {hobbies: {neq: 'bicycle'}});
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
+      expect(result[2]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "gt" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {gt: 2}});
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[2]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
+      expect(result[2]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "gte" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {gte: 2}});
-      expect(result).to.have.length(3);
+      expect(result).to.have.length(4);
       expect(result[0]).to.be.eql(OBJECTS[1]);
       expect(result[1]).to.be.eql(OBJECTS[2]);
       expect(result[2]).to.be.eql(OBJECTS[3]);
+      expect(result[3]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "lt" operator to compare values', function () {
@@ -206,9 +225,10 @@ describe('WhereClauseTool', function () {
 
     it('uses the "nin" operator to compare values', function () {
       const result = S.filter(OBJECTS, {id: {nin: [2, 3]}});
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[3]);
+      expect(result[2]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "between" operator to compare values', function () {
@@ -228,8 +248,9 @@ describe('WhereClauseTool', function () {
 
     it('uses the "exists" operator to check non-existence', function () {
       const result = S.filter(OBJECTS, {nickname: {exists: false}});
-      expect(result).to.have.length(1);
+      expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[3]);
+      expect(result[1]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "like" operator to match by a substring', function () {
@@ -240,10 +261,11 @@ describe('WhereClauseTool', function () {
 
     it('uses the "nlike" operator to exclude by a substring', function () {
       const result = S.filter(OBJECTS, {name: {nlike: '%liv%'}});
-      expect(result).to.have.length(3);
+      expect(result).to.have.length(4);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[1]);
       expect(result[2]).to.be.eql(OBJECTS[2]);
+      expect(result[3]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "ilike" operator to case-insensitively matching by a substring', function () {
@@ -254,10 +276,11 @@ describe('WhereClauseTool', function () {
 
     it('uses the "nilike" operator to exclude case-insensitively by a substring', function () {
       const result = S.filter(OBJECTS, {name: {nilike: '%LIV%'}});
-      expect(result).to.have.length(3);
+      expect(result).to.have.length(4);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[1]);
       expect(result[2]).to.be.eql(OBJECTS[2]);
+      expect(result[3]).to.be.eql(OBJECTS[4]);
     });
 
     it('uses the "regexp" operator to compare values', function () {
@@ -274,8 +297,95 @@ describe('WhereClauseTool', function () {
 
     it('does not use undefined to match a null value', function () {
       const result = S.filter(OBJECTS, {nickname: undefined});
-      expect(result).to.have.length(1);
+      expect(result).to.have.length(2);
       expect(result[0]).to.be.eql(OBJECTS[3]);
+      expect(result[1]).to.be.eql(OBJECTS[4]);
+    });
+
+    describe('advanced matching', function () {
+      it('combines multiple operators for one field using "and"', function () {
+        const result = S.filter(OBJECTS, {
+          and: [{age: {gt: 20}}, {age: {lt: 30}}],
+        });
+        expect(result).to.have.length(3);
+        expect(result.map(o => o.id)).to.eql([1, 2, 3]);
+      });
+
+      it('combines multiple operators for one field implicitly', function () {
+        const result = S.filter(OBJECTS, {age: {gt: 20, lt: 30}});
+        expect(result).to.have.length(3);
+        expect(result.map(o => o.id)).to.eql([1, 2, 3]);
+      });
+
+      it('uses dot notation to query nested objects', function () {
+        const result = S.filter(OBJECTS, {'address.city': 'New York'});
+        expect(result).to.have.length(3);
+        expect(result.map(o => o.id)).to.eql([1, 4, 5]);
+      });
+
+      it('uses dot notation combined with operators', function () {
+        const result = S.filter(OBJECTS, {
+          'address.street': {like: '%Avenue%'},
+        });
+        expect(result).to.have.length(2);
+        expect(result.map(o => o.id)).to.eql([1, 5]);
+      });
+
+      it('matches an object by exact deep equality', function () {
+        const result = S.filter(OBJECTS, {
+          address: {city: 'New York', street: '5th Avenue'},
+        });
+        expect(result).to.have.length(2);
+        expect(result.map(o => o.id)).to.eql([1, 5]);
+      });
+
+      it('does not match an object if it has extra properties', function () {
+        const result = S.filter(OBJECTS, {
+          address: {city: 'New York'},
+        });
+        expect(result).to.have.length(0);
+      });
+
+      it('does match an object if property order is different', function () {
+        const result = S.filter(OBJECTS, {
+          address: {street: '5th Avenue', city: 'New York'},
+        });
+        expect(result).to.have.length(2);
+        expect(result[0].id).to.equal(1);
+        expect(result[1].id).to.equal(5);
+      });
+
+      it('matches an array by exact deep equality', function () {
+        const result = S.filter(OBJECTS, {
+          hobbies: ['bicycle', 'yoga'],
+        });
+        expect(result).to.have.length(1);
+        expect(result[0].id).to.equal(1);
+      });
+
+      it('does not match an array if order is different', function () {
+        const result = S.filter(OBJECTS, {
+          hobbies: ['yoga', 'bicycle'],
+        });
+        expect(result).to.have.length(0);
+      });
+
+      it('does not match an array if it contains extra items', function () {
+        const result = S.filter(OBJECTS, {
+          hobbies: ['bicycle'],
+        });
+        // Найдет только объект с id: 4, так как у него hobbies: ['bicycle']
+        expect(result).to.have.length(1);
+        expect(result[0].id).to.equal(4);
+      });
+
+      it('correctly combines multiple operators with dot notation in an "and" clause', function () {
+        const result = S.filter(OBJECTS, {
+          and: [{'address.city': 'New York'}, {age: {gt: 30}}],
+        });
+        expect(result).to.have.length(2);
+        expect(result.map(o => o.id)).to.eql([4, 5]);
+      });
     });
   });
 

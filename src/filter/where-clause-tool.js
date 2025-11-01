@@ -1,7 +1,7 @@
 import {Service} from '@e22m4u/js-service';
-import {getValueByPath} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {OperatorClauseTool} from './operator-clause-tool.js';
+import {getValueByPath, isDeepEqual, isPureObject} from '../utils/index.js';
 
 /**
  * Where clause tool.
@@ -75,8 +75,9 @@ export class WhereClauseTool extends Service {
           const andClause = whereClause[key];
           if (Array.isArray(andClause))
             return andClause.every(clause => this._createFilter(clause)(data));
-          // OrClause (recursion)
-        } else if (key === 'or' && key in whereClause) {
+        }
+        // OrClause (recursion)
+        else if (key === 'or' && key in whereClause) {
           const orClause = whereClause[key];
           if (Array.isArray(orClause))
             return orClause.some(clause => this._createFilter(clause)(data));
@@ -84,34 +85,6 @@ export class WhereClauseTool extends Service {
         // PropertiesClause (properties)
         const value = getValueByPath(data, key);
         const matcher = whereClause[key];
-        // Property value is an array.
-        if (Array.isArray(value)) {
-          // {neq: ...}
-          if (
-            typeof matcher === 'object' &&
-            matcher !== null &&
-            'neq' in matcher &&
-            matcher.neq !== undefined
-          ) {
-            // The following condition is for the case where
-            // we are querying with a neq filter, and when
-            // the value is an empty array ([]).
-            if (value.length === 0) return true;
-            // The neq operator requires each element
-            // of the array to be excluded.
-            return value.every((el, index) => {
-              const where = {};
-              where[index] = matcher;
-              return this._createFilter(where)({...value});
-            });
-          }
-          // Requires one of an array elements to be match.
-          return value.some((el, index) => {
-            const where = {};
-            where[index] = matcher;
-            return this._createFilter(where)({...value});
-          });
-        }
         // Test property value.
         if (this._test(matcher, value)) return true;
       });
@@ -126,30 +99,55 @@ export class WhereClauseTool extends Service {
    * @returns {boolean}
    */
   _test(example, value) {
-    // Test null.
+    // прямое сравнение
+    if (example === value) {
+      return true;
+    }
+    // условием является null
     if (example === null) {
       return value === null;
     }
-    // Test undefined.
+    // условием является undefined
     if (example === undefined) {
       return value === undefined;
     }
-    // Test RegExp.
-    // noinspection ALL
+    // условием является регулярное выражение
     if (example instanceof RegExp) {
-      if (typeof value === 'string') return !!value.match(example);
+      if (typeof value === 'string') {
+        return example.test(value);
+      }
+      // если значением является массив,
+      // то проверяется каждый элемент
+      if (Array.isArray(value)) {
+        return value.some(el => typeof el === 'string' && example.test(el));
+      }
       return false;
     }
-    // Operator clause.
-    if (typeof example === 'object' && !Array.isArray(example)) {
+    // условием является простой объект
+    if (isPureObject(example)) {
       const operatorsTest = this.getService(OperatorClauseTool).testAll(
         example,
         value,
       );
-      if (operatorsTest !== undefined) return operatorsTest;
+      if (operatorsTest !== undefined) {
+        // особая логика для neq с массивами
+        // {hobbies: {neq: 'yoga'}}
+        //   должно вернуть true для
+        // ['bicycle', 'meditation']
+        if ('neq' in example && Array.isArray(value)) {
+          return !value.some(el => isDeepEqual(el, example.neq));
+        }
+        return operatorsTest;
+      }
     }
-    // Not strict equality.
-    return example == value;
+    // значением является массив
+    if (Array.isArray(value)) {
+      // если один из элементов массива соответствует
+      // поиску, то возвращается true
+      const isElementMatched = value.some(el => isDeepEqual(el, example));
+      if (isElementMatched) return true;
+    }
+    return isDeepEqual(example, value);
   }
 
   /**

@@ -1,8 +1,10 @@
 import {Service} from '@e22m4u/js-service';
-import {likeToRegexp} from '../utils/index.js';
-import {stringToRegexp} from '../utils/index.js';
-import {InvalidArgumentError} from '../errors/index.js';
-import {InvalidOperatorValueError} from '../errors/index.js';
+import {isDeepEqual, likeToRegexp, stringToRegexp} from '../utils/index.js';
+
+import {
+  InvalidArgumentError,
+  InvalidOperatorValueError,
+} from '../errors/index.js';
 
 /**
  * Operator clause tool.
@@ -13,40 +15,43 @@ export class OperatorClauseTool extends Service {
    *
    * @param {*} val1 The 1st value
    * @param {*} val2 The 2nd value
+   * @param {*} noTypeConversion
    * @returns {number} 0: =, positive: >, negative <
    */
-  compare(val1, val2) {
+  compare(val1, val2, noTypeConversion = false) {
+    if (val1 === val2) {
+      return 0;
+    }
     if (val1 == null || val2 == null) {
       return val1 == val2 ? 0 : NaN;
     }
-    if (typeof val1 === 'number') {
-      if (
-        typeof val2 === 'number' ||
-        typeof val2 === 'string' ||
-        typeof val2 === 'boolean'
-      ) {
-        if (val1 === val2) return 0;
-        return val1 - Number(val2);
+    const type1 = typeof val1;
+    const type2 = typeof val2;
+    // объекты и массивы
+    if (type1 === 'object' || type2 === 'object') {
+      return isDeepEqual(val1, val2) ? 0 : NaN;
+    }
+    // числовое сравнение
+    if (
+      (type1 === 'number' || type1 === 'string' || type1 === 'boolean') &&
+      (type2 === 'number' || type2 === 'string' || type2 === 'boolean')
+    ) {
+      if (noTypeConversion && type1 !== type2) {
+        return NaN;
       }
-      return NaN;
-    }
-    if (typeof val1 === 'string') {
-      const isDigits = /^\d+$/.test(val1);
-      if (isDigits) return this.compare(Number(val1), val2);
-      try {
-        if (val1 > val2) return 1;
-        if (val1 < val2) return -1;
-        if (val1 == val2) return 0;
-      } catch (e) {
-        /**/
+      const num1 = Number(val1);
+      const num2 = Number(val2);
+      if (!isNaN(num1) && !isNaN(num2)) {
+        return num1 - num2;
       }
-      return NaN;
     }
-    if (typeof val1 === 'boolean') {
-      return Number(val1) - Number(val2);
+    // лексикографическое сравнение
+    if (type1 === 'string' && type2 === 'string') {
+      if (val1 > val2) return 1;
+      if (val1 < val2) return -1;
+      return 0;
     }
-    // Return NaN if we don't know how to compare.
-    return val1 === val2 ? 0 : NaN;
+    return NaN;
   }
 
   /**
@@ -131,8 +136,8 @@ export class OperatorClauseTool extends Service {
           'should be an Object, but %v was given.',
         clause,
       );
-    if ('eq' in clause) return this.compare(clause.eq, value) === 0;
-    if ('neq' in clause) return this.compare(clause.neq, value) !== 0;
+    if ('eq' in clause) return this.compare(clause.eq, value, true) === 0;
+    if ('neq' in clause) return this.compare(clause.neq, value, true) !== 0;
   }
 
   /**
@@ -213,7 +218,9 @@ export class OperatorClauseTool extends Service {
         );
       }
       for (let i = 0; i < clause.inq.length; i++) {
-        if (clause.inq[i] == value) return true;
+        if (this.compare(clause.inq[i], value, true) === 0) {
+          return true;
+        }
       }
       return false;
     }
@@ -248,10 +255,9 @@ export class OperatorClauseTool extends Service {
           clause.nin,
         );
       }
-      for (let i = 0; i < clause.nin.length; i++) {
-        if (clause.nin[i] == value) return false;
-      }
-      return true;
+      return clause.nin.every(element => {
+        return this.compare(element, value, true) !== 0;
+      });
     }
   }
 

@@ -7,42 +7,119 @@ const S = new OperatorClauseTool();
 
 describe('OperatorClauseTool', function () {
   describe('compare', function () {
-    it('returns a negative number if a second value is greatest', function () {
-      expect(S.compare(0, 5)).to.be.eq(-5);
-      expect(S.compare(0, '5')).to.be.eq(-5);
-      expect(S.compare(0, true)).to.be.eq(-1);
-      expect(S.compare('0', 5)).to.be.eq(-5);
-      expect(S.compare('a', 'b')).to.be.eq(-1);
-    });
-
-    it('returns a positive number if a second value is lowest', function () {
-      expect(S.compare(5, 0)).to.be.eq(5);
-      expect(S.compare(5, '0')).to.be.eq(5);
-      expect(S.compare(5, false)).to.be.eq(5);
-      expect(S.compare(5, true)).to.be.eq(4);
-      expect(S.compare('5', 0)).to.be.eq(5);
-      expect(S.compare('b', 'a')).to.be.eq(1);
-    });
-
-    it('returns zero if given values are equal', function () {
+    it('returns zero for equal values of the same type', function () {
       const obj = {};
+      const arr = [];
       expect(S.compare(0, 0)).to.be.eq(0);
-      expect(S.compare(0, '0')).to.be.eq(0);
-      expect(S.compare('0', 0)).to.be.eq(0);
       expect(S.compare('a', 'a')).to.be.eq(0);
+      expect(S.compare(true, true)).to.be.eq(0);
       expect(S.compare(obj, obj)).to.be.eq(0);
+      expect(S.compare(arr, arr)).to.be.eq(0);
       expect(S.compare(null, null)).to.be.eq(0);
       expect(S.compare(undefined, undefined)).to.be.eq(0);
     });
 
-    it('returns NaN if we do not know how to compare', function () {
-      expect(isNaN(S.compare(null, 'string'))).to.be.true;
-      expect(isNaN(S.compare(null, 10))).to.be.true;
-      expect(isNaN(S.compare([], 0))).to.be.true;
-      expect(isNaN(S.compare([], []))).to.be.true;
-      expect(isNaN(S.compare({}, {}))).to.be.true;
-      expect(isNaN(S.compare(10, {}))).to.be.true;
-      expect(isNaN(S.compare('string', Symbol()))).to.be.true;
+    it('returns a non-zero number for different numbers', function () {
+      expect(S.compare(5, 0)).to.be.eq(5);
+      expect(S.compare(0, 5)).to.be.eq(-5);
+    });
+
+    it('returns a non-zero number for different booleans', function () {
+      expect(S.compare(true, false)).to.be.eq(1);
+      expect(S.compare(false, true)).to.be.eq(-1);
+    });
+
+    it('returns a non-zero number for different strings', function () {
+      expect(S.compare('c', 'a')).to.be.eq(1);
+      expect(S.compare('b', 'a')).to.be.eq(1);
+      expect(S.compare('a', 'b')).to.be.eq(-1);
+      expect(S.compare('a', 'c')).to.be.eq(-1);
+    });
+
+    it('compares numbers and numeric strings as numbers', function () {
+      expect(S.compare(10, '10')).to.be.eq(0);
+      expect(S.compare('10', 10)).to.be.eq(0);
+      expect(S.compare(15, '10')).to.be.eq(5);
+      expect(S.compare('15', 10)).to.be.eq(5);
+      expect(S.compare(5, '10')).to.be.eq(-5);
+      expect(S.compare('5', 10)).to.be.eq(-5);
+    });
+
+    it('returns NaN when comparing null/undefined with other types', function () {
+      expect(S.compare(null, 'string')).to.be.NaN;
+      expect(S.compare(null, 10)).to.be.NaN;
+      expect(S.compare(null, 0)).to.be.NaN;
+      expect(S.compare(null, false)).to.be.NaN;
+      expect(S.compare(undefined, 'string')).to.be.NaN;
+      expect(S.compare(undefined, 10)).to.be.NaN;
+      expect(S.compare(undefined, 0)).to.be.NaN;
+      expect(S.compare(undefined, false)).to.be.NaN;
+    });
+
+    it('returns 0 for deeply equal objects', function () {
+      expect(S.compare({a: 1, b: {c: 2}}, {a: 1, b: {c: 2}})).to.be.eq(0);
+    });
+
+    it('returns NaN for different objects', function () {
+      expect(S.compare({a: 1}, {a: 2})).to.be.NaN;
+      expect(S.compare({a: 1}, {b: 1})).to.be.NaN;
+    });
+
+    it('returns 0 for deeply equal arrays', function () {
+      expect(S.compare([1, {a: 2}], [1, {a: 2}])).to.be.eq(0);
+    });
+
+    it('returns NaN for different arrays', function () {
+      expect(S.compare([1, 2], [1, 3])).to.be.NaN;
+      expect(S.compare([1, 2], [1, 2, 3])).to.be.NaN;
+    });
+
+    it('returns NaN for incomparable types', function () {
+      // строка (не число) и число
+      expect(S.compare('abc', 10)).to.be.NaN;
+      expect(S.compare(10, 'abc')).to.be.NaN;
+      // строка и булево
+      expect(S.compare('true', true)).to.be.NaN;
+      expect(S.compare(true, 'true')).to.be.NaN;
+      // число и объект
+      expect(S.compare(10, {})).to.be.NaN;
+      expect(S.compare({}, 10)).to.be.NaN;
+      // строка и символ
+      expect(S.compare('string', Symbol())).to.be.NaN;
+      // объект и массив
+      expect(S.compare({}, [])).to.be.NaN;
+    });
+
+    describe('with type conversion disabled (noTypeConversion = true)', function () {
+      it('returns 0 only for strictly equal primitives', function () {
+        expect(S.compare(10, 10, true)).to.be.eq(0);
+        expect(S.compare('a', 'a', true)).to.be.eq(0);
+        expect(S.compare(true, true, true)).to.be.eq(0);
+      });
+
+      it('returns NaN for different types, even if their values are equivalent', function () {
+        expect(S.compare(10, '10', true)).to.be.NaN;
+        expect(S.compare('10', 10, true)).to.be.NaN;
+        expect(S.compare(1, true, true)).to.be.NaN;
+        expect(S.compare(true, 1, true)).to.be.NaN;
+        expect(S.compare(0, false, true)).to.be.NaN;
+      });
+
+      it('returns a non-zero number for different values of the same type', function () {
+        expect(S.compare(10, 5, true)).to.be.greaterThan(0);
+        expect(S.compare('b', 'a', true)).to.be.greaterThan(0);
+        expect(S.compare(true, false, true)).to.be.greaterThan(0);
+      });
+
+      it('returns 0 for deeply equal objects and NaN for different ones', function () {
+        expect(S.compare({a: 1}, {a: 1}, true)).to.be.eq(0);
+        expect(S.compare({a: 1}, {a: 2}, true)).to.be.NaN;
+      });
+
+      it('returns 0 for deeply equal arrays and NaN for different ones', function () {
+        expect(S.compare([1, 2], [1, 2], true)).to.be.eq(0);
+        expect(S.compare([1, 2], [1, 3], true)).to.be.NaN;
+      });
     });
   });
 
@@ -152,9 +229,7 @@ describe('OperatorClauseTool', function () {
     describe('eq', function () {
       it('returns true if a given value is equal to reference', function () {
         expect(S.testEqNeq({eq: 0}, 0)).to.be.true;
-        expect(S.testEqNeq({eq: 0}, '0')).to.be.true;
-        expect(S.testEqNeq({eq: 0}, false)).to.be.true;
-        expect(S.testEqNeq({eq: 1}, true)).to.be.true;
+        expect(S.testEqNeq({eq: 1}, 1)).to.be.true;
         expect(S.testEqNeq({eq: 'a'}, 'a')).to.be.true;
         expect(S.testEqNeq({eq: true}, true)).to.be.true;
         expect(S.testEqNeq({eq: false}, false)).to.be.true;
@@ -164,6 +239,8 @@ describe('OperatorClauseTool', function () {
       });
 
       it('returns false if a given value is not-equal to reference', function () {
+        expect(S.testEqNeq({eq: 0}, '0')).to.be.false;
+        expect(S.testEqNeq({eq: 0}, false)).to.be.false;
         expect(S.testEqNeq({eq: 0}, 1)).to.be.false;
         expect(S.testEqNeq({eq: 0}, '1')).to.be.false;
         expect(S.testEqNeq({eq: 0}, true)).to.be.false;
@@ -175,6 +252,18 @@ describe('OperatorClauseTool', function () {
         expect(S.testEqNeq({eq: '0'}, Infinity)).to.be.false;
         expect(S.testEqNeq({eq: '0'}, null)).to.be.false;
         expect(S.testEqNeq({eq: '0'}, undefined)).to.be.false;
+        expect(S.testEqNeq({eq: 1}, '0')).to.be.false;
+        expect(S.testEqNeq({eq: 1}, false)).to.be.false;
+        expect(S.testEqNeq({eq: 1}, '1')).to.be.false;
+        expect(S.testEqNeq({eq: 1}, true)).to.be.false;
+        expect(S.testEqNeq({eq: 1}, Infinity)).to.be.false;
+        expect(S.testEqNeq({eq: 1}, null)).to.be.false;
+        expect(S.testEqNeq({eq: 1}, undefined)).to.be.false;
+        expect(S.testEqNeq({eq: '1'}, '0')).to.be.false;
+        expect(S.testEqNeq({eq: '1'}, true)).to.be.false;
+        expect(S.testEqNeq({eq: '1'}, Infinity)).to.be.false;
+        expect(S.testEqNeq({eq: '1'}, null)).to.be.false;
+        expect(S.testEqNeq({eq: '1'}, undefined)).to.be.false;
         expect(S.testEqNeq({eq: true}, false)).to.be.false;
         expect(S.testEqNeq({eq: true}, null)).to.be.false;
         expect(S.testEqNeq({eq: true}, undefined)).to.be.false;
@@ -185,11 +274,9 @@ describe('OperatorClauseTool', function () {
     });
 
     describe('neq', function () {
-      it('returns false if a given value is strictly equal to reference', function () {
+      it('returns false if a given value is equal to reference', function () {
         expect(S.testEqNeq({neq: 0}, 0)).to.be.false;
-        expect(S.testEqNeq({neq: 0}, '0')).to.be.false;
-        expect(S.testEqNeq({neq: 0}, false)).to.be.false;
-        expect(S.testEqNeq({neq: 1}, true)).to.be.false;
+        expect(S.testEqNeq({neq: 1}, 1)).to.be.false;
         expect(S.testEqNeq({neq: 'a'}, 'a')).to.be.false;
         expect(S.testEqNeq({neq: true}, true)).to.be.false;
         expect(S.testEqNeq({neq: false}, false)).to.be.false;
@@ -198,7 +285,9 @@ describe('OperatorClauseTool', function () {
         expect(S.testEqNeq({neq: undefined}, undefined)).to.be.false;
       });
 
-      it('returns true if a given value is strictly not-equal to reference', function () {
+      it('returns true if a given value is not-equal to reference', function () {
+        expect(S.testEqNeq({neq: 0}, '0')).to.be.true;
+        expect(S.testEqNeq({neq: 0}, false)).to.be.true;
         expect(S.testEqNeq({neq: 0}, 1)).to.be.true;
         expect(S.testEqNeq({neq: 0}, '1')).to.be.true;
         expect(S.testEqNeq({neq: 0}, true)).to.be.true;
@@ -210,6 +299,18 @@ describe('OperatorClauseTool', function () {
         expect(S.testEqNeq({neq: '0'}, Infinity)).to.be.true;
         expect(S.testEqNeq({neq: '0'}, null)).to.be.true;
         expect(S.testEqNeq({neq: '0'}, undefined)).to.be.true;
+        expect(S.testEqNeq({neq: 1}, '0')).to.be.true;
+        expect(S.testEqNeq({neq: 1}, false)).to.be.true;
+        expect(S.testEqNeq({neq: 1}, '1')).to.be.true;
+        expect(S.testEqNeq({neq: 1}, true)).to.be.true;
+        expect(S.testEqNeq({neq: 1}, Infinity)).to.be.true;
+        expect(S.testEqNeq({neq: 1}, null)).to.be.true;
+        expect(S.testEqNeq({neq: 1}, undefined)).to.be.true;
+        expect(S.testEqNeq({neq: '1'}, '0')).to.be.true;
+        expect(S.testEqNeq({neq: '1'}, true)).to.be.true;
+        expect(S.testEqNeq({neq: '1'}, Infinity)).to.be.true;
+        expect(S.testEqNeq({neq: '1'}, null)).to.be.true;
+        expect(S.testEqNeq({neq: '1'}, undefined)).to.be.true;
         expect(S.testEqNeq({neq: true}, false)).to.be.true;
         expect(S.testEqNeq({neq: true}, null)).to.be.true;
         expect(S.testEqNeq({neq: true}, undefined)).to.be.true;
@@ -387,18 +488,18 @@ describe('OperatorClauseTool', function () {
 
     it('returns true if a given value has in array', function () {
       expect(S.testInq({inq: [1, 2]}, 2)).to.be.true;
-      expect(S.testInq({inq: [1, 2]}, '2')).to.be.true;
       expect(S.testInq({inq: ['a', 'b']}, 'b')).to.be.true;
-      expect(S.testInq({inq: [1, 2]}, true)).to.be.true;
-      expect(S.testInq({inq: [-1, 0]}, false)).to.be.true;
     });
 
     it('returns false if a given value is not in array', function () {
       expect(S.testInq({inq: [1, 2]}, 3)).to.be.false;
+      expect(S.testInq({inq: [1, 2]}, '2')).to.be.false;
       expect(S.testInq({inq: [1, 2]}, '3')).to.be.false;
       expect(S.testInq({inq: ['a', 'b']}, 'c')).to.be.false;
-      expect(S.testInq({inq: [-1, 0]}, true)).to.be.false;
+      expect(S.testInq({inq: [1, 2]}, true)).to.be.false;
       expect(S.testInq({inq: [1, 2]}, false)).to.be.false;
+      expect(S.testInq({inq: [-1, 0]}, true)).to.be.false;
+      expect(S.testInq({inq: [-1, 0]}, false)).to.be.false;
     });
 
     it('throws an error if a first argument is not an object', function () {
@@ -442,17 +543,18 @@ describe('OperatorClauseTool', function () {
 
     it('returns false if a given value has in array', function () {
       expect(S.testNin({nin: [1, 2]}, 2)).to.be.false;
-      expect(S.testNin({nin: [1, 2]}, '2')).to.be.false;
+
       expect(S.testNin({nin: ['a', 'b']}, 'b')).to.be.false;
-      expect(S.testNin({nin: [1, 2]}, true)).to.be.false;
-      expect(S.testNin({nin: [-1, 0]}, false)).to.be.false;
     });
 
     it('returns true if a given value is not in array', function () {
       expect(S.testNin({nin: [1, 2]}, 3)).to.be.true;
+      expect(S.testNin({nin: [1, 2]}, '2')).to.be.true;
       expect(S.testNin({nin: [1, 2]}, '3')).to.be.true;
       expect(S.testNin({nin: ['a', 'b']}, 'c')).to.be.true;
       expect(S.testNin({nin: [-1, 0]}, true)).to.be.true;
+      expect(S.testNin({nin: [-1, 0]}, false)).to.be.true;
+      expect(S.testNin({nin: [1, 2]}, true)).to.be.true;
       expect(S.testNin({nin: [1, 2]}, false)).to.be.true;
     });
 

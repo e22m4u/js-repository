@@ -687,8 +687,6 @@ var init_operator_clause_tool = __esm({
     "use strict";
     import_js_service3 = require("@e22m4u/js-service");
     init_utils();
-    init_utils();
-    init_errors();
     init_errors();
     _OperatorClauseTool = class _OperatorClauseTool extends import_js_service3.Service {
       /**
@@ -696,34 +694,37 @@ var init_operator_clause_tool = __esm({
        *
        * @param {*} val1 The 1st value
        * @param {*} val2 The 2nd value
+       * @param {*} noTypeConversion
        * @returns {number} 0: =, positive: >, negative <
        */
-      compare(val1, val2) {
+      compare(val1, val2, noTypeConversion = false) {
+        if (val1 === val2) {
+          return 0;
+        }
         if (val1 == null || val2 == null) {
           return val1 == val2 ? 0 : NaN;
         }
-        if (typeof val1 === "number") {
-          if (typeof val2 === "number" || typeof val2 === "string" || typeof val2 === "boolean") {
-            if (val1 === val2) return 0;
-            return val1 - Number(val2);
+        const type1 = typeof val1;
+        const type2 = typeof val2;
+        if (type1 === "object" || type2 === "object") {
+          return isDeepEqual(val1, val2) ? 0 : NaN;
+        }
+        if ((type1 === "number" || type1 === "string" || type1 === "boolean") && (type2 === "number" || type2 === "string" || type2 === "boolean")) {
+          if (noTypeConversion && type1 !== type2) {
+            return NaN;
           }
-          return NaN;
-        }
-        if (typeof val1 === "string") {
-          const isDigits = /^\d+$/.test(val1);
-          if (isDigits) return this.compare(Number(val1), val2);
-          try {
-            if (val1 > val2) return 1;
-            if (val1 < val2) return -1;
-            if (val1 == val2) return 0;
-          } catch (e) {
+          const num1 = Number(val1);
+          const num2 = Number(val2);
+          if (!isNaN(num1) && !isNaN(num2)) {
+            return num1 - num2;
           }
-          return NaN;
         }
-        if (typeof val1 === "boolean") {
-          return Number(val1) - Number(val2);
+        if (type1 === "string" && type2 === "string") {
+          if (val1 > val2) return 1;
+          if (val1 < val2) return -1;
+          return 0;
         }
-        return val1 === val2 ? 0 : NaN;
+        return NaN;
       }
       /**
        * Test all operators.
@@ -797,8 +798,8 @@ var init_operator_clause_tool = __esm({
             "The first argument of OperatorUtils.testEqNeq should be an Object, but %v was given.",
             clause
           );
-        if ("eq" in clause) return this.compare(clause.eq, value) === 0;
-        if ("neq" in clause) return this.compare(clause.neq, value) !== 0;
+        if ("eq" in clause) return this.compare(clause.eq, value, true) === 0;
+        if ("neq" in clause) return this.compare(clause.neq, value, true) !== 0;
       }
       /**
        * Test lt/gt/lte/gte operator.
@@ -875,7 +876,9 @@ var init_operator_clause_tool = __esm({
             );
           }
           for (let i = 0; i < clause.inq.length; i++) {
-            if (clause.inq[i] == value) return true;
+            if (this.compare(clause.inq[i], value, true) === 0) {
+              return true;
+            }
           }
           return false;
         }
@@ -908,10 +911,9 @@ var init_operator_clause_tool = __esm({
               clause.nin
             );
           }
-          for (let i = 0; i < clause.nin.length; i++) {
-            if (clause.nin[i] == value) return false;
-          }
-          return true;
+          return clause.nin.every((element) => {
+            return this.compare(element, value, true) !== 0;
+          });
         }
       }
       /**
@@ -1146,9 +1148,9 @@ var init_where_clause_tool = __esm({
   "src/filter/where-clause-tool.js"() {
     "use strict";
     import_js_service4 = require("@e22m4u/js-service");
-    init_utils();
     init_errors();
     init_operator_clause_tool();
+    init_utils();
     _WhereClauseTool = class _WhereClauseTool extends import_js_service4.Service {
       /**
        * Filter by where clause.
@@ -1219,21 +1221,6 @@ var init_where_clause_tool = __esm({
             }
             const value = getValueByPath(data, key);
             const matcher = whereClause[key];
-            if (Array.isArray(value)) {
-              if (typeof matcher === "object" && matcher !== null && "neq" in matcher && matcher.neq !== void 0) {
-                if (value.length === 0) return true;
-                return value.every((el, index) => {
-                  const where = {};
-                  where[index] = matcher;
-                  return this._createFilter(where)({ ...value });
-                });
-              }
-              return value.some((el, index) => {
-                const where = {};
-                where[index] = matcher;
-                return this._createFilter(where)({ ...value });
-              });
-            }
             if (this._test(matcher, value)) return true;
           });
         };
@@ -1246,6 +1233,9 @@ var init_where_clause_tool = __esm({
        * @returns {boolean}
        */
       _test(example, value) {
+        if (example === value) {
+          return true;
+        }
         if (example === null) {
           return value === null;
         }
@@ -1253,17 +1243,31 @@ var init_where_clause_tool = __esm({
           return value === void 0;
         }
         if (example instanceof RegExp) {
-          if (typeof value === "string") return !!value.match(example);
+          if (typeof value === "string") {
+            return example.test(value);
+          }
+          if (Array.isArray(value)) {
+            return value.some((el) => typeof el === "string" && example.test(el));
+          }
           return false;
         }
-        if (typeof example === "object" && !Array.isArray(example)) {
+        if (isPureObject(example)) {
           const operatorsTest = this.getService(OperatorClauseTool).testAll(
             example,
             value
           );
-          if (operatorsTest !== void 0) return operatorsTest;
+          if (operatorsTest !== void 0) {
+            if ("neq" in example && Array.isArray(value)) {
+              return !value.some((el) => isDeepEqual(el, example.neq));
+            }
+            return operatorsTest;
+          }
         }
-        return example == value;
+        if (Array.isArray(value)) {
+          const isElementMatched = value.some((el) => isDeepEqual(el, example));
+          if (isElementMatched) return true;
+        }
+        return isDeepEqual(example, value);
       }
       /**
        * Validate where clause.

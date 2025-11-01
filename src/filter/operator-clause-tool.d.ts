@@ -9,8 +9,9 @@ export declare class OperatorClauseTool extends Service {
    *
    * @param val1
    * @param val2
+   * @param noTypeConversion
    */
-  compare(val1: unknown, val2: unknown): number;
+  compare(val1: unknown, val2: unknown, noTypeConversion?: boolean): number;
 
   /**
    * Test all operators.
