@@ -113,10 +113,10 @@ export declare type OperatorClause = {
   nin?: PrimitiveValue[];
   between?: readonly [string | number, string | number];
   exists?: boolean;
-  like?: string | RegExp;
-  nlike?: string | RegExp;
-  ilike?: string | RegExp;
-  nilike?: string | RegExp;
+  like?: string;
+  nlike?: string;
+  ilike?: string;
+  nilike?: string;
   regexp?: string | RegExp;
   flags?: string;
 };

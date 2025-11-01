@@ -3409,7 +3409,7 @@ describe('MemoryAdapter', function () {
       await adapter.create('model', input2);
       await adapter.create('model', input3);
       const filter1 = {where: {foo: 10}};
-      const filter2 = {where: {foo: {gte: 15}, baz: {like: 'bc'}}};
+      const filter2 = {where: {foo: {gte: 15}, baz: {like: '%bc'}}};
       const filter3 = {where: {bar: true}};
       const result1 = await adapter.find('model', filter1);
       const result2 = await adapter.find('model', filter2);
@@ -3466,7 +3466,7 @@ describe('MemoryAdapter', function () {
         baz: tableInput2.bazCol,
       };
       const filter1 = {where: {foo: 10}};
-      const filter2 = {where: {foo: {gte: 15}, baz: {like: 'bc'}}};
+      const filter2 = {where: {foo: {gte: 15}, baz: {like: '%bc'}}};
       const filter3 = {where: {bar: true}};
       const result1 = await adapter.find('model', filter1);
       const result2 = await adapter.find('model', filter2);

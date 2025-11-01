@@ -141,7 +141,7 @@ export class WhereClauseTool extends Service {
       return false;
     }
     // Operator clause.
-    if (typeof example === 'object') {
+    if (typeof example === 'object' && !Array.isArray(example)) {
       const operatorsTest = this.getService(OperatorClauseTool).testAll(
         example,
         value,

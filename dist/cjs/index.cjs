@@ -218,64 +218,6 @@ var init_is_pure_object = __esm({
   }
 });
 
-// src/utils/string-to-regexp.js
-function stringToRegexp(pattern, flags = void 0) {
-  if (pattern instanceof RegExp) {
-    return new RegExp(pattern, flags);
-  }
-  let regex = "";
-  for (let i = 0, n = pattern.length; i < n; i++) {
-    const char = pattern.charAt(i);
-    if (char === "%") {
-      regex += ".*";
-    } else {
-      regex += char;
-    }
-  }
-  return new RegExp(regex, flags);
-}
-var init_string_to_regexp = __esm({
-  "src/utils/string-to-regexp.js"() {
-    "use strict";
-    __name(stringToRegexp, "stringToRegexp");
-  }
-});
-
-// src/utils/get-value-by-path.js
-function getValueByPath(obj, path, orElse = void 0) {
-  if (!obj || typeof obj !== "object") return orElse;
-  if (!path || typeof path !== "string") return orElse;
-  const keys = path.split(".");
-  let value = obj;
-  for (const key of keys) {
-    if (typeof value === "object" && value !== null && key in value) {
-      value = value[key];
-    } else {
-      value = orElse;
-      break;
-    }
-  }
-  return value;
-}
-var init_get_value_by_path = __esm({
-  "src/utils/get-value-by-path.js"() {
-    "use strict";
-    __name(getValueByPath, "getValueByPath");
-  }
-});
-
-// src/utils/transform-promise.js
-function transformPromise(valueOrPromise, transformer) {
-  return isPromise(valueOrPromise) ? valueOrPromise.then(transformer) : transformer(valueOrPromise);
-}
-var init_transform_promise = __esm({
-  "src/utils/transform-promise.js"() {
-    "use strict";
-    init_is_promise();
-    __name(transformPromise, "transformPromise");
-  }
-});
-
 // src/errors/not-implemented-error.js
 var import_js_format, _NotImplementedError, NotImplementedError;
 var init_not_implemented_error = __esm({
@@ -339,6 +281,105 @@ var init_errors = __esm({
     init_not_implemented_error();
     init_invalid_argument_error();
     init_invalid_operator_value_error();
+  }
+});
+
+// src/utils/like-to-regexp.js
+function likeToRegexp(pattern, isCaseInsensitive = false) {
+  if (typeof pattern !== "string") {
+    throw new InvalidArgumentError(
+      "The first argument of `likeToRegexp` should be a String, but %v was given.",
+      pattern
+    );
+  }
+  const regexSpecials = "-[]{}()*+?.\\^$|";
+  let regexString = "";
+  let isEscaping = false;
+  for (const char of pattern) {
+    if (isEscaping) {
+      regexString += regexSpecials.includes(char) ? `\\${char}` : char;
+      isEscaping = false;
+    } else if (char === "\\") {
+      isEscaping = true;
+    } else if (char === "%") {
+      regexString += ".*";
+    } else if (char === "_") {
+      regexString += ".";
+    } else if (regexSpecials.includes(char)) {
+      regexString += `\\${char}`;
+    } else {
+      regexString += char;
+    }
+  }
+  if (isEscaping) {
+    regexString += "\\\\";
+  }
+  const flags = isCaseInsensitive ? "i" : "";
+  return new RegExp(`^${regexString}$`, flags);
+}
+var init_like_to_regexp = __esm({
+  "src/utils/like-to-regexp.js"() {
+    "use strict";
+    init_errors();
+    __name(likeToRegexp, "likeToRegexp");
+  }
+});
+
+// src/utils/string-to-regexp.js
+function stringToRegexp(pattern, flags = void 0) {
+  if (pattern instanceof RegExp) {
+    return new RegExp(pattern, flags);
+  }
+  let regex = "";
+  for (let i = 0, n = pattern.length; i < n; i++) {
+    const char = pattern.charAt(i);
+    if (char === "%") {
+      regex += ".*";
+    } else {
+      regex += char;
+    }
+  }
+  return new RegExp(regex, flags);
+}
+var init_string_to_regexp = __esm({
+  "src/utils/string-to-regexp.js"() {
+    "use strict";
+    __name(stringToRegexp, "stringToRegexp");
+  }
+});
+
+// src/utils/get-value-by-path.js
+function getValueByPath(obj, path, orElse = void 0) {
+  if (!obj || typeof obj !== "object") return orElse;
+  if (!path || typeof path !== "string") return orElse;
+  const keys = path.split(".");
+  let value = obj;
+  for (const key of keys) {
+    if (typeof value === "object" && value !== null && key in value) {
+      value = value[key];
+    } else {
+      value = orElse;
+      break;
+    }
+  }
+  return value;
+}
+var init_get_value_by_path = __esm({
+  "src/utils/get-value-by-path.js"() {
+    "use strict";
+    __name(getValueByPath, "getValueByPath");
+  }
+});
+
+// src/utils/transform-promise.js
+function transformPromise(valueOrPromise, transformer) {
+  return isPromise(valueOrPromise) ? valueOrPromise.then(transformer) : transformer(valueOrPromise);
+}
+var init_transform_promise = __esm({
+  "src/utils/transform-promise.js"() {
+    "use strict";
+    init_is_promise();
+    __name(transformPromise, "transformPromise");
   }
 });
 
@@ -466,6 +507,7 @@ var init_utils = __esm({
     init_is_deep_equal();
     init_get_ctor_name();
     init_is_pure_object();
+    init_like_to_regexp();
     init_string_to_regexp();
     init_get_value_by_path();
     init_transform_promise();
@@ -644,6 +686,7 @@ var init_operator_clause_tool = __esm({
   "src/filter/operator-clause-tool.js"() {
     "use strict";
     import_js_service3 = require("@e22m4u/js-service");
+    init_utils();
     init_utils();
     init_errors();
     init_errors();
@@ -939,15 +982,15 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testLike(clause, value) {
-        if (!clause || typeof clause !== "object")
+        if (!clause || typeof clause !== "object" || Array.isArray(clause))
           throw new InvalidArgumentError(
             "The first argument of OperatorUtils.testLike should be an Object, but %v was given.",
             clause
           );
         if ("like" in clause && clause.like !== void 0) {
-          if (typeof clause.like !== "string" && !(clause.like instanceof RegExp))
+          if (typeof clause.like !== "string")
             throw new InvalidOperatorValueError("like", "a String", clause.like);
-          return stringToRegexp(clause.like).test(value);
+          return likeToRegexp(clause.like).test(value);
         }
       }
       /**
@@ -965,16 +1008,16 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testNlike(clause, value) {
-        if (!clause || typeof clause !== "object")
+        if (!clause || typeof clause !== "object" || Array.isArray(clause))
           throw new InvalidArgumentError(
             "The first argument of OperatorUtils.testNlike should be an Object, but %v was given.",
             clause
           );
         if ("nlike" in clause && clause.nlike !== void 0) {
-          if (typeof clause.nlike !== "string" && !(clause.nlike instanceof RegExp)) {
+          if (typeof clause.nlike !== "string") {
             throw new InvalidOperatorValueError("nlike", "a String", clause.nlike);
           }
-          return !stringToRegexp(clause.nlike).test(value);
+          return !likeToRegexp(clause.nlike).test(value);
         }
       }
       /**
@@ -992,16 +1035,16 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testIlike(clause, value) {
-        if (!clause || typeof clause !== "object")
+        if (!clause || typeof clause !== "object" || Array.isArray(clause))
           throw new InvalidArgumentError(
             "The first argument of OperatorUtils.testIlike should be an Object, but %v was given.",
             clause
           );
         if ("ilike" in clause && clause.ilike !== void 0) {
-          if (typeof clause.ilike !== "string" && !(clause.ilike instanceof RegExp)) {
+          if (typeof clause.ilike !== "string") {
             throw new InvalidOperatorValueError("ilike", "a String", clause.ilike);
           }
-          return stringToRegexp(clause.ilike, "i").test(value);
+          return likeToRegexp(clause.ilike, true).test(value);
         }
       }
       /**
@@ -1019,20 +1062,20 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testNilike(clause, value) {
-        if (!clause || typeof clause !== "object")
+        if (!clause || typeof clause !== "object" || Array.isArray(clause))
           throw new InvalidArgumentError(
             "The first argument of OperatorUtils.testNilike should be an Object, but %v was given.",
             clause
           );
         if ("nilike" in clause && clause.nilike !== void 0) {
-          if (typeof clause.nilike !== "string" && !(clause.nilike instanceof RegExp)) {
+          if (typeof clause.nilike !== "string") {
             throw new InvalidOperatorValueError(
               "nilike",
               "a String",
               clause.nilike
             );
           }
-          return !stringToRegexp(clause.nilike, "i").test(value);
+          return !likeToRegexp(clause.nilike, true).test(value);
         }
       }
       /**
@@ -1204,7 +1247,7 @@ var init_where_clause_tool = __esm({
           if (typeof value === "string") return !!value.match(example);
           return false;
         }
-        if (typeof example === "object") {
+        if (typeof example === "object" && !Array.isArray(example)) {
           const operatorsTest = this.getService(OperatorClauseTool).testAll(
             example,
             value
@@ -6438,6 +6481,7 @@ __export(index_exports, {
   isDeepEqual: () => isDeepEqual,
   isPromise: () => isPromise,
   isPureObject: () => isPureObject,
+  likeToRegexp: () => likeToRegexp,
   modelNameToModelKey: () => modelNameToModelKey,
   selectObjectKeys: () => selectObjectKeys,
   singularize: () => singularize,
@@ -6543,6 +6587,7 @@ init_repository2();
   isDeepEqual,
   isPromise,
   isPureObject,
+  likeToRegexp,
   modelNameToModelKey,
   selectObjectKeys,
   singularize,

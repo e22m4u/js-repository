@@ -1,4 +1,5 @@
 import {Service} from '@e22m4u/js-service';
+import {likeToRegexp} from '../utils/index.js';
 import {stringToRegexp} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {InvalidOperatorValueError} from '../errors/index.js';
@@ -348,16 +349,16 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testLike(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testLike ' +
           'should be an Object, but %v was given.',
         clause,
       );
     if ('like' in clause && clause.like !== undefined) {
-      if (typeof clause.like !== 'string' && !(clause.like instanceof RegExp))
+      if (typeof clause.like !== 'string')
         throw new InvalidOperatorValueError('like', 'a String', clause.like);
-      return stringToRegexp(clause.like).test(value);
+      return likeToRegexp(clause.like).test(value);
     }
   }
 
@@ -376,20 +377,17 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNlike(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNlike ' +
           'should be an Object, but %v was given.',
         clause,
       );
     if ('nlike' in clause && clause.nlike !== undefined) {
-      if (
-        typeof clause.nlike !== 'string' &&
-        !(clause.nlike instanceof RegExp)
-      ) {
+      if (typeof clause.nlike !== 'string') {
         throw new InvalidOperatorValueError('nlike', 'a String', clause.nlike);
       }
-      return !stringToRegexp(clause.nlike).test(value);
+      return !likeToRegexp(clause.nlike).test(value);
     }
   }
 
@@ -408,20 +406,17 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testIlike(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testIlike ' +
           'should be an Object, but %v was given.',
         clause,
       );
     if ('ilike' in clause && clause.ilike !== undefined) {
-      if (
-        typeof clause.ilike !== 'string' &&
-        !(clause.ilike instanceof RegExp)
-      ) {
+      if (typeof clause.ilike !== 'string') {
         throw new InvalidOperatorValueError('ilike', 'a String', clause.ilike);
       }
-      return stringToRegexp(clause.ilike, 'i').test(value);
+      return likeToRegexp(clause.ilike, true).test(value);
     }
   }
 
@@ -440,24 +435,21 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNilike(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNilike ' +
           'should be an Object, but %v was given.',
         clause,
       );
     if ('nilike' in clause && clause.nilike !== undefined) {
-      if (
-        typeof clause.nilike !== 'string' &&
-        !(clause.nilike instanceof RegExp)
-      ) {
+      if (typeof clause.nilike !== 'string') {
         throw new InvalidOperatorValueError(
           'nilike',
           'a String',
           clause.nilike,
         );
       }
-      return !stringToRegexp(clause.nilike, 'i').test(value);
+      return !likeToRegexp(clause.nilike, true).test(value);
     }
   }
 

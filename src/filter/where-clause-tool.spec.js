@@ -233,13 +233,13 @@ describe('WhereClauseTool', function () {
     });
 
     it('uses the "like" operator to match by a substring', function () {
-      const result = S.filter(OBJECTS, {name: {like: 'liv'}});
+      const result = S.filter(OBJECTS, {name: {like: '%liv%'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[3]);
     });
 
     it('uses the "nlike" operator to exclude by a substring', function () {
-      const result = S.filter(OBJECTS, {name: {nlike: 'liv'}});
+      const result = S.filter(OBJECTS, {name: {nlike: '%liv%'}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[1]);
@@ -247,13 +247,13 @@ describe('WhereClauseTool', function () {
     });
 
     it('uses the "ilike" operator to case-insensitively matching by a substring', function () {
-      const result = S.filter(OBJECTS, {name: {ilike: 'LIV'}});
+      const result = S.filter(OBJECTS, {name: {ilike: '%LIV%'}});
       expect(result).to.have.length(1);
       expect(result[0]).to.be.eql(OBJECTS[3]);
     });
 
     it('uses the "nilike" operator to exclude case-insensitively by a substring', function () {
-      const result = S.filter(OBJECTS, {name: {nilike: 'LIV'}});
+      const result = S.filter(OBJECTS, {name: {nilike: '%LIV%'}});
       expect(result).to.have.length(3);
       expect(result[0]).to.be.eql(OBJECTS[0]);
       expect(result[1]).to.be.eql(OBJECTS[1]);

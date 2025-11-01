@@ -6,6 +6,7 @@ export * from './singularize.js';
 export * from './is-deep-equal.js';
 export * from './get-ctor-name.js';
 export * from './is-pure-object.js';
+export * from './like-to-regexp.js';
 export * from './string-to-regexp.js';
 export * from './get-value-by-path.js';
 export * from './transform-promise.js';

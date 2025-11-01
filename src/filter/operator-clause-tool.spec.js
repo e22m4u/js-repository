@@ -65,49 +65,49 @@ describe('OperatorClauseTool', function () {
       expect(S.testAll({lte: 5}, 6)).to.be.false;
     });
 
-    it('tests a "inq" operator', function () {
+    it('tests the "inq" operator', function () {
       expect(S.testAll({inq: [1, 2, 3]}, 2)).to.be.true;
       expect(S.testAll({inq: [1, 2, 3]}, 'a')).to.be.false;
     });
 
-    it('tests a "nin" operator', function () {
+    it('tests the "nin" operator', function () {
       expect(S.testAll({nin: [1, 2, 3]}, 'a')).to.be.true;
       expect(S.testAll({nin: [1, 2, 3]}, 2)).to.be.false;
     });
 
-    it('tests a "between" operator', function () {
+    it('tests the "between" operator', function () {
       expect(S.testAll({between: [-2, 2]}, 0)).to.be.true;
       expect(S.testAll({between: [-2, 2]}, 10)).to.be.false;
     });
 
-    it('tests an "exists" operator', function () {
+    it('tests the "exists" operator', function () {
       expect(S.testAll({exists: true}, 10)).to.be.true;
       expect(S.testAll({exists: false}, undefined)).to.be.true;
       expect(S.testAll({exists: true}, undefined)).to.be.false;
       expect(S.testAll({exists: false}, 10)).to.be.false;
     });
 
-    it('tests a "like" operator', function () {
-      expect(S.testAll({like: 'World'}, 'Hello World!')).to.be.true;
-      expect(S.testAll({like: 'world'}, 'Hello World!')).to.be.false;
+    it('tests the "like" operator', function () {
+      expect(S.testAll({like: '%World%'}, 'Hello World!')).to.be.true;
+      expect(S.testAll({like: '%world%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests a "nlike" operator', function () {
-      expect(S.testAll({nlike: 'John'}, 'Hello World!')).to.be.true;
-      expect(S.testAll({nlike: 'World'}, 'Hello World!')).to.be.false;
+    it('tests the "nlike" operator', function () {
+      expect(S.testAll({nlike: '%John%'}, 'Hello World!')).to.be.true;
+      expect(S.testAll({nlike: '%World%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests a "ilike" operator', function () {
-      expect(S.testAll({ilike: 'WORLD'}, 'Hello World!')).to.be.true;
-      expect(S.testAll({ilike: 'John'}, 'Hello World!')).to.be.false;
+    it('tests the "ilike" operator', function () {
+      expect(S.testAll({ilike: '%WORLD%'}, 'Hello World!')).to.be.true;
+      expect(S.testAll({ilike: '%John%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests a "nilike" operator', function () {
-      expect(S.testAll({nilike: 'John'}, 'Hello World!')).to.be.true;
-      expect(S.testAll({nilike: 'world'}, 'Hello World!')).to.be.false;
+    it('tests the "nilike" operator', function () {
+      expect(S.testAll({nilike: '%John%'}, 'Hello World!')).to.be.true;
+      expect(S.testAll({nilike: '%world%'}, 'Hello World!')).to.be.false;
     });
 
-    it('tests a "regexp" operator', function () {
+    it('tests the "regexp" operator', function () {
       expect(S.testAll({regexp: 'Wo.+'}, 'Hello World!')).to.be.true;
       expect(S.testAll({regexp: 'Fo.+'}, 'Hello World!')).to.be.false;
     });
@@ -640,318 +640,377 @@ describe('OperatorClauseTool', function () {
   });
 
   describe('testLike', function () {
-    it('returns undefined if no operator given', function () {
+    it('should return undefined if no operator given', function () {
       const result = S.testLike({}, 'value');
       expect(result).to.be.undefined;
     });
 
-    it('returns true if a given value matches a substring', function () {
-      expect(S.testLike({like: 'val'}, 'value')).to.be.true;
-      expect(S.testLike({like: 'lue'}, 'value')).to.be.true;
+    it('should return false when matching by substring', function () {
+      expect(S.testLike({like: 'val'}, 'value')).to.be.false;
+      expect(S.testLike({like: 'lue'}, 'value')).to.be.false;
+      expect(S.testLike({like: 'alu'}, 'value')).to.be.false;
+    });
+
+    it('should return false when the value is a substring', function () {
+      expect(S.testLike({like: 'value'}, 'val')).to.be.false;
+      expect(S.testLike({like: 'value'}, 'lue')).to.be.false;
+      expect(S.testLike({like: 'value'}, 'alu')).to.be.false;
+    });
+
+    it('should return true for exact match', function () {
       expect(S.testLike({like: 'value'}, 'value')).to.be.true;
     });
 
-    it('returns false if a given value not matches a substring', function () {
-      expect(S.testLike({like: 'value'}, 'val')).to.be.false;
-      expect(S.testLike({like: 'value'}, 'lue')).to.be.false;
-      expect(S.testLike({like: 'value'}, 'foo')).to.be.false;
+    it('should use case-sensitive matching', function () {
+      expect(S.testLike({like: 'VALUE'}, 'VALUE')).to.be.true;
+      expect(S.testLike({like: 'VALUE'}, 'value')).to.be.false;
+      expect(S.testLike({like: 'value'}, 'VALUE')).to.be.false;
     });
 
-    it('uses case-sensitive matching for a substring', function () {
-      expect(S.testLike({like: 'Val'}, 'value')).to.be.false;
-      expect(S.testLike({like: 'Val'}, 'Value')).to.be.true;
-      expect(S.testLike({like: 'val'}, 'Value')).to.be.false;
+    it('should handle "%" wildcard as zero or more characters', function () {
+      expect(S.testLike({like: 'hello wo%'}, 'hello world today')).to.be.true;
+      expect(S.testLike({like: '%ld today'}, 'hello world today')).to.be.true;
+      expect(S.testLike({like: '%world%'}, 'hello world today')).to.be.true;
+      expect(S.testLike({like: '%hello wo%'}, 'hello world today')).to.be.true;
+      expect(S.testLike({like: '%ld today%'}, 'hello world today')).to.be.true;
+      expect(S.testLike({like: '%wurld%'}, 'hello world today')).to.be.false;
     });
 
-    it('returns true if a given value matches a string expression', function () {
-      expect(S.testLike({like: 'val.+'}, 'value')).to.be.true;
+    it('should handle "_" wildcard as any characters', function () {
+      expect(S.testLike({like: 'h_ll_'}, 'hello')).to.be.true;
+      expect(S.testLike({like: 'hello_world'}, 'hello world')).to.be.true;
+      expect(S.testLike({like: 'hello_'}, 'hello')).to.be.false;
+      expect(S.testLike({like: '_hello'}, 'hello')).to.be.false;
     });
 
-    it('returns false if a given value not matches a string expression', function () {
-      expect(S.testLike({like: 'foo.+'}, 'value')).to.be.false;
+    it('should throw an error for non-object clause', function () {
+      const throwable = v => () => {
+        S.testLike(v);
+      };
+      const error = s =>
+        format(
+          'The first argument of OperatorUtils.testLike ' +
+            'should be an Object, but %s was given.',
+          s,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      throwable({})();
     });
 
-    it('uses case-sensitive matching for a string expression', function () {
-      expect(S.testLike({like: 'Val.+'}, 'value')).to.be.false;
-      expect(S.testLike({like: 'Val.+'}, 'Value')).to.be.true;
-      expect(S.testLike({like: 'val.+'}, 'Value')).to.be.false;
-    });
-
-    it('returns true if a given value matches a RegExp', function () {
-      expect(S.testLike({like: new RegExp(/val.+/)}, 'value')).to.be.true;
-    });
-
-    it('returns false if a given value matches a RegExp', function () {
-      expect(S.testLike({like: new RegExp(/foo.+/)}, 'value')).to.be.false;
-    });
-
-    it('uses case-sensitive matching for a RegExp', function () {
-      expect(S.testLike({like: new RegExp(/Val.+/)}, 'value')).to.be.false;
-      expect(S.testLike({like: new RegExp(/Val.+/)}, 'Value')).to.be.true;
-      expect(S.testLike({like: new RegExp(/val.+/)}, 'Value')).to.be.false;
-    });
-
-    it('throws an error if a first argument is not an object', function () {
-      const throwable = () => S.testLike(10);
-      expect(throwable).to.throw(
-        'The first argument of OperatorUtils.testLike ' +
-          'should be an Object, but 10 was given.',
-      );
-    });
-
-    it('throws an error if an operator value is a number', function () {
-      const like = 10;
-      const throwable = () => S.testLike({like}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is an object', function () {
-      const like = {};
-      const throwable = () => S.testLike({like}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is a null', function () {
-      const like = null;
-      const throwable = () => S.testLike({like}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
+    it('should throw an error for non-string operator value', function () {
+      const throwable = v => () => {
+        S.testLike({like: v});
+      };
+      const error = s =>
+        format(
+          'Condition of {like: ...} should have a String, but %s was given.',
+          s,
+        );
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({foo: 'bar'})).to.throw(error('Object'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      expect(throwable(new RegExp())).to.throw(error('RegExp (instance)'));
+      throwable('str')();
+      throwable(null);
+      throwable(undefined);
     });
   });
 
   describe('testNlike', function () {
-    it('returns undefined if no operator given', function () {
+    it('should return undefined if no operator given', function () {
       const result = S.testNlike({}, 'value');
       expect(result).to.be.undefined;
     });
 
-    it('returns false if a given value matches a substring', function () {
-      expect(S.testNlike({nlike: 'val'}, 'value')).to.be.false;
-      expect(S.testNlike({nlike: 'lue'}, 'value')).to.be.false;
+    it('should return true when matching by substring', function () {
+      expect(S.testNlike({nlike: 'val'}, 'value')).to.be.true;
+      expect(S.testNlike({nlike: 'lue'}, 'value')).to.be.true;
+      expect(S.testNlike({nlike: 'alu'}, 'value')).to.be.true;
+    });
+
+    it('should return true when the value is a substring', function () {
+      expect(S.testNlike({nlike: 'value'}, 'val')).to.be.true;
+      expect(S.testNlike({nlike: 'value'}, 'lue')).to.be.true;
+      expect(S.testNlike({nlike: 'value'}, 'alu')).to.be.true;
+    });
+
+    it('should return true for exact match', function () {
       expect(S.testNlike({nlike: 'value'}, 'value')).to.be.false;
     });
 
-    it('returns true if a given value not matches a substring', function () {
-      expect(S.testNlike({nlike: 'value'}, 'val')).to.be.true;
-      expect(S.testNlike({nlike: 'value'}, 'lue')).to.be.true;
-      expect(S.testNlike({nlike: 'value'}, 'foo')).to.be.true;
+    it('should use case-sensitive matching', function () {
+      expect(S.testNlike({nlike: 'VALUE'}, 'VALUE')).to.be.false;
+      expect(S.testNlike({nlike: 'VALUE'}, 'value')).to.be.true;
+      expect(S.testNlike({nlike: 'value'}, 'VALUE')).to.be.true;
     });
 
-    it('uses case-sensitive matching for a substring', function () {
-      expect(S.testNlike({nlike: 'Val'}, 'value')).to.be.true;
-      expect(S.testNlike({nlike: 'Val'}, 'Value')).to.be.false;
-      expect(S.testNlike({nlike: 'val'}, 'Value')).to.be.true;
+    it('should handle "%" wildcard as zero or more characters', function () {
+      expect(S.testNlike({nlike: 'hello wo%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNlike({nlike: '%ld today'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNlike({nlike: '%world%'}, 'hello world today')).to.be.false;
+      expect(S.testNlike({nlike: '%hello wo%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNlike({nlike: '%ld today%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNlike({nlike: '%wurld%'}, 'hello world today')).to.be.true;
     });
 
-    it('returns false if a given value matches a string expression', function () {
-      expect(S.testNlike({nlike: 'val.+'}, 'value')).to.be.false;
+    it('should handle "_" wildcard as any characters', function () {
+      expect(S.testNlike({nlike: 'h_ll_'}, 'hello')).to.be.false;
+      expect(S.testNlike({nlike: 'hello_world'}, 'hello world')).to.be.false;
+      expect(S.testNlike({nlike: 'hello_'}, 'hello')).to.be.true;
+      expect(S.testNlike({nlike: '_hello'}, 'hello')).to.be.true;
     });
 
-    it('returns true if a given value not matches a string expression', function () {
-      expect(S.testNlike({nlike: 'foo.+'}, 'value')).to.be.true;
+    it('should throw an error for non-object clause', function () {
+      const throwable = v => () => {
+        S.testNlike(v);
+      };
+      const error = s =>
+        format(
+          'The first argument of OperatorUtils.testNlike ' +
+            'should be an Object, but %s was given.',
+          s,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      throwable({})();
     });
 
-    it('uses case-sensitive matching for a string expression', function () {
-      expect(S.testNlike({nlike: 'Val.+'}, 'value')).to.be.true;
-      expect(S.testNlike({nlike: 'Val.+'}, 'Value')).to.be.false;
-      expect(S.testNlike({nlike: 'val.+'}, 'Value')).to.be.true;
-    });
-
-    it('returns false if a given value matches a RegExp', function () {
-      expect(S.testNlike({nlike: new RegExp(/val.+/)}, 'value')).to.be.false;
-    });
-
-    it('returns true if a given value matches a RegExp', function () {
-      expect(S.testNlike({nlike: new RegExp(/foo.+/)}, 'value')).to.be.true;
-    });
-
-    it('uses case-sensitive matching for a RegExp', function () {
-      expect(S.testNlike({nlike: new RegExp(/Val.+/)}, 'value')).to.be.true;
-      expect(S.testNlike({nlike: new RegExp(/Val.+/)}, 'Value')).to.be.false;
-      expect(S.testNlike({nlike: new RegExp(/val.+/)}, 'Value')).to.be.true;
-    });
-
-    it('throws an error if a first argument is not an object', function () {
-      const throwable = () => S.testNlike(10);
-      expect(throwable).to.throw(
-        'The first argument of OperatorUtils.testNlike ' +
-          'should be an Object, but 10 was given.',
-      );
-    });
-
-    it('throws an error if an operator value is a number', function () {
-      const nlike = 10;
-      const throwable = () => S.testNlike({nlike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is an object', function () {
-      const nlike = {};
-      const throwable = () => S.testNlike({nlike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is a null', function () {
-      const nlike = null;
-      const throwable = () => S.testNlike({nlike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
+    it('should throw an error for non-string operator value', function () {
+      const throwable = v => () => {
+        S.testNlike({nlike: v});
+      };
+      const error = s =>
+        format(
+          'Condition of {nlike: ...} should have a String, but %s was given.',
+          s,
+        );
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({foo: 'bar'})).to.throw(error('Object'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      expect(throwable(new RegExp())).to.throw(error('RegExp (instance)'));
+      throwable('str')();
+      throwable(null);
+      throwable(undefined);
     });
   });
 
   describe('testIlike', function () {
-    it('returns undefined if no operator given', function () {
+    it('should return undefined if no operator given', function () {
       const result = S.testIlike({}, 'value');
       expect(result).to.be.undefined;
     });
 
-    it('returns true if a given value matches a substring', function () {
-      expect(S.testIlike({ilike: 'val'}, 'value')).to.be.true;
-      expect(S.testIlike({ilike: 'lue'}, 'value')).to.be.true;
+    it('should return false when matching by substring', function () {
+      expect(S.testIlike({ilike: 'val'}, 'value')).to.be.false;
+      expect(S.testIlike({ilike: 'lue'}, 'value')).to.be.false;
+      expect(S.testIlike({ilike: 'alu'}, 'value')).to.be.false;
+    });
+
+    it('should return false when the value is a substring', function () {
+      expect(S.testIlike({ilike: 'value'}, 'val')).to.be.false;
+      expect(S.testIlike({ilike: 'value'}, 'lue')).to.be.false;
+      expect(S.testIlike({ilike: 'value'}, 'alu')).to.be.false;
+    });
+
+    it('should return true for exact match', function () {
       expect(S.testIlike({ilike: 'value'}, 'value')).to.be.true;
     });
 
-    it('returns false if a given value not matches a substring', function () {
-      expect(S.testIlike({ilike: 'value'}, 'val')).to.be.false;
-      expect(S.testIlike({ilike: 'value'}, 'lue')).to.be.false;
-      expect(S.testIlike({ilike: 'value'}, 'foo')).to.be.false;
+    it('should use case-insensitive matching', function () {
+      expect(S.testIlike({ilike: 'VALUE'}, 'VALUE')).to.be.true;
+      expect(S.testIlike({ilike: 'VALUE'}, 'value')).to.be.true;
+      expect(S.testIlike({ilike: 'value'}, 'VALUE')).to.be.true;
     });
 
-    it('uses case-insensitive matching for a substring', function () {
-      expect(S.testIlike({ilike: 'Val'}, 'value')).to.be.true;
-      expect(S.testIlike({ilike: 'Val'}, 'Value')).to.be.true;
-      expect(S.testIlike({ilike: 'val'}, 'Value')).to.be.true;
+    it('should handle "%" wildcard as zero or more characters', function () {
+      expect(S.testIlike({ilike: 'hello wo%'}, 'hello world today')).to.be.true;
+      expect(S.testIlike({ilike: '%ld today'}, 'hello world today')).to.be.true;
+      expect(S.testIlike({ilike: '%world%'}, 'hello world today')).to.be.true;
+      expect(S.testIlike({ilike: '%hello wo%'}, 'hello world today')).to.be
+        .true;
+      expect(S.testIlike({ilike: '%ld today%'}, 'hello world today')).to.be
+        .true;
+      expect(S.testIlike({ilike: '%wurld%'}, 'hello world today')).to.be.false;
     });
 
-    it('returns true if a given value matches a string expression', function () {
-      expect(S.testIlike({ilike: 'val.+'}, 'value')).to.be.true;
+    it('should handle "_" wildcard as any characters', function () {
+      expect(S.testIlike({ilike: 'h_ll_'}, 'hello')).to.be.true;
+      expect(S.testIlike({ilike: 'hello_world'}, 'hello world')).to.be.true;
+      expect(S.testIlike({ilike: 'hello_'}, 'hello')).to.be.false;
+      expect(S.testIlike({ilike: '_hello'}, 'hello')).to.be.false;
     });
 
-    it('returns false if a given value not matches a string expression', function () {
-      expect(S.testIlike({ilike: 'foo.+'}, 'value')).to.be.false;
+    it('should throw an error for non-object clause', function () {
+      const throwable = v => () => {
+        S.testIlike(v);
+      };
+      const error = s =>
+        format(
+          'The first argument of OperatorUtils.testIlike ' +
+            'should be an Object, but %s was given.',
+          s,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      throwable({})();
     });
 
-    it('uses case-insensitive matching for a string expression', function () {
-      expect(S.testIlike({ilike: 'Val.+'}, 'value')).to.be.true;
-      expect(S.testIlike({ilike: 'Val.+'}, 'Value')).to.be.true;
-      expect(S.testIlike({ilike: 'val.+'}, 'Value')).to.be.true;
-    });
-
-    it('returns true if a given value matches a RegExp', function () {
-      expect(S.testIlike({ilike: new RegExp(/val.+/)}, 'value')).to.be.true;
-    });
-
-    it('returns false if a given value matches a RegExp', function () {
-      expect(S.testIlike({ilike: new RegExp(/foo.+/)}, 'value')).to.be.false;
-    });
-
-    it('uses case-insensitive matching for a RegExp', function () {
-      expect(S.testIlike({ilike: new RegExp(/Val.+/)}, 'value')).to.be.true;
-      expect(S.testIlike({ilike: new RegExp(/Val.+/)}, 'Value')).to.be.true;
-      expect(S.testIlike({ilike: new RegExp(/val.+/)}, 'Value')).to.be.true;
-    });
-
-    it('throws an error if a first argument is not an object', function () {
-      const throwable = () => S.testIlike(10);
-      expect(throwable).to.throw(
-        'The first argument of OperatorUtils.testIlike ' +
-          'should be an Object, but 10 was given.',
-      );
-    });
-
-    it('throws an error if an operator value is a number', function () {
-      const ilike = 10;
-      const throwable = () => S.testIlike({ilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is an object', function () {
-      const ilike = {};
-      const throwable = () => S.testIlike({ilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is a null', function () {
-      const ilike = null;
-      const throwable = () => S.testIlike({ilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
+    it('should throw an error for non-string operator value', function () {
+      const throwable = v => () => {
+        S.testIlike({ilike: v});
+      };
+      const error = s =>
+        format(
+          'Condition of {ilike: ...} should have a String, but %s was given.',
+          s,
+        );
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({foo: 'bar'})).to.throw(error('Object'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      expect(throwable(new RegExp())).to.throw(error('RegExp (instance)'));
+      throwable('str')();
+      throwable(null);
+      throwable(undefined);
     });
   });
 
   describe('testNilike', function () {
-    it('returns undefined if no operator given', function () {
+    it('should return undefined if no operator given', function () {
       const result = S.testNilike({}, 'value');
       expect(result).to.be.undefined;
     });
 
-    it('returns false if a given value matches a substring', function () {
-      expect(S.testNilike({nilike: 'val'}, 'value')).to.be.false;
-      expect(S.testNilike({nilike: 'lue'}, 'value')).to.be.false;
+    it('should return true when matching by substring', function () {
+      expect(S.testNilike({nilike: 'val'}, 'value')).to.be.true;
+      expect(S.testNilike({nilike: 'lue'}, 'value')).to.be.true;
+      expect(S.testNilike({nilike: 'alu'}, 'value')).to.be.true;
+    });
+
+    it('should return true when the value is a substring', function () {
+      expect(S.testNilike({nilike: 'value'}, 'val')).to.be.true;
+      expect(S.testNilike({nilike: 'value'}, 'lue')).to.be.true;
+      expect(S.testNilike({nilike: 'value'}, 'alu')).to.be.true;
+    });
+
+    it('should return false for exact match', function () {
       expect(S.testNilike({nilike: 'value'}, 'value')).to.be.false;
     });
 
-    it('returns true if a given value not matches a substring', function () {
-      expect(S.testNilike({nilike: 'value'}, 'val')).to.be.true;
-      expect(S.testNilike({nilike: 'value'}, 'lue')).to.be.true;
-      expect(S.testNilike({nilike: 'value'}, 'foo')).to.be.true;
+    it('should use case-insensitive matching', function () {
+      expect(S.testNilike({nilike: 'VALUE'}, 'VALUE')).to.be.false;
+      expect(S.testNilike({nilike: 'VALUE'}, 'value')).to.be.false;
+      expect(S.testNilike({nilike: 'value'}, 'VALUE')).to.be.false;
     });
 
-    it('uses case-insensitive matching for a substring', function () {
-      expect(S.testNilike({nilike: 'Val'}, 'value')).to.be.false;
-      expect(S.testNilike({nilike: 'Val'}, 'Value')).to.be.false;
-      expect(S.testNilike({nilike: 'val'}, 'Value')).to.be.false;
+    it('should handle "%" wildcard as zero or more characters', function () {
+      expect(S.testNilike({nilike: 'hello wo%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNilike({nilike: '%ld today'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNilike({nilike: '%world%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNilike({nilike: '%hello wo%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNilike({nilike: '%ld today%'}, 'hello world today')).to.be
+        .false;
+      expect(S.testNilike({nilike: '%wurld%'}, 'hello world today')).to.be.true;
     });
 
-    it('returns false if a given value matches a string expression', function () {
-      expect(S.testNilike({nilike: 'val.+'}, 'value')).to.be.false;
+    it('should handle "_" wildcard as any characters', function () {
+      expect(S.testNilike({nilike: 'h_ll_'}, 'hello')).to.be.false;
+      expect(S.testNilike({nilike: 'hello_world'}, 'hello world')).to.be.false;
+      expect(S.testNilike({nilike: 'hello_'}, 'hello')).to.be.true;
+      expect(S.testNilike({nilike: '_hello'}, 'hello')).to.be.true;
     });
 
-    it('returns true if a given value not matches a string expression', function () {
-      expect(S.testNilike({nilike: 'foo.+'}, 'value')).to.be.true;
+    it('should throw an error for non-object clause', function () {
+      const throwable = v => () => {
+        S.testNilike(v);
+      };
+      const error = s =>
+        format(
+          'The first argument of OperatorUtils.testNilike ' +
+            'should be an Object, but %s was given.',
+          s,
+        );
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      throwable({})();
     });
 
-    it('uses case-insensitive matching for a string expression', function () {
-      expect(S.testNilike({nilike: 'Val.+'}, 'value')).to.be.false;
-      expect(S.testNilike({nilike: 'Val.+'}, 'Value')).to.be.false;
-      expect(S.testNilike({nilike: 'val.+'}, 'Value')).to.be.false;
-    });
-
-    it('returns false if a given value matches a RegExp', function () {
-      expect(S.testNilike({nilike: new RegExp(/val.+/)}, 'value')).to.be.false;
-    });
-
-    it('returns true if a given value matches a RegExp', function () {
-      expect(S.testNilike({nilike: new RegExp(/foo.+/)}, 'value')).to.be.true;
-    });
-
-    it('uses case-insensitive matching for a RegExp', function () {
-      expect(S.testNilike({nilike: new RegExp(/Val.+/)}, 'value')).to.be.false;
-      expect(S.testNilike({nilike: new RegExp(/Val.+/)}, 'Value')).to.be.false;
-      expect(S.testNilike({nilike: new RegExp(/val.+/)}, 'Value')).to.be.false;
-    });
-
-    it('throws an error if a first argument is not an object', function () {
-      const throwable = () => S.testNilike(10);
-      expect(throwable).to.throw(
-        'The first argument of OperatorUtils.testNilike ' +
-          'should be an Object, but 10 was given.',
-      );
-    });
-
-    it('throws an error if an operator value is a number', function () {
-      const nilike = 10;
-      const throwable = () => S.testNilike({nilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is an object', function () {
-      const nilike = {};
-      const throwable = () => S.testNilike({nilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
-    });
-
-    it('throws an error if an operator value is a null', function () {
-      const nilike = null;
-      const throwable = () => S.testNilike({nilike}, 10);
-      expect(throwable).to.throw(InvalidOperatorValueError);
+    it('should throw an error for non-string operator value', function () {
+      const throwable = v => () => {
+        S.testNilike({nilike: v});
+      };
+      const error = s =>
+        format(
+          'Condition of {nilike: ...} should have a String, but %s was given.',
+          s,
+        );
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({foo: 'bar'})).to.throw(error('Object'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable([1, 2, 3])).to.throw(error('Array'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(() => undefined)).to.throw(error('Function'));
+      expect(throwable(new RegExp())).to.throw(error('RegExp (instance)'));
+      throwable('str')();
+      throwable(null);
+      throwable(undefined);
     });
   });
 
