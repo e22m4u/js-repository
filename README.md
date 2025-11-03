@@ -1042,11 +1042,31 @@ console.log(product);
 // }
 ```
 
+Создание документа с включением связанных данных в возвращаемый результат.
+
+```js
+// предполагается, что модель Product имеет связь "category"
+// (опция "include" влияет только на возвращаемый результат)
+const product = await productRep.create(
+  {name: 'Keyboard', price: 75, categoryId: 10},
+  {include: 'category'},
+);
+console.log(product);
+// {
+//   id: 3,
+//   name: 'Keyboard',
+//   price: 75,
+//   categoryId: 10,
+//   category: {id: 10, name: 'Electronics'}
+// }
+```
+
 ### repository.replaceById
 
-Полностью заменяет существующий документ по его идентификатору. Все
-предыдущие данные документа, кроме идентификатора, будут удалены и заменены
-новыми.
+Полностью заменяет существующий документ по его идентификатору. Все предыдущие
+данные документа, кроме идентификатора, удаляются. Поля, которые не были
+переданы в `data`, будут отсутствовать в итоговом документе (если для них
+не задано значение по умолчанию).
 
 **Сигнатура:**
 
@@ -1063,25 +1083,32 @@ replaceById(
 Замена документа по идентификатору.
 
 ```js
+// исходный документ
+// {
+//   id: 1,
+//   name: 'Laptop',
+//   price: 1200,
+//   inStock: true
+// }
+
 const updatedProduct = await productRep.replaceById(1, {
   name: 'Laptop Pro',
   price: 1500,
-  inStock: true,
 });
 console.log(updatedProduct);
 // {
 //   id: 1,
 //   name: 'Laptop Pro',
-//   price: 1500,
-//   inStock: true,
+//   price: 1500
 // }
+// свойство "inStock" удалено
 ```
 
 ### repository.replaceOrCreate
 
 Заменяет существующий документ, если в переданных данных присутствует
-идентификатор, который уже существует в коллекции. В противном случае
-создает новый документ.
+идентификатор, который уже существует в коллекции. В противном случае,
+если идентификатор не указан или не найден, создает новый документ.
 
 **Сигнатура:**
 
@@ -1129,7 +1156,8 @@ console.log(updatedProduct);
 ### repository.patch
 
 Частично обновляет один или несколько документов, соответствующих условиям
-`where`. Возвращает количество обновленных документов. Если `where` не указан,
+`where`. Изменяются только переданные поля, остальные остаются без изменений.
+Возвращает количество обновленных документов. Если `where` не указан,
 обновляет все документы в коллекции.
 
 **Сигнатура:**
@@ -1146,26 +1174,26 @@ patch(
 Обновление документов по условию.
 
 ```js
+// обновит все товары с ценой меньше 30
 const updatedCount = await productRep.patch(
   {inStock: false},
   {price: {lt: 30}},
 );
-// обновит все товары с ценой меньше 30
 ```
 
 Обновление всех документов.
 
 ```js
+// добавит или обновит поле updatedAt для всех документов
 const totalCount = await productRep.patch({
   updatedAt: new Date(),
 });
-// добавит поле updatedAt ко всем документам
 ```
 
 ### repository.patchById
 
 Частично обновляет существующий документ по его идентификатору, изменяя
-только переданные поля.
+только переданные поля. Остальные поля документа остаются без изменений.
 
 **Сигнатура:**
 
@@ -1182,12 +1210,13 @@ patchById(
 Частичное обновление документа по идентификатору.
 
 ```js
-// документ с id: 1 уже существует
+// исходный документ с id: 1
 // {
 //   id: 1,
 //   name: 'Laptop Pro',
 //   price: 1500
 // }
+
 const updatedProduct = await productRep.patchById(1, {
   price: 1450,
 });
@@ -1226,6 +1255,15 @@ const cheapProducts = await productRep.find({
 });
 ```
 
+Поиск с сортировкой и ограничением выборки.
+
+```js
+const latestProducts = await productRep.find({
+  order: 'createdAt DESC',
+  limit: 10,
+});
+```
+
 ### repository.findOne
 
 Находит первый документ, соответствующий условиям фильтрации. Возвращает
@@ -1250,6 +1288,17 @@ const expensiveProduct = await productRep.findOne({
 });
 ```
 
+Обработка случая, когда документ не найден.
+
+```js
+const product = await productRep.findOne({
+  where: {name: 'Non-existent Product'},
+});
+if (!product) {
+  console.log('Product not found.');
+}
+```
+
 ### repository.findById
 
 Находит один документ по его уникальному идентификатору. Если документ не
@@ -1269,7 +1318,20 @@ findById(
 Поиск документа по `id`.
 
 ```js
-const product = await productRep.findById(1);
+try {
+  const product = await productRep.findById(1);
+  console.log(product);
+} catch (error) {
+  console.error('Product with id 1 is not found.');
+}
+```
+
+Поиск документа с включением связанных данных.
+
+```js
+const product = await productRep.findById(1, {
+  include: 'category',
+});
 ```
 
 ### repository.delete
@@ -1317,6 +1379,11 @@ deleteById(id: IdType): Promise<boolean>;
 
 ```js
 const wasDeleted = await productRep.deleteById(1);
+if (wasDeleted) {
+  console.log('The document was deleted.');
+} else {
+  console.log('No document found to delete.');
+}
 ```
 
 ### repository.exists
@@ -1336,6 +1403,9 @@ exists(id: IdType): Promise<boolean>;
 
 ```js
 const productExists = await productRep.exists(1);
+if (productExists) {
+  console.log('A document with id 1 exists.');
+}
 ```
 
 ### repository.count
