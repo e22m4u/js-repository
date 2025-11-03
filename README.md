@@ -237,8 +237,7 @@ dbs.defineDatasource({
 });
 ```
 
-Передача дополнительных параметров на примере MongoDB адаптера.  
-*(данный адаптер требует [установки](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))*
+Передача дополнительных параметров на примере MongoDB адаптера *([установка](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter))*.
 
 ```js
 dbs.defineDatasource({
