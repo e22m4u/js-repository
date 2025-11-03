@@ -1011,7 +1011,7 @@ create(
 ): Promise<FlatData>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Создание нового документа.
 
@@ -1078,7 +1078,7 @@ replaceById(
 ): Promise<FlatData>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Замена документа по идентификатору.
 
@@ -1119,7 +1119,7 @@ replaceOrCreate(
 ): Promise<FlatData>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Создание нового документа, если `id: 3` не существует.
 
@@ -1169,7 +1169,7 @@ patch(
 ): Promise<number>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Обновление документов по условию.
 
@@ -1205,7 +1205,7 @@ patchById(
 ): Promise<FlatData>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Частичное обновление документа по идентификатору.
 
@@ -1239,7 +1239,7 @@ console.log(updatedProduct);
 find(filter?: FilterClause<FlatData>): Promise<FlatData[]>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Поиск всех документов.
 
@@ -1277,7 +1277,7 @@ findOne(
 ): Promise<FlatData | undefined>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Поиск одного документа по условию.
 
@@ -1313,7 +1313,7 @@ findById(
 ): Promise<FlatData>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Поиск документа по `id`.
 
@@ -1346,7 +1346,7 @@ const product = await productRep.findById(1, {
 delete(where?: WhereClause<FlatData>): Promise<number>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Удаление документов по условию.
 
@@ -1373,7 +1373,7 @@ const totalCount = await productRep.delete();
 deleteById(id: IdType): Promise<boolean>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Удаление документа по `id`.
 
@@ -1397,7 +1397,7 @@ if (wasDeleted) {
 exists(id: IdType): Promise<boolean>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Проверка существования документа по `id`.
 
@@ -1419,7 +1419,7 @@ if (productExists) {
 count(where?: WhereClause<FlatData>): Promise<number>;
 ```
 
-**Примеры:**
+**Примеры**
 
 Подсчет документов по условию.
 
