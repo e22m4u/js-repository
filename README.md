@@ -1003,7 +1003,7 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 - `where: object` условия фильтрации (см. [Фильтрация](#Фильтрация))
 - `filter: object` параметры выборки (см. [Фильтрация](#Фильтрация))
 
-Получение репозитория по названию модели.
+**Получение репозитория по названию модели**
 
 ```js
 const countryRep = dbs.getRepository('country');
