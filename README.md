@@ -774,7 +774,7 @@ dbs.defineModel({
 import {PropertyTransformerRegistry} from '@e22m4u/js-repository';
 
 // получение экземпляра сервиса
-const ptr = dbs.get(PropertyTransformerRegistry);
+const ptr = dbs.getService(PropertyTransformerRegistry);
 
 // регистрация глобального трансформера "stripTags"
 ptr.addTransformer('stripTags', (value, options, context) => {
@@ -2144,7 +2144,7 @@ class MyRepository extends Repository {
 // dbs.defineDatasource ...
 // dbs.defineModel ...
 
-dbs.get(RepositoryRegistry).setRepositoryCtor(MyRepository);
+dbs.getService(RepositoryRegistry).setRepositoryCtor(MyRepository);
 const rep = dbs.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
