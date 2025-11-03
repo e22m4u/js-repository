@@ -971,18 +971,18 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 
 **Методы**
 
-- `create(data, filter = undefined)` добавить новый документ
-- `replaceById(id, data, filter = undefined)` заменить весь документ
-- `replaceOrCreate(data, filter = undefined)` заменить или создать новый
-- `patchById(id, data, filter = undefined)` частично обновить документ
-- `patch(data, where = undefined)` обновить все документы или по условию
-- `find(filter = undefined)` найти все документы или по условию
-- `findOne(filter = undefined)` найти первый документ или по условию
-- `findById(id, filter = undefined)` найти документ по идентификатору
-- `delete(where = undefined)` удалить все документы или по условию
-- `deleteById(id)` удалить документ по идентификатору
-- `exists(id)` проверить существование по идентификатору
-- `count(where = undefined)` подсчет всех документов или по условию
+- [`create(data, filter = undefined)`](#repositorycreate) добавить новый документ;
+- [`replaceById(id, data, filter = undefined)`](#repositoryreplacebyid) заменить весь документ;
+- [`replaceOrCreate(data, filter = undefined)`](#repositoryreplaceorcreate) заменить или создать новый;
+- [`patchById(id, data, filter = undefined)`](#repositorypatchbyid) частично обновить документ;
+- [`patch(data, where = undefined)`](#repositorypatch) обновить все документы или по условию;
+- [`find(filter = undefined)`](#repositoryfind) найти все документы или по условию;
+- [`findOne(filter = undefined)`](#repositoryfindone) найти первый документ или по условию;
+- [`findById(id, filter = undefined)`](#repositoryfindbyid) найти документ по идентификатору;
+- [`delete(where = undefined)`](#repositorydelete) удалить все документы или по условию;
+- [`deleteById(id)`](#repositorydeletebyid) удалить документ по идентификатору;
+- [`exists(id)`](#repositoryexists) проверить существование по идентификатору;
+- [`count(where = undefined)`](#repositorycount) подсчет всех документов или по условию;
 
 **Аргументы**
 
@@ -991,49 +991,365 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 - `where: object` условия фильтрации (см. [Фильтрация](#Фильтрация))
 - `filter: object` параметры выборки (см. [Фильтрация](#Фильтрация))
 
-**Примеры**
-
-Получение репозитория по названию модели.
+Получение репозитория по названию модели:
 
 ```js
 const countryRep = dbs.getRepository('country');
 ```
 
-Добавление нового документа в коллекцию.
+### repository.create
+
+Создает новый документ в коллекции на основе переданных данных. Возвращает
+созданный документ с присвоенным идентификатором.
+
+**Сигнатура:**
+
+```ts
+create(
+  data: WithOptionalId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
+
+**Примеры:**
+
+Создание нового документа.
 
 ```js
-const res = await countryRep.create({
-  name: 'Russia',
-  population: 143400000,
+const newProduct = await productRep.create({
+  name: 'Laptop',
+  price: 1200,
 });
-
-console.log(res);
+console.log(newProduct);
 // {
-//   "id": 1,
-//   "name": "Russia",
-//   "population": 143400000,
+//   id: 1,
+//   name: 'Laptop',
+//   price: 1200,
 // }
 ```
 
-Поиск документа по идентификатору.
+Создание документа с возвратом определенных полей.
 
 ```js
-const res = await countryRep.findById(1);
-
-console.log(res);
+const product = await productRep.create(
+  {name: 'Mouse', price: 25},
+  {fields: ['id', 'name']},
+);
+console.log(product);
 // {
-//   "id": 1,
-//   "name": "Russia",
-//   "population": 143400000,
+//   id: 1,
+//   name: 'Mouse',
 // }
 ```
 
-Удаление документа по идентификатору.
+### repository.replaceById
+
+Полностью заменяет существующий документ по его идентификатору. Все
+предыдущие данные документа, кроме идентификатора, будут удалены и заменены
+новыми.
+
+**Сигнатура:**
+
+```ts
+replaceById(
+  id: IdType,
+  data: WithoutId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
+
+**Примеры:**
+
+Замена документа по идентификатору.
 
 ```js
-const res = await countryRep.deleteById(1);
+const updatedProduct = await productRep.replaceById(1, {
+  name: 'Laptop Pro',
+  price: 1500,
+  inStock: true,
+});
+console.log(updatedProduct);
+// {
+//   id: 1,
+//   name: 'Laptop Pro',
+//   price: 1500,
+//   inStock: true,
+// }
+```
 
-console.log(res); // true
+### repository.replaceOrCreate
+
+Заменяет существующий документ, если в переданных данных присутствует
+идентификатор, который уже существует в коллекции. В противном случае
+создает новый документ.
+
+**Сигнатура:**
+
+```ts
+replaceOrCreate(
+  data: WithOptionalId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
+
+**Примеры:**
+
+Создание нового документа, если `id: 1` не существует.
+
+```js
+const product = await productRep.replaceOrCreate({
+  id: 1,
+  name: 'Laptop',
+  price: 1200,
+});
+console.log(product);
+// {
+//   id: 1,
+//   name: 'Laptop',
+//   price: 1200,
+// }
+```
+
+Замена существующего документа с `id: 1`.
+
+```js
+const updatedProduct = await productRep.replaceOrCreate({
+  id: 1,
+  name: 'Laptop Pro',
+  price: 1500,
+});
+console.log(updatedProduct);
+// {
+//   id: 1,
+//   name: 'Laptop Pro',
+//   price: 1500,
+// }
+```
+
+### repository.patch
+
+Частично обновляет один или несколько документов, соответствующих условиям
+`where`. Возвращает количество обновленных документов. Если `where` не указан,
+обновляет все документы в коллекции.
+
+**Сигнатура:**
+
+```ts
+patch(
+  data: PartialWithoutId<FlatData, IdName>,
+  where?: WhereClause<FlatData>,
+): Promise<number>;
+```
+
+**Примеры:**
+
+Обновление документов по условию.
+
+```js
+const updatedCount = await productRep.patch(
+  {inStock: false},
+  {price: {lt: 30}},
+);
+// обновит все товары с ценой меньше 30
+```
+
+Обновление всех документов.
+
+```js
+const totalCount = await productRep.patch({
+  updatedAt: new Date(),
+});
+// добавит поле updatedAt ко всем документам
+```
+
+### repository.patchById
+
+Частично обновляет существующий документ по его идентификатору, изменяя
+только переданные поля.
+
+**Сигнатура:**
+
+```ts
+patchById(
+  id: IdType,
+  data: PartialWithoutId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
+
+**Примеры:**
+
+Частичное обновление документа по идентификатору.
+```js
+const updatedProduct = await productRep.patchById(1, {
+  price: 1450,
+});
+```
+
+### repository.find
+
+Находит все документы, соответствующие условиям фильтрации, и возвращает их
+в виде массива. Если фильтр не указан, возвращает все документы коллекции.
+
+**Сигнатура:**
+```ts
+find(filter?: FilterClause<FlatData>): Promise<FlatData[]>;
+```
+
+**Примеры:**
+
+Поиск всех документов.
+
+```js
+const allProducts = await productRep.find();
+```
+
+Поиск документов по условию `where`.
+
+```js
+const cheapProducts = await productRep.find({
+  where: {price: {lt: 100}},
+});
+```
+
+### repository.findOne
+
+Находит первый документ, соответствующий условиям фильтрации. Если документы
+не найдены, возвращает `undefined`. Удобен для случаев, когда ожидается не
+более одного результата.
+
+**Сигнатура:**
+
+```ts
+findOne(
+  filter?: FilterClause<FlatData>,
+): Promise<FlatData | undefined>;
+```
+
+**Примеры:**
+
+Поиск одного документа по условию.
+
+```js
+const expensiveProduct = await productRep.findOne({
+  where: {price: {gt: 1000}},
+  order: 'price DESC',
+});
+```
+
+### repository.findById
+
+Находит один документ по его уникальному идентификатору. Если документ не
+найден, то выбрасывает ошибку.
+
+**Сигнатура:**
+
+```ts
+findById(
+  id: IdType,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
+
+**Примеры:**
+
+Поиск документа по `id`.
+
+```js
+const product = await productRep.findById(1);
+```
+
+### repository.delete
+
+Удаляет один или несколько документов, соответствующих условиям `where`.
+Возвращает количество удаленных документов. Если `where` не указан, удаляет
+все документы в коллекции.
+
+**Сигнатура:**
+
+```ts
+delete(where?: WhereClause<FlatData>): Promise<number>;
+```
+
+**Примеры:**
+
+Удаление документов по условию.
+
+```js
+const deletedCount = await productRep.delete({
+  inStock: false,
+});
+```
+
+Удаление всех документов.
+
+```js
+const totalCount = await productRep.delete();
+```
+
+### repository.deleteById
+
+Удаляет один документ по его уникальному идентификатору. Возвращает `true`,
+если документ был найден и удален, в противном случае `false`.
+
+**Сигнатура:**
+
+```ts
+deleteById(id: IdType): Promise<boolean>;
+```
+
+**Примеры:**
+
+Удаление документа по `id`.
+
+```js
+const wasDeleted = await productRep.deleteById(1);
+```
+
+### repository.exists
+
+Проверяет существование документа с указанным идентификатором. Возвращает
+`true`, если документ существует, иначе `false`.
+
+**Сигнатура:**
+
+```ts
+exists(id: IdType): Promise<boolean>;
+```
+
+**Примеры:**
+
+Проверка существования документа по `id`.
+
+```js
+const productExists = await productRep.exists(1);
+```
+
+### repository.count
+
+Подсчитывает количество документов, соответствующих условиям `where`. Если
+`where` не указан, возвращает общее количество документов в коллекции.
+
+**Сигнатура:**
+
+```ts
+count(where?: WhereClause<FlatData>): Promise<number>;
+```
+
+**Примеры:**
+
+Подсчет документов по условию.
+
+```js
+const cheapCount = await productRep.count({
+  price: {lt: 100},
+});
+```
+
+Подсчет всех документов.
+
+```js
+const totalCount = await productRep.count();
 ```
 
 ## Фильтрация
