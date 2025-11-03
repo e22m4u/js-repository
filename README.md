@@ -1022,6 +1022,10 @@ dbs.defineModel({name: 'country', datasource: 'myMemory', /*...*/});
 const countryRep = dbs.getRepository('country');
 ```
 
+При первом вызове `getRepository('country')` будет создан и сохранен новый
+экземпляр репозитория. Все последующие вызовы с тем же названием модели будут
+возвращать уже существующий экземпляр.
+
 ### repository.create
 
 Создает новый документ в коллекции на основе переданных данных. Возвращает
