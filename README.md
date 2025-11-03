@@ -991,7 +991,7 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 - `where: object` условия фильтрации (см. [Фильтрация](#Фильтрация))
 - `filter: object` параметры выборки (см. [Фильтрация](#Фильтрация))
 
-Получение репозитория по названию модели:
+Получение репозитория по названию модели.
 
 ```js
 const countryRep = dbs.getRepository('country');
@@ -1037,7 +1037,7 @@ const product = await productRep.create(
 );
 console.log(product);
 // {
-//   id: 1,
+//   id: 2,
 //   name: 'Mouse',
 // }
 ```
@@ -1094,19 +1094,19 @@ replaceOrCreate(
 
 **Примеры:**
 
-Создание нового документа, если `id: 1` не существует.
+Создание нового документа, если `id: 3` не существует.
 
 ```js
 const product = await productRep.replaceOrCreate({
-  id: 1,
-  name: 'Laptop',
-  price: 1200,
+  id: 3,
+  name: 'Keyboard',
+  price: 75,
 });
 console.log(product);
 // {
-//   id: 1,
-//   name: 'Laptop',
-//   price: 1200,
+//   id: 3,
+//   name: 'Keyboard',
+//   price: 75,
 // }
 ```
 
@@ -1180,10 +1180,23 @@ patchById(
 **Примеры:**
 
 Частичное обновление документа по идентификатору.
+
 ```js
+// документ с id: 1 уже существует
+// {
+//   id: 1,
+//   name: 'Laptop Pro',
+//   price: 1500
+// }
 const updatedProduct = await productRep.patchById(1, {
   price: 1450,
 });
+console.log(updatedProduct);
+// {
+//   id: 1,
+//   name: 'Laptop Pro',
+//   price: 1450
+// }
 ```
 
 ### repository.find
@@ -1192,6 +1205,7 @@ const updatedProduct = await productRep.patchById(1, {
 в виде массива. Если фильтр не указан, возвращает все документы коллекции.
 
 **Сигнатура:**
+
 ```ts
 find(filter?: FilterClause<FlatData>): Promise<FlatData[]>;
 ```
@@ -1214,9 +1228,8 @@ const cheapProducts = await productRep.find({
 
 ### repository.findOne
 
-Находит первый документ, соответствующий условиям фильтрации. Если документы
-не найдены, возвращает `undefined`. Удобен для случаев, когда ожидается не
-более одного результата.
+Находит первый документ, соответствующий условиям фильтрации. Возвращает
+`undefined`, если документы не найдены.
 
 **Сигнатура:**
 
@@ -1240,7 +1253,7 @@ const expensiveProduct = await productRep.findOne({
 ### repository.findById
 
 Находит один документ по его уникальному идентификатору. Если документ не
-найден, то выбрасывает ошибку.
+найден, выбрасывается ошибка.
 
 **Сигнатура:**
 
