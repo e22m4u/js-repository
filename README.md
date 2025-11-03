@@ -1012,6 +1012,13 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 данных через указанный адаптер.
 
 ```js
+// объявление источника
+dbs.defineDatasource({name: 'myDatasource', /*...*/});
+
+// объявление модели
+dbs.defineModel({name: 'country', datasource: 'myMemory', /*...*/});
+
+// получение репозитория модели
 const countryRep = dbs.getRepository('country');
 ```
 
