@@ -1153,43 +1153,6 @@ console.log(updatedProduct);
 // }
 ```
 
-### repository.patch
-
-Частично обновляет один или несколько документов, соответствующих условиям
-`where`. Изменяются только переданные поля, остальные остаются без изменений.
-Возвращает количество обновленных документов. Если `where` не указан,
-обновляет все документы в коллекции.
-
-**Сигнатура:**
-
-```ts
-patch(
-  data: PartialWithoutId<FlatData, IdName>,
-  where?: WhereClause<FlatData>,
-): Promise<number>;
-```
-
-**Примеры**
-
-Обновление документов по условию.
-
-```js
-// обновит все товары с ценой меньше 30
-const updatedCount = await productRep.patch(
-  {inStock: false},
-  {price: {lt: 30}},
-);
-```
-
-Обновление всех документов.
-
-```js
-// добавит или обновит поле updatedAt для всех документов
-const totalCount = await productRep.patch({
-  updatedAt: new Date(),
-});
-```
-
 ### repository.patchById
 
 Частично обновляет существующий документ по его идентификатору, изменяя
@@ -1226,6 +1189,43 @@ console.log(updatedProduct);
 //   name: 'Laptop Pro',
 //   price: 1450
 // }
+```
+
+### repository.patch
+
+Частично обновляет один или несколько документов, соответствующих условиям
+`where`. Изменяются только переданные поля, остальные остаются без изменений.
+Возвращает количество обновленных документов. Если `where` не указан,
+обновляет все документы в коллекции.
+
+**Сигнатура:**
+
+```ts
+patch(
+  data: PartialWithoutId<FlatData, IdName>,
+  where?: WhereClause<FlatData>,
+): Promise<number>;
+```
+
+**Примеры**
+
+Обновление документов по условию.
+
+```js
+// обновит все товары с ценой меньше 30
+const updatedCount = await productRep.patch(
+  {inStock: false},
+  {price: {lt: 30}},
+);
+```
+
+Обновление всех документов.
+
+```js
+// добавит или обновит поле updatedAt для всех документов
+const totalCount = await productRep.patch({
+  updatedAt: new Date(),
+});
 ```
 
 ### repository.find
