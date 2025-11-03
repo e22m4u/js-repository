@@ -978,8 +978,8 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 
 ## Репозиторий
 
-Выполняет операции чтения и записи документов определенной модели.
-Получить репозиторий можно методом `getRepository` экземпляра `DatabaseSchema`.
+Репозиторий выполняет операции чтения и записи данных определенной модели.
+Он выступает в роли посредника между бизнес-логикой приложения и базой данных.
 
 **Методы**
 
@@ -1016,13 +1016,13 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 dbs.defineDatasource({name: 'myDatasource', /*...*/});
 
 // объявление модели
-dbs.defineModel({name: 'country', datasource: 'myMemory', /*...*/});
+dbs.defineModel({name: 'myModel', datasource: 'myDatasource', /*...*/});
 
 // получение репозитория модели
-const countryRep = dbs.getRepository('country');
+const countryRep = dbs.getRepository('myModel');
 ```
 
-При первом вызове `getRepository('country')` будет создан и сохранен новый
+При первом вызове `getRepository('myModel')` будет создан и сохранен новый
 экземпляр репозитория. Все последующие вызовы с тем же названием модели будут
 возвращать уже существующий экземпляр.
 
