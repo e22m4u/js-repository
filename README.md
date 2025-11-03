@@ -1005,21 +1005,28 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 
 **Получение репозитория**
 
-Получить репозиторий можно с помощью метода `getRepository()` экземпляра схемы
-(`DatabaseSchema`). В качестве аргумента метод принимает название модели.
-Обязательным условием является наличие у модели определенного источника
-данных (`datasource`), так как репозиторий напрямую взаимодействует с базой
-данных через указанный в источнике адаптер.
+Получить репозиторий можно с помощью метода `getRepository()` экземпляра
+`DatabaseSchema`. В качестве аргумента метод принимает название модели.
+Обязательным условием является наличие у модели определенного [источника данных](#источник-данных) (`datasource`), так как репозиторий напрямую взаимодействует
+с базой данных через указанный в источнике адаптер.
 
 ```js
 // объявление источника
-dbs.defineDatasource({name: 'myDatasource', /*...*/});
+dbs.defineDatasource({
+  name: 'myDatasource',
+  adapter: 'memory', // адаптер
+});
 
 // объявление модели
-dbs.defineModel({name: 'myModel', datasource: 'myDatasource', /*...*/});
+dbs.defineModel({
+  name: 'myModel',
+  datasource: 'myDatasource',
+  // properties: { ... },
+  // relations: { ... }
+});
 
 // получение репозитория модели
-const countryRep = dbs.getRepository('myModel');
+const modelRep = dbs.getRepository('myModel');
 ```
 
 При первом вызове `getRepository('myModel')` будет создан и сохранен новый
