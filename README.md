@@ -2199,7 +2199,7 @@ dbs.defineModel({
     users: { // название связи
       type: RelationType.HAS_MANY, // целевая модель ссылается на текущую
       model: 'user', // название целевой модели
-      foreignKey: 'roleId', // внешний ключ из целевой модели на текущую
+      foreignKey: 'roleId', // внешний ключ целевой модели
     },
   },
 });
