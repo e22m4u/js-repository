@@ -2118,9 +2118,9 @@ dbs.defineModel({
 - `RelationType.HAS_MANY`
 - `RelationType.REFERENCES_MANY`
 
-**Примеры**
+#### Belongs To
 
-Объявление связи `belongsTo`.
+Объявление связи:
 
 ```
     Текущая (user)                  Целевая (role)
@@ -2152,7 +2152,9 @@ dbs.defineModel({
 });
 ```
 
-Объявление связи `hasOne`.
+#### Has One
+
+Объявление связи:
 
 ```
     Текущая (profile)               Целевая (user)
@@ -2176,7 +2178,9 @@ dbs.defineModel({
 });
 ```
 
-Объявление связи `hasMany`.
+#### Has Many
+
+Объявление связи:
 
 ```
     Текущая (role)                  Целевая (user)
@@ -2205,7 +2209,9 @@ dbs.defineModel({
 });
 ```
 
-Объявление связи `referencesMany`.
+#### References Many
+
+Объявление связи:
 
 ```
     Текущая (article)                 Целевая (category)
@@ -2235,7 +2241,9 @@ dbs.defineModel({
 });
 ```
 
-Полиморфная версия `belongsTo`.
+#### Belongs To (полиморфная версия)
+
+Объявление связи:
 
 ```js
 dbs.defineModel({
@@ -2254,7 +2262,7 @@ dbs.defineModel({
 });
 ```
 
-Полиморфная версия `belongsTo` с указанием свойств.
+Объявление связи с указанием свойств:
 
 ```js
 dbs.defineModel({
@@ -2270,7 +2278,9 @@ dbs.defineModel({
 });
 ```
 
-Полиморфная версия `hasMany` с указанием названия связи целевой модели.
+#### Has Many (полиморфная версия)
+
+Объявление связи с указанием названия связи целевой модели:
 
 ```js
 dbs.defineModel({
@@ -2285,7 +2295,7 @@ dbs.defineModel({
 });
 ```
 
-Полиморфная версия `hasMany` с указанием свойств целевой модели.
+Объявление связи с указанием свойств целевой модели:
 
 ```js
 dbs.defineModel({
