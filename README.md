@@ -2359,7 +2359,6 @@ import {DatabaseSchema} from '@e22m4u/js-repository';
 
 // const dbs = new DatabaseSchema();
 // dbs.defineDatasource ...
-// dbs.defineModel ...
 
 // определение модели "city"
 dbs.defineModel({
@@ -2369,12 +2368,6 @@ dbs.defineModel({
     name: DataType.STRING,
     timeZone: DataType.STRING,
   },
-  relations: {
-    country: {
-      type: RelationType.BELONGS_TO,
-      model: 'country',
-    },
-  },
 });
 
 // определение интерфейса "city"
@@ -2382,13 +2375,18 @@ interface City {
   id: number;
   name?: string;
   timeZone?: string;
-  countryId?: number;
-  country?: Country;
 }
 
-// получаем репозиторий по названию модели
-// указывая ее тип и тип идентификатора
-const cityRep = dbs.getRepository<City, number>('city');
+// при получении репозитория нужной модели
+// можно указать тип документов
+const cityRep = dbs.getRepository<City>('city');
+
+// теперь, методы репозитория возвращают
+// тип City вместо Record<string, unknown>
+const city: City = await cityRep.create({
+  name: 'Moscow',
+  timeZone: 'Europe/Moscow',
+});
 ```
 
 Для определения моделей с помощью TypeScript классов,
