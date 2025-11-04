@@ -2207,7 +2207,15 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'user', ...
+// dbs.defineModel({
+//   name: 'user',
+//   relations: {
+//     profile: {
+//       type: RelationType.BELONGS_TO,
+//       model: 'profile',
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'profile',
@@ -2246,7 +2254,15 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'user', ...
+// dbs.defineModel({
+//   name: 'user',
+//   relations: {
+//     role: {
+//       type: RelationType.BELONGS_TO,
+//       model: 'role',
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'role',
@@ -2383,7 +2399,15 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'license', ...
+// dbs.defineModel({
+//   name: 'license',
+//   relations: {
+//     owner: {
+//       type: RelationType.BELONGS_TO,
+//       polymorphic: true,
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'company',
@@ -2404,7 +2428,17 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'license', ...
+// dbs.defineModel({
+//   name: 'license',
+//   relations: {
+//     owner: {
+//       type: RelationType.BELONGS_TO,
+//       polymorphic: true,
+//       foreignKey: 'ownerId',
+//       discriminator: 'ownerType',
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'company',
@@ -2445,7 +2479,15 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'file', ...
+// dbs.defineModel({
+//   name: 'file',
+//   relations: {
+//     reference: {
+//       type: RelationType.BELONGS_TO,
+//       polymorphic: true,
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'letter',
@@ -2466,7 +2508,17 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
-// dbs.defineModel({name: 'file', ...
+// dbs.defineModel({
+//   name: 'file',
+//   relations: {
+//     reference: {
+//       type: RelationType.BELONGS_TO,
+//       polymorphic: true,
+//       foreignKey: 'referenceId',
+//       discriminator: 'referenceType',
+//     },
+//   },
+// });
 
 dbs.defineModel({
   name: 'letter',
