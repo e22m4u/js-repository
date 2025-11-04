@@ -35,13 +35,13 @@
   - [count](#repositorycount)
 - [Фильтрация](#фильтрация)
 - [Связи](#связи)
-  - [belongsTo](#belongs-to)
-  - [hasOne](#has-one)
-  - [hasMany](#has-many)
-  - [referencesMany](#references-many)
-  - [belongsTo (полиморфная)](#belongs-to-полиморфная-версия)
-  - [hasOne (полиморфная)](#has-one-полиморфная-версия)
-  - [hasMany (полиморфная)](#has-many-полиморфная-версия)
+  - [Belongs To](#belongs-to)
+  - [Has One](#has-one)
+  - [Has Many](#has-many)
+  - [References Many](#references-many)
+  - [Belongs To (полиморфная)](#belongs-to-полиморфная-версия)
+  - [Has One (полиморфная)](#has-one-полиморфная-версия)
+  - [Has Many (полиморфная)](#has-many-полиморфная-версия)
 - [Расширение](#расширение)
 - [TypeScript](#typescript)
 - [Тесты](#тесты)
@@ -2069,8 +2069,11 @@ console.log(user);
 связи можно будет использовать в опции `include` методах репозитория.
 
 ```js
-import {DataType} from '@e22m4u/js-repository';
-import {RelationType} from '@e22m4u/js-repository';
+import {
+  DataType,
+  RelationType,
+  DatabaseSchema,
+} from '@e22m4u/js-repository';
 
 dbs.defineModel({
   name: 'user',
@@ -2110,12 +2113,29 @@ dbs.defineModel({
 *i. Полиморфный режим позволяет динамически определять целевую модель
 по ее названию, которое хранит документ в свойстве-дискриминаторе.*
 
-**Типы связи**
+### Типы связей
 
-- `belongsTo` - текущая модель ссылается на целевую по идентификатору;
-- `hasOne` - обратная сторона `belongsTo` по принципу "один к одному";
-- `hasMany` - обратная сторона `belongsTo` по принципу "один ко многим";
-- `referencesMany` - модель ссылается через массив идентификаторов;
+- [Belongs To](#belongs-to)  
+  Текущая модель ссылается на целевую по идентификатору.  
+  `type: "belongsTo"` или `type: RelationType.BELONGS_TO`  
+  
+- [Has One](#has-one)  
+  Обратная сторона `belongsTo` по принципу "один к одному".  
+  `type: "hasOne"` или `type: RelationType.HAS_ONE`  
+
+- [Has Many](#has-many)  
+  Обратная сторона `belongsTo` по принципу "один ко многим".  
+  `type: "hasMany"` или `type: RelationType.HAS_MANY`  
+
+- [References Many](#references-many)  
+  Текущая модель ссылается на целевую через массив идентификаторов.  
+  `type: "referencesMany"` или `type: RelationType.REFERENCES_MANY`  
+
+Полиморфные версии:
+
+- [Belongs To (полиморфная)](#belongs-to-полиморфная-версия)
+- [Has One (полиморфная)](#has-one-полиморфная-версия)
+- [Has Many (полиморфная)](#has-many-полиморфная-версия)
 
 Параметр `type` в определении связи принимает строку с названием типа. Чтобы исключить опечатку, рекомендуется использовать константы объекта `RelationType`
 указанные ниже.
@@ -2146,6 +2166,12 @@ dbs.defineModel({
 Определение связи:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'role', ...
+
 dbs.defineModel({
   name: 'user',
   relations: {
@@ -2177,6 +2203,10 @@ dbs.defineModel({
 Определение связи:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
 dbs.defineModel({
   name: 'profile',
   relations: {
@@ -2187,6 +2217,8 @@ dbs.defineModel({
     },
   },
 });
+
+// dbs.defineModel({name: 'user', ...
 ```
 
 #### Has Many
@@ -2210,6 +2242,10 @@ dbs.defineModel({
 Определение связи:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
 dbs.defineModel({
   name: 'role',
   relations: {
@@ -2220,6 +2256,8 @@ dbs.defineModel({
     },
   },
 });
+
+// dbs.defineModel({name: 'user', ...
 ```
 
 #### References Many
@@ -2241,6 +2279,12 @@ dbs.defineModel({
 Определение связи:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'category', ...
+
 dbs.defineModel({
   name: 'article',
   relations: {
@@ -2279,6 +2323,10 @@ dbs.defineModel({
 Определение связи:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
 dbs.defineModel({
   name: 'file',
   relations: {
@@ -2298,6 +2346,10 @@ dbs.defineModel({
 Определение связи с указанием свойств:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
 dbs.defineModel({
   name: 'file',
   relations: {
@@ -2327,6 +2379,12 @@ dbs.defineModel({
 Определение связи с указанием названия связи целевой модели:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'license', ...
+
 dbs.defineModel({
   name: 'company',
   relations: {
@@ -2342,6 +2400,12 @@ dbs.defineModel({
 Определение связи с указанием свойств целевой модели:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'license', ...
+
 dbs.defineModel({
   name: 'company',
   relations: {
@@ -2377,6 +2441,12 @@ dbs.defineModel({
 Определение связи с указанием названия связи целевой модели:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'file', ...
+
 dbs.defineModel({
   name: 'letter',
   relations: {
@@ -2392,6 +2462,12 @@ dbs.defineModel({
 Определение связи с указанием свойств целевой модели:
 
 ```js
+import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+// dbs.defineModel({name: 'file', ...
+
 dbs.defineModel({
   name: 'letter',
   relations: {
