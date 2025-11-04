@@ -2310,12 +2310,12 @@ dbs.defineModel({
 
 ```js
 dbs.defineModel({
-  name: 'user',
+  name: 'company',
   relations: {
-    avatar: { // название связи
+    license: { // название связи
       type: RelationType.HAS_ONE, // целевая модель ссылается на текущую
-      model: 'file', // название целевой модели
-      polymorphic: 'reference', // название полиморфной связи целевой модели
+      model: 'license', // название целевой модели
+      polymorphic: 'owner', // название полиморфной связи целевой модели
     },
   },
 });
@@ -2325,14 +2325,14 @@ dbs.defineModel({
 
 ```js
 dbs.defineModel({
-  name: 'user',
+  name: 'company',
   relations: {
-    avatar: { // название связи
+    license: { // название связи
       type: RelationType.HAS_ONE, // целевая модель ссылается на текущую
-      model: 'file', // название целевой модели
+      model: 'license', // название целевой модели
       polymorphic: true, // название текущей модели находится в дискриминаторе
-      foreignKey: 'referenceId', // свойство целевой модели для идентификатора
-      discriminator: 'referenceType', // свойство целевой модели для названия текущей
+      foreignKey: 'ownerId', // свойство целевой модели для идентификатора
+      discriminator: 'ownerType', // свойство целевой модели для названия текущей
     },
   },
 });
