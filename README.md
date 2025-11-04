@@ -2393,7 +2393,7 @@ const cityRep = dbs.getRepository<City, number>('city');
 
 Для определения моделей с помощью TypeScript классов,
 рекомендуется использовать специальную версию данного модуля
-[@e22m4u/ts-repository](https://github.com/e22m4u/ts-repository),
+[@e22m4u/ts-repository](https://www.npmjs.com/package/@e22m4u/ts-repository),
 поставляемую с набором TypeScript декораторов и дополнительных
 инструментов для работы в TypeScript окружении.
 
