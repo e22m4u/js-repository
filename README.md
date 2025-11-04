@@ -123,7 +123,9 @@ flowchart TD
 
 ## Пример
 
-Объявление источника данных, модели и добавление нового документа в коллекцию.
+Пример демонстрирует создание экземпляра схемы, объявление источника данных
+и модели `country`. После чего, с помощью репозитория модели, в коллекцию
+добавляется новый документ (страна), который выводится в консоль.
 
 ```js
 import {DataType} from '@e22m4u/js-repository';
@@ -132,18 +134,18 @@ import {DatabaseSchema} from '@e22m4u/js-repository';
 // создание экземпляра DatabaseSchema
 const dbs = new DatabaseSchema();
 
-// объявление источника "myMemory"
+// объявление источника "myDb"
 dbs.defineDatasource({
-  name: 'myMemory', // название нового источника
+  name: 'myDb',      // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
 
 // объявление модели "country"
 dbs.defineModel({
-  name: 'country', // название новой модели
-  datasource: 'myMemory', // выбранный источник
-  properties: { // свойства модели
-    name: DataType.STRING, // тип "string"
+  name: 'country',    // название новой модели
+  datasource: 'myDb', // выбранный источник
+  properties: {       // свойства модели
+    name: DataType.STRING,       // тип "string"
     population: DataType.NUMBER, // тип "number"
   },
 })
@@ -163,6 +165,69 @@ console.log(country);
 //   id: 1,
 //   name: 'Russia',
 //   population: 143400000,
+// }
+```
+
+В следующем блоке определяется модель `city` со связью `belongsTo` к модели
+`country`. Затем создается новый документ города, связанный с ранее созданной
+страной из примера выше. После создания нового документа, выполняется запрос
+на извлечение данного города с включением связанной страны.
+
+```js
+// объявление модели "city" со связью к "country"
+dbs.defineModel({
+  name: 'city',
+  datasource: 'myDb',
+  properties: {
+    name: DataType.STRING,
+    countryId: DataType.NUMBER,
+    // внешний ключ "countryId" указывать не обязательно,
+    // но для проверки типа значения рекомендуется указать,
+    // так как адаптер "memory" по умолчанию создает числовые id
+  },
+  relations: {
+    // объявление связи "country"
+    country: {
+      type: RelationType.BELONGS_TO, // тип связи: принадлежит к...
+      model: 'country',              // название целевой модели
+      foreignKey: 'countryId',       // поле с внешним ключом (не обязательно)
+      // если внешний ключ соответствует `relationName` + `Id`,
+      // то указывать опцию `foreignKey` не обязательно
+    },
+  },
+});
+
+// получение репозитория для модели "city"
+const cityRep = dbs.getRepository('city');
+
+// создание нового города и его привязка к стране через country.id
+const city = await cityRep.create({
+  name: 'Moscow',
+  countryId: country.id, // использование id созданной ранее страны
+});
+
+console.log(city);
+// {
+//   id: 1,
+//   name: 'Moscow',
+//   countryId: 1,
+// }
+
+// извлечение города по идентификатору с включением связанной страны
+const cityWithCountry = await cityRep.findById(city.id, {
+  include: 'country',
+});
+
+console.log(cityWithCountry);
+// {
+//   id: 1,
+//   name: 'Moscow',
+//   countryId: 1,
+//   country: {
+//     id: 1,
+//     name: 'Russia',
+//     population: 143400000
+//   }
 // }
 ```
 
@@ -190,7 +255,7 @@ const dbs = new DatabaseSchema();
 
 ```js
 dbs.defineDatasource({
-  name: 'myMemory', // название нового источника
+  name: 'myDb', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
 ```
@@ -200,7 +265,7 @@ dbs.defineDatasource({
 ```js
 dbs.defineModel({
   name: 'product', // название новой модели
-  datasource: 'myMemory', // выбранный источник
+  datasource: 'myDb', // выбранный источник
   properties: { // свойства модели
     name: DataType.STRING,
     weight: DataType.NUMBER,
@@ -232,7 +297,7 @@ const productRep = dbs.getRepository('product');
 
 ```js
 dbs.defineDatasource({
-  name: 'myMemory', // название нового источника
+  name: 'myDb', // название нового источника
   adapter: 'memory', // выбранный адаптер
 });
 ```
@@ -241,7 +306,7 @@ dbs.defineDatasource({
 
 ```js
 dbs.defineDatasource({
-  name: 'myMongodb',
+  name: 'myDb',
   adapter: 'mongodb',
   // параметры адаптера "mongodb"
   host: '127.0.0.1',
