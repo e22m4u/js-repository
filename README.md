@@ -127,6 +127,15 @@ flowchart TD
 и модели `country`. После чего, с помощью репозитория данной модели, в коллекцию
 добавляется новый документ (страна), который выводится в консоль.
 
+```
+   Страна (country)
+┌─────────────────────────┐
+│  id: 1                  │
+│  name: "Russia"         │
+│  population: 143400000  │
+└─────────────────────────┘
+```
+
 ```js
 import {DataType} from '@e22m4u/js-repository';
 import {DatabaseSchema} from '@e22m4u/js-repository';
