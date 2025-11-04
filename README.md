@@ -2120,11 +2120,11 @@ dbs.defineModel({
   `type: "belongsTo"` или `type: RelationType.BELONGS_TO`  
   
 - [Has One](#has-one)  
-  Обратная сторона `belongsTo` по принципу "один к одному".  
+  Обратная сторона `belongsTo` по принципу *"один к одному"*.  
   `type: "hasOne"` или `type: RelationType.HAS_ONE`  
 
 - [Has Many](#has-many)  
-  Обратная сторона `belongsTo` по принципу "один ко многим".  
+  Обратная сторона `belongsTo` по принципу *"один ко многим"*.  
   `type: "hasMany"` или `type: RelationType.HAS_MANY`  
 
 - [References Many](#references-many)  
@@ -2207,6 +2207,8 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
+// dbs.defineModel({name: 'user', ...
+
 dbs.defineModel({
   name: 'profile',
   relations: {
@@ -2217,8 +2219,6 @@ dbs.defineModel({
     },
   },
 });
-
-// dbs.defineModel({name: 'user', ...
 ```
 
 #### Has Many
@@ -2246,6 +2246,8 @@ import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
 
 const dbs = new DatabaseSchema();
 
+// dbs.defineModel({name: 'user', ...
+
 dbs.defineModel({
   name: 'role',
   relations: {
@@ -2256,8 +2258,6 @@ dbs.defineModel({
     },
   },
 });
-
-// dbs.defineModel({name: 'user', ...
 ```
 
 #### References Many
