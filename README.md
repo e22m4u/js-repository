@@ -1,5 +1,15 @@
 ## @e22m4u/js-repository
 
+![npm version](https://badge.fury.io/js/@e22m4u%2Fjs-repository.svg)
+![license](https://img.shields.io/badge/license-mit-blue.svg)
+
+<br/>
+<br/>
+<div align="center">
+  <img alt="logo" src="assets/logo.png"/>
+</div>
+<br/>
+
 Реализация паттерна «Репозиторий» для работы с базами данных в Node.js
 
 - [Установка](#установка)
