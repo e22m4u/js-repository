@@ -2187,6 +2187,86 @@ dbs.defineModel({
 });
 ```
 
+Пример:
+
+```js
+import {
+  DataType,
+  RelationType,
+  DatabaseSchema,
+} from '@e22m4u/js-repository';
+
+const dbs = new DatabaseSchema();
+
+dbs.defineDatasource({
+  name: 'myDb',
+  adapter: 'memory',
+});
+
+dbs.defineModel({
+  name: 'role',
+  datasource: 'myDb',
+  properties: {
+    name: DataType.STRING,
+  },
+});
+
+dbs.defineModel({
+  name: 'user',
+  datasource: 'myDb',
+  properties: {
+    name: DataType.STRING,
+    roleId: DataType.NUMBER, // не обязательно
+  },
+  relations: {
+    role: {
+      type: RelationType.BELONGS_TO,
+      model: 'role',
+      foreignKey: 'roleId', // не обязательно
+    },
+  },
+});
+
+// создание роли
+const roleRep = dbs.getRepository('role');
+const role = await roleRep.create({
+  id: 5,
+  name: 'Manager',
+});
+console.log(role);
+// {
+//   id: 5,
+//   name: 'manager'
+// }
+
+// создание пользователя
+const userRep = dbs.getRepository('user');
+const user = await userRep.create({
+  id: 1,
+  name: 'John Doe',
+  roleId: role.id,
+});
+console.log(user);
+// {
+//   id: 1,
+//   name: 'John Doe',
+//   roleId: 5
+// }
+
+// извлечение пользователя и связанной роли (опция "include")
+const userWithRole = await userRep.findById(user.id, {include: 'role'});
+console.log(userWithRole);
+// {
+//   id: 1,
+//   name: 'John Doe',
+//   roleId: 5,
+//   role: {
+//     id: 5,
+//     name: 'Manager'
+//   }
+// }
+```
+
 #### Has One
 
 Обратная сторона `belongsTo` по принципу *"один к одному"*.
