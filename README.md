@@ -4,10 +4,10 @@
 ![license](https://img.shields.io/badge/license-mit-blue.svg)
 
 <br/>
-<br/>
 <div align="center">
   <img alt="logo" src="assets/logo.png"/>
 </div>
+<br/>
 <br/>
 
 Реализация паттерна «Репозиторий» для работы с базами данных в Node.js
