@@ -2280,10 +2280,6 @@ console.log(userWithRole);
 Определение связи:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'user',
 //   relations: {
@@ -2327,10 +2323,6 @@ dbs.defineModel({
 Определение связи:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'user',
 //   relations: {
@@ -2372,10 +2364,6 @@ dbs.defineModel({
 Определение связи:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({name: 'category', ...
 
 dbs.defineModel({
@@ -2416,10 +2404,6 @@ dbs.defineModel({
 Определение связи:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 dbs.defineModel({
   name: 'file',
   relations: {
@@ -2439,10 +2423,6 @@ dbs.defineModel({
 Определение связи с указанием свойств:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 dbs.defineModel({
   name: 'file',
   relations: {
@@ -2472,10 +2452,6 @@ dbs.defineModel({
 Определение связи с указанием названия связи целевой модели:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'license',
 //   relations: {
@@ -2501,10 +2477,6 @@ dbs.defineModel({
 Определение связи с указанием свойств целевой модели:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'license',
 //   relations: {
@@ -2552,10 +2524,6 @@ dbs.defineModel({
 Определение связи с указанием названия связи целевой модели:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'file',
 //   relations: {
@@ -2581,10 +2549,6 @@ dbs.defineModel({
 Определение связи с указанием свойств целевой модели:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
 // dbs.defineModel({
 //   name: 'file',
 //   relations: {
