@@ -2166,12 +2166,6 @@ dbs.defineModel({
 Определение связи:
 
 ```js
-import {RelationType, DatabaseSchema} from '@e22m4u/js-repository';
-
-const dbs = new DatabaseSchema();
-
-// dbs.defineModel({name: 'role', ...
-
 dbs.defineModel({
   name: 'user',
   relations: {
@@ -2198,11 +2192,13 @@ import {
 
 const dbs = new DatabaseSchema();
 
+// источник данных
 dbs.defineDatasource({
   name: 'myDb',
   adapter: 'memory',
 });
 
+// модель роли
 dbs.defineModel({
   name: 'role',
   datasource: 'myDb',
@@ -2211,6 +2207,7 @@ dbs.defineModel({
   },
 });
 
+// модель пользователя
 dbs.defineModel({
   name: 'user',
   datasource: 'myDb',
