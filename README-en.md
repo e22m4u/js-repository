@@ -2151,9 +2151,9 @@ name, which is stored in the document's discriminator property.*
 
 Polymorphic versions:
 
-- [Belongs To (Polymorphic)](#belongs-to-polymorphic-version)
-- [Has One (Polymorphic)](#has-one-polymorphic-version)
-- [Has Many (Polymorphic)](#has-many-polymorphic-version)
+- [Belongs To (polymorphic)](#belongs-to-polymorphic-version)
+- [Has One (polymorphic)](#has-one-polymorphic-version)
+- [Has Many (polymorphic)](#has-many-polymorphic-version)
 
 The `type` parameter in a relation definition accepts a string with the type
 name. To avoid typos, it's recommended to use the constants from the
