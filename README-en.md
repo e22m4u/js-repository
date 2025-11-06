@@ -252,7 +252,7 @@ console.log(city);
 //   countryId: 1,
 // }
 
-// retrieve the city by its ID, including the related country
+// retrieve the city by its id, including the related country
 const cityWithCountry = await cityRep.findById(city.id, {
   include: 'country',
 });
@@ -1096,10 +1096,10 @@ database.
 - [`patch(data, where = undefined)`](#repositorypatch) updates all or matching documents;
 - [`find(filter = undefined)`](#repositoryfind) finds all or matching documents;
 - [`findOne(filter = undefined)`](#repositoryfindone) finds the first matching document;
-- [`findById(id, filter = undefined)`](#repositoryfindbyid) finds a document by its ID;
+- [`findById(id, filter = undefined)`](#repositoryfindbyid) finds a document by its id;
 - [`delete(where = undefined)`](#repositorydelete) deletes all or matching documents;
-- [`deleteById(id)`](#repositorydeletebyid) deletes a document by its ID;
-- [`exists(id)`](#repositoryexists) checks for existence by ID;
+- [`deleteById(id)`](#repositorydeletebyid) deletes a document by its id;
+- [`exists(id)`](#repositoryexists) checks for existence by id;
 - [`count(where = undefined)`](#repositorycount) counts all or matching documents;
 
 **Arguments**
@@ -2118,7 +2118,7 @@ dbs.defineModel({
 
 - `type: string` the relation type (required);
 - `model: string` the target model name (required for some types);
-- `foreignKey: string` the property in the current model for the target ID;
+- `foreignKey: string` the property in the current model for the target id;
 
 *i. For Belongs To and References Many types, the `foreignKey` parameter
 can be omitted as it's automatically generated based on the relation name.*
@@ -2134,7 +2134,7 @@ name, which is stored in the document's discriminator property.*
 ### Relation Types
 
 - [Belongs To](#belongs-to)
-  The current model references the target model by its ID.
+  The current model references the target model by its id.
   `type: "belongsTo"` or `type: RelationType.BELONGS_TO`
 
 - [Has One](#has-one)
@@ -2430,7 +2430,7 @@ dbs.defineModel({
       // in a discriminator property, which is formed based on
       // the relation name with a "Type" postfix, in this case,
       // the target model's name is stored in "referenceType",
-      // and the document's ID is in "referenceId"
+      // and the document's id is in "referenceId"
       polymorphic: true,
     },
   },
@@ -2446,7 +2446,7 @@ dbs.defineModel({
     reference: { // relation name
       type: RelationType.BELONGS_TO, // current model references target
       polymorphic: true, // target model name is in a discriminator
-      foreignKey: 'referenceId', // property for the target's ID
+      foreignKey: 'referenceId', // property for the target's id
       discriminator: 'referenceType', // property for the target's name
     },
   },
@@ -2513,7 +2513,7 @@ dbs.defineModel({
       type: RelationType.HAS_ONE, // target model references current
       model: 'license', // target model name
       polymorphic: true, // current model name is in discriminator
-      foreignKey: 'ownerId', // property in target for current's ID
+      foreignKey: 'ownerId', // property in target for current's id
       discriminator: 'ownerType', // property in target for current's name
     },
   },
@@ -2585,7 +2585,7 @@ dbs.defineModel({
       type: RelationType.HAS_MANY, // target model references current
       model: 'file', // target model name
       polymorphic: true, // current model name is in discriminator
-      foreignKey: 'referenceId', // property in target for current's ID
+      foreignKey: 'referenceId', // property in target for current's id
       discriminator: 'referenceType', // property in target for current's name
     },
   },
