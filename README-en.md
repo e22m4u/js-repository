@@ -52,9 +52,9 @@ Node.js.
   - [Has One](#has-one)
   - [Has Many](#has-many)
   - [References Many](#references-many)
-  - [Belongs To (Polymorphic)](#belongs-to-polymorphic-version)
-  - [Has One (Polymorphic)](#has-one-polymorphic-version)
-  - [Has Many (Polymorphic)](#has-many-polymorphic-version)
+  - [Belongs To (polymorphic)](#belongs-to-polymorphic-version)
+  - [Has One (polymorphic)](#has-one-polymorphic-version)
+  - [Has Many (polymorphic)](#has-many-polymorphic-version)
 - [Extending](#extending)
 - [TypeScript](#typescript)
 - [Tests](#tests)
@@ -2398,7 +2398,7 @@ dbs.defineModel({
 });
 ```
 
-#### Belongs To (Polymorphic Version)
+#### Belongs To (polymorphic version)
 
 The current model references a target model by its identifier. The target
 model's name is determined by a discriminator property.
@@ -2453,7 +2453,7 @@ dbs.defineModel({
 });
 ```
 
-#### Has One (Polymorphic Version)
+#### Has One (polymorphic version)
 
 The inverse of a polymorphic `belongsTo` for a "one-to-one" relationship.
 
@@ -2520,7 +2520,7 @@ dbs.defineModel({
 });
 ```
 
-#### Has Many (Polymorphic Version)
+#### Has Many (polymorphic version)
 
 The inverse of a polymorphic `belongsTo` for a "one-to-many" relationship.
 
