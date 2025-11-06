@@ -3,6 +3,8 @@
 ![npm version](https://badge.fury.io/js/@e22m4u%2Fjs-repository.svg)
 ![license](https://img.shields.io/badge/license-mit-blue.svg)
 
+Русский | [English](./README-en.md)
+
 <br/>
 <div align="center">
   <img alt="logo" src="assets/logo.png"/>
@@ -2303,7 +2305,7 @@ console.log(userWithRole);
 dbs.defineModel({
   name: 'profile',
   relations: {
-    users: { // название связи
+    user: { // название связи
       type: RelationType.HAS_ONE, // целевая модель ссылается на текущую
       model: 'user', // название целевой модели
       foreignKey: 'profileId', // внешний ключ из целевой модели на текущую
