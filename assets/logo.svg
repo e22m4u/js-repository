@@ -10,8 +10,8 @@
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="logo.svg"
    inkscape:export-filename="logo.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
+   inkscape:export-xdpi="44.036697"
+   inkscape:export-ydpi="44.036697"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -22,15 +22,15 @@
      bordercolor="#000000"
      borderopacity="0.25"
      inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="false"
      showguides="true"
-     inkscape:zoom="0.73673541"
-     inkscape:cx="589.0853"
-     inkscape:cy="-24.432109"
+     inkscape:zoom="0.5209506"
+     inkscape:cx="530.7605"
+     inkscape:cy="65.265305"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="0"
@@ -49,11 +49,11 @@
      inkscape:label="Слой 2">
     <path
        id="rect5142"
-       style="fill:#54779a;stroke-width:0.627612;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#4d6689;stroke-width:0.627612;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        d="m 41.967885,6.7615081 h 49.360571 c 5.851835,0 10.562874,4.7110449 10.562874,10.5628799 0,5.851835 -4.711039,10.562879 -10.562874,10.562879 H 41.967885 c -5.851835,0 -10.562879,-4.711044 -10.562879,-10.562879 0,-5.851835 4.711044,-10.5628799 10.562879,-10.5628799 z" />
     <path
        id="rect5142-8"
-       style="fill:#54779a;stroke-width:0.627612;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#776910;stroke-width:0.627612;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1"
        d="m 160.59742,31.976932 h 80.46202 c 5.58456,0 10.08042,4.495868 10.08042,10.080421 v 0.05287 c 0,5.584553 -4.49586,10.080421 -10.08042,10.080421 h -80.46202 c -5.58455,0 -10.08042,-4.495868 -10.08042,-10.080421 v -0.05287 c 0,-5.584553 4.49587,-10.080421 10.08042,-10.080421 z" />
     <path
        id="rect4399"
