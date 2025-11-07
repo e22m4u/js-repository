@@ -68,10 +68,10 @@ npm install @e22m4u/js-repository
 
 Optionally, install the required adapter.
 
-| adapter   | description                                  | installation                                                                   |
-|-----------|----------------------------------------------|--------------------------------------------------------------------------------|
-| `memory`  | An in-process memory database                | *built-in*                                                                     |
-| `mongodb` | MongoDB - a NoSQL database management system | [install](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) |
+| adapter   | description                                  | installation                                                               |
+|-----------|----------------------------------------------|----------------------------------------------------------------------------|
+| `memory`  | An in-process memory database                | *built-in*                                                                 |
+| `mongodb` | MongoDB - a NoSQL database management system | [npm](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) |
 
 ## Importing
 
