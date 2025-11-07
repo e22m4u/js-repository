@@ -3,7 +3,7 @@
 ![npm version](https://badge.fury.io/js/@e22m4u%2Fjs-repository.svg)
 ![license](https://img.shields.io/badge/license-mit-blue.svg)
 
-Реализация паттерна «Репозиторий» для работы с базами данных в Node.js
+Реализация паттерна «Репозиторий» для работы с базами данных.
 
 - [Установка](#установка)
 - [Импорт](#импорт)
