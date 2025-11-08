@@ -39,8 +39,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@e22m4u/js-empty-values": "~0.1.2",
-    "@e22m4u/js-format": "~0.2.0",
+    "@e22m4u/js-empty-values": "~0.1.3",
+    "@e22m4u/js-format": "~0.2.1",
     "@e22m4u/js-service": "~0.4.5"
   },
   "devDependencies": {
