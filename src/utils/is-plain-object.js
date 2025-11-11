@@ -1,10 +1,10 @@
 /**
- * Is pure object.
+ * Is plain object.
  *
  * @param {*} value
  * @returns {boolean}
  */
-export function isPureObject(value) {
+export function isPlainObject(value) {
   return Boolean(
     typeof value === 'object' &&
       value &&

@@ -1,6 +1,6 @@
 import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../../utils/index.js';
-import {isPureObject} from '../../utils/index.js';
+import {isPlainObject} from '../../utils/index.js';
 import {transformPromise} from '../../utils/index.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
@@ -20,7 +20,7 @@ export class ModelDataTransformer extends Service {
    * @returns {object|Promise<object>}
    */
   transform(modelName, modelData, isPartial = false) {
-    if (!isPureObject(modelData))
+    if (!isPlainObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v was given.',
         modelName,

@@ -1,7 +1,7 @@
 import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
 import {getCtorName} from '../../utils/index.js';
-import {isPureObject} from '../../utils/index.js';
+import {isPlainObject} from '../../utils/index.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {PropertyValidatorRegistry} from './properties/index.js';
@@ -20,7 +20,7 @@ export class ModelDataValidator extends Service {
    * @returns {undefined}
    */
   validate(modelName, modelData, isPartial = false) {
-    if (!isPureObject(modelData))
+    if (!isPlainObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v was given.',
         modelName,
@@ -157,7 +157,7 @@ export class ModelDataValidator extends Service {
         break;
       // OBJECT
       case DataType.OBJECT: {
-        if (!isPureObject(propValue)) throw createError('an Object');
+        if (!isPlainObject(propValue)) throw createError('an Object');
         if (typeof propDef === 'object') {
           const modelOptionField = isArrayValue ? 'itemModel' : 'model';
           const modelOptionValue = propDef[modelOptionField];

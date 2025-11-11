@@ -205,19 +205,6 @@ var init_get_ctor_name = __esm({
   }
 });
 
-// src/utils/is-pure-object.js
-function isPureObject(value) {
-  return Boolean(
-    typeof value === "object" && value && !Array.isArray(value) && (!value.constructor || value.constructor && value.constructor.name === "Object")
-  );
-}
-var init_is_pure_object = __esm({
-  "src/utils/is-pure-object.js"() {
-    "use strict";
-    __name(isPureObject, "isPureObject");
-  }
-});
-
 // src/errors/not-implemented-error.js
 var import_js_format, _NotImplementedError, NotImplementedError;
 var init_not_implemented_error = __esm({
@@ -322,6 +309,19 @@ var init_like_to_regexp = __esm({
     "use strict";
     init_errors();
     __name(likeToRegexp, "likeToRegexp");
+  }
+});
+
+// src/utils/is-plain-object.js
+function isPlainObject(value) {
+  return Boolean(
+    typeof value === "object" && value && !Array.isArray(value) && (!value.constructor || value.constructor && value.constructor.name === "Object")
+  );
+}
+var init_is_plain_object = __esm({
+  "src/utils/is-plain-object.js"() {
+    "use strict";
+    __name(isPlainObject, "isPlainObject");
   }
 });
 
@@ -497,8 +497,8 @@ var init_utils = __esm({
     init_singularize();
     init_is_deep_equal();
     init_get_ctor_name();
-    init_is_pure_object();
     init_like_to_regexp();
+    init_is_plain_object();
     init_string_to_regexp();
     init_get_value_by_path();
     init_transform_promise();
@@ -1242,7 +1242,7 @@ var init_where_clause_tool = __esm({
           }
           return false;
         }
-        if (isPureObject(example)) {
+        if (isPlainObject(example)) {
           const operatorsTest = this.getService(OperatorClauseTool).testAll(
             example,
             value
@@ -2633,7 +2633,7 @@ var init_property_uniqueness_validator = __esm({
             'The parameter "modelName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
             modelName
           );
-        if (!isPureObject(modelData))
+        if (!isPlainObject(modelData))
           throw new InvalidArgumentError(
             "The data of the model %v should be an Object, but %v was given.",
             modelName,
@@ -3130,7 +3130,7 @@ var init_model_data_validator = __esm({
        * @returns {undefined}
        */
       validate(modelName, modelData, isPartial = false) {
-        if (!isPureObject(modelData))
+        if (!isPlainObject(modelData))
           throw new InvalidArgumentError(
             "The data of the model %v should be an Object, but %v was given.",
             modelName,
@@ -3248,7 +3248,7 @@ var init_model_data_validator = __esm({
             break;
           // OBJECT
           case DataType.OBJECT: {
-            if (!isPureObject(propValue)) throw createError("an Object");
+            if (!isPlainObject(propValue)) throw createError("an Object");
             if (typeof propDef === "object") {
               const modelOptionField = isArrayValue ? "itemModel" : "model";
               const modelOptionValue = propDef[modelOptionField];
@@ -3420,7 +3420,7 @@ var init_model_data_transformer = __esm({
        * @returns {object|Promise<object>}
        */
       transform(modelName, modelData, isPartial = false) {
-        if (!isPureObject(modelData))
+        if (!isPlainObject(modelData))
           throw new InvalidArgumentError(
             "The data of the model %v should be an Object, but %v was given.",
             modelName,
@@ -6483,8 +6483,8 @@ __export(index_exports, {
   getValueByPath: () => getValueByPath,
   isCtor: () => isCtor,
   isDeepEqual: () => isDeepEqual,
+  isPlainObject: () => isPlainObject,
   isPromise: () => isPromise,
-  isPureObject: () => isPureObject,
   likeToRegexp: () => likeToRegexp,
   modelNameToModelKey: () => modelNameToModelKey,
   selectObjectKeys: () => selectObjectKeys,
@@ -6589,8 +6589,8 @@ init_repository2();
   getValueByPath,
   isCtor,
   isDeepEqual,
+  isPlainObject,
   isPromise,
-  isPureObject,
   likeToRegexp,
   modelNameToModelKey,
   selectObjectKeys,

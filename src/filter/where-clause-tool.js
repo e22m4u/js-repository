@@ -1,7 +1,7 @@
 import {Service} from '@e22m4u/js-service';
 import {InvalidArgumentError} from '../errors/index.js';
 import {OperatorClauseTool} from './operator-clause-tool.js';
-import {getValueByPath, isDeepEqual, isPureObject} from '../utils/index.js';
+import {getValueByPath, isDeepEqual, isPlainObject} from '../utils/index.js';
 
 /**
  * Where clause tool.
@@ -124,7 +124,7 @@ export class WhereClauseTool extends Service {
       return false;
     }
     // условием является простой объект
-    if (isPureObject(example)) {
+    if (isPlainObject(example)) {
       const operatorsTest = this.getService(OperatorClauseTool).testAll(
         example,
         value,

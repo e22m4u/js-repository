@@ -1,6 +1,6 @@
 import {DataType} from './data-type.js';
 import {Service} from '@e22m4u/js-service';
-import {isPureObject} from '../../../utils/index.js';
+import {isPlainObject} from '../../../utils/index.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
@@ -45,7 +45,7 @@ export class PropertyUniquenessValidator extends Service {
           'must be a non-empty String, but %v was given.',
         modelName,
       );
-    if (!isPureObject(modelData))
+    if (!isPlainObject(modelData))
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v was given.',
         modelName,
