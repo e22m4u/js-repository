@@ -47,10 +47,9 @@ export declare type ItemFilterClause<M extends object = ModelData> = Pick<
  * {or: [...]}
  * ```
  */
-export declare type WhereClause<M extends object = ModelData> = Partial<
-  AndClause<M>
-> &
-  Partial<OrClause<M>> &
+export declare type WhereClause<M extends object = ModelData> =
+  Partial<AndClause<M>> |
+  Partial<OrClause<M>> |
   PropertiesClause<M>;
 
 /**
