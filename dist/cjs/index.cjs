@@ -38,18 +38,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
-// src/utils/is-ctor.js
-function isCtor(value) {
-  if (!value) return false;
-  return typeof value === "function" && "prototype" in value;
-}
-var init_is_ctor = __esm({
-  "src/utils/is-ctor.js"() {
-    "use strict";
-    __name(isCtor, "isCtor");
-  }
-});
-
 // src/utils/is-promise.js
 function isPromise(value) {
   if (!value) return false;
@@ -189,19 +177,6 @@ var init_is_deep_equal = __esm({
   "src/utils/is-deep-equal.js"() {
     "use strict";
     __name(isDeepEqual, "isDeepEqual");
-  }
-});
-
-// src/utils/get-ctor-name.js
-function getCtorName(value) {
-  if (value === null) return "Null";
-  if (value === void 0) return "Undefined";
-  return value.constructor && value.constructor.name || void 0;
-}
-var init_get_ctor_name = __esm({
-  "src/utils/get-ctor-name.js"() {
-    "use strict";
-    __name(getCtorName, "getCtorName");
   }
 });
 
@@ -362,18 +337,6 @@ var init_get_value_by_path = __esm({
   }
 });
 
-// src/utils/transform-promise.js
-function transformPromise(valueOrPromise, transformer) {
-  return isPromise(valueOrPromise) ? valueOrPromise.then(transformer) : transformer(valueOrPromise);
-}
-var init_transform_promise = __esm({
-  "src/utils/transform-promise.js"() {
-    "use strict";
-    init_is_promise();
-    __name(transformPromise, "transformPromise");
-  }
-});
-
 // src/utils/select-object-keys.js
 function selectObjectKeys(obj, keys) {
   if (!obj || typeof obj !== "object" || Array.isArray(obj))
@@ -447,65 +410,22 @@ var init_model_name_to_model_key = __esm({
   }
 });
 
-// src/utils/get-decorator-target-type.js
-function getDecoratorTargetType(target, propertyKey, descriptorOrIndex) {
-  const isCtor2 = typeof target === "function";
-  const isParameter = typeof descriptorOrIndex === "number";
-  const isProperty = propertyKey != null && descriptorOrIndex == null;
-  const isMethod = propertyKey != null && descriptorOrIndex != null;
-  const D = DecoratorTargetType;
-  if (isCtor2) {
-    if (isParameter)
-      return propertyKey ? D.STATIC_METHOD_PARAMETER : D.CONSTRUCTOR_PARAMETER;
-    if (isProperty) return D.STATIC_PROPERTY;
-    if (isMethod) return D.STATIC_METHOD;
-    return D.CONSTRUCTOR;
-  } else {
-    if (isParameter) return D.INSTANCE_METHOD_PARAMETER;
-    if (isProperty) return D.INSTANCE_PROPERTY;
-    if (isMethod) return D.INSTANCE_METHOD;
-    return D.INSTANCE;
-  }
-}
-var DecoratorTargetType;
-var init_get_decorator_target_type = __esm({
-  "src/utils/get-decorator-target-type.js"() {
-    "use strict";
-    DecoratorTargetType = {
-      CONSTRUCTOR: "constructor",
-      INSTANCE: "instance",
-      STATIC_METHOD: "staticMethod",
-      INSTANCE_METHOD: "instanceMethod",
-      STATIC_PROPERTY: "staticProperty",
-      INSTANCE_PROPERTY: "instanceProperty",
-      CONSTRUCTOR_PARAMETER: "constructorParameter",
-      STATIC_METHOD_PARAMETER: "staticMethodParameter",
-      INSTANCE_METHOD_PARAMETER: "instanceMethodParameter"
-    };
-    __name(getDecoratorTargetType, "getDecoratorTargetType");
-  }
-});
-
 // src/utils/index.js
 var init_utils = __esm({
   "src/utils/index.js"() {
     "use strict";
-    init_is_ctor();
     init_is_promise();
     init_capitalize();
     init_clone_deep();
     init_singularize();
     init_is_deep_equal();
-    init_get_ctor_name();
     init_like_to_regexp();
     init_is_plain_object();
     init_string_to_regexp();
     init_get_value_by_path();
-    init_transform_promise();
     init_select_object_keys();
     init_exclude_object_keys();
     init_model_name_to_model_key();
-    init_get_decorator_target_type();
   }
 });
 
@@ -5510,7 +5430,6 @@ __export(index_exports, {
   DataType: () => DataType,
   DatabaseSchema: () => DatabaseSchema,
   DatasourceDefinitionValidator: () => DatasourceDefinitionValidator,
-  DecoratorTargetType: () => DecoratorTargetType,
   DefinitionRegistry: () => DefinitionRegistry,
   FieldsClauseTool: () => FieldsClauseTool,
   HasManyResolver: () => HasManyResolver,
@@ -5538,10 +5457,7 @@ __export(index_exports, {
   capitalize: () => capitalize,
   cloneDeep: () => cloneDeep,
   excludeObjectKeys: () => excludeObjectKeys,
-  getCtorName: () => getCtorName,
-  getDecoratorTargetType: () => getDecoratorTargetType,
   getValueByPath: () => getValueByPath,
-  isCtor: () => isCtor,
   isDeepEqual: () => isDeepEqual,
   isPlainObject: () => isPlainObject,
   isPromise: () => isPromise,
@@ -5549,8 +5465,7 @@ __export(index_exports, {
   modelNameToModelKey: () => modelNameToModelKey,
   selectObjectKeys: () => selectObjectKeys,
   singularize: () => singularize,
-  stringToRegexp: () => stringToRegexp,
-  transformPromise: () => transformPromise
+  stringToRegexp: () => stringToRegexp
 });
 module.exports = __toCommonJS(index_exports);
 init_utils();
@@ -5612,7 +5527,6 @@ init_repository2();
   DataType,
   DatabaseSchema,
   DatasourceDefinitionValidator,
-  DecoratorTargetType,
   DefinitionRegistry,
   FieldsClauseTool,
   HasManyResolver,
@@ -5640,10 +5554,7 @@ init_repository2();
   capitalize,
   cloneDeep,
   excludeObjectKeys,
-  getCtorName,
-  getDecoratorTargetType,
   getValueByPath,
-  isCtor,
   isDeepEqual,
   isPlainObject,
   isPromise,
@@ -5651,6 +5562,5 @@ init_repository2();
   modelNameToModelKey,
   selectObjectKeys,
   singularize,
-  stringToRegexp,
-  transformPromise
+  stringToRegexp
 });
