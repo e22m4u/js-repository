@@ -36,29 +36,6 @@ describe('modelNameToModelKey', function () {
     expect(modelNameToModelKey(modelName)).to.be.eq(expected);
   });
 
-  it('should remove the "model" word from a model name', function () {
-    const modelNames = [
-      'userProfileDetailsModel',
-      'UserProfileDetailsModel',
-      'user-profile-details-model',
-      'user_profile_details_model',
-      'User-Profile-Details-Model',
-      'User_Profile_Details_Model',
-      'USER-PROFILE-DETAILS-MODEL',
-      'USER_PROFILE_DETAILS_MODEL',
-    ];
-    modelNames.forEach(v =>
-      expect(modelNameToModelKey(v)).to.be.eq('userprofiledetails'),
-    );
-  });
-
-  it('should not remove the "model" suffix as a part of last word in a model name', function () {
-    const exceptions = ['SUPERMODEL', 'supermodel'];
-    exceptions.forEach(v =>
-      expect(modelNameToModelKey(v)).to.be.eq('supermodel'),
-    );
-  });
-
   it('should throw an error for an empty string', function () {
     const throwable = () => modelNameToModelKey('');
     expect(throwable).to.throw(

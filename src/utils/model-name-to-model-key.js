@@ -13,9 +13,5 @@ export function modelNameToModelKey(modelName) {
         'without spaces, but %v was given.',
       modelName,
     );
-  if (modelName.toLowerCase() !== 'model')
-    modelName = modelName
-      .replace(/[-_]?Model$/, '')
-      .replace(/[-_](MODEL|model)$/, '');
   return modelName.toLowerCase().replace(/[-_]/g, '');
 }
