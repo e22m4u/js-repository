@@ -50,10 +50,9 @@ export class MemoryAdapter extends Adapter {
    * @returns {number}
    */
   _genNextIdValue(modelName, propName) {
-    const propType = this.getService(
-      ModelDefinitionUtils,
-    ).getDataTypeByPropertyName(modelName, propName);
-    if (propType !== DataType.ANY && propType !== DataType.NUMBER)
+    const modelUtils = this.getService(ModelDefinitionUtils);
+    const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
+    if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
       throw new InvalidArgumentError(
         'The memory adapter able to generate only Number identifiers, ' +
           'but the primary key %v of the model %v is defined as %s. ' +
@@ -65,16 +64,34 @@ export class MemoryAdapter extends Adapter {
         capitalize(propType),
         propName,
       );
+    }
+    const tableName = modelUtils.getTableNameByModelName(modelName);
+    const table = this._getTableOrCreate(modelName);
+    let nextId = this._lastIds.get(tableName) ?? 0;
+    do {
+      nextId++;
+    } while (table.has(nextId));
+    this._lastIds.set(tableName, nextId);
+    return nextId;
+  }
+
+  /**
+   * Update last id value if needed.
+   *
+   * Если переданное значение последнего использованного
+   * идентификатора больше текущего, то текущее значение
+   * перезаписывается полученным.
+   *
+   * @param {string} modelName
+   * @param {number} idValue
+   */
+  _updateLastIdValueIfNeeded(modelName, idValue) {
     const tableName =
       this.getService(ModelDefinitionUtils).getTableNameByModelName(modelName);
-    const lastId = this._lastIds.get(tableName) ?? 0;
-    const nextId = lastId + 1;
-    this._lastIds.set(tableName, nextId);
-    const table = this._getTableOrCreate(modelName);
-    const existedIds = Array.from(table.keys());
-    if (existedIds.includes(nextId))
-      return this._genNextIdValue(modelName, propName);
-    return nextId;
+    const currentLastId = this._lastIds.get(tableName) ?? 0;
+    if (idValue > currentLastId) {
+      this._lastIds.set(tableName, idValue);
+    }
   }
 
   /**
@@ -94,6 +111,12 @@ export class MemoryAdapter extends Adapter {
     let idValue = modelData[pkPropName];
     if (idValue == null || idValue === '' || idValue === 0) {
       idValue = this._genNextIdValue(modelName, pkPropName);
+    }
+    // если идентификатор передан вручную и является числом,
+    // то значение последнего использованного идентификатора
+    // обновляется на полученное
+    else if (typeof idValue === 'number') {
+      this._updateLastIdValueIfNeeded(modelName, idValue);
     }
 
     const table = this._getTableOrCreate(modelName);
@@ -173,6 +196,12 @@ export class MemoryAdapter extends Adapter {
     let idValue = modelData[pkPropName];
     if (idValue == null || idValue === '' || idValue === 0) {
       idValue = this._genNextIdValue(modelName, pkPropName);
+    }
+    // если идентификатор передан вручную и является числом,
+    // то значение последнего использованного идентификатора
+    // обновляется на полученное
+    else if (typeof idValue === 'number') {
+      this._updateLastIdValueIfNeeded(modelName, idValue);
     }
 
     const table = this._getTableOrCreate(modelName);

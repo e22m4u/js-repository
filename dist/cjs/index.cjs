@@ -3507,10 +3507,9 @@ var init_memory_adapter = __esm({
        */
       _genNextIdValue(modelName, propName) {
         var _a;
-        const propType = this.getService(
-          ModelDefinitionUtils
-        ).getDataTypeByPropertyName(modelName, propName);
-        if (propType !== DataType.ANY && propType !== DataType.NUMBER)
+        const modelUtils = this.getService(ModelDefinitionUtils);
+        const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
+        if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
           throw new InvalidArgumentError(
             "The memory adapter able to generate only Number identifiers, but the primary key %v of the model %v is defined as %s. Do provide your own value for the %v property, or change the type in the primary key definition to a Number that will be generated automatically.",
             propName,
@@ -3518,15 +3517,33 @@ var init_memory_adapter = __esm({
             capitalize(propType),
             propName
           );
-        const tableName = this.getService(ModelDefinitionUtils).getTableNameByModelName(modelName);
-        const lastId = (_a = this._lastIds.get(tableName)) != null ? _a : 0;
-        const nextId = lastId + 1;
-        this._lastIds.set(tableName, nextId);
+        }
+        const tableName = modelUtils.getTableNameByModelName(modelName);
         const table = this._getTableOrCreate(modelName);
-        const existedIds = Array.from(table.keys());
-        if (existedIds.includes(nextId))
-          return this._genNextIdValue(modelName, propName);
+        let nextId = (_a = this._lastIds.get(tableName)) != null ? _a : 0;
+        do {
+          nextId++;
+        } while (table.has(nextId));
+        this._lastIds.set(tableName, nextId);
         return nextId;
+      }
+      /**
+       * Update last id value if needed.
+       *
+       * Если переданное значение последнего использованного
+       * идентификатора больше текущего, то текущее значение
+       * перезаписывается полученным.
+       *
+       * @param {string} modelName
+       * @param {number} idValue
+       */
+      _updateLastIdValueIfNeeded(modelName, idValue) {
+        var _a;
+        const tableName = this.getService(ModelDefinitionUtils).getTableNameByModelName(modelName);
+        const currentLastId = (_a = this._lastIds.get(tableName)) != null ? _a : 0;
+        if (idValue > currentLastId) {
+          this._lastIds.set(tableName, idValue);
+        }
       }
       /**
        * Create
@@ -3544,6 +3561,8 @@ var init_memory_adapter = __esm({
         let idValue = modelData[pkPropName];
         if (idValue == null || idValue === "" || idValue === 0) {
           idValue = this._genNextIdValue(modelName, pkPropName);
+        } else if (typeof idValue === "number") {
+          this._updateLastIdValueIfNeeded(modelName, idValue);
         }
         const table = this._getTableOrCreate(modelName);
         if (table.has(idValue))
@@ -3612,6 +3631,8 @@ var init_memory_adapter = __esm({
         let idValue = modelData[pkPropName];
         if (idValue == null || idValue === "" || idValue === 0) {
           idValue = this._genNextIdValue(modelName, pkPropName);
+        } else if (typeof idValue === "number") {
+          this._updateLastIdValueIfNeeded(modelName, idValue);
         }
         const table = this._getTableOrCreate(modelName);
         modelData = cloneDeep(modelData);

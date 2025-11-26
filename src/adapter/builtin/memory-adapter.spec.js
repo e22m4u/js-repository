@@ -56,6 +56,53 @@ describe('MemoryAdapter', function () {
       expect(id2).to.be.eq(2);
       expect(id3).to.be.eq(3);
     });
+
+    it('increments from the the last known identifier', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const A = dbs.getService(MemoryAdapter);
+      A._lastIds.set('model', 10);
+      const id1 = A._genNextIdValue('model', DEF_PK);
+      const id2 = A._genNextIdValue('model', DEF_PK);
+      const id3 = A._genNextIdValue('model', DEF_PK);
+      expect(id1).to.be.eq(11);
+      expect(id2).to.be.eq(12);
+      expect(id3).to.be.eq(13);
+    });
+  });
+
+  describe('_updateLastIdValueIfNeeded', function () {
+    it('does nothing when the given identifier is lower or equal', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const A = dbs.getService(MemoryAdapter);
+      A._lastIds.set('model', 10);
+      A._updateLastIdValueIfNeeded('model', 9);
+      A._updateLastIdValueIfNeeded('model', 10);
+      const res = A._lastIds.get('model');
+      expect(res).to.be.eq(10);
+    });
+
+    it('updates the last known identifier if the given identifier is greater', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'model'});
+      const A = dbs.getService(MemoryAdapter);
+      A._lastIds.set('model', 10);
+      A._updateLastIdValueIfNeeded('model', 15);
+      const res = A._lastIds.get('model');
+      expect(res).to.be.eq(15);
+    });
+
+    it('correctly resolves table name from model name', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineModel({name: 'MyModel', tableName: 'custom_table_name'});
+      const A = dbs.getService(MemoryAdapter);
+      A._lastIds.set('custom_table_name', 10);
+      A._updateLastIdValueIfNeeded('MyModel', 20);
+      const res = A._lastIds.get('custom_table_name');
+      expect(res).to.be.eq(20);
+      expect(A._lastIds.has('MyModel')).to.be.false;
+    });
   });
 
   describe('create', function () {
