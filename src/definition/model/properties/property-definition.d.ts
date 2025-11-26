@@ -20,4 +20,4 @@ export declare type FullPropertyDefinition = {
 /**
  * Property definition.
  */
-declare type PropertyDefinition = DataType | FullPropertyDefinition;
+export declare type PropertyDefinition = DataType | FullPropertyDefinition;
