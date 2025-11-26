@@ -4,10 +4,8 @@ import {Service} from '@e22m4u/js-service';
 import {NotImplementedError} from '../errors/index.js';
 import {InclusionDecorator} from './decorator/index.js';
 import {DefaultValuesDecorator} from './decorator/index.js';
-import {DataValidationDecorator} from './decorator/index.js';
 import {DataSanitizingDecorator} from './decorator/index.js';
 import {FieldsFilteringDecorator} from './decorator/index.js';
-import {DataTransformationDecorator} from './decorator/index.js';
 import {PropertyUniquenessDecorator} from './decorator/index.js';
 
 /**
@@ -57,8 +55,6 @@ export class Adapter extends Service {
     if (this.constructor !== Adapter) {
       this.getService(DataSanitizingDecorator).decorate(this);
       this.getService(DefaultValuesDecorator).decorate(this);
-      this.getService(DataTransformationDecorator).decorate(this);
-      this.getService(DataValidationDecorator).decorate(this);
       this.getService(PropertyUniquenessDecorator).decorate(this);
       this.getService(FieldsFilteringDecorator).decorate(this);
       this.getService(InclusionDecorator).decorate(this);

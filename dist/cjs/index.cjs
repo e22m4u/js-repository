@@ -1737,357 +1737,17 @@ var init_property_uniqueness = __esm({
   }
 });
 
-// src/definition/model/properties/property-validator/property-validator.js
-var init_property_validator = __esm({
-  "src/definition/model/properties/property-validator/property-validator.js"() {
-    "use strict";
-  }
-});
-
-// src/definition/model/properties/property-validator/builtin/regexp-validator.js
-function regexpValidator(value, options, context) {
-  if (value == null || options === false) return true;
-  if (typeof options !== "string" && !(options instanceof RegExp))
-    throw new InvalidArgumentError(
-      'The validator %v requires the "options" argument as a String or RegExp, but %v was given.',
-      context.validatorName,
-      options
-    );
-  if (typeof value === "string") {
-    const regexp = stringToRegexp(options);
-    return regexp.test(value);
-  }
-  throw new InvalidArgumentError(
-    "The property validator %v requires a String value, but %v was given.",
-    context.validatorName,
-    value
-  );
-}
-var init_regexp_validator = __esm({
-  "src/definition/model/properties/property-validator/builtin/regexp-validator.js"() {
-    "use strict";
-    init_utils();
-    init_errors();
-    __name(regexpValidator, "regexpValidator");
-  }
-});
-
-// src/definition/model/properties/property-validator/builtin/max-length-validator.js
-function maxLengthValidator(value, options, context) {
-  if (value == null || options === false) return true;
-  if (typeof options !== "number")
-    throw new InvalidArgumentError(
-      'The validator %v requires the "options" argument as a Number, but %v was given.',
-      context.validatorName,
-      options
-    );
-  if (typeof value === "string" || Array.isArray(value))
-    return value.length <= options;
-  throw new InvalidArgumentError(
-    "The property validator %v requires a String or an Array value, but %v was given.",
-    context.validatorName,
-    value
-  );
-}
-var init_max_length_validator = __esm({
-  "src/definition/model/properties/property-validator/builtin/max-length-validator.js"() {
-    "use strict";
-    init_errors();
-    __name(maxLengthValidator, "maxLengthValidator");
-  }
-});
-
-// src/definition/model/properties/property-validator/builtin/min-length-validator.js
-function minLengthValidator(value, options, context) {
-  if (value == null || options === false) return true;
-  if (typeof options !== "number")
-    throw new InvalidArgumentError(
-      'The validator %v requires the "options" argument as a Number, but %v was given.',
-      context.validatorName,
-      options
-    );
-  if (typeof value === "string" || Array.isArray(value))
-    return value.length >= options;
-  throw new InvalidArgumentError(
-    "The property validator %v requires a String or an Array value, but %v was given.",
-    context.validatorName,
-    value
-  );
-}
-var init_min_length_validator = __esm({
-  "src/definition/model/properties/property-validator/builtin/min-length-validator.js"() {
-    "use strict";
-    init_errors();
-    __name(minLengthValidator, "minLengthValidator");
-  }
-});
-
-// src/definition/model/properties/property-validator/builtin/index.js
-var init_builtin = __esm({
-  "src/definition/model/properties/property-validator/builtin/index.js"() {
-    "use strict";
-    init_regexp_validator();
-    init_max_length_validator();
-    init_min_length_validator();
-  }
-});
-
-// src/definition/model/properties/property-validator/property-validator-registry.js
-var import_js_service6, _PropertyValidatorRegistry, PropertyValidatorRegistry;
-var init_property_validator_registry = __esm({
-  "src/definition/model/properties/property-validator/property-validator-registry.js"() {
-    "use strict";
-    import_js_service6 = require("@e22m4u/js-service");
-    init_builtin();
-    init_builtin();
-    init_builtin();
-    init_errors();
-    _PropertyValidatorRegistry = class _PropertyValidatorRegistry extends import_js_service6.Service {
-      /**
-       * Validators.
-       *
-       * @type {object}
-       */
-      _validators = {
-        maxLength: maxLengthValidator,
-        minLength: minLengthValidator,
-        regexp: regexpValidator
-      };
-      /**
-       * Add validator.
-       *
-       * @param {string} name
-       * @param {Function} validator
-       * @returns {PropertyValidatorRegistry}
-       */
-      addValidator(name, validator) {
-        if (!name || typeof name !== "string")
-          throw new InvalidArgumentError(
-            "A name of the property validator must be a non-empty String, but %v was given.",
-            name
-          );
-        if (name in this._validators)
-          throw new InvalidArgumentError(
-            "The property validator %v is already defined.",
-            name
-          );
-        if (typeof validator !== "function")
-          throw new InvalidArgumentError(
-            "The property validator %v must be a Function, but %v was given.",
-            name,
-            validator
-          );
-        this._validators[name] = validator;
-        return this;
-      }
-      /**
-       * Has validator.
-       *
-       * @param {string} name
-       * @returns {boolean}
-       */
-      hasValidator(name) {
-        return Boolean(this._validators[name]);
-      }
-      /**
-       * Get validator.
-       *
-       * @param {string} name
-       * @returns {Function}
-       */
-      getValidator(name) {
-        const validator = this._validators[name];
-        if (!validator)
-          throw new InvalidArgumentError(
-            "The property validator %v is not defined.",
-            name
-          );
-        return validator;
-      }
-    };
-    __name(_PropertyValidatorRegistry, "PropertyValidatorRegistry");
-    PropertyValidatorRegistry = _PropertyValidatorRegistry;
-  }
-});
-
-// src/definition/model/properties/property-validator/index.js
-var init_property_validator2 = __esm({
-  "src/definition/model/properties/property-validator/index.js"() {
-    "use strict";
-    init_property_validator();
-    init_property_validator_registry();
-  }
-});
-
-// src/definition/model/properties/property-transformer/property-transformer.js
-var init_property_transformer = __esm({
-  "src/definition/model/properties/property-transformer/property-transformer.js"() {
-    "use strict";
-  }
-});
-
-// src/definition/model/properties/property-transformer/builtin/trim-transformer.js
-function trimTransformer(value, options, context) {
-  if (value == null) return value;
-  if (typeof value === "string") return value.trim();
-  throw new InvalidArgumentError(
-    "The property transformer %v requires a String value, but %v was given.",
-    context.transformerName,
-    value
-  );
-}
-var init_trim_transformer = __esm({
-  "src/definition/model/properties/property-transformer/builtin/trim-transformer.js"() {
-    "use strict";
-    init_errors();
-    __name(trimTransformer, "trimTransformer");
-  }
-});
-
-// src/definition/model/properties/property-transformer/builtin/to-lower-case-transformer.js
-function toLowerCaseTransformer(value, options, context) {
-  if (value == null) return value;
-  if (typeof value === "string") return value.toLowerCase();
-  throw new InvalidArgumentError(
-    "The property transformer %v requires a String value, but %v was given.",
-    context.transformerName,
-    value
-  );
-}
-var init_to_lower_case_transformer = __esm({
-  "src/definition/model/properties/property-transformer/builtin/to-lower-case-transformer.js"() {
-    "use strict";
-    init_errors();
-    __name(toLowerCaseTransformer, "toLowerCaseTransformer");
-  }
-});
-
-// src/definition/model/properties/property-transformer/builtin/to-upper-case-transformer.js
-function toUpperCaseTransformer(value, options, context) {
-  if (value == null) return value;
-  if (typeof value === "string") return value.toUpperCase();
-  throw new InvalidArgumentError(
-    "The property transformer %v requires a String value, but %v was given.",
-    context.transformerName,
-    value
-  );
-}
-var init_to_upper_case_transformer = __esm({
-  "src/definition/model/properties/property-transformer/builtin/to-upper-case-transformer.js"() {
-    "use strict";
-    init_errors();
-    __name(toUpperCaseTransformer, "toUpperCaseTransformer");
-  }
-});
-
-// src/definition/model/properties/property-transformer/builtin/index.js
-var init_builtin2 = __esm({
-  "src/definition/model/properties/property-transformer/builtin/index.js"() {
-    "use strict";
-    init_trim_transformer();
-    init_to_lower_case_transformer();
-    init_to_upper_case_transformer();
-  }
-});
-
-// src/definition/model/properties/property-transformer/property-transformer-registry.js
-var import_js_service7, _PropertyTransformerRegistry, PropertyTransformerRegistry;
-var init_property_transformer_registry = __esm({
-  "src/definition/model/properties/property-transformer/property-transformer-registry.js"() {
-    "use strict";
-    import_js_service7 = require("@e22m4u/js-service");
-    init_builtin2();
-    init_builtin2();
-    init_builtin2();
-    init_errors();
-    _PropertyTransformerRegistry = class _PropertyTransformerRegistry extends import_js_service7.Service {
-      /**
-       * Transformers.
-       *
-       * @type {object}
-       */
-      _transformers = {
-        trim: trimTransformer,
-        toUpperCase: toUpperCaseTransformer,
-        toLowerCase: toLowerCaseTransformer
-      };
-      /**
-       * Add transformer.
-       *
-       * @param {string} name
-       * @param {Function} transformer
-       * @returns {PropertyTransformerRegistry}
-       */
-      addTransformer(name, transformer) {
-        if (!name || typeof name !== "string")
-          throw new InvalidArgumentError(
-            "A name of the property transformer must be a non-empty String, but %v was given.",
-            name
-          );
-        if (name in this._transformers)
-          throw new InvalidArgumentError(
-            "The property transformer %v is already defined.",
-            name
-          );
-        if (typeof transformer !== "function")
-          throw new InvalidArgumentError(
-            "The property transformer %v must be a Function, but %v was given.",
-            name,
-            transformer
-          );
-        this._transformers[name] = transformer;
-        return this;
-      }
-      /**
-       * Has transformer.
-       *
-       * @param {string} name
-       * @returns {boolean}
-       */
-      hasTransformer(name) {
-        return Boolean(this._transformers[name]);
-      }
-      /**
-       * Get transformer.
-       *
-       * @param {string} name
-       * @returns {Function}
-       */
-      getTransformer(name) {
-        const transformer = this._transformers[name];
-        if (!transformer)
-          throw new InvalidArgumentError(
-            "The property transformer %v is not defined.",
-            name
-          );
-        return transformer;
-      }
-    };
-    __name(_PropertyTransformerRegistry, "PropertyTransformerRegistry");
-    PropertyTransformerRegistry = _PropertyTransformerRegistry;
-  }
-});
-
-// src/definition/model/properties/property-transformer/index.js
-var init_property_transformer2 = __esm({
-  "src/definition/model/properties/property-transformer/index.js"() {
-    "use strict";
-    init_property_transformer();
-    init_property_transformer_registry();
-  }
-});
-
 // src/definition/definition-registry.js
-var import_js_service8, _DefinitionRegistry, DefinitionRegistry;
+var import_js_service6, _DefinitionRegistry, DefinitionRegistry;
 var init_definition_registry = __esm({
   "src/definition/definition-registry.js"() {
     "use strict";
-    import_js_service8 = require("@e22m4u/js-service");
+    import_js_service6 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
     init_model();
     init_definition();
-    _DefinitionRegistry = class _DefinitionRegistry extends import_js_service8.Service {
+    _DefinitionRegistry = class _DefinitionRegistry extends import_js_service6.Service {
       /**
        * Datasources.
        *
@@ -2181,11 +1841,11 @@ var init_definition_registry = __esm({
 });
 
 // src/definition/model/model-definition-utils.js
-var import_js_service9, import_js_empty_values, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
+var import_js_service7, import_js_empty_values, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
 var init_model_definition_utils = __esm({
   "src/definition/model/model-definition-utils.js"() {
     "use strict";
-    import_js_service9 = require("@e22m4u/js-service");
+    import_js_service7 = require("@e22m4u/js-service");
     init_properties();
     init_utils();
     init_utils();
@@ -2193,7 +1853,7 @@ var init_model_definition_utils = __esm({
     init_errors();
     init_definition_registry();
     DEFAULT_PRIMARY_KEY_PROPERTY_NAME = "id";
-    _ModelDefinitionUtils = class _ModelDefinitionUtils extends import_js_service9.Service {
+    _ModelDefinitionUtils = class _ModelDefinitionUtils extends import_js_service7.Service {
       /**
        * Get primary key as property name.
        *
@@ -2595,18 +2255,18 @@ var init_model_definition_utils = __esm({
 });
 
 // src/definition/model/properties/property-uniqueness-validator.js
-var import_js_service10, import_js_empty_values2, _PropertyUniquenessValidator, PropertyUniquenessValidator;
+var import_js_service8, import_js_empty_values2, _PropertyUniquenessValidator, PropertyUniquenessValidator;
 var init_property_uniqueness_validator = __esm({
   "src/definition/model/properties/property-uniqueness-validator.js"() {
     "use strict";
     init_data_type();
-    import_js_service10 = require("@e22m4u/js-service");
+    import_js_service8 = require("@e22m4u/js-service");
     init_utils();
     import_js_empty_values2 = require("@e22m4u/js-empty-values");
     init_property_uniqueness();
     init_errors();
     init_model_definition_utils();
-    _PropertyUniquenessValidator = class _PropertyUniquenessValidator extends import_js_service10.Service {
+    _PropertyUniquenessValidator = class _PropertyUniquenessValidator extends import_js_service8.Service {
       /**
        * Validate.
        *
@@ -2715,14 +2375,14 @@ var init_property_uniqueness_validator = __esm({
 });
 
 // src/definition/model/properties/primary-keys-definition-validator.js
-var import_js_service11, _PrimaryKeysDefinitionValidator, PrimaryKeysDefinitionValidator;
+var import_js_service9, _PrimaryKeysDefinitionValidator, PrimaryKeysDefinitionValidator;
 var init_primary_keys_definition_validator = __esm({
   "src/definition/model/properties/primary-keys-definition-validator.js"() {
     "use strict";
-    import_js_service11 = require("@e22m4u/js-service");
+    import_js_service9 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
-    _PrimaryKeysDefinitionValidator = class _PrimaryKeysDefinitionValidator extends import_js_service11.Service {
+    _PrimaryKeysDefinitionValidator = class _PrimaryKeysDefinitionValidator extends import_js_service9.Service {
       /**
        * Validate.
        *
@@ -2767,19 +2427,17 @@ var init_primary_keys_definition_validator = __esm({
 });
 
 // src/definition/model/properties/properties-definition-validator.js
-var import_js_service12, _PropertiesDefinitionValidator, PropertiesDefinitionValidator;
+var import_js_service10, _PropertiesDefinitionValidator, PropertiesDefinitionValidator;
 var init_properties_definition_validator = __esm({
   "src/definition/model/properties/properties-definition-validator.js"() {
     "use strict";
-    import_js_service12 = require("@e22m4u/js-service");
+    import_js_service10 = require("@e22m4u/js-service");
     init_data_type();
     init_utils();
     init_property_uniqueness();
     init_errors();
-    init_property_validator2();
-    init_property_transformer2();
     init_primary_keys_definition_validator();
-    _PropertiesDefinitionValidator = class _PropertiesDefinitionValidator extends import_js_service12.Service {
+    _PropertiesDefinitionValidator = class _PropertiesDefinitionValidator extends import_js_service10.Service {
       /**
        * Validate.
        *
@@ -2969,98 +2627,6 @@ var init_properties_definition_validator = __esm({
             propName,
             modelName
           );
-        if (propDef.validate != null) {
-          const propertyValidatorRegistry = this.getService(
-            PropertyValidatorRegistry
-          );
-          if (propDef.validate && typeof propDef.validate === "string") {
-            if (!propertyValidatorRegistry.hasValidator(propDef.validate))
-              throw new InvalidArgumentError(
-                "The property validator %v is not found.",
-                propDef.validate
-              );
-          } else if (propDef.validate && typeof propDef.validate === "function") {
-          } else if (Array.isArray(propDef.validate)) {
-            for (const validatorOrName of propDef.validate) {
-              if (validatorOrName && typeof validatorOrName === "string") {
-                if (!propertyValidatorRegistry.hasValidator(validatorOrName))
-                  throw new InvalidArgumentError(
-                    "The property validator %v is not found.",
-                    validatorOrName
-                  );
-              } else if (validatorOrName && typeof validatorOrName === "function") {
-              } else {
-                throw new InvalidArgumentError(
-                  'The provided option "validate" for the property %v in the model %v has an Array value that should contain validator names or validator functions, but %v was given.',
-                  propName,
-                  modelName,
-                  validatorOrName
-                );
-              }
-            }
-          } else if (typeof propDef.validate === "object") {
-            Object.keys(propDef.validate).forEach((validatorName) => {
-              if (!propertyValidatorRegistry.hasValidator(validatorName))
-                throw new InvalidArgumentError(
-                  "The property validator %v is not found.",
-                  validatorName
-                );
-            });
-          } else {
-            throw new InvalidArgumentError(
-              'The provided option "validate" for the property %v in the model %v should be either a validator name, a validator function, an array of validator names or functions, or an object mapping validator names to their arguments, but %v was given.',
-              propName,
-              modelName,
-              propDef.validate
-            );
-          }
-        }
-        if (propDef.transform != null) {
-          const propertyTransformerRegistry = this.getService(
-            PropertyTransformerRegistry
-          );
-          if (propDef.transform && typeof propDef.transform === "string") {
-            if (!propertyTransformerRegistry.hasTransformer(propDef.transform))
-              throw new InvalidArgumentError(
-                "The property transformer %v is not found.",
-                propDef.transform
-              );
-          } else if (propDef.transform && typeof propDef.transform === "function") {
-          } else if (Array.isArray(propDef.transform)) {
-            for (const transformerOrName of propDef.transform) {
-              if (transformerOrName && typeof transformerOrName === "string") {
-                if (!propertyTransformerRegistry.hasTransformer(transformerOrName))
-                  throw new InvalidArgumentError(
-                    "The property transformer %v is not found.",
-                    transformerOrName
-                  );
-              } else if (transformerOrName && typeof transformerOrName === "function") {
-              } else {
-                throw new InvalidArgumentError(
-                  'The provided option "transform" for the property %v in the model %v has an Array value that should contain transformer names or transformer functions, but %v was given.',
-                  propName,
-                  modelName,
-                  transformerOrName
-                );
-              }
-            }
-          } else if (typeof propDef.transform === "object") {
-            Object.keys(propDef.transform).forEach((transformerName) => {
-              if (!propertyTransformerRegistry.hasTransformer(transformerName))
-                throw new InvalidArgumentError(
-                  "The property transformer %v is not found.",
-                  transformerName
-                );
-            });
-          } else {
-            throw new InvalidArgumentError(
-              'The provided option "transform" for the property %v in the model %v should be either a transformer name, a transformer function, an array of transformer names or functions, or an object mapping transformer names to their arguments, but %v was given.',
-              propName,
-              modelName,
-              propDef.transform
-            );
-          }
-        }
         if (propDef.unique) {
           if (typeof propDef.unique !== "boolean" && !Object.values(PropertyUniqueness).includes(propDef.unique)) {
             throw new InvalidArgumentError(
@@ -3092,8 +2658,6 @@ var init_properties = __esm({
     init_data_type();
     init_property_definition();
     init_property_uniqueness();
-    init_property_validator2();
-    init_property_transformer2();
     init_property_uniqueness_validator();
     init_properties_definition_validator();
     init_primary_keys_definition_validator();
@@ -3107,268 +2671,15 @@ var init_model_definition = __esm({
   }
 });
 
-// src/definition/model/model-data-validator.js
-var import_js_service13, import_js_empty_values3, _ModelDataValidator, ModelDataValidator;
-var init_model_data_validator = __esm({
-  "src/definition/model/model-data-validator.js"() {
-    "use strict";
-    import_js_service13 = require("@e22m4u/js-service");
-    init_properties();
-    init_utils();
-    init_utils();
-    import_js_empty_values3 = require("@e22m4u/js-empty-values");
-    init_errors();
-    init_properties();
-    init_model_definition_utils();
-    _ModelDataValidator = class _ModelDataValidator extends import_js_service13.Service {
-      /**
-       * Validate.
-       *
-       * @param {string} modelName
-       * @param {object} modelData
-       * @param {boolean} isPartial
-       * @returns {undefined}
-       */
-      validate(modelName, modelData, isPartial = false) {
-        if (!isPlainObject(modelData))
-          throw new InvalidArgumentError(
-            "The data of the model %v should be an Object, but %v was given.",
-            modelName,
-            modelData
-          );
-        const propDefs = this.getService(
-          ModelDefinitionUtils
-        ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
-        const propNames = Object.keys(isPartial ? modelData : propDefs);
-        propNames.forEach((propName) => {
-          const propDef = propDefs[propName];
-          if (!propDef) return;
-          this._validatePropertyValue(
-            modelName,
-            propName,
-            propDef,
-            modelData[propName]
-          );
-        });
-      }
-      /**
-       * Validate property value.
-       *
-       * @param {string} modelName
-       * @param {string} propName
-       * @param {string|object} propDef
-       * @param {*} propValue
-       * @returns {undefined}
-       */
-      _validatePropertyValue(modelName, propName, propDef, propValue) {
-        const propType = this.getService(ModelDefinitionUtils).getDataTypeFromPropertyDefinition(
-          propDef
-        );
-        const isEmpty = this.getService(import_js_empty_values3.EmptyValuesService).isEmptyByType(
-          propType,
-          propValue
-        );
-        if (isEmpty) {
-          const isRequired = typeof propDef === "string" ? false : Boolean(propDef.required);
-          if (!isRequired) return;
-          throw new InvalidArgumentError(
-            "The property %v of the model %v is required, but %v was given.",
-            propName,
-            modelName,
-            propValue
-          );
-        }
-        this._validateValueByPropertyType(modelName, propName, propDef, propValue);
-        this._validateValueByPropertyValidators(
-          modelName,
-          propName,
-          propDef,
-          propValue
-        );
-      }
-      /**
-       * Validate value by property type.
-       *
-       * @param {string} modelName
-       * @param {string} propName
-       * @param {string|object} propDef
-       * @param {*} propValue
-       * @param {boolean} isArrayValue
-       * @returns {undefined}
-       */
-      _validateValueByPropertyType(modelName, propName, propDef, propValue, isArrayValue = false) {
-        var _a;
-        let expectingType;
-        if (isArrayValue) {
-          if (typeof propDef === "object") {
-            expectingType = (_a = propDef.itemType) != null ? _a : DataType.ANY;
-          } else {
-            expectingType = DataType.ANY;
-          }
-        } else {
-          expectingType = typeof propDef !== "string" ? propDef.type : propDef;
-        }
-        const createError = /* @__PURE__ */ __name((expected) => {
-          const pattern = isArrayValue ? "The array property %v of the model %v must have %s element, but %s was given." : "The property %v of the model %v must have %s, but %s was given.";
-          const ctorName = getCtorName(propValue);
-          const givenStr = ctorName != null ? ctorName : typeof propValue;
-          return new InvalidArgumentError(
-            pattern,
-            propName,
-            modelName,
-            expected,
-            givenStr
-          );
-        }, "createError");
-        switch (expectingType) {
-          // STRING
-          case DataType.STRING:
-            if (typeof propValue !== "string") throw createError("a String");
-            break;
-          // NUMBER
-          case DataType.NUMBER:
-            if (typeof propValue !== "number") throw createError("a Number");
-            break;
-          // BOOLEAN
-          case DataType.BOOLEAN:
-            if (typeof propValue !== "boolean") throw createError("a Boolean");
-            break;
-          // ARRAY
-          case DataType.ARRAY:
-            if (!Array.isArray(propValue)) throw createError("an Array");
-            propValue.forEach(
-              (value) => this._validateValueByPropertyType(
-                modelName,
-                propName,
-                propDef,
-                value,
-                true
-              )
-            );
-            break;
-          // OBJECT
-          case DataType.OBJECT: {
-            if (!isPlainObject(propValue)) throw createError("an Object");
-            if (typeof propDef === "object") {
-              const modelOptionField = isArrayValue ? "itemModel" : "model";
-              const modelOptionValue = propDef[modelOptionField];
-              if (modelOptionValue) this.validate(modelOptionValue, propValue);
-            }
-            break;
-          }
-        }
-      }
-      /**
-       * Validate value by property validators.
-       *
-       * @param {string} modelName
-       * @param {string} propName
-       * @param {string|object} propDef
-       * @param {*} propValue
-       * @returns {undefined}
-       */
-      _validateValueByPropertyValidators(modelName, propName, propDef, propValue) {
-        if (typeof propDef === "string" || propDef.validate == null) return;
-        const validateDef = propDef.validate;
-        const validatorRegistry = this.getService(PropertyValidatorRegistry);
-        const createError = /* @__PURE__ */ __name((validatorName) => {
-          if (validatorName) {
-            return new InvalidArgumentError(
-              "The property %v of the model %v has the invalid value %v that caught by the property validator %v.",
-              propName,
-              modelName,
-              propValue,
-              validatorName
-            );
-          } else {
-            return new InvalidArgumentError(
-              "The property %v of the model %v has the invalid value %v that caught by a property validator.",
-              propName,
-              modelName,
-              propValue
-            );
-          }
-        }, "createError");
-        const validateBy = /* @__PURE__ */ __name((validatorOrName, validatorOptions = void 0) => {
-          let validatorName, validatorFn;
-          if (typeof validatorOrName === "string") {
-            validatorName = validatorOrName;
-            validatorFn = validatorRegistry.getValidator(validatorName);
-          } else if (typeof validatorOrName === "function") {
-            validatorName = validatorOrName.name && validatorOrName.name !== "validate" ? validatorOrName.name : void 0;
-            validatorFn = validatorOrName;
-          } else {
-            throw new InvalidArgumentError(
-              "Validator must be a non-empty String or a Function, but %v was given.",
-              validatorOrName
-            );
-          }
-          const context = { validatorName, modelName, propName };
-          const valid = validatorFn(propValue, validatorOptions, context);
-          if (valid instanceof Promise) {
-            if (validatorName) {
-              throw new InvalidArgumentError(
-                "Asynchronous property validators are not supported, but the property %v of the model %v has the property validator %v that returns a Promise.",
-                propName,
-                modelName,
-                validatorName
-              );
-            } else {
-              throw new InvalidArgumentError(
-                "Asynchronous property validators are not supported, but the property %v of the model %v has a property validator that returns a Promise.",
-                propName,
-                modelName
-              );
-            }
-          } else if (valid !== true) {
-            throw createError(validatorName);
-          }
-        }, "validateBy");
-        if (validateDef && typeof validateDef === "string") {
-          validateBy(validateDef);
-        } else if (validateDef && typeof validateDef === "function") {
-          validateBy(validateDef);
-        } else if (Array.isArray(validateDef)) {
-          validateDef.forEach((validatorOrName) => {
-            if (!validatorOrName || typeof validatorOrName !== "string" && typeof validatorOrName !== "function") {
-              throw new InvalidArgumentError(
-                'The provided option "validate" for the property %v in the model %v has an Array value that should contain validator names or validator functions, but %v was given.',
-                propName,
-                modelName,
-                validatorOrName
-              );
-            }
-            validateBy(validatorOrName);
-          });
-        } else if (validateDef !== null && typeof validateDef === "object") {
-          Object.keys(validateDef).forEach((validatorName) => {
-            const validatorOptions = validateDef[validatorName];
-            validateBy(validatorName, validatorOptions);
-          });
-        } else {
-          throw new InvalidArgumentError(
-            'The provided option "validate" for the property %v in the model %v should be either a validator name, a validator function, an array of validator names or functions, or an object mapping validator names to their arguments, but %v was given.',
-            propName,
-            modelName,
-            validateDef
-          );
-        }
-      }
-    };
-    __name(_ModelDataValidator, "ModelDataValidator");
-    ModelDataValidator = _ModelDataValidator;
-  }
-});
-
 // src/definition/model/model-data-sanitizer.js
-var import_js_service14, _ModelDataSanitizer, ModelDataSanitizer;
+var import_js_service11, _ModelDataSanitizer, ModelDataSanitizer;
 var init_model_data_sanitizer = __esm({
   "src/definition/model/model-data-sanitizer.js"() {
     "use strict";
-    import_js_service14 = require("@e22m4u/js-service");
+    import_js_service11 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
-    _ModelDataSanitizer = class _ModelDataSanitizer extends import_js_service14.Service {
+    _ModelDataSanitizer = class _ModelDataSanitizer extends import_js_service11.Service {
       /**
        * Validate.
        *
@@ -3397,147 +2708,16 @@ var init_model_data_sanitizer = __esm({
   }
 });
 
-// src/definition/model/model-data-transformer.js
-var import_js_service15, import_js_empty_values4, _ModelDataTransformer, ModelDataTransformer;
-var init_model_data_transformer = __esm({
-  "src/definition/model/model-data-transformer.js"() {
-    "use strict";
-    import_js_service15 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
-    init_utils();
-    import_js_empty_values4 = require("@e22m4u/js-empty-values");
-    init_errors();
-    init_model_definition_utils();
-    init_properties();
-    _ModelDataTransformer = class _ModelDataTransformer extends import_js_service15.Service {
-      /**
-       * Transform.
-       *
-       * @param {string} modelName
-       * @param {object} modelData
-       * @param {boolean} isPartial
-       * @returns {object|Promise<object>}
-       */
-      transform(modelName, modelData, isPartial = false) {
-        if (!isPlainObject(modelData))
-          throw new InvalidArgumentError(
-            "The data of the model %v should be an Object, but %v was given.",
-            modelName,
-            modelData
-          );
-        const emptyValuesService = this.getService(import_js_empty_values4.EmptyValuesService);
-        const modelDefinitionUtils = this.getService(ModelDefinitionUtils);
-        const propDefs = modelDefinitionUtils.getPropertiesDefinitionInBaseModelHierarchy(
-          modelName
-        );
-        const propNames = Object.keys(isPartial ? modelData : propDefs);
-        const transformedData = cloneDeep(modelData);
-        return propNames.reduce((transformedDataOrPromise, propName) => {
-          const propDef = propDefs[propName];
-          if (!propDef) return transformedDataOrPromise;
-          const propType = modelDefinitionUtils.getDataTypeFromPropertyDefinition(propDef);
-          const propValue = modelData[propName];
-          const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
-          if (isEmpty) return transformedDataOrPromise;
-          const newPropValueOrPromise = this._transformPropertyValue(
-            modelName,
-            propName,
-            propDef,
-            propValue
-          );
-          return transformPromise(newPropValueOrPromise, (newPropValue) => {
-            return transformPromise(transformedDataOrPromise, (resolvedData) => {
-              if (newPropValue !== propValue) resolvedData[propName] = newPropValue;
-              return resolvedData;
-            });
-          });
-        }, transformedData);
-      }
-      /**
-       * Transform property value.
-       *
-       * @param {string} modelName
-       * @param {string} propName
-       * @param {string|object} propDef
-       * @param {*} propValue
-       * @returns {*|Promise<*>}
-       */
-      _transformPropertyValue(modelName, propName, propDef, propValue) {
-        if (typeof propDef === "string" || propDef.transform == null)
-          return propValue;
-        const transformDef = propDef.transform;
-        const transformerRegistry = this.getService(PropertyTransformerRegistry);
-        const transformFn = /* @__PURE__ */ __name((value, transformerOrName, transformerOptions = void 0) => {
-          let transformerName, transformerFn;
-          if (typeof transformerOrName === "string") {
-            transformerName = transformerOrName;
-            transformerFn = transformerRegistry.getTransformer(transformerName);
-          } else if (typeof transformerOrName === "function") {
-            transformerName = transformerOrName.name && transformerOrName.name !== "transform" ? transformerOrName.name : void 0;
-            transformerFn = transformerOrName;
-          } else {
-            throw new InvalidArgumentError(
-              "Transformer must be a non-empty String or a Function, but %v was given.",
-              transformerOrName
-            );
-          }
-          const context = { transformerName, modelName, propName };
-          return transformerFn(value, transformerOptions, context);
-        }, "transformFn");
-        if (transformDef && typeof transformDef === "string") {
-          return transformFn(propValue, transformDef);
-        } else if (transformDef && typeof transformDef === "function") {
-          return transformFn(propValue, transformDef);
-        } else if (Array.isArray(transformDef)) {
-          return transformDef.reduce((valueOrPromise, transformerOrName) => {
-            if (!transformerOrName || typeof transformerOrName !== "string" && typeof transformerOrName !== "function") {
-              throw new InvalidArgumentError(
-                'The provided option "transform" for the property %v in the model %v has an Array value that should contain transformer names or transformer functions, but %v was given.',
-                propName,
-                modelName,
-                transformerOrName
-              );
-            }
-            return transformPromise(valueOrPromise, (value) => {
-              return transformFn(value, transformerOrName);
-            });
-          }, propValue);
-        } else if (transformDef !== null && typeof transformDef === "object") {
-          return Object.keys(transformDef).reduce(
-            (valueOrPromise, transformerName) => {
-              const transformerOptions = transformDef[transformerName];
-              return transformPromise(valueOrPromise, (value) => {
-                return transformFn(value, transformerName, transformerOptions);
-              });
-            },
-            propValue
-          );
-        } else {
-          throw new InvalidArgumentError(
-            'The provided option "transform" for the property %v in the model %v should be either a transformer name, a transformer function, an array of transformer names or functions, or an object mapping transformer names to their arguments, but %v was given.',
-            propName,
-            modelName,
-            transformDef
-          );
-        }
-      }
-    };
-    __name(_ModelDataTransformer, "ModelDataTransformer");
-    ModelDataTransformer = _ModelDataTransformer;
-  }
-});
-
 // src/definition/model/model-definition-validator.js
-var import_js_service16, _ModelDefinitionValidator, ModelDefinitionValidator;
+var import_js_service12, _ModelDefinitionValidator, ModelDefinitionValidator;
 var init_model_definition_validator = __esm({
   "src/definition/model/model-definition-validator.js"() {
     "use strict";
-    import_js_service16 = require("@e22m4u/js-service");
+    import_js_service12 = require("@e22m4u/js-service");
     init_errors();
     init_relations();
     init_properties();
-    _ModelDefinitionValidator = class _ModelDefinitionValidator extends import_js_service16.Service {
+    _ModelDefinitionValidator = class _ModelDefinitionValidator extends import_js_service12.Service {
       /**
        * Validate.
        *
@@ -3612,22 +2792,20 @@ var init_model = __esm({
     init_relations();
     init_properties();
     init_model_definition();
-    init_model_data_validator();
     init_model_data_sanitizer();
-    init_model_data_transformer();
     init_model_definition_utils();
     init_model_definition_validator();
   }
 });
 
 // src/definition/datasource/datasource-definition-validator.js
-var import_js_service17, _DatasourceDefinitionValidator, DatasourceDefinitionValidator;
+var import_js_service13, _DatasourceDefinitionValidator, DatasourceDefinitionValidator;
 var init_datasource_definition_validator = __esm({
   "src/definition/datasource/datasource-definition-validator.js"() {
     "use strict";
-    import_js_service17 = require("@e22m4u/js-service");
+    import_js_service13 = require("@e22m4u/js-service");
     init_errors();
-    _DatasourceDefinitionValidator = class _DatasourceDefinitionValidator extends import_js_service17.Service {
+    _DatasourceDefinitionValidator = class _DatasourceDefinitionValidator extends import_js_service13.Service {
       /**
        * Validate.
        *
@@ -3676,15 +2854,15 @@ var init_definition = __esm({
 });
 
 // src/filter/fields-clause-tool.js
-var import_js_service18, _FieldsClauseTool, FieldsClauseTool;
+var import_js_service14, _FieldsClauseTool, FieldsClauseTool;
 var init_fields_clause_tool = __esm({
   "src/filter/fields-clause-tool.js"() {
     "use strict";
-    import_js_service18 = require("@e22m4u/js-service");
+    import_js_service14 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
     init_definition();
-    _FieldsClauseTool = class _FieldsClauseTool extends import_js_service18.Service {
+    _FieldsClauseTool = class _FieldsClauseTool extends import_js_service14.Service {
       /**
        * Filter.
        *
@@ -3768,15 +2946,15 @@ var init_fields_clause_tool = __esm({
 });
 
 // src/adapter/decorator/inclusion-decorator.js
-var import_js_service19, _InclusionDecorator, InclusionDecorator;
+var import_js_service15, _InclusionDecorator, InclusionDecorator;
 var init_inclusion_decorator = __esm({
   "src/adapter/decorator/inclusion-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service19 = require("@e22m4u/js-service");
+    import_js_service15 = require("@e22m4u/js-service");
     init_filter();
     init_errors();
-    _InclusionDecorator = class _InclusionDecorator extends import_js_service19.Service {
+    _InclusionDecorator = class _InclusionDecorator extends import_js_service15.Service {
       /**
        * Decorate.
        *
@@ -3857,15 +3035,15 @@ var init_inclusion_decorator = __esm({
 });
 
 // src/adapter/decorator/default-values-decorator.js
-var import_js_service20, _DefaultValuesDecorator, DefaultValuesDecorator;
+var import_js_service16, _DefaultValuesDecorator, DefaultValuesDecorator;
 var init_default_values_decorator = __esm({
   "src/adapter/decorator/default-values-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service20 = require("@e22m4u/js-service");
+    import_js_service16 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DefaultValuesDecorator = class _DefaultValuesDecorator extends import_js_service20.Service {
+    _DefaultValuesDecorator = class _DefaultValuesDecorator extends import_js_service16.Service {
       /**
        * Decorate.
        *
@@ -3922,15 +3100,15 @@ var init_default_values_decorator = __esm({
 });
 
 // src/adapter/decorator/data-sanitizing-decorator.js
-var import_js_service21, _DataSanitizingDecorator, DataSanitizingDecorator;
+var import_js_service17, _DataSanitizingDecorator, DataSanitizingDecorator;
 var init_data_sanitizing_decorator = __esm({
   "src/adapter/decorator/data-sanitizing-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service21 = require("@e22m4u/js-service");
+    import_js_service17 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _DataSanitizingDecorator = class _DataSanitizingDecorator extends import_js_service21.Service {
+    _DataSanitizingDecorator = class _DataSanitizingDecorator extends import_js_service17.Service {
       /**
        * Decorate.
        *
@@ -3976,70 +3154,16 @@ var init_data_sanitizing_decorator = __esm({
   }
 });
 
-// src/adapter/decorator/data-validation-decorator.js
-var import_js_service22, _DataValidationDecorator, DataValidationDecorator;
-var init_data_validation_decorator = __esm({
-  "src/adapter/decorator/data-validation-decorator.js"() {
-    "use strict";
-    init_adapter();
-    import_js_service22 = require("@e22m4u/js-service");
-    init_errors();
-    init_definition();
-    _DataValidationDecorator = class _DataValidationDecorator extends import_js_service22.Service {
-      /**
-       * Decorate.
-       *
-       * @param {Adapter} adapter
-       */
-      decorate(adapter) {
-        if (!adapter || !(adapter instanceof Adapter))
-          throw new InvalidArgumentError(
-            "The first argument of DataValidationDecorator.decorate should be an Adapter instance, but %v was given.",
-            adapter
-          );
-        const validator = this.getService(ModelDataValidator);
-        const create = adapter.create;
-        adapter.create = function(modelName, modelData, filter) {
-          validator.validate(modelName, modelData);
-          return create.call(this, modelName, modelData, filter);
-        };
-        const replaceById = adapter.replaceById;
-        adapter.replaceById = function(modelName, id, modelData, filter) {
-          validator.validate(modelName, modelData);
-          return replaceById.call(this, modelName, id, modelData, filter);
-        };
-        const replaceOrCreate = adapter.replaceOrCreate;
-        adapter.replaceOrCreate = function(modelName, modelData, filter) {
-          validator.validate(modelName, modelData);
-          return replaceOrCreate.call(this, modelName, modelData, filter);
-        };
-        const patch = adapter.patch;
-        adapter.patch = function(modelName, modelData, where) {
-          validator.validate(modelName, modelData, true);
-          return patch.call(this, modelName, modelData, where);
-        };
-        const patchById = adapter.patchById;
-        adapter.patchById = function(modelName, id, modelData, filter) {
-          validator.validate(modelName, modelData, true);
-          return patchById.call(this, modelName, id, modelData, filter);
-        };
-      }
-    };
-    __name(_DataValidationDecorator, "DataValidationDecorator");
-    DataValidationDecorator = _DataValidationDecorator;
-  }
-});
-
 // src/adapter/decorator/fields-filtering-decorator.js
-var import_js_service23, _FieldsFilteringDecorator, FieldsFilteringDecorator;
+var import_js_service18, _FieldsFilteringDecorator, FieldsFilteringDecorator;
 var init_fields_filtering_decorator = __esm({
   "src/adapter/decorator/fields-filtering-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service23 = require("@e22m4u/js-service");
+    import_js_service18 = require("@e22m4u/js-service");
     init_filter();
     init_errors();
-    _FieldsFilteringDecorator = class _FieldsFilteringDecorator extends import_js_service23.Service {
+    _FieldsFilteringDecorator = class _FieldsFilteringDecorator extends import_js_service18.Service {
       /**
        * Decorate.
        *
@@ -4113,70 +3237,16 @@ var init_fields_filtering_decorator = __esm({
   }
 });
 
-// src/adapter/decorator/data-transformation-decorator.js
-var import_js_service24, _DataTransformationDecorator, DataTransformationDecorator;
-var init_data_transformation_decorator = __esm({
-  "src/adapter/decorator/data-transformation-decorator.js"() {
-    "use strict";
-    init_adapter();
-    import_js_service24 = require("@e22m4u/js-service");
-    init_errors();
-    init_definition();
-    _DataTransformationDecorator = class _DataTransformationDecorator extends import_js_service24.Service {
-      /**
-       * Decorate.
-       *
-       * @param {Adapter} adapter
-       */
-      decorate(adapter) {
-        if (!adapter || !(adapter instanceof Adapter))
-          throw new InvalidArgumentError(
-            "The first argument of DataTransformerDecorator.decorate should be an Adapter instance, but %v was given.",
-            adapter
-          );
-        const transformer = this.getService(ModelDataTransformer);
-        const create = adapter.create;
-        adapter.create = async function(modelName, modelData, filter) {
-          modelData = await transformer.transform(modelName, modelData);
-          return create.call(this, modelName, modelData, filter);
-        };
-        const replaceById = adapter.replaceById;
-        adapter.replaceById = async function(modelName, id, modelData, filter) {
-          modelData = await transformer.transform(modelName, modelData);
-          return replaceById.call(this, modelName, id, modelData, filter);
-        };
-        const replaceOrCreate = adapter.replaceOrCreate;
-        adapter.replaceOrCreate = async function(modelName, modelData, filter) {
-          modelData = await transformer.transform(modelName, modelData);
-          return replaceOrCreate.call(this, modelName, modelData, filter);
-        };
-        const patch = adapter.patch;
-        adapter.patch = async function(modelName, modelData, where) {
-          modelData = await transformer.transform(modelName, modelData, true);
-          return patch.call(this, modelName, modelData, where);
-        };
-        const patchById = adapter.patchById;
-        adapter.patchById = async function(modelName, id, modelData, filter) {
-          modelData = await transformer.transform(modelName, modelData, true);
-          return patchById.call(this, modelName, id, modelData, filter);
-        };
-      }
-    };
-    __name(_DataTransformationDecorator, "DataTransformationDecorator");
-    DataTransformationDecorator = _DataTransformationDecorator;
-  }
-});
-
 // src/adapter/decorator/property-uniqueness-decorator.js
-var import_js_service25, _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
+var import_js_service19, _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
 var init_property_uniqueness_decorator = __esm({
   "src/adapter/decorator/property-uniqueness-decorator.js"() {
     "use strict";
     init_adapter();
-    import_js_service25 = require("@e22m4u/js-service");
+    import_js_service19 = require("@e22m4u/js-service");
     init_errors();
     init_definition();
-    _PropertyUniquenessDecorator = class _PropertyUniquenessDecorator extends import_js_service25.Service {
+    _PropertyUniquenessDecorator = class _PropertyUniquenessDecorator extends import_js_service19.Service {
       /**
        * Decorate.
        *
@@ -4250,29 +3320,25 @@ var init_decorator = __esm({
     init_inclusion_decorator();
     init_default_values_decorator();
     init_data_sanitizing_decorator();
-    init_data_validation_decorator();
     init_fields_filtering_decorator();
-    init_data_transformation_decorator();
     init_property_uniqueness_decorator();
   }
 });
 
 // src/adapter/adapter.js
-var import_js_service26, ADAPTER_CLASS_NAME, _Adapter, Adapter;
+var import_js_service20, ADAPTER_CLASS_NAME, _Adapter, Adapter;
 var init_adapter = __esm({
   "src/adapter/adapter.js"() {
     "use strict";
-    import_js_service26 = require("@e22m4u/js-service");
+    import_js_service20 = require("@e22m4u/js-service");
     init_errors();
     init_decorator();
     init_decorator();
     init_decorator();
     init_decorator();
     init_decorator();
-    init_decorator();
-    init_decorator();
     ADAPTER_CLASS_NAME = "Adapter";
-    _Adapter = class _Adapter extends import_js_service26.Service {
+    _Adapter = class _Adapter extends import_js_service20.Service {
       /**
        * Settings.
        *
@@ -4299,8 +3365,6 @@ var init_adapter = __esm({
         if (this.constructor !== _Adapter) {
           this.getService(DataSanitizingDecorator).decorate(this);
           this.getService(DefaultValuesDecorator).decorate(this);
-          this.getService(DataTransformationDecorator).decorate(this);
-          this.getService(DataValidationDecorator).decorate(this);
           this.getService(PropertyUniquenessDecorator).decorate(this);
           this.getService(FieldsFilteringDecorator).decorate(this);
           this.getService(InclusionDecorator).decorate(this);
@@ -4464,7 +3528,7 @@ var init_adapter = __esm({
      *
      * @type {string}
      */
-    __publicField(_Adapter, "kinds", [...import_js_service26.Service.kinds, ADAPTER_CLASS_NAME]);
+    __publicField(_Adapter, "kinds", [...import_js_service20.Service.kinds, ADAPTER_CLASS_NAME]);
     Adapter = _Adapter;
   }
 });
@@ -4873,16 +3937,16 @@ function findAdapterCtorInModule(module2) {
   }
   return adapterCtor;
 }
-var import_js_service27, _AdapterLoader, AdapterLoader;
+var import_js_service21, _AdapterLoader, AdapterLoader;
 var init_adapter_loader = __esm({
   "src/adapter/adapter-loader.js"() {
     "use strict";
     init_adapter();
-    import_js_service27 = require("@e22m4u/js-service");
+    import_js_service21 = require("@e22m4u/js-service");
     init_adapter();
     init_errors();
     init_();
-    _AdapterLoader = class _AdapterLoader extends import_js_service27.Service {
+    _AdapterLoader = class _AdapterLoader extends import_js_service21.Service {
       /**
        * Load by name.
        *
@@ -4923,15 +3987,15 @@ var init_adapter_loader = __esm({
 });
 
 // src/adapter/adapter-registry.js
-var import_js_service28, _AdapterRegistry, AdapterRegistry;
+var import_js_service22, _AdapterRegistry, AdapterRegistry;
 var init_adapter_registry = __esm({
   "src/adapter/adapter-registry.js"() {
     "use strict";
     init_adapter();
-    import_js_service28 = require("@e22m4u/js-service");
+    import_js_service22 = require("@e22m4u/js-service");
     init_adapter_loader();
     init_definition();
-    _AdapterRegistry = class _AdapterRegistry extends import_js_service28.Service {
+    _AdapterRegistry = class _AdapterRegistry extends import_js_service22.Service {
       /**
        * Adapters.
        *
@@ -4973,16 +4037,16 @@ var init_adapter2 = __esm({
 });
 
 // src/repository/repository.js
-var import_js_service29, _Repository, Repository;
+var import_js_service23, _Repository, Repository;
 var init_repository = __esm({
   "src/repository/repository.js"() {
     "use strict";
-    import_js_service29 = require("@e22m4u/js-service");
+    import_js_service23 = require("@e22m4u/js-service");
     init_adapter2();
     init_adapter2();
     init_errors();
     init_definition();
-    _Repository = class _Repository extends import_js_service29.Service {
+    _Repository = class _Repository extends import_js_service23.Service {
       /**
        * Model name.
        *
@@ -5176,15 +4240,15 @@ var init_repository = __esm({
 });
 
 // src/repository/repository-registry.js
-var import_js_service30, _RepositoryRegistry, RepositoryRegistry;
+var import_js_service24, _RepositoryRegistry, RepositoryRegistry;
 var init_repository_registry = __esm({
   "src/repository/repository-registry.js"() {
     "use strict";
-    import_js_service30 = require("@e22m4u/js-service");
+    import_js_service24 = require("@e22m4u/js-service");
     init_repository();
     init_utils();
     init_errors();
-    _RepositoryRegistry = class _RepositoryRegistry extends import_js_service30.Service {
+    _RepositoryRegistry = class _RepositoryRegistry extends import_js_service24.Service {
       /**
        * Repositories.
        *
@@ -5242,17 +4306,17 @@ var init_repository2 = __esm({
 });
 
 // src/relations/has-one-resolver.js
-var import_js_service31, _HasOneResolver, HasOneResolver;
+var import_js_service25, _HasOneResolver, HasOneResolver;
 var init_has_one_resolver = __esm({
   "src/relations/has-one-resolver.js"() {
     "use strict";
-    import_js_service31 = require("@e22m4u/js-service");
+    import_js_service25 = require("@e22m4u/js-service");
     init_utils();
     init_definition();
     init_errors();
     init_repository2();
     init_definition();
-    _HasOneResolver = class _HasOneResolver extends import_js_service31.Service {
+    _HasOneResolver = class _HasOneResolver extends import_js_service25.Service {
       /**
        * Include to.
        *
@@ -5497,17 +4561,17 @@ var init_has_one_resolver = __esm({
 });
 
 // src/relations/has-many-resolver.js
-var import_js_service32, _HasManyResolver, HasManyResolver;
+var import_js_service26, _HasManyResolver, HasManyResolver;
 var init_has_many_resolver = __esm({
   "src/relations/has-many-resolver.js"() {
     "use strict";
-    import_js_service32 = require("@e22m4u/js-service");
+    import_js_service26 = require("@e22m4u/js-service");
     init_utils();
     init_definition();
     init_errors();
     init_repository2();
     init_definition();
-    _HasManyResolver = class _HasManyResolver extends import_js_service32.Service {
+    _HasManyResolver = class _HasManyResolver extends import_js_service26.Service {
       /**
        * Include to.
        *
@@ -5762,17 +4826,17 @@ var init_has_many_resolver = __esm({
 });
 
 // src/relations/belongs-to-resolver.js
-var import_js_service33, _BelongsToResolver, BelongsToResolver;
+var import_js_service27, _BelongsToResolver, BelongsToResolver;
 var init_belongs_to_resolver = __esm({
   "src/relations/belongs-to-resolver.js"() {
     "use strict";
-    import_js_service33 = require("@e22m4u/js-service");
+    import_js_service27 = require("@e22m4u/js-service");
     init_utils();
     init_utils();
     init_errors();
     init_repository2();
     init_definition();
-    _BelongsToResolver = class _BelongsToResolver extends import_js_service33.Service {
+    _BelongsToResolver = class _BelongsToResolver extends import_js_service27.Service {
       /**
        * Include to.
        *
@@ -5970,17 +5034,17 @@ var init_belongs_to_resolver = __esm({
 });
 
 // src/relations/references-many-resolver.js
-var import_js_service34, _ReferencesManyResolver, ReferencesManyResolver;
+var import_js_service28, _ReferencesManyResolver, ReferencesManyResolver;
 var init_references_many_resolver = __esm({
   "src/relations/references-many-resolver.js"() {
     "use strict";
-    import_js_service34 = require("@e22m4u/js-service");
+    import_js_service28 = require("@e22m4u/js-service");
     init_utils();
     init_utils();
     init_errors();
     init_repository2();
     init_definition();
-    _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service34.Service {
+    _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service28.Service {
       /**
        * Include to.
        *
@@ -6082,11 +5146,11 @@ var init_relations2 = __esm({
 });
 
 // src/filter/include-clause-tool.js
-var import_js_service35, _IncludeClauseTool, IncludeClauseTool;
+var import_js_service29, _IncludeClauseTool, IncludeClauseTool;
 var init_include_clause_tool = __esm({
   "src/filter/include-clause-tool.js"() {
     "use strict";
-    import_js_service35 = require("@e22m4u/js-service");
+    import_js_service29 = require("@e22m4u/js-service");
     init_definition();
     init_relations2();
     init_relations2();
@@ -6098,7 +5162,7 @@ var init_include_clause_tool = __esm({
     init_fields_clause_tool();
     init_definition();
     init_relations2();
-    _IncludeClauseTool = class _IncludeClauseTool extends import_js_service35.Service {
+    _IncludeClauseTool = class _IncludeClauseTool extends import_js_service29.Service {
       /**
        * Include to.
        *
@@ -6455,8 +5519,6 @@ __export(index_exports, {
   InvalidArgumentError: () => InvalidArgumentError,
   InvalidOperatorValueError: () => InvalidOperatorValueError,
   ModelDataSanitizer: () => ModelDataSanitizer,
-  ModelDataTransformer: () => ModelDataTransformer,
-  ModelDataValidator: () => ModelDataValidator,
   ModelDefinitionUtils: () => ModelDefinitionUtils,
   ModelDefinitionValidator: () => ModelDefinitionValidator,
   NotImplementedError: () => NotImplementedError,
@@ -6464,10 +5526,8 @@ __export(index_exports, {
   OrderClauseTool: () => OrderClauseTool,
   PrimaryKeysDefinitionValidator: () => PrimaryKeysDefinitionValidator,
   PropertiesDefinitionValidator: () => PropertiesDefinitionValidator,
-  PropertyTransformerRegistry: () => PropertyTransformerRegistry,
   PropertyUniqueness: () => PropertyUniqueness,
   PropertyUniquenessValidator: () => PropertyUniquenessValidator,
-  PropertyValidatorRegistry: () => PropertyValidatorRegistry,
   ReferencesManyResolver: () => ReferencesManyResolver,
   RelationType: () => RelationType,
   RelationsDefinitionValidator: () => RelationsDefinitionValidator,
@@ -6499,11 +5559,11 @@ init_filter();
 init_adapter2();
 
 // src/database-schema.js
-var import_js_service36 = require("@e22m4u/js-service");
+var import_js_service30 = require("@e22m4u/js-service");
 init_repository2();
 init_definition();
 init_repository2();
-var _DatabaseSchema = class _DatabaseSchema extends import_js_service36.Service {
+var _DatabaseSchema = class _DatabaseSchema extends import_js_service30.Service {
   /**
    * Define datasource.
    *
@@ -6561,8 +5621,6 @@ init_repository2();
   InvalidArgumentError,
   InvalidOperatorValueError,
   ModelDataSanitizer,
-  ModelDataTransformer,
-  ModelDataValidator,
   ModelDefinitionUtils,
   ModelDefinitionValidator,
   NotImplementedError,
@@ -6570,10 +5628,8 @@ init_repository2();
   OrderClauseTool,
   PrimaryKeysDefinitionValidator,
   PropertiesDefinitionValidator,
-  PropertyTransformerRegistry,
   PropertyUniqueness,
   PropertyUniquenessValidator,
-  PropertyValidatorRegistry,
   ReferencesManyResolver,
   RelationType,
   RelationsDefinitionValidator,

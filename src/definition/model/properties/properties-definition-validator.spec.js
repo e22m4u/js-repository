@@ -3,19 +3,11 @@ import {chai} from '../../../chai.js';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {PropertyUniqueness} from './property-uniqueness.js';
-import {PropertyValidatorRegistry} from './property-validator/index.js';
-import {PropertyTransformerRegistry} from './property-transformer/index.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 const S = new PropertiesDefinitionValidator();
 const sandbox = chai.spy.sandbox();
-
-S.getService(PropertyValidatorRegistry).addValidator('myValidator', () => true);
-S.getService(PropertyTransformerRegistry).addTransformer(
-  'myTransformer',
-  () => true,
-);
 
 describe('PropertiesDefinitionValidator', function () {
   afterEach(function () {
@@ -424,160 +416,6 @@ describe('PropertiesDefinitionValidator', function () {
       S.validate('model', propDefs);
       expect(V.validate).to.have.been.called.once;
       expect(V.validate).to.have.been.called.with.exactly('model', propDefs);
-    });
-
-    it('the option "validate" should have a non-empty String, a Function, an Array or an Object', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          validate: v,
-        };
-        S.validate('model', {foo});
-      };
-      const error = v =>
-        format(
-          'The provided option "validate" for the property "foo" in the model "model" ' +
-            'should be either a validator name, a validator function, an array ' +
-            'of validator names or functions, or an object mapping validator ' +
-            'names to their arguments, but %s was given.',
-          v,
-        );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(0)).to.throw(error('0'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      validate('myValidator')();
-      validate(() => true)();
-      validate(['myValidator'])();
-      validate([() => true])();
-      validate([])();
-      validate({myValidator: true})();
-      validate({})();
-      validate(null)();
-      validate(undefined)();
-    });
-
-    it('the option "validate" with an Array value requires elements to be a non-empty String or a Function', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          validate: [v],
-        };
-        S.validate('model', {foo});
-      };
-      const error = v =>
-        format(
-          'The provided option "validate" for the property "foo" in the model "model" ' +
-            'has an Array value that should contain validator names or validator functions, ' +
-            'but %s was given.',
-          v,
-        );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(0)).to.throw(error('0'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([1, 2, 3])).to.throw(error('Array'));
-      expect(validate({foo: 'bar'})).to.throw(error('Object'));
-      expect(validate(null)).to.throw(error('null'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      validate('myValidator')();
-      validate(() => true)();
-    });
-
-    it('the option "validate" requires only existing validator names', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          validate: v,
-        };
-        S.validate('model', {foo});
-      };
-      const error = v => format('The property validator %s is not found.', v);
-      expect(validate('unknown')).to.throw(error('"unknown"'));
-      expect(validate({unknown: true})).to.throw(error('"unknown"'));
-      expect(validate(['unknown'])).to.throw(error('"unknown"'));
-      validate('myValidator')();
-      validate(['myValidator'])();
-      validate({myValidator: true})();
-    });
-
-    it('the option "transform" should have a non-empty String, a Function, an Array or an Object', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          transform: v,
-        };
-        S.validate('model', {foo});
-      };
-      const error = v =>
-        format(
-          'The provided option "transform" for the property "foo" in the model "model" ' +
-            'should be either a transformer name, a transformer function, an array ' +
-            'of transformer names or functions, or an object mapping transformer ' +
-            'names to their arguments, but %s was given.',
-          v,
-        );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(0)).to.throw(error('0'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      validate('myTransformer')();
-      validate(v => v)();
-      validate(['myTransformer'])();
-      validate([v => v])();
-      validate([])();
-      validate({myTransformer: true})();
-      validate({})();
-      validate(null)();
-      validate(undefined)();
-    });
-
-    it('the option "transform" with an Array value requires elements to be a non-empty String or a Function', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          transform: [v],
-        };
-        S.validate('model', {foo});
-      };
-      const error = v =>
-        format(
-          'The provided option "transform" for the property "foo" in the model "model" ' +
-            'has an Array value that should contain transformer names or transformer functions, ' +
-            'but %s was given.',
-          v,
-        );
-      expect(validate('')).to.throw(error('""'));
-      expect(validate(10)).to.throw(error('10'));
-      expect(validate(0)).to.throw(error('0'));
-      expect(validate(true)).to.throw(error('true'));
-      expect(validate(false)).to.throw(error('false'));
-      expect(validate([1, 2, 3])).to.throw(error('Array'));
-      expect(validate({foo: 'bar'})).to.throw(error('Object'));
-      expect(validate(null)).to.throw(error('null'));
-      expect(validate(undefined)).to.throw(error('undefined'));
-      validate('myTransformer')();
-      validate(v => v)();
-    });
-
-    it('the option "transform" requires only existing transformer names', function () {
-      const validate = v => () => {
-        const foo = {
-          type: DataType.ANY,
-          transform: v,
-        };
-        S.validate('model', {foo});
-      };
-      const error = v => format('The property transformer %s is not found.', v);
-      expect(validate('unknown')).to.throw(error('"unknown"'));
-      expect(validate({unknown: true})).to.throw(error('"unknown"'));
-      expect(validate(['unknown'])).to.throw(error('"unknown"'));
-      validate('myTransformer')();
-      validate(['myTransformer'])();
-      validate({myTransformer: true})();
     });
 
     it('expects the provided option "unique" to be a Boolean or the PropertyUniqueness', function () {
