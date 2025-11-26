@@ -20,9 +20,9 @@ export const ADAPTER_CLASS_NAME = 'Adapter';
  */
 export class Adapter extends Service {
   /**
-   * Kind.
+   * Kinds.
    *
-   * @type {string}
+   * @type {string[]}
    */
   static kinds = [...Service.kinds, ADAPTER_CLASS_NAME];
 

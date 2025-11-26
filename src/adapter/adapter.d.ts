@@ -12,11 +12,9 @@ import {ServiceContainer} from '@e22m4u/js-service';
  */
 export declare class Adapter extends Service {
   /**
-   * Kind.
-   *
-   * @type {string}
+   * Kinds.
    */
-  static kind: string;
+  static kinds: string[];
 
   /**
    * Settings.

@@ -3444,9 +3444,9 @@ var init_adapter = __esm({
     };
     __name(_Adapter, "Adapter");
     /**
-     * Kind.
+     * Kinds.
      *
-     * @type {string}
+     * @type {string[]}
      */
     __publicField(_Adapter, "kinds", [...import_js_service20.Service.kinds, ADAPTER_CLASS_NAME]);
     Adapter = _Adapter;
