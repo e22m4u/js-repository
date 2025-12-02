@@ -1,4 +1,3 @@
-"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -46,7 +45,6 @@ function isPromise(value) {
 }
 var init_is_promise = __esm({
   "src/utils/is-promise.js"() {
-    "use strict";
     __name(isPromise, "isPromise");
   }
 });
@@ -58,7 +56,6 @@ function capitalize(string) {
 }
 var init_capitalize = __esm({
   "src/utils/capitalize.js"() {
-    "use strict";
     __name(capitalize, "capitalize");
   }
 });
@@ -102,7 +99,6 @@ function cloneDeep(value) {
 }
 var init_clone_deep = __esm({
   "src/utils/clone-deep.js"() {
-    "use strict";
     __name(cloneDeep, "cloneDeep");
   }
 });
@@ -126,7 +122,6 @@ function singularize(noun) {
 }
 var init_singularize = __esm({
   "src/utils/singularize.js"() {
-    "use strict";
     __name(singularize, "singularize");
   }
 });
@@ -175,7 +170,6 @@ function isDeepEqual(firstValue, secondValue) {
 }
 var init_is_deep_equal = __esm({
   "src/utils/is-deep-equal.js"() {
-    "use strict";
     __name(isDeepEqual, "isDeepEqual");
   }
 });
@@ -184,7 +178,6 @@ var init_is_deep_equal = __esm({
 var import_js_format, _NotImplementedError, NotImplementedError;
 var init_not_implemented_error = __esm({
   "src/errors/not-implemented-error.js"() {
-    "use strict";
     import_js_format = require("@e22m4u/js-format");
     _NotImplementedError = class _NotImplementedError extends import_js_format.Errorf {
     };
@@ -197,7 +190,6 @@ var init_not_implemented_error = __esm({
 var import_js_format2, _InvalidArgumentError, InvalidArgumentError;
 var init_invalid_argument_error = __esm({
   "src/errors/invalid-argument-error.js"() {
-    "use strict";
     import_js_format2 = require("@e22m4u/js-format");
     _InvalidArgumentError = class _InvalidArgumentError extends import_js_format2.Errorf {
     };
@@ -210,7 +202,6 @@ var init_invalid_argument_error = __esm({
 var import_js_format3, _InvalidOperatorValueError, InvalidOperatorValueError;
 var init_invalid_operator_value_error = __esm({
   "src/errors/invalid-operator-value-error.js"() {
-    "use strict";
     import_js_format3 = require("@e22m4u/js-format");
     _InvalidOperatorValueError = class _InvalidOperatorValueError extends Error {
       /**
@@ -239,7 +230,6 @@ var init_invalid_operator_value_error = __esm({
 // src/errors/index.js
 var init_errors = __esm({
   "src/errors/index.js"() {
-    "use strict";
     init_not_implemented_error();
     init_invalid_argument_error();
     init_invalid_operator_value_error();
@@ -281,7 +271,6 @@ function likeToRegexp(pattern, isCaseInsensitive = false) {
 }
 var init_like_to_regexp = __esm({
   "src/utils/like-to-regexp.js"() {
-    "use strict";
     init_errors();
     __name(likeToRegexp, "likeToRegexp");
   }
@@ -295,7 +284,6 @@ function isPlainObject(value) {
 }
 var init_is_plain_object = __esm({
   "src/utils/is-plain-object.js"() {
-    "use strict";
     __name(isPlainObject, "isPlainObject");
   }
 });
@@ -309,7 +297,6 @@ function stringToRegexp(pattern, flags = void 0) {
 }
 var init_string_to_regexp = __esm({
   "src/utils/string-to-regexp.js"() {
-    "use strict";
     __name(stringToRegexp, "stringToRegexp");
   }
 });
@@ -332,7 +319,6 @@ function getValueByPath(obj, path, orElse = void 0) {
 }
 var init_get_value_by_path = __esm({
   "src/utils/get-value-by-path.js"() {
-    "use strict";
     __name(getValueByPath, "getValueByPath");
   }
 });
@@ -365,7 +351,6 @@ function selectObjectKeys(obj, keys) {
 }
 var init_select_object_keys = __esm({
   "src/utils/select-object-keys.js"() {
-    "use strict";
     init_errors();
     __name(selectObjectKeys, "selectObjectKeys");
   }
@@ -385,7 +370,6 @@ function excludeObjectKeys(obj, keys) {
 }
 var init_exclude_object_keys = __esm({
   "src/utils/exclude-object-keys.js"() {
-    "use strict";
     init_errors();
     __name(excludeObjectKeys, "excludeObjectKeys");
   }
@@ -402,7 +386,6 @@ function modelNameToModelKey(modelName) {
 }
 var init_model_name_to_model_key = __esm({
   "src/utils/model-name-to-model-key.js"() {
-    "use strict";
     init_errors();
     __name(modelNameToModelKey, "modelNameToModelKey");
   }
@@ -411,7 +394,6 @@ var init_model_name_to_model_key = __esm({
 // src/utils/index.js
 var init_utils = __esm({
   "src/utils/index.js"() {
-    "use strict";
     init_is_promise();
     init_capitalize();
     init_clone_deep();
@@ -431,7 +413,6 @@ var init_utils = __esm({
 var import_js_service, _SliceClauseTool, SliceClauseTool;
 var init_slice_clause_tool = __esm({
   "src/filter/slice-clause-tool.js"() {
-    "use strict";
     import_js_service = require("@e22m4u/js-service");
     init_errors();
     _SliceClauseTool = class _SliceClauseTool extends import_js_service.Service {
@@ -514,7 +495,6 @@ function compareFn(a, b) {
 var import_js_service2, _OrderClauseTool, OrderClauseTool;
 var init_order_clause_tool = __esm({
   "src/filter/order-clause-tool.js"() {
-    "use strict";
     import_js_service2 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
@@ -593,7 +573,6 @@ var init_order_clause_tool = __esm({
 var import_js_service3, _OperatorClauseTool, OperatorClauseTool;
 var init_operator_clause_tool = __esm({
   "src/filter/operator-clause-tool.js"() {
-    "use strict";
     import_js_service3 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
@@ -1055,7 +1034,6 @@ var init_operator_clause_tool = __esm({
 var import_js_service4, _WhereClauseTool, WhereClauseTool;
 var init_where_clause_tool = __esm({
   "src/filter/where-clause-tool.js"() {
-    "use strict";
     import_js_service4 = require("@e22m4u/js-service");
     init_errors();
     init_operator_clause_tool();
@@ -1201,7 +1179,6 @@ var init_where_clause_tool = __esm({
 var RelationType;
 var init_relation_type = __esm({
   "src/definition/model/relations/relation-type.js"() {
-    "use strict";
     RelationType = {
       BELONGS_TO: "belongsTo",
       HAS_ONE: "hasOne",
@@ -1211,20 +1188,11 @@ var init_relation_type = __esm({
   }
 });
 
-// src/definition/model/relations/relation-definition.js
-var init_relation_definition = __esm({
-  "src/definition/model/relations/relation-definition.js"() {
-    "use strict";
-  }
-});
-
 // src/definition/model/relations/relations-definition-validator.js
 var import_js_service5, _RelationsDefinitionValidator, RelationsDefinitionValidator;
 var init_relations_definition_validator = __esm({
   "src/definition/model/relations/relations-definition-validator.js"() {
-    "use strict";
     import_js_service5 = require("@e22m4u/js-service");
-    init_relation_type();
     init_relation_type();
     init_errors();
     _RelationsDefinitionValidator = class _RelationsDefinitionValidator extends import_js_service5.Service {
@@ -1612,9 +1580,7 @@ var init_relations_definition_validator = __esm({
 // src/definition/model/relations/index.js
 var init_relations = __esm({
   "src/definition/model/relations/index.js"() {
-    "use strict";
     init_relation_type();
-    init_relation_definition();
     init_relations_definition_validator();
   }
 });
@@ -1623,7 +1589,6 @@ var init_relations = __esm({
 var DataType;
 var init_data_type = __esm({
   "src/definition/model/properties/data-type.js"() {
-    "use strict";
     DataType = {
       ANY: "any",
       STRING: "string",
@@ -1635,18 +1600,10 @@ var init_data_type = __esm({
   }
 });
 
-// src/definition/model/properties/property-definition.js
-var init_property_definition = __esm({
-  "src/definition/model/properties/property-definition.js"() {
-    "use strict";
-  }
-});
-
 // src/definition/model/properties/property-uniqueness.js
 var PropertyUniqueness;
 var init_property_uniqueness = __esm({
   "src/definition/model/properties/property-uniqueness.js"() {
-    "use strict";
     PropertyUniqueness = {
       STRICT: "strict",
       SPARSE: "sparse",
@@ -1659,7 +1616,6 @@ var init_property_uniqueness = __esm({
 var import_js_service6, _DefinitionRegistry, DefinitionRegistry;
 var init_definition_registry = __esm({
   "src/definition/definition-registry.js"() {
-    "use strict";
     import_js_service6 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
@@ -1762,14 +1718,12 @@ var init_definition_registry = __esm({
 var import_js_service7, import_js_empty_values, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
 var init_model_definition_utils = __esm({
   "src/definition/model/model-definition-utils.js"() {
-    "use strict";
     import_js_service7 = require("@e22m4u/js-service");
     init_properties();
-    init_utils();
-    init_utils();
     import_js_empty_values = require("@e22m4u/js-empty-values");
     init_errors();
     init_definition_registry();
+    init_utils();
     DEFAULT_PRIMARY_KEY_PROPERTY_NAME = "id";
     _ModelDefinitionUtils = class _ModelDefinitionUtils extends import_js_service7.Service {
       /**
@@ -2176,7 +2130,6 @@ var init_model_definition_utils = __esm({
 var import_js_service8, import_js_empty_values2, _PropertyUniquenessValidator, PropertyUniquenessValidator;
 var init_property_uniqueness_validator = __esm({
   "src/definition/model/properties/property-uniqueness-validator.js"() {
-    "use strict";
     init_data_type();
     import_js_service8 = require("@e22m4u/js-service");
     init_utils();
@@ -2296,7 +2249,6 @@ var init_property_uniqueness_validator = __esm({
 var import_js_service9, _PrimaryKeysDefinitionValidator, PrimaryKeysDefinitionValidator;
 var init_primary_keys_definition_validator = __esm({
   "src/definition/model/properties/primary-keys-definition-validator.js"() {
-    "use strict";
     import_js_service9 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
@@ -2348,7 +2300,6 @@ var init_primary_keys_definition_validator = __esm({
 var import_js_service10, _PropertiesDefinitionValidator, PropertiesDefinitionValidator;
 var init_properties_definition_validator = __esm({
   "src/definition/model/properties/properties-definition-validator.js"() {
-    "use strict";
     import_js_service10 = require("@e22m4u/js-service");
     init_data_type();
     init_utils();
@@ -2572,9 +2523,7 @@ var init_properties_definition_validator = __esm({
 // src/definition/model/properties/index.js
 var init_properties = __esm({
   "src/definition/model/properties/index.js"() {
-    "use strict";
     init_data_type();
-    init_property_definition();
     init_property_uniqueness();
     init_property_uniqueness_validator();
     init_properties_definition_validator();
@@ -2582,18 +2531,10 @@ var init_properties = __esm({
   }
 });
 
-// src/definition/model/model-definition.js
-var init_model_definition = __esm({
-  "src/definition/model/model-definition.js"() {
-    "use strict";
-  }
-});
-
 // src/definition/model/model-data-sanitizer.js
 var import_js_service11, _ModelDataSanitizer, ModelDataSanitizer;
 var init_model_data_sanitizer = __esm({
   "src/definition/model/model-data-sanitizer.js"() {
-    "use strict";
     import_js_service11 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
@@ -2630,7 +2571,6 @@ var init_model_data_sanitizer = __esm({
 var import_js_service12, _ModelDefinitionValidator, ModelDefinitionValidator;
 var init_model_definition_validator = __esm({
   "src/definition/model/model-definition-validator.js"() {
-    "use strict";
     import_js_service12 = require("@e22m4u/js-service");
     init_errors();
     init_relations();
@@ -2706,10 +2646,8 @@ var init_model_definition_validator = __esm({
 // src/definition/model/index.js
 var init_model = __esm({
   "src/definition/model/index.js"() {
-    "use strict";
     init_relations();
     init_properties();
-    init_model_definition();
     init_model_data_sanitizer();
     init_model_definition_utils();
     init_model_definition_validator();
@@ -2720,7 +2658,6 @@ var init_model = __esm({
 var import_js_service13, _DatasourceDefinitionValidator, DatasourceDefinitionValidator;
 var init_datasource_definition_validator = __esm({
   "src/definition/datasource/datasource-definition-validator.js"() {
-    "use strict";
     import_js_service13 = require("@e22m4u/js-service");
     init_errors();
     _DatasourceDefinitionValidator = class _DatasourceDefinitionValidator extends import_js_service13.Service {
@@ -2756,7 +2693,6 @@ var init_datasource_definition_validator = __esm({
 // src/definition/datasource/index.js
 var init_datasource = __esm({
   "src/definition/datasource/index.js"() {
-    "use strict";
     init_datasource_definition_validator();
   }
 });
@@ -2764,7 +2700,6 @@ var init_datasource = __esm({
 // src/definition/index.js
 var init_definition = __esm({
   "src/definition/index.js"() {
-    "use strict";
     init_model();
     init_datasource();
     init_definition_registry();
@@ -2775,7 +2710,6 @@ var init_definition = __esm({
 var import_js_service14, _FieldsClauseTool, FieldsClauseTool;
 var init_fields_clause_tool = __esm({
   "src/filter/fields-clause-tool.js"() {
-    "use strict";
     import_js_service14 = require("@e22m4u/js-service");
     init_utils();
     init_errors();
@@ -2867,7 +2801,6 @@ var init_fields_clause_tool = __esm({
 var import_js_service15, _InclusionDecorator, InclusionDecorator;
 var init_inclusion_decorator = __esm({
   "src/adapter/decorator/inclusion-decorator.js"() {
-    "use strict";
     init_adapter();
     import_js_service15 = require("@e22m4u/js-service");
     init_filter();
@@ -2956,7 +2889,6 @@ var init_inclusion_decorator = __esm({
 var import_js_service16, _DefaultValuesDecorator, DefaultValuesDecorator;
 var init_default_values_decorator = __esm({
   "src/adapter/decorator/default-values-decorator.js"() {
-    "use strict";
     init_adapter();
     import_js_service16 = require("@e22m4u/js-service");
     init_errors();
@@ -3021,7 +2953,6 @@ var init_default_values_decorator = __esm({
 var import_js_service17, _DataSanitizingDecorator, DataSanitizingDecorator;
 var init_data_sanitizing_decorator = __esm({
   "src/adapter/decorator/data-sanitizing-decorator.js"() {
-    "use strict";
     init_adapter();
     import_js_service17 = require("@e22m4u/js-service");
     init_errors();
@@ -3076,7 +3007,6 @@ var init_data_sanitizing_decorator = __esm({
 var import_js_service18, _FieldsFilteringDecorator, FieldsFilteringDecorator;
 var init_fields_filtering_decorator = __esm({
   "src/adapter/decorator/fields-filtering-decorator.js"() {
-    "use strict";
     init_adapter();
     import_js_service18 = require("@e22m4u/js-service");
     init_filter();
@@ -3159,7 +3089,6 @@ var init_fields_filtering_decorator = __esm({
 var import_js_service19, _PropertyUniquenessDecorator, PropertyUniquenessDecorator;
 var init_property_uniqueness_decorator = __esm({
   "src/adapter/decorator/property-uniqueness-decorator.js"() {
-    "use strict";
     init_adapter();
     import_js_service19 = require("@e22m4u/js-service");
     init_errors();
@@ -3234,7 +3163,6 @@ var init_property_uniqueness_decorator = __esm({
 // src/adapter/decorator/index.js
 var init_decorator = __esm({
   "src/adapter/decorator/index.js"() {
-    "use strict";
     init_inclusion_decorator();
     init_default_values_decorator();
     init_data_sanitizing_decorator();
@@ -3247,13 +3175,8 @@ var init_decorator = __esm({
 var import_js_service20, ADAPTER_CLASS_NAME, _Adapter, Adapter;
 var init_adapter = __esm({
   "src/adapter/adapter.js"() {
-    "use strict";
     import_js_service20 = require("@e22m4u/js-service");
     init_errors();
-    init_decorator();
-    init_decorator();
-    init_decorator();
-    init_decorator();
     init_decorator();
     ADAPTER_CLASS_NAME = "Adapter";
     _Adapter = class _Adapter extends import_js_service20.Service {
@@ -3459,16 +3382,11 @@ __export(memory_adapter_exports, {
 var _MemoryAdapter, MemoryAdapter;
 var init_memory_adapter = __esm({
   "src/adapter/builtin/memory-adapter.js"() {
-    "use strict";
     init_adapter();
     init_utils();
-    init_utils();
-    init_definition();
-    init_filter();
-    init_filter();
-    init_filter();
     init_errors();
     init_definition();
+    init_filter();
     _MemoryAdapter = class _MemoryAdapter extends Adapter {
       /**
        * Tables.
@@ -3879,11 +3797,9 @@ function findAdapterCtorInModule(module2) {
 var import_js_service21, _AdapterLoader, AdapterLoader;
 var init_adapter_loader = __esm({
   "src/adapter/adapter-loader.js"() {
-    "use strict";
-    init_adapter();
     import_js_service21 = require("@e22m4u/js-service");
-    init_adapter();
     init_errors();
+    init_adapter();
     init_();
     _AdapterLoader = class _AdapterLoader extends import_js_service21.Service {
       /**
@@ -3903,13 +3819,13 @@ var init_adapter_loader = __esm({
         try {
           const module2 = await globImport_builtin_adapter_js(`./builtin/${adapterName}-adapter.js`);
           adapterCtor = findAdapterCtorInModule(module2);
-        } catch (e) {
+        } catch {
         }
         if (!adapterCtor)
           try {
             const module2 = await Promise.resolve().then(() => __toESM(require(`@e22m4u/js-repository-${adapterName}-adapter`)));
             adapterCtor = findAdapterCtorInModule(module2);
-          } catch (e) {
+          } catch {
           }
         if (!adapterCtor)
           throw new InvalidArgumentError(
@@ -3929,7 +3845,6 @@ var init_adapter_loader = __esm({
 var import_js_service22, _AdapterRegistry, AdapterRegistry;
 var init_adapter_registry = __esm({
   "src/adapter/adapter-registry.js"() {
-    "use strict";
     init_adapter();
     import_js_service22 = require("@e22m4u/js-service");
     init_adapter_loader();
@@ -3968,7 +3883,6 @@ var init_adapter_registry = __esm({
 // src/adapter/index.js
 var init_adapter2 = __esm({
   "src/adapter/index.js"() {
-    "use strict";
     init_adapter();
     init_adapter_loader();
     init_adapter_registry();
@@ -3979,12 +3893,10 @@ var init_adapter2 = __esm({
 var import_js_service23, _Repository, Repository;
 var init_repository = __esm({
   "src/repository/repository.js"() {
-    "use strict";
     import_js_service23 = require("@e22m4u/js-service");
-    init_adapter2();
-    init_adapter2();
     init_errors();
     init_definition();
+    init_adapter2();
     _Repository = class _Repository extends import_js_service23.Service {
       /**
        * Model name.
@@ -4182,7 +4094,6 @@ var init_repository = __esm({
 var import_js_service24, _RepositoryRegistry, RepositoryRegistry;
 var init_repository_registry = __esm({
   "src/repository/repository-registry.js"() {
-    "use strict";
     import_js_service24 = require("@e22m4u/js-service");
     init_repository();
     init_utils();
@@ -4238,7 +4149,6 @@ var init_repository_registry = __esm({
 // src/repository/index.js
 var init_repository2 = __esm({
   "src/repository/index.js"() {
-    "use strict";
     init_repository();
     init_repository_registry();
   }
@@ -4248,10 +4158,8 @@ var init_repository2 = __esm({
 var import_js_service25, _HasOneResolver, HasOneResolver;
 var init_has_one_resolver = __esm({
   "src/relations/has-one-resolver.js"() {
-    "use strict";
     import_js_service25 = require("@e22m4u/js-service");
     init_utils();
-    init_definition();
     init_errors();
     init_repository2();
     init_definition();
@@ -4503,10 +4411,8 @@ var init_has_one_resolver = __esm({
 var import_js_service26, _HasManyResolver, HasManyResolver;
 var init_has_many_resolver = __esm({
   "src/relations/has-many-resolver.js"() {
-    "use strict";
     import_js_service26 = require("@e22m4u/js-service");
     init_utils();
-    init_definition();
     init_errors();
     init_repository2();
     init_definition();
@@ -4768,11 +4674,9 @@ var init_has_many_resolver = __esm({
 var import_js_service27, _BelongsToResolver, BelongsToResolver;
 var init_belongs_to_resolver = __esm({
   "src/relations/belongs-to-resolver.js"() {
-    "use strict";
     import_js_service27 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
     init_errors();
+    init_utils();
     init_repository2();
     init_definition();
     _BelongsToResolver = class _BelongsToResolver extends import_js_service27.Service {
@@ -4976,11 +4880,9 @@ var init_belongs_to_resolver = __esm({
 var import_js_service28, _ReferencesManyResolver, ReferencesManyResolver;
 var init_references_many_resolver = __esm({
   "src/relations/references-many-resolver.js"() {
-    "use strict";
     import_js_service28 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
     init_errors();
+    init_utils();
     init_repository2();
     init_definition();
     _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service28.Service {
@@ -5076,7 +4978,6 @@ var init_references_many_resolver = __esm({
 // src/relations/index.js
 var init_relations2 = __esm({
   "src/relations/index.js"() {
-    "use strict";
     init_has_one_resolver();
     init_has_many_resolver();
     init_belongs_to_resolver();
@@ -5088,16 +4989,11 @@ var init_relations2 = __esm({
 var import_js_service29, _IncludeClauseTool, IncludeClauseTool;
 var init_include_clause_tool = __esm({
   "src/filter/include-clause-tool.js"() {
-    "use strict";
     import_js_service29 = require("@e22m4u/js-service");
-    init_definition();
-    init_relations2();
-    init_relations2();
     init_where_clause_tool();
     init_order_clause_tool();
     init_slice_clause_tool();
     init_errors();
-    init_relations2();
     init_fields_clause_tool();
     init_definition();
     init_relations2();
@@ -5427,7 +5323,6 @@ var init_include_clause_tool = __esm({
 // src/filter/index.js
 var init_filter = __esm({
   "src/filter/index.js"() {
-    "use strict";
     init_slice_clause_tool();
     init_order_clause_tool();
     init_where_clause_tool();
@@ -5494,7 +5389,6 @@ init_adapter2();
 
 // src/database-schema.js
 var import_js_service30 = require("@e22m4u/js-service");
-init_repository2();
 init_definition();
 init_repository2();
 var _DatabaseSchema = class _DatabaseSchema extends import_js_service30.Service {
