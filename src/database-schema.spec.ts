@@ -17,17 +17,16 @@ describe('DatabaseSchema', function () {
     it('sets the datasource definition', function () {
       const dbs = new DatabaseSchema();
       dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
-      const res = dbs
-        .getService(DefinitionRegistry)
-        .getDatasource('datasource');
+      const res =
+        dbs.getService(DefinitionRegistry).getDatasource('datasource');
       expect(res).to.be.eql({name: 'datasource', adapter: 'memory'});
     });
 
     it('throws an error if the datasource name already defined', function () {
       const dbs = new DatabaseSchema();
       dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
-      const throwable = () =>
-        dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      const throwable =
+        () => dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
       expect(throwable).to.throw(
         'The datasource "datasource" is already defined.',
       );
@@ -69,6 +68,19 @@ describe('DatabaseSchema', function () {
       const dbs = new DatabaseSchema();
       const throwable = () => dbs.getRepository('model');
       expect(throwable).to.throw('The model "model" is not defined.');
+    });
+
+    it('uses generic types to define the repository type', function () {
+      const dbs = new DatabaseSchema();
+      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
+      dbs.defineModel({name: 'model', datasource: 'datasource'});
+      interface MyModel {
+        myId: number;
+      }
+      const res1: Repository = dbs.getRepository('model');
+      const res2: Repository<MyModel, number, 'myId'> =
+        dbs.getRepository<MyModel, number, 'myId'>('model');
+      expect(res1).to.be.eq(res2);
     });
   });
 });

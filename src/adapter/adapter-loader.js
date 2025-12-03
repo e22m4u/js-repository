@@ -1,6 +1,7 @@
+import {Adapter} from './adapter.js';
 import {Service} from '@e22m4u/js-service';
+import {ADAPTER_CLASS_NAME} from './adapter.js';
 import {InvalidArgumentError} from '../errors/index.js';
-import {Adapter, ADAPTER_CLASS_NAME} from './adapter.js';
 
 /**
  * Adapter loader.
@@ -23,7 +24,7 @@ export class AdapterLoader extends Service {
     try {
       const module = await import(`./builtin/${adapterName}-adapter.js`);
       adapterCtor = findAdapterCtorInModule(module);
-    } catch {
+    } catch (e) {
       /**/
     }
     if (!adapterCtor)
@@ -32,7 +33,7 @@ export class AdapterLoader extends Service {
           `@e22m4u/js-repository-${adapterName}-adapter`
         );
         adapterCtor = findAdapterCtorInModule(module);
-      } catch {
+      } catch (e) {
         /**/
       }
     if (!adapterCtor)

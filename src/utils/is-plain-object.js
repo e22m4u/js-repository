@@ -7,9 +7,9 @@
 export function isPlainObject(value) {
   return Boolean(
     typeof value === 'object' &&
-    value &&
-    !Array.isArray(value) &&
-    (!value.constructor ||
-      (value.constructor && value.constructor.name === 'Object')),
+      value &&
+      !Array.isArray(value) &&
+      (!value.constructor ||
+        (value.constructor && value.constructor.name === 'Object')),
   );
 }

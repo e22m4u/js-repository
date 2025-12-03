@@ -1,13 +1,12 @@
 import {Adapter} from '../adapter.js';
-import {cloneDeep, capitalize} from '../../utils/index.js';
+import {cloneDeep} from '../../utils/index.js';
+import {capitalize} from '../../utils/index.js';
+import {DataType} from '../../definition/index.js';
+import {SliceClauseTool} from '../../filter/index.js';
+import {WhereClauseTool} from '../../filter/index.js';
+import {OrderClauseTool} from '../../filter/index.js';
 import {InvalidArgumentError} from '../../errors/index.js';
-import {DataType, ModelDefinitionUtils} from '../../definition/index.js';
-
-import {
-  SliceClauseTool,
-  WhereClauseTool,
-  OrderClauseTool,
-} from '../../filter/index.js';
+import {ModelDefinitionUtils} from '../../definition/index.js';
 
 /**
  * Memory adapter.

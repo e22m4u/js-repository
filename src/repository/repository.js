@@ -1,7 +1,8 @@
 import {Service} from '@e22m4u/js-service';
+import {Adapter} from '../adapter/index.js';
+import {AdapterRegistry} from '../adapter/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {DefinitionRegistry} from '../definition/index.js';
-import {Adapter, AdapterRegistry} from '../adapter/index.js';
 
 /**
  * Repository.

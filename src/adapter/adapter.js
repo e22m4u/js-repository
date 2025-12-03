@@ -2,14 +2,11 @@
 /* eslint jsdoc/require-returns-check: 0 */
 import {Service} from '@e22m4u/js-service';
 import {NotImplementedError} from '../errors/index.js';
-
-import {
-  InclusionDecorator,
-  DefaultValuesDecorator,
-  DataSanitizingDecorator,
-  FieldsFilteringDecorator,
-  PropertyUniquenessDecorator,
-} from './decorator/index.js';
+import {InclusionDecorator} from './decorator/index.js';
+import {DefaultValuesDecorator} from './decorator/index.js';
+import {DataSanitizingDecorator} from './decorator/index.js';
+import {FieldsFilteringDecorator} from './decorator/index.js';
+import {PropertyUniquenessDecorator} from './decorator/index.js';
 
 /**
  * Adapter class name.

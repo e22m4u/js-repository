@@ -1,6 +1,7 @@
 import {Service} from '@e22m4u/js-service';
+import {cloneDeep} from '../utils/index.js';
+import {singularize} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
-import {cloneDeep, singularize} from '../utils/index.js';
 import {RepositoryRegistry} from '../repository/index.js';
 import {ModelDefinitionUtils} from '../definition/index.js';
 

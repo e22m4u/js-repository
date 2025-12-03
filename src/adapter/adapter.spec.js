@@ -1,16 +1,15 @@
 import {expect} from 'chai';
 import {chai} from '../chai.js';
+import {Adapter} from './adapter.js';
+import {Service} from '@e22m4u/js-service';
+import {ADAPTER_CLASS_NAME} from './adapter.js';
+import {ServiceContainer} from '@e22m4u/js-service';
 import {DatabaseSchema} from '../database-schema.js';
-import {Adapter, ADAPTER_CLASS_NAME} from './adapter.js';
-import {Service, ServiceContainer} from '@e22m4u/js-service';
-
-import {
-  InclusionDecorator,
-  DefaultValuesDecorator,
-  DataSanitizingDecorator,
-  FieldsFilteringDecorator,
-  PropertyUniquenessDecorator,
-} from './decorator/index.js';
+import {InclusionDecorator} from './decorator/index.js';
+import {DefaultValuesDecorator} from './decorator/index.js';
+import {DataSanitizingDecorator} from './decorator/index.js';
+import {FieldsFilteringDecorator} from './decorator/index.js';
+import {PropertyUniquenessDecorator} from './decorator/index.js';
 
 const sandbox = chai.spy.sandbox();
 

@@ -1,5 +1,6 @@
 import {Service} from '@e22m4u/js-service';
 import {RelationType} from './relation-type.js';
+import {RelationType as Type} from './relation-type.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 
 /**
@@ -61,13 +62,13 @@ export class RelationsDefinitionValidator extends Service {
         modelName,
         relDef,
       );
-    if (!relDef.type || !Object.values(RelationType).includes(relDef.type))
+    if (!relDef.type || !Object.values(Type).includes(relDef.type))
       throw new InvalidArgumentError(
         'The relation %v of the model %v requires the option "type" ' +
           'to have one of relation types: %l, but %v was given.',
         relName,
         modelName,
-        Object.values(RelationType),
+        Object.values(Type),
         relDef.type,
       );
     this._validateBelongsTo(modelName, relName, relDef);
@@ -104,7 +105,7 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateBelongsTo(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.BELONGS_TO) return;
+    if (relDef.type !== Type.BELONGS_TO) return;
     if (relDef.polymorphic) {
       // A polymorphic "belongsTo" relation.
       if (typeof relDef.polymorphic !== 'boolean')
@@ -418,7 +419,7 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateReferencesMany(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.REFERENCES_MANY) return;
+    if (relDef.type !== Type.REFERENCES_MANY) return;
     if (!relDef.model || typeof relDef.model !== 'string')
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +

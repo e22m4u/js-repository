@@ -40,6 +40,7 @@
   - [Has One (полиморфная)](#has-one-полиморфная-версия)
   - [Has Many (полиморфная)](#has-many-полиморфная-версия)
 - [Расширение](#расширение)
+- [TypeScript](#typescript)
 - [Тесты](#тесты)
 - [Лицензия](#лицензия)
 
@@ -81,10 +82,10 @@ const {DatabaseSchema} = require('@e22m4u/js-repository');
 Кроме того, *модель* может определять классические связи «один к одному»,
 «один ко многим» и другие типы отношений между моделями.
 
-Непосредственно чтение и запись данных производятся с помощью *репозитория*,
+Непосредственно чтение и запись данных производится с помощью *репозитория*,
 который есть у каждой модели с объявленным *источником данных*. Репозиторий
 может фильтровать запрашиваемые документы, выполнять валидацию свойств
-согласно определению модели и встраивать связанные данные в результат
+согласно определению модели, и встраивать связанные данные в результат
 выборки.
 
 - *Источник данных* - определяет способ подключения к базе
@@ -256,36 +257,17 @@ console.log(cityWithCountry);
 
 ## Схема
 
-Экземпляр класса `DatabaseSchema` хранит определения источников данных
-и моделей.
+Экземпляр класса `DatabaseSchema` хранит определения источников данных и моделей.
 
 **Методы**
 
-Добавить источник
+- `defineDatasource(datasourceDef: object): this` - добавить источник
+- `defineModel(modelDef: object): this` - добавить модель
+- `getRepository(modelName: string): Repository` - получить репозиторий
 
-- `defineDatasource(datasourceDef)`
-  - `datasourceDef: object`: определение источника;
-  - результат: `this`;
+**Примеры**
 
-Добавить модель:
-
-- `defineModel(modelDef)`
-  - `modelDef: object`: определение модели;
-  - результат: `this`;
-
-Получить репозиторий
-
-- `getRepository(modelName)`
-  - `modelName: string` имя модели;
-  - результат: `Repository`;
-
-**Пример**
-
-Ниже приводится пошаговый пример настройки модели `product` и получения
-экземпляра репозитория, с помощью которого можно управлять данными этой
-коллекции.
-
-1\. Импорт класса и создание экземпляра схемы.
+Импорт класса и создание экземпляра схемы.
 
 ```js
 import {DatabaseSchema} from '@e22m4u/js-repository';
@@ -293,7 +275,7 @@ import {DatabaseSchema} from '@e22m4u/js-repository';
 const dbs = new DatabaseSchema();
 ```
 
-2\. Определение нового источника.
+Определение нового источника.
 
 ```js
 dbs.defineDatasource({
@@ -302,7 +284,7 @@ dbs.defineDatasource({
 });
 ```
 
-3\. Определение новой модели.
+Определение новой модели.
 
 ```js
 dbs.defineModel({
@@ -315,7 +297,7 @@ dbs.defineModel({
 });
 ```
 
-4\. Получение репозитория по названию модели.
+Получение репозитория по названию модели.
 
 ```js
 const productRep = dbs.getRepository('product');
@@ -388,7 +370,7 @@ dbs.defineModel({
 ## Свойства
 
 Параметр `properties` находится в определении модели и принимает объект, ключи
-которого являются свойствами этой модели, а значениями тип свойства или объект
+которого являются свойствами этой модели, а значением тип свойства или объект
 с дополнительными параметрами.
 
 **Тип данных**
@@ -414,16 +396,15 @@ dbs.defineModel({
 
 **Параметр `unique`**
 
-Если значением параметра `unique` является `true` или `'strict'`,
-то выполняется строгая проверка на уникальность. В этом режиме
-[пустые значения](#Пустые-значения) так же подлежат проверке,
-где `null` и `undefined` также считаются значениями, которые
-должны быть уникальными.
+Если значением параметра `unique` является `true` или `'strict'`, то выполняется
+строгая проверка на уникальность. В этом режиме [пустые значения](#Пустые-значения)
+так же подлежат проверке, где `null` и `undefined` также считаются значениями,
+которые должны быть уникальными.
 
-Режим `'sparse'` проверяет только значения с полезной нагрузкой,
-исключая [пустые значения](#Пустые-значения), список которых отличается
-в зависимости от типа свойства. Например, для типа `string` пустыми
-значениями будут `undefined`, `null` и `''` (пустая строка).
+Режим `'sparse'` проверяет только значения с полезной нагрузкой, исключая
+[пустые значения](#Пустые-значения), список которых отличается в зависимости
+от типа свойства. Например, для типа `string` пустым значением будет `undefined`,
+`null` и `''` (пустая строка).
 
 - `unique: true | 'strict'` строгая проверка на уникальность
 - `unique: 'sparse'` исключить из проверки [пустые значения](#Пустые-значения)
@@ -522,15 +503,26 @@ dbs.defineModel({
 **EmptyValuesService**
 
 Для переопределения пустых значений необходимо получить экземпляр класса
-`EmptyValuesService` из контейнера схемы и вызвать метод `setEmptyValuesOf`,
-который принимает тип данных и массив новых значений.
+`EmptyValuesService` из контейнера схемы и вызвать метод, который принимает
+тип данных и массив новых значений.
 
-Сигнатура:
+Интерфейс:
 
-- `setEmptyValuesOf(dataType, emptyValues)`
-  - `dataType: DataType`: строковый литерал типа;
-  - `emptyValues: *[]`: массив новых значений;
-  - результат: `this`;
+```ts
+class EmptyValuesService {
+  /**
+   * Установить пустые значения
+   * для определенного типа данных.
+   * 
+   * @param dataType    Тип данных.
+   * @param emptyValues Массив новых пустых значений.
+   */
+  setEmptyValuesOf(
+    dataType: DataType,
+    emptyValues: unknown[],
+  ): this;
+}
+```
 
 **Пример**
 
@@ -563,24 +555,24 @@ emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
 
 **Методы**
 
-- [`create(data, [filter])`](#repositorycreate) создать новый документ;
-- [`replaceById(id, data, [filter])`](#repositoryreplacebyid) заменить документ полностью;
-- [`replaceOrCreate(data, [filter])`](#repositoryreplaceorcreate) заменить или создать новый;
-- [`patchById(id, data, [filter])`](#repositorypatchbyid) обновить документ частично;
-- [`patch(data, [where])`](#repositorypatch) обновить все документы или по условию;
-- [`find([filter])`](#repositoryfind) найти все документы или по условию;
-- [`findOne([filter])`](#repositoryfindone) найти первый документ или по условию;
-- [`findById(id, [filter])`](#repositoryfindbyid) найти документ по идентификатору;
-- [`delete([where])`](#repositorydelete) удалить все документы или по условию;
+- [`create(data, filter = undefined)`](#repositorycreate) создать новый документ;
+- [`replaceById(id, data, filter = undefined)`](#repositoryreplacebyid) заменить документ полностью;
+- [`replaceOrCreate(data, filter = undefined)`](#repositoryreplaceorcreate) заменить или создать новый;
+- [`patchById(id, data, filter = undefined)`](#repositorypatchbyid) обновить документ частично;
+- [`patch(data, where = undefined)`](#repositorypatch) обновить все документы или по условию;
+- [`find(filter = undefined)`](#repositoryfind) найти все документы или по условию;
+- [`findOne(filter = undefined)`](#repositoryfindone) найти первый документ или по условию;
+- [`findById(id, filter = undefined)`](#repositoryfindbyid) найти документ по идентификатору;
+- [`delete(where = undefined)`](#repositorydelete) удалить все документы или по условию;
 - [`deleteById(id)`](#repositorydeletebyid) удалить документ по идентификатору;
 - [`exists(id)`](#repositoryexists) проверить существование по идентификатору;
-- [`count([where])`](#repositorycount) подсчет всех документов или по условию;
+- [`count(where = undefined)`](#repositorycount) подсчет всех документов или по условию;
 
 **Аргументы**
 
 - `id: number|string` идентификатор (первичный ключ)
 - `data: object` данные документа (используется при записи)
-- `where: object` условия выборки (см. [`where`](#where))
+- `where: object` условия фильтрации (см. [Фильтрация](#Фильтрация))
 - `filter: object` параметры выборки (см. [Фильтрация](#Фильтрация))
 
 **Получение репозитория**
@@ -620,10 +612,12 @@ const modelRep = dbs.getRepository('myModel');
 
 Сигнатура:
 
-- `create(data, [filter])`
-  - `data: object`: данные нового документа;
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object>`;
+```ts
+create(
+  data: WithOptionalId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
 
 **Примеры**
 
@@ -684,11 +678,13 @@ console.log(product);
 
 Сигнатура:
 
-- `replaceById(id, data, [filter])`
-  - `id: number|string`: идентификатор документа;
-  - `data: object`: новые данные;
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object>`;
+```ts
+replaceById(
+  id: IdType,
+  data: WithoutId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
 
 **Примеры**
 
@@ -724,10 +720,12 @@ console.log(updatedProduct);
 
 Сигнатура:
 
-- `replaceOrCreate(data, [filter])`
-  - `data: object`: данные документа;
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object>`;
+```ts
+replaceOrCreate(
+  data: WithOptionalId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
 
 **Примеры**
 
@@ -770,11 +768,13 @@ console.log(updatedProduct);
 
 Сигнатура:
 
-- `patchById(id, data, [filter])`
-  - `id: number|string`: идентификатор обновляемого документа;
-  - `data: object`: новые данные;
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object>`;
+```ts
+patchById(
+  id: IdType,
+  data: PartialWithoutId<FlatData, IdName>,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
 
 **Примеры**
 
@@ -808,10 +808,12 @@ console.log(updatedProduct);
 
 Сигнатура:
 
-- `patch(data, [where])`
-  - `data: object`: новые данные;
-  - `where?: object`: условия выборки (см. [`where`](#where));
-  - результат: `Promise<number>`;
+```ts
+patch(
+  data: PartialWithoutId<FlatData, IdName>,
+  where?: WhereClause<FlatData>,
+): Promise<number>;
+```
 
 **Примеры**
 
@@ -841,9 +843,9 @@ const totalCount = await productRep.patch({
 
 Сигнатура:
 
-- `find([filter])`
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object[]>`;
+```ts
+find(filter?: FilterClause<FlatData>): Promise<FlatData[]>;
+```
 
 **Примеры**
 
@@ -877,9 +879,11 @@ const latestProducts = await productRep.find({
 
 Сигнатура:
 
-- `findOne([filter])`
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object|undefined>`;
+```ts
+findOne(
+  filter?: FilterClause<FlatData>,
+): Promise<FlatData | undefined>;
+```
 
 **Примеры**
 
@@ -910,10 +914,12 @@ if (!product) {
 
 Сигнатура:
 
-- `findById(id, [filter])`
-  - `id: number|string`: идентификатор документа;
-  - `filter?: object`: настройки выборки (см. [Фильтрация](#фильтрация));
-  - результат: `Promise<object|undefined>`;
+```ts
+findById(
+  id: IdType,
+  filter?: ItemFilterClause<FlatData>,
+): Promise<FlatData>;
+```
 
 **Примеры**
 
@@ -944,9 +950,9 @@ const product = await productRep.findById(1, {
 
 Сигнатура:
 
-- `delete([where])`
-  - `where?: object`: условия выборки (см. [`where`](#where));
-  - результат: `Promise<number>`;
+```ts
+delete(where?: WhereClause<FlatData>): Promise<number>;
+```
 
 **Примеры**
 
@@ -971,15 +977,9 @@ const totalCount = await productRep.delete();
 
 Сигнатура:
 
-- `deleteById(id)`
-  - `id: number|string`: идентификатор документа;
-  - результат: `Promise<boolean>`;
-
-Результат:
-
-- `Promise<boolean>`: логическое значение;
-  - `true`: документ был найден и удален;
-  - `false`: документ не найден;
+```ts
+deleteById(id: IdType): Promise<boolean>;
+```
 
 **Примеры**
 
@@ -1001,15 +1001,9 @@ if (wasDeleted) {
 
 Сигнатура:
 
-- `exists(id)`
-  - `id: number|string`: идентификатор документа;
-  - результат: `Promise<boolean>`;
-
-Результат:
-
-- `Promise<boolean>`: логическое значение;
-  - `true`: документ с таким идентификатором найден;
-  - `false`: идентификатор не найден;
+```ts
+exists(id: IdType): Promise<boolean>;
+```
 
 **Примеры**
 
@@ -1029,9 +1023,9 @@ if (productExists) {
 
 Сигнатура:
 
-- `count([where])`
-  - `where?: object`: условия выборки (см. [`where`](#where));
-  - результат: `Promise<number>`;
+```ts
+count(where?: WhereClause<FlatData>): Promise<number>;
+```
 
 **Примеры**
 
@@ -1051,10 +1045,10 @@ const totalCount = await productRep.count();
 
 ## Фильтрация
 
-Некоторые методы репозитория принимают объект настроек возвращаемого
-результата. Максимально широкий набор таких настроек имеет первый
-параметр метода `find`, где ожидается объект, содержащий набор
-опций указанных ниже.
+Некоторые методы репозитория принимают объект настроек, влияющий
+на возвращаемый результат. Максимально широкий набор таких настроек
+имеет первый параметр метода `find`, где ожидается объект содержащий
+набор опций указанных ниже.
 
 - `where: object` условия фильтрации по свойствам документа;
 - `order: string|string[]` сортировка по указанным свойствам;
@@ -1923,7 +1917,7 @@ dbs.defineModel({
 
 #### Has One (полиморфная версия)
 
-Обратная сторона полиморфной связи `belongsTo` по принципу *"один к одному"*.
+Обратная сторона полиморфная связи `belongsTo` по принципу *"один к одному"*.
 
 ```
     Текущая (company)  <───────┐      Целевая (license)
@@ -1990,7 +1984,7 @@ dbs.defineModel({
 
 #### Has Many (полиморфная версия)
 
-Обратная сторона полиморфной связи `belongsTo` по принципу *"один ко многим"*.
+Обратная сторона полиморфная связи `belongsTo` по принципу *"один ко многим"*.
 
 ```
     Текущая (letter)  <─────────┐      Целевая (file)
@@ -2103,8 +2097,55 @@ const rep = dbs.getRepository('model');
 console.log(rep instanceof MyRepository); // true
 ```
 
-*i. Так как экземпляры репозитория кэшируются, то замену конструктора
+*i. Так как экземпляры репозитория кэшируется, то замену конструктора
 следует выполнять до обращения к методу `getRepository`.*
+
+## TypeScript
+
+Получение типизированного репозитория с указанием интерфейса модели.
+
+```ts
+import {DataType} from '@e22m4u/js-repository';
+import {RelationType} from '@e22m4u/js-repository';
+import {DatabaseSchema} from '@e22m4u/js-repository';
+
+// const dbs = new DatabaseSchema();
+// dbs.defineDatasource ...
+
+// определение модели "city"
+dbs.defineModel({
+  name: 'city',
+  datasource: 'myDatasource',
+  properties: {
+    name: DataType.STRING,
+    timeZone: DataType.STRING,
+  },
+});
+
+// определение интерфейса "city"
+interface City {
+  id: number;
+  name?: string;
+  timeZone?: string;
+}
+
+// при получении репозитория нужной модели
+// можно указать тип документов
+const cityRep = dbs.getRepository<City>('city');
+
+// теперь, методы репозитория возвращают
+// тип City вместо Record<string, unknown>
+const city: City = await cityRep.create({
+  name: 'Moscow',
+  timeZone: 'Europe/Moscow',
+});
+```
+
+Для определения моделей с помощью TypeScript классов,
+рекомендуется использовать специальную версию данного модуля
+[@e22m4u/ts-repository](https://www.npmjs.com/package/@e22m4u/ts-repository),
+поставляемую с набором TypeScript декораторов и дополнительных
+инструментов для работы в TypeScript окружении.
 
 ## Тесты
 

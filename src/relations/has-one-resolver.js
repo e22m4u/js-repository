@@ -1,8 +1,9 @@
 import {Service} from '@e22m4u/js-service';
 import {cloneDeep} from '../utils/index.js';
+import {RelationType} from '../definition/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {RepositoryRegistry} from '../repository/index.js';
-import {RelationType, ModelDefinitionUtils} from '../definition/index.js';
+import {ModelDefinitionUtils} from '../definition/index.js';
 
 /**
  * Has one resolver.
