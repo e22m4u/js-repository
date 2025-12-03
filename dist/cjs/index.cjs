@@ -1225,7 +1225,6 @@ var init_relations_definition_validator = __esm({
     "use strict";
     import_js_service5 = require("@e22m4u/js-service");
     init_relation_type();
-    init_relation_type();
     init_errors();
     _RelationsDefinitionValidator = class _RelationsDefinitionValidator extends import_js_service5.Service {
       /**
@@ -1765,11 +1764,10 @@ var init_model_definition_utils = __esm({
     "use strict";
     import_js_service7 = require("@e22m4u/js-service");
     init_properties();
-    init_utils();
-    init_utils();
     import_js_empty_values = require("@e22m4u/js-empty-values");
     init_errors();
     init_definition_registry();
+    init_utils();
     DEFAULT_PRIMARY_KEY_PROPERTY_NAME = "id";
     _ModelDefinitionUtils = class _ModelDefinitionUtils extends import_js_service7.Service {
       /**
@@ -3251,10 +3249,6 @@ var init_adapter = __esm({
     import_js_service20 = require("@e22m4u/js-service");
     init_errors();
     init_decorator();
-    init_decorator();
-    init_decorator();
-    init_decorator();
-    init_decorator();
     ADAPTER_CLASS_NAME = "Adapter";
     _Adapter = class _Adapter extends import_js_service20.Service {
       /**
@@ -3461,14 +3455,10 @@ var init_memory_adapter = __esm({
   "src/adapter/builtin/memory-adapter.js"() {
     "use strict";
     init_adapter();
-    init_utils();
-    init_utils();
-    init_definition();
-    init_filter();
-    init_filter();
-    init_filter();
     init_errors();
+    init_utils();
     init_definition();
+    init_filter();
     _MemoryAdapter = class _MemoryAdapter extends Adapter {
       /**
        * Tables.
@@ -3880,10 +3870,9 @@ var import_js_service21, _AdapterLoader, AdapterLoader;
 var init_adapter_loader = __esm({
   "src/adapter/adapter-loader.js"() {
     "use strict";
-    init_adapter();
     import_js_service21 = require("@e22m4u/js-service");
-    init_adapter();
     init_errors();
+    init_adapter();
     init_();
     _AdapterLoader = class _AdapterLoader extends import_js_service21.Service {
       /**
@@ -3903,13 +3892,13 @@ var init_adapter_loader = __esm({
         try {
           const module2 = await globImport_builtin_adapter_js(`./builtin/${adapterName}-adapter.js`);
           adapterCtor = findAdapterCtorInModule(module2);
-        } catch (e) {
+        } catch {
         }
         if (!adapterCtor)
           try {
             const module2 = await Promise.resolve().then(() => __toESM(require(`@e22m4u/js-repository-${adapterName}-adapter`)));
             adapterCtor = findAdapterCtorInModule(module2);
-          } catch (e) {
+          } catch {
           }
         if (!adapterCtor)
           throw new InvalidArgumentError(
@@ -3981,10 +3970,9 @@ var init_repository = __esm({
   "src/repository/repository.js"() {
     "use strict";
     import_js_service23 = require("@e22m4u/js-service");
-    init_adapter2();
-    init_adapter2();
     init_errors();
     init_definition();
+    init_adapter2();
     _Repository = class _Repository extends import_js_service23.Service {
       /**
        * Model name.
@@ -4251,7 +4239,6 @@ var init_has_one_resolver = __esm({
     "use strict";
     import_js_service25 = require("@e22m4u/js-service");
     init_utils();
-    init_definition();
     init_errors();
     init_repository2();
     init_definition();
@@ -4506,7 +4493,6 @@ var init_has_many_resolver = __esm({
     "use strict";
     import_js_service26 = require("@e22m4u/js-service");
     init_utils();
-    init_definition();
     init_errors();
     init_repository2();
     init_definition();
@@ -4770,9 +4756,8 @@ var init_belongs_to_resolver = __esm({
   "src/relations/belongs-to-resolver.js"() {
     "use strict";
     import_js_service27 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
     init_errors();
+    init_utils();
     init_repository2();
     init_definition();
     _BelongsToResolver = class _BelongsToResolver extends import_js_service27.Service {
@@ -4978,9 +4963,8 @@ var init_references_many_resolver = __esm({
   "src/relations/references-many-resolver.js"() {
     "use strict";
     import_js_service28 = require("@e22m4u/js-service");
-    init_utils();
-    init_utils();
     init_errors();
+    init_utils();
     init_repository2();
     init_definition();
     _ReferencesManyResolver = class _ReferencesManyResolver extends import_js_service28.Service {
@@ -5090,14 +5074,10 @@ var init_include_clause_tool = __esm({
   "src/filter/include-clause-tool.js"() {
     "use strict";
     import_js_service29 = require("@e22m4u/js-service");
-    init_definition();
-    init_relations2();
-    init_relations2();
     init_where_clause_tool();
     init_order_clause_tool();
     init_slice_clause_tool();
     init_errors();
-    init_relations2();
     init_fields_clause_tool();
     init_definition();
     init_relations2();
@@ -5494,7 +5474,6 @@ init_adapter2();
 
 // src/database-schema.js
 var import_js_service30 = require("@e22m4u/js-service");
-init_repository2();
 init_definition();
 init_repository2();
 var _DatabaseSchema = class _DatabaseSchema extends import_js_service30.Service {

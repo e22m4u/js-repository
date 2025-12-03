@@ -1,15 +1,17 @@
 import {Service} from '@e22m4u/js-service';
-import {RelationType} from '../definition/index.js';
-import {HasOneResolver} from '../relations/index.js';
-import {HasManyResolver} from '../relations/index.js';
 import {WhereClauseTool} from './where-clause-tool.js';
 import {OrderClauseTool} from './order-clause-tool.js';
 import {SliceClauseTool} from './slice-clause-tool.js';
 import {InvalidArgumentError} from '../errors/index.js';
-import {BelongsToResolver} from '../relations/index.js';
 import {FieldsClauseTool} from './fields-clause-tool.js';
-import {ModelDefinitionUtils} from '../definition/index.js';
-import {ReferencesManyResolver} from '../relations/index.js';
+import {RelationType, ModelDefinitionUtils} from '../definition/index.js';
+
+import {
+  HasOneResolver,
+  HasManyResolver,
+  BelongsToResolver,
+  ReferencesManyResolver,
+} from '../relations/index.js';
 
 /**
  * Include clause tool.
