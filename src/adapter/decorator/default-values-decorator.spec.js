@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {chai} from '../../chai.js';
 import {Adapter} from '../adapter.js';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {DatabaseSchema} from '../../database-schema.js';
 import {DataType, ModelDefinitionUtils} from '../../definition/index.js';
 
@@ -57,15 +57,15 @@ class TestAdapter extends Adapter {
 
 const A = dbs.getService(TestAdapter);
 const U = dbs.getService(ModelDefinitionUtils);
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('DefaultValuesDecorator', function () {
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   it('overrides the "create" method method and sets default values to input data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -81,7 +81,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "replaceById" method and sets default values to input data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -97,7 +97,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "replaceOrCreate" method and sets default values to input data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -113,7 +113,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "patch" method and sets default values to input data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -129,7 +129,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "patchById" method and sets default values to input data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -145,7 +145,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "find" method and sets default values to output data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {
@@ -161,7 +161,7 @@ describe('DefaultValuesDecorator', function () {
   });
 
   it('overrides the "findById" method and sets default values to output data', async function () {
-    sandbox.on(
+    spies.on(
       U,
       'setDefaultValuesToEmptyProperties',
       (modelName, modelData, onlyProvidedProperties = false) => {

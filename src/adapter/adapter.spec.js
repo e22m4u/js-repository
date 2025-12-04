@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {chai} from '../chai.js';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {DatabaseSchema} from '../database-schema.js';
 import {Adapter, ADAPTER_CLASS_NAME} from './adapter.js';
 import {Service, ServiceContainer} from '@e22m4u/js-service';
@@ -12,7 +12,7 @@ import {
   PropertyUniquenessDecorator,
 } from './decorator/index.js';
 
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('Adapter', function () {
   it('exposes static property "kinds"', function () {
@@ -24,7 +24,7 @@ describe('Adapter', function () {
 
   describe('constructor', function () {
     afterEach(function () {
-      sandbox.restore();
+      spies.restore();
     });
 
     it('inherits from the Service class', function () {
@@ -52,11 +52,11 @@ describe('Adapter', function () {
         expect(ctx).to.be.instanceof(Adapter);
         order.push(this);
       };
-      sandbox.on(dec1, 'decorate', decorate);
-      sandbox.on(dec2, 'decorate', decorate);
-      sandbox.on(dec3, 'decorate', decorate);
-      sandbox.on(dec4, 'decorate', decorate);
-      sandbox.on(dec5, 'decorate', decorate);
+      spies.on(dec1, 'decorate', decorate);
+      spies.on(dec2, 'decorate', decorate);
+      spies.on(dec3, 'decorate', decorate);
+      spies.on(dec4, 'decorate', decorate);
+      spies.on(dec5, 'decorate', decorate);
       new Adapter(dbs.container);
       expect(order).to.be.empty;
       expect(dec1.decorate).to.be.not.called;

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import {chai} from '../../chai.js';
 import {format} from '@e22m4u/js-format';
 import {DataType} from './properties/index.js';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {RelationType} from './relations/index.js';
 import {DatabaseSchema} from '../../database-schema.js';
 import {EmptyValuesService} from '@e22m4u/js-empty-values';
@@ -12,11 +12,11 @@ import {
   DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK,
 } from './model-definition-utils.js';
 
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('ModelDefinitionUtils', function () {
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   describe('getPrimaryKeyAsPropertyName', function () {
@@ -34,7 +34,7 @@ describe('ModelDefinitionUtils', function () {
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
       const dbs = new DatabaseSchema();
       const mdu = dbs.getService(ModelDefinitionUtils);
-      sandbox.on(
+      spies.on(
         mdu,
         'getPropertiesDefinitionInBaseModelHierarchy',
         function (modelName) {
@@ -169,7 +169,7 @@ describe('ModelDefinitionUtils', function () {
     it('throws an error if a property name of a default primary key already in use as a regular property', function () {
       const dbs = new DatabaseSchema();
       const mdu = dbs.getService(ModelDefinitionUtils);
-      sandbox.on(
+      spies.on(
         mdu,
         'getPropertiesDefinitionInBaseModelHierarchy',
         function (modelName) {

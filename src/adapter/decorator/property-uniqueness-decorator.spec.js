@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {chai} from '../../chai.js';
 import {Adapter} from '../adapter.js';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {DatabaseSchema} from '../../database-schema.js';
 import {PropertyUniquenessValidator} from '../../definition/index.js';
 
@@ -36,16 +36,16 @@ class TestAdapter extends Adapter {
 
 const A = dbs.getService(TestAdapter);
 const V = dbs.getService(PropertyUniquenessValidator);
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('PropertyUniquenessDecorator', function () {
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   it('overrides the "create" method and validates a given data', async function () {
     const data = {kind: 'data'};
-    sandbox.on(
+    spies.on(
       V,
       'validate',
       (countMethod, methodName, modelName, modelData, id = undefined) => {
@@ -63,7 +63,7 @@ describe('PropertyUniquenessDecorator', function () {
 
   it('overrides the "replaceById" method and validates a given data', async function () {
     const data = {kind: 'data'};
-    sandbox.on(
+    spies.on(
       V,
       'validate',
       (countMethod, methodName, modelName, modelData, id = undefined) => {
@@ -81,7 +81,7 @@ describe('PropertyUniquenessDecorator', function () {
 
   it('overrides the "replaceOrCreate" method and validates a given data', async function () {
     const data = {kind: 'data'};
-    sandbox.on(
+    spies.on(
       V,
       'validate',
       (countMethod, methodName, modelName, modelData, id = undefined) => {
@@ -99,7 +99,7 @@ describe('PropertyUniquenessDecorator', function () {
 
   it('overrides the "patch" method and validates a given data', async function () {
     const data = {kind: 'data'};
-    sandbox.on(
+    spies.on(
       V,
       'validate',
       (countMethod, methodName, modelName, modelData, id = undefined) => {
@@ -117,7 +117,7 @@ describe('PropertyUniquenessDecorator', function () {
 
   it('overrides the "patchById" method and validates a given data', async function () {
     const data = {kind: 'data'};
-    sandbox.on(
+    spies.on(
       V,
       'validate',
       (countMethod, methodName, modelName, modelData, id = undefined) => {

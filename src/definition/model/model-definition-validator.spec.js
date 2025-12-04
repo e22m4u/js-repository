@@ -1,16 +1,16 @@
 import {expect} from 'chai';
-import {chai} from '../../chai.js';
 import {format} from '@e22m4u/js-format';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';
 import {ModelDefinitionValidator} from './model-definition-validator.js';
 
 const S = new ModelDefinitionValidator();
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('ModelDefinitionValidator', function () {
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   describe('validate', function () {
@@ -127,20 +127,20 @@ describe('ModelDefinitionValidator', function () {
 
     it('uses PropertiesDefinitionValidator service to validate model properties', function () {
       const V = S.getService(PropertiesDefinitionValidator);
-      sandbox.on(V, 'validate');
+      spies.on(V, 'validate');
       const properties = {};
       S.validate({name: 'model', properties});
       expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly('model', properties);
+      expect(V.validate).to.have.been.called.with('model', properties);
     });
 
     it('uses RelationsDefinitionValidator service to validate model relations', function () {
       const V = S.getService(RelationsDefinitionValidator);
-      sandbox.on(V, 'validate');
+      spies.on(V, 'validate');
       const relations = {};
       S.validate({name: 'model', relations});
       expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly('model', relations);
+      expect(V.validate).to.have.been.called.with('model', relations);
     });
   });
 });

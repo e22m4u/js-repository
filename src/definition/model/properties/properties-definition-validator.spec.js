@@ -1,17 +1,17 @@
 import {expect} from 'chai';
-import {chai} from '../../../chai.js';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 const S = new PropertiesDefinitionValidator();
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('PropertiesDefinitionValidator', function () {
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   describe('validate', function () {
@@ -411,11 +411,11 @@ describe('PropertiesDefinitionValidator', function () {
 
     it('uses PrimaryKeysDefinitionValidator to validate primary keys', function () {
       const V = S.getService(PrimaryKeysDefinitionValidator);
-      sandbox.on(V, 'validate');
+      spies.on(V, 'validate');
       const propDefs = {};
       S.validate('model', propDefs);
       expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly('model', propDefs);
+      expect(V.validate).to.have.been.called.with('model', propDefs);
     });
 
     it('expects the provided option "unique" to be a Boolean or the PropertyUniqueness', function () {

@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {chai} from '../chai.js';
+import {createSpiesGroup} from '@e22m4u/js-spy';
 import {ModelDefinitionValidator} from './model/index.js';
 import {DefinitionRegistry} from './definition-registry.js';
 import {DatasourceDefinitionValidator} from '../definition/index.js';
 
-const sandbox = chai.spy.sandbox();
+const spies = createSpiesGroup();
 
 describe('DefinitionRegistry', function () {
   let S;
@@ -14,7 +14,7 @@ describe('DefinitionRegistry', function () {
   });
 
   afterEach(function () {
-    sandbox.restore();
+    spies.restore();
   });
 
   describe('addDatasource', function () {
@@ -27,11 +27,11 @@ describe('DefinitionRegistry', function () {
 
     it('uses DatasourceDefinitionValidator to validate a given datasource', function () {
       const V = S.getService(DatasourceDefinitionValidator);
-      sandbox.on(V, 'validate');
+      spies.on(V, 'validate');
       const datasource = {name: 'datasource', adapter: 'adapter'};
       S.addDatasource(datasource);
       expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly(datasource);
+      expect(V.validate).to.have.been.called.with(datasource);
     });
 
     it('throws an error if a given datasource is already defined', function () {
@@ -78,11 +78,11 @@ describe('DefinitionRegistry', function () {
 
     it('uses ModelDefinitionValidator to validate a given model', function () {
       const V = S.getService(ModelDefinitionValidator);
-      sandbox.on(V, 'validate');
+      spies.on(V, 'validate');
       const model = {name: 'model'};
       S.addModel(model);
       expect(V.validate).to.have.been.called.once;
-      expect(V.validate).to.have.been.called.with.exactly(model);
+      expect(V.validate).to.have.been.called.with(model);
     });
 
     it('throws an error if a given model is already defined', function () {
