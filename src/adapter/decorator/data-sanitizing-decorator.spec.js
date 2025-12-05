@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {DatabaseSchema} from '../../database-schema.js';
 import {ModelDataSanitizer} from '../../definition/index.js';
 
@@ -36,15 +36,15 @@ class TestAdapter extends Adapter {
 
 const A = dbs.getService(TestAdapter);
 const V = dbs.getService(ModelDataSanitizer);
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('DataSanitizingDecorator', function () {
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   it('overrides the "create" method and sanitizes a given data', async function () {
-    spies.on(V, 'sanitize');
+    sandbox.on(V, 'sanitize');
     const data = {};
     await A.create('model', data);
     expect(V.sanitize).to.be.called.once;
@@ -52,7 +52,7 @@ describe('DataSanitizingDecorator', function () {
   });
 
   it('overrides the "replaceById" method and sanitizes a given data', async function () {
-    spies.on(V, 'sanitize');
+    sandbox.on(V, 'sanitize');
     const data = {};
     await A.replaceById('model', 1, data);
     expect(V.sanitize).to.be.called.once;
@@ -60,7 +60,7 @@ describe('DataSanitizingDecorator', function () {
   });
 
   it('overrides the "replaceOrCreate" method and sanitizes a given data', async function () {
-    spies.on(V, 'sanitize');
+    sandbox.on(V, 'sanitize');
     const data = {};
     await A.replaceOrCreate('model', data);
     expect(V.sanitize).to.be.called.once;
@@ -68,7 +68,7 @@ describe('DataSanitizingDecorator', function () {
   });
 
   it('overrides the "patch" method and sanitizes a given data', async function () {
-    spies.on(V, 'sanitize');
+    sandbox.on(V, 'sanitize');
     const data = {};
     await A.patch('model', data);
     expect(V.sanitize).to.be.called.once;
@@ -76,7 +76,7 @@ describe('DataSanitizingDecorator', function () {
   });
 
   it('overrides the "patchById" method and sanitizes a given data', async function () {
-    spies.on(V, 'sanitize');
+    sandbox.on(V, 'sanitize');
     const data = {};
     await A.patchById('model', 1, data);
     expect(V.sanitize).to.be.called.once;

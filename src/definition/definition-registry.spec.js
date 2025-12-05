@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {ModelDefinitionValidator} from './model/index.js';
 import {DefinitionRegistry} from './definition-registry.js';
 import {DatasourceDefinitionValidator} from '../definition/index.js';
 
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('DefinitionRegistry', function () {
   let S;
@@ -14,7 +14,7 @@ describe('DefinitionRegistry', function () {
   });
 
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   describe('addDatasource', function () {
@@ -27,7 +27,7 @@ describe('DefinitionRegistry', function () {
 
     it('uses DatasourceDefinitionValidator to validate a given datasource', function () {
       const V = S.getService(DatasourceDefinitionValidator);
-      spies.on(V, 'validate');
+      sandbox.on(V, 'validate');
       const datasource = {name: 'datasource', adapter: 'adapter'};
       S.addDatasource(datasource);
       expect(V.validate).to.have.been.called.once;
@@ -78,7 +78,7 @@ describe('DefinitionRegistry', function () {
 
     it('uses ModelDefinitionValidator to validate a given model', function () {
       const V = S.getService(ModelDefinitionValidator);
-      spies.on(V, 'validate');
+      sandbox.on(V, 'validate');
       const model = {name: 'model'};
       S.addModel(model);
       expect(V.validate).to.have.been.called.once;

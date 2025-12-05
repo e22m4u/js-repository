@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {DatabaseSchema} from '../../database-schema.js';
 import {IncludeClauseTool} from '../../filter/index.js';
 
@@ -53,15 +53,15 @@ class TestAdapter extends Adapter {
 
 const A = dbs.getService(TestAdapter);
 const T = dbs.getService(IncludeClauseTool);
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('InclusionDecorator', function () {
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   it('overrides the "create" method method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);
@@ -73,7 +73,7 @@ describe('InclusionDecorator', function () {
   });
 
   it('overrides the "replaceById" method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);
@@ -85,7 +85,7 @@ describe('InclusionDecorator', function () {
   });
 
   it('overrides the "replaceOrCreate" method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);
@@ -97,7 +97,7 @@ describe('InclusionDecorator', function () {
   });
 
   it('overrides the "patchById" method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);
@@ -109,7 +109,7 @@ describe('InclusionDecorator', function () {
   });
 
   it('overrides the "find" method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);
@@ -121,7 +121,7 @@ describe('InclusionDecorator', function () {
   });
 
   it('overrides the "findById" method and applies clause inclusion', async function () {
-    spies.on(T, 'includeTo', function (entities, modelName, clause) {
+    sandbox.on(T, 'includeTo', function (entities, modelName, clause) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eql('model');
       expect(clause).to.be.eql(FILTER.include);

@@ -1,16 +1,16 @@
 import {expect} from 'chai';
 import {format} from '@e22m4u/js-format';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {RelationsDefinitionValidator} from './relations/index.js';
 import {PropertiesDefinitionValidator} from './properties/index.js';
 import {ModelDefinitionValidator} from './model-definition-validator.js';
 
 const S = new ModelDefinitionValidator();
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('ModelDefinitionValidator', function () {
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   describe('validate', function () {
@@ -127,7 +127,7 @@ describe('ModelDefinitionValidator', function () {
 
     it('uses PropertiesDefinitionValidator service to validate model properties', function () {
       const V = S.getService(PropertiesDefinitionValidator);
-      spies.on(V, 'validate');
+      sandbox.on(V, 'validate');
       const properties = {};
       S.validate({name: 'model', properties});
       expect(V.validate).to.have.been.called.once;
@@ -136,7 +136,7 @@ describe('ModelDefinitionValidator', function () {
 
     it('uses RelationsDefinitionValidator service to validate model relations', function () {
       const V = S.getService(RelationsDefinitionValidator);
-      spies.on(V, 'validate');
+      sandbox.on(V, 'validate');
       const relations = {};
       S.validate({name: 'model', relations});
       expect(V.validate).to.have.been.called.once;

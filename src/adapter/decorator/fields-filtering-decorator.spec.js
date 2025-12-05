@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Adapter} from '../adapter.js';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {FieldsClauseTool} from '../../filter/index.js';
 import {DatabaseSchema} from '../../database-schema.js';
 
@@ -55,15 +55,15 @@ class TestAdapter extends Adapter {
 
 const A = dbs.getService(TestAdapter);
 const T = dbs.getService(FieldsClauseTool);
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('FieldsFilteringDecorator', function () {
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   it('overrides the "create" method method and filtering output fields', async function () {
-    spies.on(T, 'filter');
+    sandbox.on(T, 'filter');
     const retval = await A.create(MODEL_NAME, {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;
@@ -71,7 +71,7 @@ describe('FieldsFilteringDecorator', function () {
   });
 
   it('overrides the "replaceById" method and filtering output fields', async function () {
-    spies.on(T, 'filter');
+    sandbox.on(T, 'filter');
     const retval = await A.replaceById(MODEL_NAME, 1, {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;
@@ -79,7 +79,7 @@ describe('FieldsFilteringDecorator', function () {
   });
 
   it('overrides the "replaceOrCreate" method and filtering output fields', async function () {
-    spies.on(T, 'filter');
+    sandbox.on(T, 'filter');
     const retval = await A.replaceOrCreate(MODEL_NAME, {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;
@@ -87,7 +87,7 @@ describe('FieldsFilteringDecorator', function () {
   });
 
   it('overrides the "patchById" method and filtering output fields', async function () {
-    spies.on(T, 'filter');
+    sandbox.on(T, 'filter');
     const retval = await A.patchById(MODEL_NAME, 1, {}, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;
@@ -95,7 +95,7 @@ describe('FieldsFilteringDecorator', function () {
   });
 
   it('overrides the "find" method and filtering output fields', async function () {
-    spies.on(T, 'filter', function (entities, modelName, fields) {
+    sandbox.on(T, 'filter', function (entities, modelName, fields) {
       expect(entities).to.be.eql([MODEL_DATA]);
       expect(modelName).to.be.eq(MODEL_NAME);
       expect(fields).to.be.eql(FILTER.fields);
@@ -107,7 +107,7 @@ describe('FieldsFilteringDecorator', function () {
   });
 
   it('overrides the "findById" method and filtering output fields', async function () {
-    spies.on(T, 'filter');
+    sandbox.on(T, 'filter');
     const retval = await A.findById(MODEL_NAME, 1, FILTER);
     expect(retval).to.be.eql(RETVAL_DATA);
     expect(T.filter).to.be.called.once;

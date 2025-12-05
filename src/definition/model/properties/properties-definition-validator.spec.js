@@ -1,17 +1,17 @@
 import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
-import {createSpiesGroup} from '@e22m4u/js-spy';
+import {createSandbox} from '@e22m4u/js-spy';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertiesDefinitionValidator} from './properties-definition-validator.js';
 import {PrimaryKeysDefinitionValidator} from './primary-keys-definition-validator.js';
 
 const S = new PropertiesDefinitionValidator();
-const spies = createSpiesGroup();
+const sandbox = createSandbox();
 
 describe('PropertiesDefinitionValidator', function () {
   afterEach(function () {
-    spies.restore();
+    sandbox.restore();
   });
 
   describe('validate', function () {
@@ -411,7 +411,7 @@ describe('PropertiesDefinitionValidator', function () {
 
     it('uses PrimaryKeysDefinitionValidator to validate primary keys', function () {
       const V = S.getService(PrimaryKeysDefinitionValidator);
-      spies.on(V, 'validate');
+      sandbox.on(V, 'validate');
       const propDefs = {};
       S.validate('model', propDefs);
       expect(V.validate).to.have.been.called.once;
