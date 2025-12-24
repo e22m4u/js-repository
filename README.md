@@ -485,12 +485,12 @@ dbs.defineModel({
 
 | тип         | пустые значения           |
 |-------------|---------------------------|
-| `'any'`     | `undefined`, `null`       |
+| `'any'`     | `undefined`, `null`, `''` |
 | `'string'`  | `undefined`, `null`, `''` |
-| `'number'`  | `undefined`, `null`, `0`  |
+| `'number'`  | `undefined`, `null`       |
 | `'boolean'` | `undefined`, `null`       |
-| `'array'`   | `undefined`, `null`, `[]` |
-| `'object'`  | `undefined`, `null`, `{}` |
+| `'array'`   | `undefined`, `null`       |
+| `'object'`  | `undefined`, `null`       |
 
 ### Переопределение пустых значений
 
@@ -526,9 +526,9 @@ class EmptyValuesService {
 
 **Пример**
 
-По умолчанию, для числовых свойств значение `0` считается пустым. Следующий
-пример демонстрирует, как изменить это поведение, оставив в качестве пустых
-значений только `undefined` и `null`.
+Если строковое свойство является обязательным, то значение `""` (пустая строка)
+приведет к ошибке. Следующий пример демонстрирует, как изменить данное
+поведение, оставив в качестве пустых значений только `undefined` и `null`.
 
 ```js
 import {DataType} from '@e22m4u/js-repository';
@@ -540,13 +540,12 @@ const dbs = new DatabaseSchema();
 // получение сервиса для работы с пустыми значениями
 const emptyValuesService = dbs.getService(EmptyValuesService);
 
-// переопределение пустых значений для типа DataType.NUMBER
-emptyValuesService.setEmptyValuesOf(DataType.NUMBER, [undefined, null]);
+// переопределение пустых значений для типа DataType.STRING
+emptyValuesService.setEmptyValuesOf(DataType.STRING, [undefined, null]);
 ```
 
-После этого, значение `0` для свойств типа `DataType.NUMBER` больше не будет
-считаться пустым и будет проходить проверку с опцией `required`, а также
-не будет заменяться значением по умолчанию.
+Теперь пустая строка будет успешно проходить проверку для свойств
+с типом `string`, а также не будет заменяться на значение по умолчанию.
 
 ## Репозиторий
 
