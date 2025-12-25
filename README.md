@@ -483,14 +483,14 @@ dbs.defineModel({
 наоборот допускает дублирование пустых значений уникального свойства,
 поскольку они не участвуют в проверке.
 
-| константа          | значение константы | пустые значения            |
-|--------------------|--------------------|----------------------------|
-| `DataType.ANY`     | `"any"`            | *значения остальных типов* |
-| `DataType.STRING`  | `"string"`         | `undefined`, `null`, `""`  |
-| `DataType.NUMBER`  | `"number"`         | `undefined`, `null`, `0`   |
-| `DataType.BOOLEAN` | `"boolean"`        | `undefined`, `null`        |
-| `DataType.ARRAY`   | `"array"`          | `undefined`, `null`, `[]`  |
-| `DataType.OBJECT`  | `"object"`         | `undefined`, `null`, `{}`  |
+| тип данных         | пустые значения            |
+|--------------------|----------------------------|
+| `DataType.ANY`     | *значения остальных типов* |
+| `DataType.STRING`  | `undefined`, `null`, `""`  |
+| `DataType.NUMBER`  | `undefined`, `null`, `0`   |
+| `DataType.BOOLEAN` | `undefined`, `null`        |
+| `DataType.ARRAY`   | `undefined`, `null`, `[]`  |
+| `DataType.OBJECT`  | `undefined`, `null`, `{}`  |
 
 ### Переопределение пустых значений
 
