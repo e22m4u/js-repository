@@ -147,7 +147,7 @@ export class ModelDefinitionUtils extends Service {
         propDef != null
           ? this.getDataTypeFromPropertyDefinition(propDef)
           : DataType.ANY;
-      const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
+      const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
       if (!isEmpty) return;
       if (
         propDef &&

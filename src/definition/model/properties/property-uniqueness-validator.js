@@ -85,7 +85,7 @@ export class PropertyUniquenessValidator extends Service {
       const propValue = modelData[propName];
       if (propDef.unique === PropertyUniqueness.SPARSE) {
         const propType = propDef.type || DataType.ANY;
-        const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
+        const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
         if (isEmpty) continue;
       }
       // create

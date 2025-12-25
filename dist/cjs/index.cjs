@@ -1881,7 +1881,7 @@ var init_model_definition_utils = __esm({
           const propDef = propDefs[propName];
           const propValue = extendedData[propName];
           const propType = propDef != null ? this.getDataTypeFromPropertyDefinition(propDef) : DataType.ANY;
-          const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
+          const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
           if (!isEmpty) return;
           if (propDef && typeof propDef === "object" && propDef.default !== void 0) {
             extendedData[propName] = this.getDefaultPropertyValue(
@@ -2239,7 +2239,7 @@ var init_property_uniqueness_validator = __esm({
           const propValue = modelData[propName];
           if (propDef.unique === PropertyUniqueness.SPARSE) {
             const propType = propDef.type || DataType.ANY;
-            const isEmpty = emptyValuesService.isEmptyByType(propType, propValue);
+            const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
             if (isEmpty) continue;
           }
           if (methodName === "create") {
