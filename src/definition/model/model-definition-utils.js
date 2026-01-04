@@ -1,6 +1,6 @@
 import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
-import {EmptyValuesService} from '@e22m4u/js-empty-values';
+import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {DefinitionRegistry} from '../definition-registry.js';
 import {cloneDeep, excludeObjectKeys} from '../../utils/index.js';
@@ -139,7 +139,7 @@ export class ModelDefinitionUtils extends Service {
       ? Object.keys(modelData)
       : Object.keys(propDefs);
     const extendedData = cloneDeep(modelData);
-    const emptyValuesService = this.getService(EmptyValuesService);
+    const blankValuesService = this.getService(BlankValuesService);
     propNames.forEach(propName => {
       const propDef = propDefs[propName];
       const propValue = extendedData[propName];
@@ -147,8 +147,8 @@ export class ModelDefinitionUtils extends Service {
         propDef != null
           ? this.getDataTypeFromPropertyDefinition(propDef)
           : DataType.ANY;
-      const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
-      if (!isEmpty) return;
+      const isBlank = blankValuesService.isBlankOf(propType, propValue);
+      if (!isBlank) return;
       if (
         propDef &&
         typeof propDef === 'object' &&

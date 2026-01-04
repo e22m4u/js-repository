@@ -1876,13 +1876,13 @@ var init_model_definition_utils = __esm({
         const propDefs = this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
         const propNames = onlyProvidedProperties ? Object.keys(modelData) : Object.keys(propDefs);
         const extendedData = cloneDeep(modelData);
-        const emptyValuesService = this.getService(import_js_empty_values.EmptyValuesService);
+        const blankValuesService = this.getService(import_js_empty_values.BlankValuesService);
         propNames.forEach((propName) => {
           const propDef = propDefs[propName];
           const propValue = extendedData[propName];
           const propType = propDef != null ? this.getDataTypeFromPropertyDefinition(propDef) : DataType.ANY;
-          const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
-          if (!isEmpty) return;
+          const isBlank = blankValuesService.isBlankOf(propType, propValue);
+          if (!isBlank) return;
           if (propDef && typeof propDef === "object" && propDef.default !== void 0) {
             extendedData[propName] = this.getDefaultPropertyValue(
               modelName,

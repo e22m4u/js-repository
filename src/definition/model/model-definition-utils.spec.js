@@ -4,7 +4,7 @@ import {createSandbox} from '@e22m4u/js-spy';
 import {DataType} from './properties/index.js';
 import {RelationType} from './relations/index.js';
 import {DatabaseSchema} from '../../database-schema.js';
-import {EmptyValuesService} from '@e22m4u/js-empty-values';
+import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 
 import {
@@ -480,7 +480,7 @@ describe('ModelDefinitionUtils', function () {
       expect(result).to.be.eql({foo: 'string'});
     });
 
-    it('sets a default value if a property has an empty value', function () {
+    it('sets a default value if a property has a blank value', function () {
       const dbs = new DatabaseSchema();
       dbs.defineModel({
         name: 'model',
@@ -492,11 +492,11 @@ describe('ModelDefinitionUtils', function () {
         },
       });
       dbs
-        .getService(EmptyValuesService)
-        .setEmptyValuesOf(DataType.STRING, ['empty']);
+        .getService(BlankValuesService)
+        .setBlankValuesOf(DataType.STRING, ['blank']);
       const result = dbs
         .getService(ModelDefinitionUtils)
-        .setDefaultValuesToEmptyProperties('model', {foo: 'empty'});
+        .setDefaultValuesToEmptyProperties('model', {foo: 'blank'});
       expect(result).to.be.eql({foo: 'placeholder'});
     });
 
