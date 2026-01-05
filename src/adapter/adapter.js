@@ -8,6 +8,7 @@ import {
   DefaultValuesDecorator,
   DataSanitizingDecorator,
   FieldsFilteringDecorator,
+  RequiredPropertyDecorator,
   PropertyUniquenessDecorator,
 } from './decorator/index.js';
 
@@ -58,6 +59,7 @@ export class Adapter extends Service {
     if (this.constructor !== Adapter) {
       this.getService(DataSanitizingDecorator).decorate(this);
       this.getService(DefaultValuesDecorator).decorate(this);
+      this.getService(RequiredPropertyDecorator).decorate(this);
       this.getService(PropertyUniquenessDecorator).decorate(this);
       this.getService(FieldsFilteringDecorator).decorate(this);
       this.getService(InclusionDecorator).decorate(this);
