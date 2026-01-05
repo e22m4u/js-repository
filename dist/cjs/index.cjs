@@ -2307,7 +2307,7 @@ var init_property_uniqueness_validator = __esm({
           propValue
         ), "createError");
         let willBeReplaced = void 0;
-        const emptyValuesService = this.getService(import_js_empty_values3.EmptyValuesService);
+        const blankValuesService = this.getService(import_js_empty_values3.BlankValuesService);
         for (const propName of propNames) {
           const propDef = propDefs[propName];
           if (!propDef || typeof propDef === "string" || !propDef.unique || propDef.unique === PropertyUniqueness.NON_UNIQUE) {
@@ -2316,8 +2316,8 @@ var init_property_uniqueness_validator = __esm({
           const propValue = modelData[propName];
           if (propDef.unique === PropertyUniqueness.SPARSE) {
             const propType = propDef.type || DataType.ANY;
-            const isEmpty = emptyValuesService.isEmptyOf(propType, propValue);
-            if (isEmpty) continue;
+            const isBlank = blankValuesService.isBlankOf(propType, propValue);
+            if (isBlank) continue;
           }
           if (methodName === "create") {
             const count = await countMethod({ [propName]: propValue });

@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {DatabaseSchema} from '../../../database-schema.js';
-import {EmptyValuesService} from '@e22m4u/js-empty-values';
+import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertyUniquenessValidator} from './property-uniqueness-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
@@ -1862,7 +1862,7 @@ describe('PropertyUniquenessValidator', function () {
           expect(invoked).to.be.eq(1);
         });
 
-        it('skips uniqueness checking for empty values', async function () {
+        it('skips uniqueness checking for blank values', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1880,8 +1880,8 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           dbs
-            .getService(EmptyValuesService)
-            .setEmptyValuesOf(DataType.STRING, ['val2']);
+            .getService(BlankValuesService)
+            .setBlankValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
             if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
@@ -1976,7 +1976,7 @@ describe('PropertyUniquenessValidator', function () {
           expect(invoked).to.be.eq(1);
         });
 
-        it('skips uniqueness checking for empty values', async function () {
+        it('skips uniqueness checking for blank values', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1994,8 +1994,8 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           dbs
-            .getService(EmptyValuesService)
-            .setEmptyValuesOf(DataType.STRING, ['val2']);
+            .getService(BlankValuesService)
+            .setBlankValuesOf(DataType.STRING, ['val2']);
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -2241,7 +2241,7 @@ describe('PropertyUniquenessValidator', function () {
               expect(invoked).to.be.eq(3);
             });
 
-            it('skips uniqueness checking for empty values', async function () {
+            it('skips uniqueness checking for blank values', async function () {
               const dbs = new DatabaseSchema();
               dbs.defineModel({
                 name: 'model',
@@ -2258,8 +2258,8 @@ describe('PropertyUniquenessValidator', function () {
               });
               const puv = dbs.getService(PropertyUniquenessValidator);
               dbs
-                .getService(EmptyValuesService)
-                .setEmptyValuesOf(DataType.STRING, ['val2']);
+                .getService(BlankValuesService)
+                .setBlankValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
@@ -2420,7 +2420,7 @@ describe('PropertyUniquenessValidator', function () {
               expect(invoked).to.be.eq(3);
             });
 
-            it('skips uniqueness checking for empty values', async function () {
+            it('skips uniqueness checking for blank values', async function () {
               const dbs = new DatabaseSchema();
               dbs.defineModel({
                 name: 'model',
@@ -2437,8 +2437,8 @@ describe('PropertyUniquenessValidator', function () {
               });
               const puv = dbs.getService(PropertyUniquenessValidator);
               dbs
-                .getService(EmptyValuesService)
-                .setEmptyValuesOf(DataType.STRING, ['val2']);
+                .getService(BlankValuesService)
+                .setBlankValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
               const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
@@ -2558,7 +2558,7 @@ describe('PropertyUniquenessValidator', function () {
           await expect(promise2).not.to.be.rejected;
         });
 
-        it('skips uniqueness checking for empty values', async function () {
+        it('skips uniqueness checking for blank values', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2575,8 +2575,8 @@ describe('PropertyUniquenessValidator', function () {
           });
           const puv = dbs.getService(PropertyUniquenessValidator);
           dbs
-            .getService(EmptyValuesService)
-            .setEmptyValuesOf(DataType.STRING, ['val2']);
+            .getService(BlankValuesService)
+            .setBlankValuesOf(DataType.STRING, ['val2']);
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
@@ -2697,7 +2697,7 @@ describe('PropertyUniquenessValidator', function () {
           await expect(promise2).not.to.be.rejected;
         });
 
-        it('skips uniqueness checking for empty values', async function () {
+        it('skips uniqueness checking for blank values', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2715,8 +2715,8 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
           dbs
-            .getService(EmptyValuesService)
-            .setEmptyValuesOf(DataType.STRING, ['val2']);
+            .getService(BlankValuesService)
+            .setBlankValuesOf(DataType.STRING, ['val2']);
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
             if (invoked === 0)
