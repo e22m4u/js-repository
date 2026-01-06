@@ -1,6 +1,5 @@
 import {DataType} from './data-type.js';
 import {Service} from '@e22m4u/js-service';
-import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {ModelDefinitionUtils} from '../model-definition-utils.js';
 
@@ -44,7 +43,6 @@ export class RequiredPropertyValidator extends Service {
         ModelDefinitionUtils,
       ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propNames = Object.keys(isPartial ? modelData : propDefs);
-    const blankValuesService = this.getService(BlankValuesService);
     for (const propName of propNames) {
       const propDef = propDefs[propName];
       if (!propDef || typeof propDef !== 'object') {
@@ -52,16 +50,13 @@ export class RequiredPropertyValidator extends Service {
       }
       // проверка основного значения
       const propValue = modelData[propName];
-      if (propDef.required) {
-        const propType = propDef.type || DataType.ANY;
-        if (blankValuesService.isBlankOf(propType, propValue)) {
-          throw new InvalidArgumentError(
-            'Property %v of the model %v is required, but %v was given.',
-            propName,
-            modelName,
-            propValue,
-          );
-        }
+      if (propDef.required && propValue == null) {
+        throw new InvalidArgumentError(
+          'Property %v of the model %v is required, but %v was given.',
+          propName,
+          modelName,
+          propValue,
+        );
       }
       // проверка вложенного объекта
       if (

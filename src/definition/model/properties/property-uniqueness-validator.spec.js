@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {DatabaseSchema} from '../../../database-schema.js';
-import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {PropertyUniquenessValidator} from './property-uniqueness-validator.js';
 import {DEFAULT_PRIMARY_KEY_PROPERTY_NAME as DEF_PK} from '../model-definition-utils.js';
@@ -1862,7 +1861,7 @@ describe('PropertyUniquenessValidator', function () {
           expect(invoked).to.be.eq(1);
         });
 
-        it('skips uniqueness checking for blank values', async function () {
+        it('skips uniqueness checking for undefined value', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1879,10 +1878,34 @@ describe('PropertyUniquenessValidator', function () {
           });
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          dbs
-            .getService(BlankValuesService)
-            .setBlankValuesOf(DataType.STRING, ['val2']);
-          const modelData = {foo: 'val1', bar: 'val2'};
+          const modelData = {foo: 'val1', bar: undefined};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await puv.validate(countMethod, 'create', 'model', modelData);
+          expect(invoked).to.be.eql(1);
+        });
+
+        it('skips uniqueness checking for an empty string', async function () {
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
             if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
             invoked++;
@@ -1976,7 +1999,7 @@ describe('PropertyUniquenessValidator', function () {
           expect(invoked).to.be.eq(1);
         });
 
-        it('skips uniqueness checking for blank values', async function () {
+        it('skips uniqueness checking for undefined value', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1993,11 +2016,46 @@ describe('PropertyUniquenessValidator', function () {
           });
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          dbs
-            .getService(BlankValuesService)
-            .setBlankValuesOf(DataType.STRING, ['val2']);
           const idValue = 1;
-          const modelData = {foo: 'val1', bar: 'val2'};
+          const modelData = {foo: 'val1', bar: undefined};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: idValue},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await puv.validate(
+            countMethod,
+            'replaceById',
+            'model',
+            modelData,
+            idValue,
+          );
+          expect(invoked).to.be.eql(1);
+        });
+
+        it('skips uniqueness checking for an empty string', async function () {
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const idValue = 1;
+          const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
             if (invoked === 0)
               expect(where).to.be.eql({
@@ -2241,7 +2299,7 @@ describe('PropertyUniquenessValidator', function () {
               expect(invoked).to.be.eq(3);
             });
 
-            it('skips uniqueness checking for blank values', async function () {
+            it('skips uniqueness checking for undefined value', async function () {
               const dbs = new DatabaseSchema();
               dbs.defineModel({
                 name: 'model',
@@ -2257,12 +2315,54 @@ describe('PropertyUniquenessValidator', function () {
                 },
               });
               const puv = dbs.getService(PropertyUniquenessValidator);
-              dbs
-                .getService(BlankValuesService)
-                .setBlankValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
-              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: undefined,
+              };
+              const countMethod = where => {
+                if (invoked === 0) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                } else if (invoked === 1) {
+                  expect(where).to.be.eql({foo: 'val1'});
+                }
+                invoked++;
+                return 0;
+              };
+              await puv.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eql(2);
+            });
+
+            it('skips uniqueness checking for an empty string', async function () {
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const puv = dbs.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: undefined,
+              };
               const countMethod = where => {
                 if (invoked === 0) {
                   expect(where).to.be.eql({[DEF_PK]: idValue});
@@ -2420,7 +2520,7 @@ describe('PropertyUniquenessValidator', function () {
               expect(invoked).to.be.eq(3);
             });
 
-            it('skips uniqueness checking for blank values', async function () {
+            it('skips uniqueness checking for undefined value', async function () {
               const dbs = new DatabaseSchema();
               dbs.defineModel({
                 name: 'model',
@@ -2436,12 +2536,58 @@ describe('PropertyUniquenessValidator', function () {
                 },
               });
               const puv = dbs.getService(PropertyUniquenessValidator);
-              dbs
-                .getService(BlankValuesService)
-                .setBlankValuesOf(DataType.STRING, ['val2']);
               let invoked = 0;
               const idValue = 1;
-              const modelData = {[DEF_PK]: idValue, foo: 'val1', bar: 'val2'};
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: undefined,
+              };
+              const countMethod = where => {
+                invoked++;
+                if (invoked === 1) {
+                  expect(where).to.be.eql({[DEF_PK]: idValue});
+                  return 1;
+                } else if (invoked === 2) {
+                  expect(where).to.be.eql({
+                    [DEF_PK]: {neq: idValue},
+                    foo: 'val1',
+                  });
+                  return 0;
+                }
+              };
+              await puv.validate(
+                countMethod,
+                'replaceOrCreate',
+                'model',
+                modelData,
+              );
+              expect(invoked).to.be.eql(2);
+            });
+
+            it('skips uniqueness checking for an empty string', async function () {
+              const dbs = new DatabaseSchema();
+              dbs.defineModel({
+                name: 'model',
+                properties: {
+                  foo: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                  bar: {
+                    type: DataType.STRING,
+                    unique: PropertyUniqueness.SPARSE,
+                  },
+                },
+              });
+              const puv = dbs.getService(PropertyUniquenessValidator);
+              let invoked = 0;
+              const idValue = 1;
+              const modelData = {
+                [DEF_PK]: idValue,
+                foo: 'val1',
+                bar: '',
+              };
               const countMethod = where => {
                 invoked++;
                 if (invoked === 1) {
@@ -2558,7 +2704,7 @@ describe('PropertyUniquenessValidator', function () {
           await expect(promise2).not.to.be.rejected;
         });
 
-        it('skips uniqueness checking for blank values', async function () {
+        it('skips uniqueness checking for undefined value', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2574,11 +2720,35 @@ describe('PropertyUniquenessValidator', function () {
             },
           });
           const puv = dbs.getService(PropertyUniquenessValidator);
-          dbs
-            .getService(BlankValuesService)
-            .setBlankValuesOf(DataType.STRING, ['val2']);
           let invoked = 0;
-          const modelData = {foo: 'val1', bar: 'val2'};
+          const modelData = {foo: 'val1', bar: undefined};
+          const countMethod = where => {
+            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            invoked++;
+            return 0;
+          };
+          await puv.validate(countMethod, 'patch', 'model', modelData);
+          expect(invoked).to.be.eql(1);
+        });
+
+        it('skips uniqueness checking for an empty string', async function () {
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
             if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
             invoked++;
@@ -2697,7 +2867,7 @@ describe('PropertyUniquenessValidator', function () {
           await expect(promise2).not.to.be.rejected;
         });
 
-        it('skips uniqueness checking for blank values', async function () {
+        it('skips uniqueness checking for undefined value', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2714,10 +2884,38 @@ describe('PropertyUniquenessValidator', function () {
           });
           const puv = dbs.getService(PropertyUniquenessValidator);
           let invoked = 0;
-          dbs
-            .getService(BlankValuesService)
-            .setBlankValuesOf(DataType.STRING, ['val2']);
-          const modelData = {foo: 'val1', bar: 'val2'};
+          const modelData = {foo: 'val1', bar: undefined};
+          const countMethod = where => {
+            if (invoked === 0)
+              expect(where).to.be.eql({
+                [DEF_PK]: {neq: 1},
+                foo: 'val1',
+              });
+            invoked++;
+            return 0;
+          };
+          await puv.validate(countMethod, 'patchById', 'model', modelData, 1);
+          expect(invoked).to.be.eql(1);
+        });
+
+        it('skips uniqueness checking for an empty string', async function () {
+          const dbs = new DatabaseSchema();
+          dbs.defineModel({
+            name: 'model',
+            properties: {
+              foo: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+              bar: {
+                type: DataType.STRING,
+                unique: PropertyUniqueness.SPARSE,
+              },
+            },
+          });
+          const puv = dbs.getService(PropertyUniquenessValidator);
+          let invoked = 0;
+          const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
             if (invoked === 0)
               expect(where).to.be.eql({

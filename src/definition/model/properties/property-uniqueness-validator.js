@@ -1,7 +1,5 @@
-import {DataType} from './data-type.js';
 import {Service} from '@e22m4u/js-service';
 import {isPlainObject} from '../../../utils/index.js';
-import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {PropertyUniqueness} from './property-uniqueness.js';
 import {InvalidArgumentError} from '../../../errors/index.js';
 import {ModelDefinitionUtils} from '../model-definition-utils.js';
@@ -70,7 +68,6 @@ export class PropertyUniquenessValidator extends Service {
         propValue,
       );
     let willBeReplaced = undefined;
-    const blankValuesService = this.getService(BlankValuesService);
     for (const propName of propNames) {
       const propDef = propDefs[propName];
       if (
@@ -81,12 +78,11 @@ export class PropertyUniquenessValidator extends Service {
       ) {
         continue;
       }
-      // sparse
+      // в режиме "sparse" проверка на уникальность
+      // должна игнорировать ложные значения
       const propValue = modelData[propName];
-      if (propDef.unique === PropertyUniqueness.SPARSE) {
-        const propType = propDef.type || DataType.ANY;
-        const isBlank = blankValuesService.isBlankOf(propType, propValue);
-        if (isBlank) continue;
+      if (propDef.unique === PropertyUniqueness.SPARSE && !propValue) {
+        continue;
       }
       // create
       if (methodName === 'create') {

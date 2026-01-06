@@ -1758,13 +1758,12 @@ var init_definition_registry = __esm({
 });
 
 // src/definition/model/model-definition-utils.js
-var import_js_service7, import_js_empty_values, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
+var import_js_service7, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, _ModelDefinitionUtils, ModelDefinitionUtils;
 var init_model_definition_utils = __esm({
   "src/definition/model/model-definition-utils.js"() {
     "use strict";
     import_js_service7 = require("@e22m4u/js-service");
     init_properties();
-    import_js_empty_values = require("@e22m4u/js-empty-values");
     init_errors();
     init_definition_registry();
     init_utils();
@@ -1865,7 +1864,7 @@ var init_model_definition_utils = __esm({
           return propDef.default instanceof Function ? propDef.default() : propDef.default;
       }
       /**
-       * Set default values for empty properties.
+       * Set default values to empty properties.
        *
        * @param {string} modelName
        * @param {object} modelData
@@ -1876,13 +1875,12 @@ var init_model_definition_utils = __esm({
         const propDefs = this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
         const propNames = onlyProvidedProperties ? Object.keys(modelData) : Object.keys(propDefs);
         const extendedData = cloneDeep(modelData);
-        const blankValuesService = this.getService(import_js_empty_values.BlankValuesService);
         propNames.forEach((propName) => {
           const propDef = propDefs[propName];
           const propValue = extendedData[propName];
-          const propType = propDef != null ? this.getDataTypeFromPropertyDefinition(propDef) : DataType.ANY;
-          const isBlank = blankValuesService.isBlankOf(propType, propValue);
-          if (!isBlank) return;
+          if (propValue != null) {
+            return;
+          }
           if (propDef && typeof propDef === "object" && propDef.default !== void 0) {
             extendedData[propName] = this.getDefaultPropertyValue(
               modelName,
@@ -2171,13 +2169,12 @@ var init_model_definition_utils = __esm({
 });
 
 // src/definition/model/properties/required-property-validator.js
-var import_js_service8, import_js_empty_values2, _RequiredPropertyValidator, RequiredPropertyValidator;
+var import_js_service8, _RequiredPropertyValidator, RequiredPropertyValidator;
 var init_required_property_validator = __esm({
   "src/definition/model/properties/required-property-validator.js"() {
     "use strict";
     init_data_type();
     import_js_service8 = require("@e22m4u/js-service");
-    import_js_empty_values2 = require("@e22m4u/js-empty-values");
     init_errors();
     init_model_definition_utils();
     _RequiredPropertyValidator = class _RequiredPropertyValidator extends import_js_service8.Service {
@@ -2212,23 +2209,19 @@ var init_required_property_validator = __esm({
           ModelDefinitionUtils
         ).getPropertiesDefinitionInBaseModelHierarchy(modelName);
         const propNames = Object.keys(isPartial ? modelData : propDefs);
-        const blankValuesService = this.getService(import_js_empty_values2.BlankValuesService);
         for (const propName of propNames) {
           const propDef = propDefs[propName];
           if (!propDef || typeof propDef !== "object") {
             continue;
           }
           const propValue = modelData[propName];
-          if (propDef.required) {
-            const propType = propDef.type || DataType.ANY;
-            if (blankValuesService.isBlankOf(propType, propValue)) {
-              throw new InvalidArgumentError(
-                "Property %v of the model %v is required, but %v was given.",
-                propName,
-                modelName,
-                propValue
-              );
-            }
+          if (propDef.required && propValue == null) {
+            throw new InvalidArgumentError(
+              "Property %v of the model %v is required, but %v was given.",
+              propName,
+              modelName,
+              propValue
+            );
           }
           if (propDef.type === DataType.OBJECT && propDef.model && propValue !== null && typeof propValue === "object" && !Array.isArray(propValue)) {
             this.validate(propDef.model, propValue);
@@ -2248,14 +2241,12 @@ var init_required_property_validator = __esm({
 });
 
 // src/definition/model/properties/property-uniqueness-validator.js
-var import_js_service9, import_js_empty_values3, _PropertyUniquenessValidator, PropertyUniquenessValidator;
+var import_js_service9, _PropertyUniquenessValidator, PropertyUniquenessValidator;
 var init_property_uniqueness_validator = __esm({
   "src/definition/model/properties/property-uniqueness-validator.js"() {
     "use strict";
-    init_data_type();
     import_js_service9 = require("@e22m4u/js-service");
     init_utils();
-    import_js_empty_values3 = require("@e22m4u/js-empty-values");
     init_property_uniqueness();
     init_errors();
     init_model_definition_utils();
@@ -2307,17 +2298,14 @@ var init_property_uniqueness_validator = __esm({
           propValue
         ), "createError");
         let willBeReplaced = void 0;
-        const blankValuesService = this.getService(import_js_empty_values3.BlankValuesService);
         for (const propName of propNames) {
           const propDef = propDefs[propName];
           if (!propDef || typeof propDef === "string" || !propDef.unique || propDef.unique === PropertyUniqueness.NON_UNIQUE) {
             continue;
           }
           const propValue = modelData[propName];
-          if (propDef.unique === PropertyUniqueness.SPARSE) {
-            const propType = propDef.type || DataType.ANY;
-            const isBlank = blankValuesService.isBlankOf(propType, propValue);
-            if (isBlank) continue;
+          if (propDef.unique === PropertyUniqueness.SPARSE && !propValue) {
+            continue;
           }
           if (methodName === "create") {
             const count = await countMethod({ [propName]: propValue });

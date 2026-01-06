@@ -1,6 +1,5 @@
 import {Service} from '@e22m4u/js-service';
 import {DataType} from './properties/index.js';
-import {BlankValuesService} from '@e22m4u/js-empty-values';
 import {InvalidArgumentError} from '../../errors/index.js';
 import {DefinitionRegistry} from '../definition-registry.js';
 import {cloneDeep, excludeObjectKeys} from '../../utils/index.js';
@@ -121,7 +120,7 @@ export class ModelDefinitionUtils extends Service {
   }
 
   /**
-   * Set default values for empty properties.
+   * Set default values to empty properties.
    *
    * @param {string} modelName
    * @param {object} modelData
@@ -139,16 +138,14 @@ export class ModelDefinitionUtils extends Service {
       ? Object.keys(modelData)
       : Object.keys(propDefs);
     const extendedData = cloneDeep(modelData);
-    const blankValuesService = this.getService(BlankValuesService);
     propNames.forEach(propName => {
       const propDef = propDefs[propName];
       const propValue = extendedData[propName];
-      const propType =
-        propDef != null
-          ? this.getDataTypeFromPropertyDefinition(propDef)
-          : DataType.ANY;
-      const isBlank = blankValuesService.isBlankOf(propType, propValue);
-      if (!isBlank) return;
+      // если значение свойства не является undefined и null,
+      // то свойство пропускается (остается исходное значение)
+      if (propValue != null) {
+        return;
+      }
       if (
         propDef &&
         typeof propDef === 'object' &&

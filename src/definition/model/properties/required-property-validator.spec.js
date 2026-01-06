@@ -1,9 +1,8 @@
 import {expect} from 'chai';
+import {DataType} from './data-type.js';
 import {format} from '@e22m4u/js-format';
 import {DatabaseSchema} from '../../../database-schema.js';
 import {RequiredPropertyValidator} from './required-property-validator.js';
-import {DataType} from './data-type.js';
-import {BlankValuesService} from '@e22m4u/js-empty-values';
 
 describe('RequiredPropertyValidator', function () {
   describe('validate', function () {
@@ -84,11 +83,9 @@ describe('RequiredPropertyValidator', function () {
       S.validate('model', {foo: 'bar'});
     });
 
-    it('should not throw an error if a required property is not blank', function () {
+    it('should not throw an error if a required property is defined', function () {
       const dbs = new DatabaseSchema();
       const S = dbs.getService(RequiredPropertyValidator);
-      const blankValues = S.getService(BlankValuesService);
-      blankValues.setBlankValues([undefined]);
       dbs.defineModel({
         name: 'model',
         properties: {
@@ -101,11 +98,9 @@ describe('RequiredPropertyValidator', function () {
       S.validate('model', {foo: 'bar'});
     });
 
-    it('should throw an error if a required property is blank', function () {
+    it('should throw an error if a required property is undefined', function () {
       const dbs = new DatabaseSchema();
       const S = dbs.getService(RequiredPropertyValidator);
-      const blankValues = S.getService(BlankValuesService);
-      blankValues.setBlankValues([undefined]);
       dbs.defineModel({
         name: 'model',
         properties: {
@@ -126,8 +121,6 @@ describe('RequiredPropertyValidator', function () {
       it('should not throw an error if no data is provided for an embedded model', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -151,8 +144,6 @@ describe('RequiredPropertyValidator', function () {
       it('should throw an error if an embedded model is required but not provided', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -181,8 +172,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow a model data to have properties without a specified schema', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -206,8 +195,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow omit a model data when its model has a required property', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -232,8 +219,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow omit an optional property for an embedded model', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -257,8 +242,6 @@ describe('RequiredPropertyValidator', function () {
       it('should throw an error if a required property is not provided', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -289,8 +272,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow omit an optional array', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -315,8 +296,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow a required array to be empty', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -339,11 +318,9 @@ describe('RequiredPropertyValidator', function () {
         S.validate('modelA', {array: []});
       });
 
-      it('should allow omit an optional array even if the item model has a required property', function () {
+      it('should allow omit an optional array even if an item model has a required property', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -366,11 +343,9 @@ describe('RequiredPropertyValidator', function () {
         S.validate('modelA', {});
       });
 
-      it('should allow an empty array even if the item model has a required property', function () {
+      it('should allow an empty array even if an item model has a required property', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -396,8 +371,6 @@ describe('RequiredPropertyValidator', function () {
       it('should throw an error when a required array is not provided', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -427,8 +400,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow omit an optional property of the item model', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -454,8 +425,6 @@ describe('RequiredPropertyValidator', function () {
       it('should allow an item date to have properties without a specified schema', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -480,11 +449,9 @@ describe('RequiredPropertyValidator', function () {
     });
 
     describe('isPartial', function () {
-      it('should throw an error if a required property is blank', function () {
+      it('should throw an error if a required property is undefined', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'model',
           properties: {
@@ -501,11 +468,9 @@ describe('RequiredPropertyValidator', function () {
         );
       });
 
-      it('should not validate a required but not provided properties', function () {
+      it('should not validate required but not provided properties', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'model',
           properties: {
@@ -521,8 +486,6 @@ describe('RequiredPropertyValidator', function () {
       it('should validate not provided properties of an embedded model', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
@@ -551,8 +514,6 @@ describe('RequiredPropertyValidator', function () {
       it('should validate not provided properties of an item model', function () {
         const dbs = new DatabaseSchema();
         const S = dbs.getService(RequiredPropertyValidator);
-        const blankValues = S.getService(BlankValuesService);
-        blankValues.setBlankValues([undefined]);
         dbs.defineModel({
           name: 'modelA',
           properties: {
