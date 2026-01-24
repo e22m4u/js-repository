@@ -383,14 +383,15 @@ dbs.defineModel({
 **Параметры**
 
 - `type: string` тип допустимого значения (обязательно);
-- `itemType: string` тип элемента массива (для `type: 'array'`);
-- `model: string` модель объекта (для `type: 'object'`);
-- `primaryKey: boolean` объявить свойство первичным ключом;
-- `columnName: string` переопределение названия колонки;
-- `columnType: string` тип колонки (определяется адаптером);
-- `required: boolean` объявить свойство обязательным;
-- `default: any` значение по умолчанию (заменяет `undefined` и `null`);
-- `unique: boolean | string` проверять значение на уникальность;
+- `itemType?: string` тип элемента массива (для `type: 'array'`);
+- `itemModel?: string` модель элемента массива (для `type: 'array'`);
+- `model?: string` модель объекта (для `type: 'object'`);
+- `primaryKey?: boolean` объявить свойство первичным ключом;
+- `columnName?: string` переопределение названия колонки;
+- `columnType?: string` тип колонки (определяется адаптером);
+- `required?: boolean` объявить свойство обязательным;
+- `default?: any` значение по умолчанию (заменяет `undefined` и `null`);
+- `unique?: boolean | string` проверять значение на уникальность;
 
 **Параметр `unique`**
 
