@@ -14,22 +14,25 @@ export class SliceClauseTool extends Service {
    * @returns {object[]}
    */
   slice(entities, skip = undefined, limit = undefined) {
-    if (!Array.isArray(entities))
+    if (!Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The first argument of SliceClauseTool.slice ' +
           'should be an Array, but %v was given.',
         entities,
       );
-    if (skip != null && typeof skip !== 'number')
+    }
+    if (skip != null && typeof skip !== 'number') {
       throw new InvalidArgumentError(
         'The provided option "skip" should be a Number, but %v was given.',
         skip,
       );
-    if (limit != null && typeof limit !== 'number')
+    }
+    if (limit != null && typeof limit !== 'number') {
       throw new InvalidArgumentError(
         'The provided option "limit" should be a Number, but %v was given.',
         limit,
       );
+    }
     skip = skip || 0;
     limit = limit || entities.length;
     return entities.slice(skip, skip + limit);
@@ -41,12 +44,15 @@ export class SliceClauseTool extends Service {
    * @param {number|undefined} skip
    */
   static validateSkipClause(skip) {
-    if (skip == null) return;
-    if (typeof skip !== 'number')
+    if (skip == null) {
+      return;
+    }
+    if (typeof skip !== 'number') {
       throw new InvalidArgumentError(
         'The provided option "skip" should be a Number, but %v was given.',
         skip,
       );
+    }
   }
 
   /**
@@ -55,11 +61,14 @@ export class SliceClauseTool extends Service {
    * @param {number|undefined} limit
    */
   static validateLimitClause(limit) {
-    if (limit == null) return;
-    if (typeof limit !== 'number')
+    if (limit == null) {
+      return;
+    }
+    if (typeof limit !== 'number') {
       throw new InvalidArgumentError(
         'The provided option "limit" should be a Number, but %v was given.',
         limit,
       );
+    }
   }
 }

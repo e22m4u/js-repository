@@ -8,11 +8,12 @@ import {InvalidArgumentError} from '../errors/index.js';
  * @returns {object}
  */
 export function excludeObjectKeys(obj, keys) {
-  if (typeof obj !== 'object' || !obj || Array.isArray(obj))
+  if (typeof obj !== 'object' || !obj || Array.isArray(obj)) {
     throw new InvalidArgumentError(
       'Cannot exclude keys from a non-Object value, %v was given.',
       obj,
     );
+  }
   const result = {...obj};
   keys = Array.isArray(keys) ? keys : [keys];
   keys.forEach(key => delete result[key]);

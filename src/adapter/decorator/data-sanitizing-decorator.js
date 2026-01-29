@@ -13,12 +13,13 @@ export class DataSanitizingDecorator extends Service {
    * @param {Adapter} adapter
    */
   decorate(adapter) {
-    if (!adapter || !(adapter instanceof Adapter))
+    if (!adapter || !(adapter instanceof Adapter)) {
       throw new InvalidArgumentError(
         'The first argument of DataSanitizingDecorator.decorate should be ' +
           'an Adapter instance, but %v was given.',
         adapter,
       );
+    }
 
     const sanitizer = adapter.getService(ModelDataSanitizer);
     const sanitize = (...args) => sanitizer.sanitize(...args);

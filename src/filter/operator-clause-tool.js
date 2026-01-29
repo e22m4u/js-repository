@@ -47,8 +47,12 @@ export class OperatorClauseTool extends Service {
     }
     // лексикографическое сравнение
     if (type1 === 'string' && type2 === 'string') {
-      if (val1 > val2) return 1;
-      if (val1 < val2) return -1;
+      if (val1 > val2) {
+        return 1;
+      }
+      if (val1 < val2) {
+        return -1;
+      }
       return 0;
     }
     return NaN;
@@ -62,12 +66,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testAll(clause, value) {
-    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testAll ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     const operatorMap = {
       eq: this.testEqNeq,
       neq: this.testEqNeq,
@@ -130,14 +135,19 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testEqNeq(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testEqNeq ' +
           'should be an Object, but %v was given.',
         clause,
       );
-    if ('eq' in clause) return this.compare(clause.eq, value, true) === 0;
-    if ('neq' in clause) return this.compare(clause.neq, value, true) !== 0;
+    }
+    if ('eq' in clause) {
+      return this.compare(clause.eq, value, true) === 0;
+    }
+    if ('neq' in clause) {
+      return this.compare(clause.neq, value, true) !== 0;
+    }
   }
 
   /**
@@ -176,16 +186,25 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testGtLt(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testGtLt ' +
           'should be an Object, but %v was given.',
         clause,
       );
-    if ('gt' in clause) return this.compare(value, clause.gt) > 0;
-    if ('gte' in clause) return this.compare(value, clause.gte) >= 0;
-    if ('lt' in clause) return this.compare(value, clause.lt) < 0;
-    if ('lte' in clause) return this.compare(value, clause.lte) <= 0;
+    }
+    if ('gt' in clause) {
+      return this.compare(value, clause.gt) > 0;
+    }
+    if ('gte' in clause) {
+      return this.compare(value, clause.gte) >= 0;
+    }
+    if ('lt' in clause) {
+      return this.compare(value, clause.lt) < 0;
+    }
+    if ('lte' in clause) {
+      return this.compare(value, clause.lte) <= 0;
+    }
   }
 
   /**
@@ -203,12 +222,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testInq(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testInq ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('inq' in clause && clause.inq !== undefined) {
       if (!clause.inq || !Array.isArray(clause.inq)) {
         throw new InvalidOperatorValueError(
@@ -241,12 +261,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNin(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNin ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('nin' in clause && clause.nin !== undefined) {
       if (!clause.nin || !Array.isArray(clause.nin)) {
         throw new InvalidOperatorValueError(
@@ -276,12 +297,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testBetween(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testBetween ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('between' in clause && clause.between !== undefined) {
       if (!Array.isArray(clause.between) || clause.between.length !== 2) {
         throw new InvalidOperatorValueError(
@@ -312,12 +334,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testExists(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testExists ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('exists' in clause && clause.exists !== undefined) {
       if (typeof clause.exists !== 'boolean') {
         throw new InvalidOperatorValueError(
@@ -345,15 +368,17 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testLike(clause, value) {
-    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testLike ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('like' in clause && clause.like !== undefined) {
-      if (typeof clause.like !== 'string')
+      if (typeof clause.like !== 'string') {
         throw new InvalidOperatorValueError('like', 'a String', clause.like);
+      }
       return likeToRegexp(clause.like).test(value);
     }
   }
@@ -373,12 +398,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNlike(clause, value) {
-    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNlike ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('nlike' in clause && clause.nlike !== undefined) {
       if (typeof clause.nlike !== 'string') {
         throw new InvalidOperatorValueError('nlike', 'a String', clause.nlike);
@@ -402,12 +428,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testIlike(clause, value) {
-    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testIlike ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('ilike' in clause && clause.ilike !== undefined) {
       if (typeof clause.ilike !== 'string') {
         throw new InvalidOperatorValueError('ilike', 'a String', clause.ilike);
@@ -431,12 +458,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNilike(clause, value) {
-    if (!clause || typeof clause !== 'object' || Array.isArray(clause))
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testNilike ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('nilike' in clause && clause.nilike !== undefined) {
       if (typeof clause.nilike !== 'string') {
         throw new InvalidOperatorValueError(
@@ -472,12 +500,13 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testRegexp(clause, value) {
-    if (!clause || typeof clause !== 'object')
+    if (!clause || typeof clause !== 'object') {
       throw new InvalidArgumentError(
         'The first argument of OperatorUtils.testRegexp ' +
           'should be an Object, but %v was given.',
         clause,
       );
+    }
     if ('regexp' in clause && clause.regexp !== undefined) {
       if (
         typeof clause.regexp !== 'string' &&
@@ -490,12 +519,15 @@ export class OperatorClauseTool extends Service {
         );
       }
       const flags = clause.flags || undefined;
-      if (flags && typeof flags !== 'string')
+      if (flags && typeof flags !== 'string') {
         throw new InvalidArgumentError(
           'RegExp flags should be a String, but %v was given.',
           clause.flags,
         );
-      if (!value || typeof value !== 'string') return false;
+      }
+      if (!value || typeof value !== 'string') {
+        return false;
+      }
       const regExp = stringToRegexp(clause.regexp, flags);
       return !!value.match(regExp);
     }

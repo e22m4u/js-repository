@@ -13,12 +13,13 @@ export class DefaultValuesDecorator extends Service {
    * @param {Adapter} adapter
    */
   decorate(adapter) {
-    if (!adapter || !(adapter instanceof Adapter))
+    if (!adapter || !(adapter instanceof Adapter)) {
       throw new InvalidArgumentError(
         'The first argument of DefaultValuesDecorator.decorate should be ' +
           'an Adapter instance, but %v was given.',
         adapter,
       );
+    }
 
     const utils = adapter.getService(ModelDefinitionUtils);
     const setDefaults = (...args) =>

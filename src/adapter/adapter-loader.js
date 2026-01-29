@@ -14,11 +14,12 @@ export class AdapterLoader extends Service {
    * @returns {Promise<Adapter>}
    */
   async loadByName(adapterName, settings = undefined) {
-    if (!adapterName || typeof adapterName !== 'string')
+    if (!adapterName || typeof adapterName !== 'string') {
       throw new InvalidArgumentError(
         'The adapter name should be a non-empty String, but %v was given.',
         adapterName,
       );
+    }
     let adapterCtor;
     try {
       const module = await import(`./builtin/${adapterName}-adapter.js`);
@@ -26,7 +27,7 @@ export class AdapterLoader extends Service {
     } catch {
       /**/
     }
-    if (!adapterCtor)
+    if (!adapterCtor) {
       try {
         const module = await import(
           `@e22m4u/js-repository-${adapterName}-adapter`
@@ -35,11 +36,13 @@ export class AdapterLoader extends Service {
       } catch {
         /**/
       }
-    if (!adapterCtor)
+    }
+    if (!adapterCtor) {
       throw new InvalidArgumentError(
         'The adapter %v is not found.',
         adapterName,
       );
+    }
     return new adapterCtor(this.container, settings);
   }
 }
@@ -52,7 +55,9 @@ export class AdapterLoader extends Service {
  */
 function findAdapterCtorInModule(module) {
   let adapterCtor;
-  if (!module || typeof module !== 'object' || Array.isArray(module)) return;
+  if (!module || typeof module !== 'object' || Array.isArray(module)) {
+    return;
+  }
   for (const ctor of Object.values(module)) {
     if (
       typeof ctor === 'function' &&

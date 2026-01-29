@@ -13,12 +13,13 @@ export class PropertyUniquenessDecorator extends Service {
    * @param {Adapter} adapter
    */
   decorate(adapter) {
-    if (!adapter || !(adapter instanceof Adapter))
+    if (!adapter || !(adapter instanceof Adapter)) {
       throw new InvalidArgumentError(
         'The first argument of PropertyUniquenessDecorator.decorate should be ' +
           'an Adapter instance, but %v was given.',
         adapter,
       );
+    }
     const validator = this.getService(PropertyUniquenessValidator);
 
     const create = adapter.create;

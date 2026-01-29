@@ -27,42 +27,48 @@ export class HasManyResolver extends Service {
     foreignKey,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of HasManyResolver.includeTo requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!targetName || typeof targetName !== 'string')
+    }
+    if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
-    if (!foreignKey || typeof foreignKey !== 'string')
+    }
+    if (!foreignKey || typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "foreignKey" of HasManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         foreignKey,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasManyResolver.includeTo ' +
           'should be an Object, but %v was given.',
         scope,
       );
+    }
 
     const sourcePkPropName =
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
@@ -70,14 +76,17 @@ export class HasManyResolver extends Service {
       );
     const sourceIds = [];
     entities.forEach(entity => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity))
+      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
           'The parameter "entities" of HasManyResolver.includeTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
+      }
       const sourceId = entity[sourcePkPropName];
-      if (sourceIds.includes(sourceId)) return;
+      if (sourceIds.includes(sourceId)) {
+        return;
+      }
       sourceIds.push(sourceId);
     });
 
@@ -130,48 +139,55 @@ export class HasManyResolver extends Service {
     discriminator,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!targetName || typeof targetName !== 'string')
+    }
+    if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
-    if (!foreignKey || typeof foreignKey !== 'string')
+    }
+    if (!foreignKey || typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
           'a non-empty String, but %v was given.',
         foreignKey,
       );
-    if (!discriminator || typeof discriminator !== 'string')
+    }
+    if (!discriminator || typeof discriminator !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
           'a non-empty String, but %v was given.',
         discriminator,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasManyResolver.includePolymorphicTo ' +
           'should be an Object, but %v was given.',
         scope,
       );
+    }
 
     const sourcePkPropName =
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
@@ -179,14 +195,17 @@ export class HasManyResolver extends Service {
       );
     const sourceIds = [];
     entities.forEach(entity => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity))
+      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
           'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
+      }
       const sourceId = entity[sourcePkPropName];
-      if (sourceIds.includes(sourceId)) return;
+      if (sourceIds.includes(sourceId)) {
+        return;
+      }
       sourceIds.push(sourceId);
     });
 
@@ -240,47 +259,53 @@ export class HasManyResolver extends Service {
     targetRelationName,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!targetName || typeof targetName !== 'string')
+    }
+    if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
-    if (!targetRelationName || typeof targetRelationName !== 'string')
+    }
+    if (!targetRelationName || typeof targetRelationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
           'a non-empty String, but %v was given.',
         targetRelationName,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
           'should be an Object, but %v was given.',
         scope,
       );
+    }
 
     const targetRelationDef = this.getService(
       ModelDefinitionUtils,
     ).getRelationDefinitionByName(targetName, targetRelationName);
-    if (targetRelationDef.type !== RelationType.BELONGS_TO)
+    if (targetRelationDef.type !== RelationType.BELONGS_TO) {
       throw new InvalidArgumentError(
         'The relation %v of the model %v is a polymorphic "hasMany" relation, ' +
           'so it requires the target relation %v to be a polymorphic "belongsTo", ' +
@@ -290,7 +315,8 @@ export class HasManyResolver extends Service {
         targetRelationName,
         targetRelationDef.type,
       );
-    if (!targetRelationDef.polymorphic)
+    }
+    if (!targetRelationDef.polymorphic) {
       throw new InvalidArgumentError(
         'The relation %v of the model %v is a polymorphic "hasMany" relation, ' +
           'so it requires the target relation %v to be a polymorphic too.',
@@ -298,6 +324,7 @@ export class HasManyResolver extends Service {
         sourceName,
         targetRelationName,
       );
+    }
     const foreignKey =
       targetRelationDef.foreignKey || `${targetRelationName}Id`;
     const discriminator =

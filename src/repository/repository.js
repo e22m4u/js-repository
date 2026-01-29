@@ -51,11 +51,12 @@ export class Repository extends Service {
     this._modelName = modelName;
     const modelDef = this.getService(DefinitionRegistry).getModel(modelName);
     const datasourceName = modelDef.datasource;
-    if (!datasourceName)
+    if (!datasourceName) {
       throw new InvalidArgumentError(
         'The model %v does not have a specified datasource.',
         modelName,
       );
+    }
     this._datasourceName = datasourceName;
   }
 

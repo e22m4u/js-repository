@@ -13,12 +13,13 @@ export class FieldsFilteringDecorator extends Service {
    * @param {Adapter} adapter
    */
   decorate(adapter) {
-    if (!adapter || !(adapter instanceof Adapter))
+    if (!adapter || !(adapter instanceof Adapter)) {
       throw new InvalidArgumentError(
         'The first argument of FieldsFilteringDecorator.decorate should be ' +
           'an Adapter instance, but %v was given.',
         adapter,
       );
+    }
 
     const tool = adapter.getService(FieldsClauseTool);
     const selectFields = (...args) => tool.filter(...args);
@@ -26,8 +27,9 @@ export class FieldsFilteringDecorator extends Service {
     const create = adapter.create;
     adapter.create = async function (modelName, modelData, filter) {
       let result = await create.call(this, modelName, modelData, filter);
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
 
@@ -40,8 +42,9 @@ export class FieldsFilteringDecorator extends Service {
         modelData,
         filter,
       );
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
 
@@ -53,32 +56,36 @@ export class FieldsFilteringDecorator extends Service {
         modelData,
         filter,
       );
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
 
     const patchById = adapter.patchById;
     adapter.patchById = async function (modelName, id, modelData, filter) {
       let result = await patchById.call(this, modelName, id, modelData, filter);
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
 
     const find = adapter.find;
     adapter.find = async function (modelName, filter) {
       let result = await find.call(this, modelName, filter);
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
 
     const findById = adapter.findById;
     adapter.findById = async function (modelName, id, filter) {
       let result = await findById.call(this, modelName, id, filter);
-      if (filter && typeof filter === 'object' && filter.fields)
+      if (filter && typeof filter === 'object' && filter.fields) {
         result = selectFields(result, modelName, filter.fields);
+      }
       return result;
     };
   }

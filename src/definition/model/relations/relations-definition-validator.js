@@ -13,19 +13,21 @@ export class RelationsDefinitionValidator extends Service {
    * @param {object} relDefs
    */
   validate(modelName, relDefs) {
-    if (!modelName || typeof modelName !== 'string')
+    if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
         'The first argument of RelationsDefinitionValidator.validate ' +
           'should be a non-empty String, but %v was given.',
         modelName,
       );
-    if (!relDefs || typeof relDefs !== 'object' || Array.isArray(relDefs))
+    }
+    if (!relDefs || typeof relDefs !== 'object' || Array.isArray(relDefs)) {
       throw new InvalidArgumentError(
         'The provided option "relations" of the model %v ' +
           'should be an Object, but %v was given.',
         modelName,
         relDefs,
       );
+    }
     const relNames = Object.keys(relDefs);
     relNames.forEach(relName => {
       const relDef = relDefs[relName];
@@ -41,27 +43,30 @@ export class RelationsDefinitionValidator extends Service {
    * @param {object} relDef
    */
   _validateRelation(modelName, relName, relDef) {
-    if (!modelName || typeof modelName !== 'string')
+    if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
         'The first argument of RelationsDefinitionValidator._validateRelation ' +
           'should be a non-empty String, but %v was given.',
         modelName,
       );
-    if (!relName || typeof relName !== 'string')
+    }
+    if (!relName || typeof relName !== 'string') {
       throw new InvalidArgumentError(
         'The relation name of the model %v should be ' +
           'a non-empty String, but %v was given.',
         modelName,
         relName,
       );
-    if (!relDef || typeof relDef !== 'object' || Array.isArray(relDef))
+    }
+    if (!relDef || typeof relDef !== 'object' || Array.isArray(relDef)) {
       throw new InvalidArgumentError(
         'The relation %v of the model %v should be an Object, but %v was given.',
         relName,
         modelName,
         relDef,
       );
-    if (!relDef.type || !Object.values(RelationType).includes(relDef.type))
+    }
+    if (!relDef.type || !Object.values(RelationType).includes(relDef.type)) {
       throw new InvalidArgumentError(
         'The relation %v of the model %v requires the option "type" ' +
           'to have one of relation types: %l, but %v was given.',
@@ -70,6 +75,7 @@ export class RelationsDefinitionValidator extends Service {
         Object.values(RelationType),
         relDef.type,
       );
+    }
     this._validateBelongsTo(modelName, relName, relDef);
     this._validateHasOne(modelName, relName, relDef);
     this._validateHasMany(modelName, relName, relDef);
@@ -104,10 +110,12 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateBelongsTo(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.BELONGS_TO) return;
+    if (relDef.type !== RelationType.BELONGS_TO) {
+      return;
+    }
     if (relDef.polymorphic) {
       // A polymorphic "belongsTo" relation.
-      if (typeof relDef.polymorphic !== 'boolean')
+      if (typeof relDef.polymorphic !== 'boolean') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it expects the option "polymorphic" to be a Boolean, ' +
@@ -116,7 +124,8 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.polymorphic,
         );
-      if (relDef.foreignKey && typeof relDef.foreignKey !== 'string')
+      }
+      if (relDef.foreignKey && typeof relDef.foreignKey !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a polymorphic "belongsTo" relation, ' +
             'so it expects the provided option "foreignKey" to be a String, ' +
@@ -125,7 +134,8 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.foreignKey,
         );
-      if (relDef.discriminator && typeof relDef.discriminator !== 'string')
+      }
+      if (relDef.discriminator && typeof relDef.discriminator !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a polymorphic "belongsTo" relation, ' +
             'so it expects the provided option "discriminator" to be a String, ' +
@@ -134,9 +144,10 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.discriminator,
         );
+      }
     } else {
       // A regular "belongsTo" relation.
-      if (!relDef.model || typeof relDef.model !== 'string')
+      if (!relDef.model || typeof relDef.model !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it requires the option "model" to be a non-empty String, ' +
@@ -145,7 +156,8 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.model,
         );
-      if (relDef.foreignKey && typeof relDef.foreignKey !== 'string')
+      }
+      if (relDef.foreignKey && typeof relDef.foreignKey !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "belongsTo", ' +
             'so it expects the provided option "foreignKey" to be a String, ' +
@@ -154,13 +166,15 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.foreignKey,
         );
-      if (relDef.discriminator)
+      }
+      if (relDef.discriminator) {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a non-polymorphic "belongsTo" relation, ' +
             'so it should not have the option "discriminator" to be provided.',
           relName,
           modelName,
         );
+      }
     }
   }
 
@@ -202,8 +216,10 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateHasOne(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.HAS_ONE) return;
-    if (!relDef.model || typeof relDef.model !== 'string')
+    if (relDef.type !== RelationType.HAS_ONE) {
+      return;
+    }
+    if (!relDef.model || typeof relDef.model !== 'string') {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "hasOne", ' +
           'so it requires the option "model" to be a non-empty String, ' +
@@ -212,10 +228,11 @@ export class RelationsDefinitionValidator extends Service {
         modelName,
         relDef.model,
       );
+    }
     if (relDef.polymorphic) {
       if (typeof relDef.polymorphic === 'string') {
         // A polymorphic "hasOne" relation with a target relation name.
-        if (relDef.foreignKey)
+        if (relDef.foreignKey) {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" with ' +
               'a String value, so it should not have the option "foreignKey" ' +
@@ -223,7 +240,8 @@ export class RelationsDefinitionValidator extends Service {
             relName,
             modelName,
           );
-        if (relDef.discriminator)
+        }
+        if (relDef.discriminator) {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" with ' +
               'a String value, so it should not have the option "discriminator" ' +
@@ -231,9 +249,10 @@ export class RelationsDefinitionValidator extends Service {
             relName,
             modelName,
           );
+        }
       } else if (typeof relDef.polymorphic === 'boolean') {
         // A polymorphic "hasOne" relation with target relation keys.
-        if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string')
+        if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string') {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "foreignKey" ' +
@@ -242,7 +261,8 @@ export class RelationsDefinitionValidator extends Service {
             modelName,
             relDef.foreignKey,
           );
-        if (!relDef.discriminator || typeof relDef.discriminator !== 'string')
+        }
+        if (!relDef.discriminator || typeof relDef.discriminator !== 'string') {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "discriminator" ' +
@@ -251,6 +271,7 @@ export class RelationsDefinitionValidator extends Service {
             modelName,
             relDef.discriminator,
           );
+        }
       } else {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasOne", ' +
@@ -263,7 +284,7 @@ export class RelationsDefinitionValidator extends Service {
       }
     } else {
       // A regular "hasOne" relation.
-      if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string')
+      if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasOne", ' +
             'so it requires the option "foreignKey" to be a non-empty String, ' +
@@ -272,13 +293,15 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.foreignKey,
         );
-      if (relDef.discriminator)
+      }
+      if (relDef.discriminator) {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a non-polymorphic "hasOne" relation, ' +
             'so it should not have the option "discriminator" to be provided.',
           relName,
           modelName,
         );
+      }
     }
   }
 
@@ -320,8 +343,10 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateHasMany(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.HAS_MANY) return;
-    if (!relDef.model || typeof relDef.model !== 'string')
+    if (relDef.type !== RelationType.HAS_MANY) {
+      return;
+    }
+    if (!relDef.model || typeof relDef.model !== 'string') {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "hasMany", ' +
           'so it requires the option "model" to be a non-empty String, ' +
@@ -330,10 +355,11 @@ export class RelationsDefinitionValidator extends Service {
         modelName,
         relDef.model,
       );
+    }
     if (relDef.polymorphic) {
       if (typeof relDef.polymorphic === 'string') {
         // A polymorphic "hasMany" relation with a target relation name.
-        if (relDef.foreignKey)
+        if (relDef.foreignKey) {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" with ' +
               'a String value, so it should not have the option "foreignKey" ' +
@@ -341,7 +367,8 @@ export class RelationsDefinitionValidator extends Service {
             relName,
             modelName,
           );
-        if (relDef.discriminator)
+        }
+        if (relDef.discriminator) {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" with ' +
               'a String value, so it should not have the option "discriminator" ' +
@@ -349,9 +376,10 @@ export class RelationsDefinitionValidator extends Service {
             relName,
             modelName,
           );
+        }
       } else if (typeof relDef.polymorphic === 'boolean') {
         // A polymorphic "hasMany" relation with target relation keys.
-        if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string')
+        if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string') {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "foreignKey" ' +
@@ -360,7 +388,8 @@ export class RelationsDefinitionValidator extends Service {
             modelName,
             relDef.foreignKey,
           );
-        if (!relDef.discriminator || typeof relDef.discriminator !== 'string')
+        }
+        if (!relDef.discriminator || typeof relDef.discriminator !== 'string') {
           throw new InvalidArgumentError(
             'The relation %v of the model %v has the option "polymorphic" ' +
               'with "true" value, so it requires the option "discriminator" ' +
@@ -369,6 +398,7 @@ export class RelationsDefinitionValidator extends Service {
             modelName,
             relDef.discriminator,
           );
+        }
       } else {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasMany", ' +
@@ -381,7 +411,7 @@ export class RelationsDefinitionValidator extends Service {
       }
     } else {
       // A regular "hasMany" relation.
-      if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string')
+      if (!relDef.foreignKey || typeof relDef.foreignKey !== 'string') {
         throw new InvalidArgumentError(
           'The relation %v of the model %v has the type "hasMany", ' +
             'so it requires the option "foreignKey" to be a non-empty String, ' +
@@ -390,13 +420,15 @@ export class RelationsDefinitionValidator extends Service {
           modelName,
           relDef.foreignKey,
         );
-      if (relDef.discriminator)
+      }
+      if (relDef.discriminator) {
         throw new InvalidArgumentError(
           'The relation %v of the model %v is a non-polymorphic "hasMany" relation, ' +
             'so it should not have the option "discriminator" to be provided.',
           relName,
           modelName,
         );
+      }
     }
   }
 
@@ -418,8 +450,10 @@ export class RelationsDefinitionValidator extends Service {
    * @private
    */
   _validateReferencesMany(modelName, relName, relDef) {
-    if (relDef.type !== RelationType.REFERENCES_MANY) return;
-    if (!relDef.model || typeof relDef.model !== 'string')
+    if (relDef.type !== RelationType.REFERENCES_MANY) {
+      return;
+    }
+    if (!relDef.model || typeof relDef.model !== 'string') {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +
           'so it requires the option "model" to be a non-empty String, ' +
@@ -428,7 +462,8 @@ export class RelationsDefinitionValidator extends Service {
         modelName,
         relDef.model,
       );
-    if (relDef.foreignKey && typeof relDef.foreignKey !== 'string')
+    }
+    if (relDef.foreignKey && typeof relDef.foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +
           'so it expects the provided option "foreignKey" to be a String, ' +
@@ -437,12 +472,14 @@ export class RelationsDefinitionValidator extends Service {
         modelName,
         relDef.foreignKey,
       );
-    if (relDef.discriminator)
+    }
+    if (relDef.discriminator) {
       throw new InvalidArgumentError(
         'The relation %v of the model %v has the type "referencesMany", ' +
           'so it should not have the option "discriminator" to be provided.',
         relName,
         modelName,
       );
+    }
   }
 }

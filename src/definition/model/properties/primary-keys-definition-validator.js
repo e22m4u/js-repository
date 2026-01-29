@@ -20,7 +20,7 @@ export class PrimaryKeysDefinitionValidator extends Service {
     if (propNames.length < 1) {
       const isDefaultPrimaryKeyAlreadyInUse =
         Object.keys(propDefs).includes(DEF_PK);
-      if (isDefaultPrimaryKeyAlreadyInUse)
+      if (isDefaultPrimaryKeyAlreadyInUse) {
         throw new InvalidArgumentError(
           'The property name %v of the model %v is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
@@ -28,15 +28,17 @@ export class PrimaryKeysDefinitionValidator extends Service {
           DEF_PK,
           modelName,
         );
+      }
       return;
     }
-    if (propNames.length > 1)
+    if (propNames.length > 1) {
       throw new InvalidArgumentError(
         'The model definition %v should not have ' +
           'multiple primary keys, but %v keys given.',
         modelName,
         propNames.length,
       );
+    }
     const pkPropName = propNames[0];
     const pkPropDef = propDefs[pkPropName];
     if (

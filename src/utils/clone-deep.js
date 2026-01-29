@@ -6,7 +6,9 @@
  * @returns {*}
  */
 export function cloneDeep(value) {
-  if (!value) return value; // null, undefined values check
+  if (!value) {
+    return value;
+  } // null, undefined values check
 
   const types = [Number, String, Boolean];
   let result;
@@ -14,7 +16,9 @@ export function cloneDeep(value) {
   // normalizing primitives if someone did new String('aaa'),
   // or new Number('444');
   types.forEach(type => {
-    if (value instanceof type) result = type(value);
+    if (value instanceof type) {
+      result = type(value);
+    }
   });
 
   if (result === undefined) {

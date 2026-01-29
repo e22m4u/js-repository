@@ -429,11 +429,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };
@@ -837,7 +838,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            }
             invoked++;
             return 0;
           };
@@ -936,11 +939,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: 'val1',
               });
+            }
             invoked++;
             return 0;
           };
@@ -999,11 +1003,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };
@@ -1202,11 +1207,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };
@@ -1610,7 +1616,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            }
             invoked++;
             return 0;
           };
@@ -1709,11 +1717,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: 'val1',
               });
+            }
             invoked++;
             return 0;
           };
@@ -1772,11 +1781,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };
@@ -1853,7 +1863,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            }
             invoked++;
             return 0;
           };
@@ -1880,7 +1892,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: undefined};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -1907,7 +1921,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -1934,7 +1950,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 10, bar: 0};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -1961,7 +1979,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: true, bar: false};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -2035,11 +2055,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: 'val1',
               });
+            }
             invoked++;
             return 0;
           };
@@ -2073,11 +2094,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: undefined};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -2111,11 +2133,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -2149,11 +2172,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 10, bar: 0};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -2187,11 +2211,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: true, bar: false};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -2225,11 +2250,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };
@@ -2304,7 +2330,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            }
             invoked++;
             return 0;
           };
@@ -2973,7 +3001,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: 'val1'});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: 'val1'});
+            }
             invoked++;
             return 0;
           };
@@ -3025,7 +3055,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: undefined};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -3052,7 +3084,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -3079,7 +3113,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 10, bar: 0};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -3106,7 +3142,9 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: true, bar: false};
           const countMethod = where => {
-            if (invoked === 0) expect(where).to.be.eql({foo: modelData.foo});
+            if (invoked === 0) {
+              expect(where).to.be.eql({foo: modelData.foo});
+            }
             invoked++;
             return 0;
           };
@@ -3180,11 +3218,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'val1', bar: 'val2'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: idValue},
                 foo: 'val1',
               });
+            }
             invoked++;
             return 0;
           };
@@ -3242,11 +3281,12 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: undefined};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: 1},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -3273,11 +3313,12 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 'val1', bar: ''};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: 1},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -3304,11 +3345,12 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: 10, bar: 0};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: 1},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -3335,11 +3377,12 @@ describe('PropertyUniquenessValidator', function () {
           let invoked = 0;
           const modelData = {foo: true, bar: false};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 [DEF_PK]: {neq: 1},
                 foo: modelData.foo,
               });
+            }
             invoked++;
             return 0;
           };
@@ -3367,11 +3410,12 @@ describe('PropertyUniquenessValidator', function () {
           const idValue = 1;
           const modelData = {foo: 'bar'};
           const countMethod = where => {
-            if (invoked === 0)
+            if (invoked === 0) {
               expect(where).to.be.eql({
                 myId: {neq: idValue},
                 foo: 'bar',
               });
+            }
             invoked++;
             return 0;
           };

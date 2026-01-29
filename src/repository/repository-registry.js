@@ -51,7 +51,9 @@ export class RepositoryRegistry extends Service {
   getRepository(modelName) {
     const modelKey = modelNameToModelKey(modelName);
     let repository = this._repositories[modelKey];
-    if (repository) return repository;
+    if (repository) {
+      return repository;
+    }
     repository = new this._repositoryCtor(this.container, modelName);
     this._repositories[modelKey] = repository;
     return repository;

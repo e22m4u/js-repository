@@ -178,8 +178,9 @@ export class IncludeClauseTool extends Service {
           relNames.push(el);
         } else if (typeof el === 'object') {
           Object.keys(el).forEach(key => {
-            if (Object.prototype.hasOwnProperty.call(el, key))
+            if (Object.prototype.hasOwnProperty.call(el, key)) {
               relNames.push(key);
+            }
           });
         }
       });
@@ -187,26 +188,32 @@ export class IncludeClauseTool extends Service {
       const duplicateNames = relNames.filter(
         (name, i) => relNames.indexOf(name) !== i,
       );
-      if (duplicateNames.length)
+      if (duplicateNames.length) {
         throw new InvalidArgumentError(
           'The provided option "include" has duplicates of %v.',
           duplicateNames[0],
         );
+      }
     } else if (typeof clause === 'object') {
       // validate object
       if ('relation' in clause) {
         // {relation: 'name', scope: {}}
-        if (!clause.relation || typeof clause.relation !== 'string')
+        if (!clause.relation || typeof clause.relation !== 'string') {
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
               'a non-empty String, but %v was given.',
             clause.relation,
           );
-        if ('scope' in clause && clause) this.validateScopeClause(clause.scope);
+        }
+        if ('scope' in clause && clause) {
+          this.validateScopeClause(clause.scope);
+        }
       } else {
         // {foo: 'bar', 'baz': ['qux'], ...}
         Object.keys(clause).forEach(key => {
-          if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+          if (!Object.prototype.hasOwnProperty.call(clause, key)) {
+            return;
+          }
           this.validateIncludeClause(key);
           this.validateIncludeClause(clause[key]);
         });
@@ -227,12 +234,15 @@ export class IncludeClauseTool extends Service {
    * @param {object|undefined} clause
    */
   static validateScopeClause(clause) {
-    if (clause == null) return;
-    if (typeof clause !== 'object' || Array.isArray(clause))
+    if (clause == null) {
+      return;
+    }
+    if (typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The provided option "scope" should be an Object, but %v was given.',
         clause,
       );
+    }
     // {where: ...}
     if (clause.where != null) {
       WhereClauseTool.validateWhereClause(clause.where);
@@ -284,33 +294,41 @@ export class IncludeClauseTool extends Service {
       const duplicateNames = relNames.filter(
         (name, i) => relNames.indexOf(name) !== i,
       );
-      if (duplicateNames.length)
+      if (duplicateNames.length) {
         throw new InvalidArgumentError(
           'The provided option "include" has duplicates of %v.',
           duplicateNames[0],
         );
+      }
     } else if (typeof clause === 'object') {
       // normalize object
       if ('relation' in clause) {
         // {relation: 'name', scope: {...}}
-        if (!clause.relation || typeof clause.relation !== 'string')
+        if (!clause.relation || typeof clause.relation !== 'string') {
           throw new InvalidArgumentError(
             'The provided option "relation" should be ' +
               'a non-empty String, but %v was given.',
             clause.relation,
           );
+        }
         const normalized = {relation: clause.relation};
         const scope = this.normalizeScopeClause(clause.scope);
-        if (scope) normalized.scope = scope;
+        if (scope) {
+          normalized.scope = scope;
+        }
         result.push(normalized);
       } else {
         // {foo: 'bar', baz: ['qux'], ...}
         Object.keys(clause).forEach(key => {
-          if (!Object.prototype.hasOwnProperty.call(clause, key)) return;
+          if (!Object.prototype.hasOwnProperty.call(clause, key)) {
+            return;
+          }
           this.validateIncludeClause(key);
           const normalized = {relation: key};
           const include = this.normalizeIncludeClause(clause[key]);
-          if (include.length) normalized.scope = {include};
+          if (include.length) {
+            normalized.scope = {include};
+          }
           result.push(normalized);
         });
       }
@@ -332,12 +350,15 @@ export class IncludeClauseTool extends Service {
    * @returns {object|undefined}
    */
   static normalizeScopeClause(clause) {
-    if (clause == null) return;
-    if (typeof clause !== 'object' || Array.isArray(clause))
+    if (clause == null) {
+      return;
+    }
+    if (typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The provided option "scope" should be an Object, but %v was given.',
         clause,
       );
+    }
     const result = {};
     // {where: ...}
     if (clause.where != null) {
@@ -368,7 +389,9 @@ export class IncludeClauseTool extends Service {
     if (clause.include != null) {
       result.include = this.normalizeIncludeClause(clause.include);
     }
-    if (Object.keys(result).length) return result;
+    if (Object.keys(result).length) {
+      return result;
+    }
     return undefined;
   }
 }

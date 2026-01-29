@@ -27,50 +27,59 @@ export class BelongsToResolver extends Service {
     foreignKey = undefined,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of BelongsToResolver.includeTo requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!targetName || typeof targetName !== 'string')
+    }
+    if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
-    if (foreignKey && typeof foreignKey !== 'string')
+    }
+    if (foreignKey && typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The provided parameter "foreignKey" of BelongsToResolver.includeTo ' +
           'should be a String, but %v was given.',
         foreignKey,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of BelongsToResolver.includeTo ' +
           'should be an Object, but %v was given.',
         scope,
       );
-    if (foreignKey == null) foreignKey = `${relationName}Id`;
+    }
+    if (foreignKey == null) {
+      foreignKey = `${relationName}Id`;
+    }
     const targetIds = entities.reduce((acc, entity) => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity))
+      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
           'The parameter "entities" of BelongsToResolver.includeTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
+      }
       const targetId = entity[foreignKey];
       return targetId != null ? [...acc, targetId] : acc;
     }, []);
@@ -93,7 +102,9 @@ export class BelongsToResolver extends Service {
       const target = targets.find(
         e => e[targetPkPropName] === entity[foreignKey],
       );
-      if (target) entity[relationName] = target;
+      if (target) {
+        entity[relationName] = target;
+      }
     });
   }
 
@@ -116,42 +127,48 @@ export class BelongsToResolver extends Service {
     discriminator = undefined,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of BelongsToResolver.includePolymorphicTo ' +
           'requires an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo ' +
           'requires a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of BelongsToResolver.includePolymorphicTo ' +
           'requires a non-empty String, but %v was given.',
         relationName,
       );
-    if (foreignKey && typeof foreignKey !== 'string')
+    }
+    if (foreignKey && typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
           'should be a String, but %v was given.',
         foreignKey,
       );
-    if (discriminator && typeof discriminator !== 'string')
+    }
+    if (discriminator && typeof discriminator !== 'string') {
       throw new InvalidArgumentError(
         'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
           'should be a String, but %v was given.',
         discriminator,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
           'should be an Object, but %v was given.',
         scope,
       );
+    }
     if (foreignKey == null) {
       const singularRelationName = singularize(relationName);
       foreignKey = `${singularRelationName}Id`;
@@ -162,19 +179,24 @@ export class BelongsToResolver extends Service {
     }
     const targetIdsByTargetName = {};
     entities.forEach(entity => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity))
+      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
           'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
+      }
       const targetId = entity[foreignKey];
       const targetName = entity[discriminator];
-      if (targetId == null || targetName == null) return;
-      if (targetIdsByTargetName[targetName] == null)
+      if (targetId == null || targetName == null) {
+        return;
+      }
+      if (targetIdsByTargetName[targetName] == null) {
         targetIdsByTargetName[targetName] = [];
-      if (!targetIdsByTargetName[targetName].includes(targetId))
+      }
+      if (!targetIdsByTargetName[targetName].includes(targetId)) {
         targetIdsByTargetName[targetName].push(targetId);
+      }
     });
     const promises = [];
     const targetNames = Object.keys(targetIdsByTargetName);
@@ -235,7 +257,9 @@ export class BelongsToResolver extends Service {
           targetName,
         );
       const target = targetEntities.find(e => e[targetPkPropName] === targetId);
-      if (target) entity[relationName] = target;
+      if (target) {
+        entity[relationName] = target;
+      }
     });
   }
 }

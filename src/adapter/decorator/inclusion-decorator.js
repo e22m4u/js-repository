@@ -13,12 +13,13 @@ export class InclusionDecorator extends Service {
    * @param {Adapter} adapter
    */
   decorate(adapter) {
-    if (!adapter || !(adapter instanceof Adapter))
+    if (!adapter || !(adapter instanceof Adapter)) {
       throw new InvalidArgumentError(
         'The first argument of InclusionDecorator.decorate should be ' +
           'an Adapter instance, but %v was given.',
         adapter,
       );
+    }
 
     const tool = adapter.getService(IncludeClauseTool);
     const includeTo = (...args) => tool.includeTo(...args);
@@ -26,8 +27,9 @@ export class InclusionDecorator extends Service {
     const create = adapter.create;
     adapter.create = async function (modelName, modelData, filter) {
       const retvalData = await create.call(this, modelName, modelData, filter);
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo([retvalData], modelName, filter.include);
+      }
       return retvalData;
     };
 
@@ -40,8 +42,9 @@ export class InclusionDecorator extends Service {
         modelData,
         filter,
       );
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo([retvalData], modelName, filter.include);
+      }
       return retvalData;
     };
 
@@ -53,8 +56,9 @@ export class InclusionDecorator extends Service {
         modelData,
         filter,
       );
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo([retvalData], modelName, filter.include);
+      }
       return retvalData;
     };
 
@@ -67,24 +71,27 @@ export class InclusionDecorator extends Service {
         modelData,
         filter,
       );
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo([retvalData], modelName, filter.include);
+      }
       return retvalData;
     };
 
     const find = adapter.find;
     adapter.find = async function (modelName, filter) {
       const modelItems = await find.call(this, modelName, filter);
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo(modelItems, modelName, filter.include);
+      }
       return modelItems;
     };
 
     const findById = adapter.findById;
     adapter.findById = async function (modelName, id, filter) {
       const retvalData = await findById.call(this, modelName, id, filter);
-      if (filter && typeof filter === 'object' && filter.include)
+      if (filter && typeof filter === 'object' && filter.include) {
         await includeTo([retvalData], modelName, filter.include);
+      }
       return retvalData;
     };
   }

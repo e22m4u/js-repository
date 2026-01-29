@@ -7,7 +7,11 @@
  * @returns {boolean}
  */
 export function isPromise(value) {
-  if (!value) return false;
-  if (typeof value !== 'object') return false;
+  if (!value) {
+    return false;
+  }
+  if (typeof value !== 'object') {
+    return false;
+  }
   return typeof value.then === 'function';
 }

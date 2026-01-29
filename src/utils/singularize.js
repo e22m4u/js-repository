@@ -5,7 +5,9 @@
  * @returns {string}
  */
 export function singularize(noun) {
-  if (!noun || typeof noun !== 'string') return noun;
+  if (!noun || typeof noun !== 'string') {
+    return noun;
+  }
   const endings = {
     ves: 'fe',
     ies: 'y',

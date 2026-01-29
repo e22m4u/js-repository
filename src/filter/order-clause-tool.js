@@ -13,22 +13,31 @@ export class OrderClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   sort(entities, clause) {
-    if (clause == null) return;
-    if (Array.isArray(clause) === false) clause = [clause];
-    if (!clause.length) return;
+    if (clause == null) {
+      return;
+    }
+    if (Array.isArray(clause) === false) {
+      clause = [clause];
+    }
+    if (!clause.length) {
+      return;
+    }
     const mapping = [];
     clause.forEach((key, index) => {
-      if (!key || typeof key !== 'string')
+      if (!key || typeof key !== 'string') {
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           key,
         );
+      }
       let reverse = 1;
       const matches = key.match(/\s+(A|DE)SC$/i);
       if (matches) {
         key = key.replace(/\s+(A|DE)SC/i, '');
-        if (matches[1].toLowerCase() === 'de') reverse = -1;
+        if (matches[1].toLowerCase() === 'de') {
+          reverse = -1;
+        }
       }
       mapping[index] = {key: key, reverse};
     });
@@ -41,16 +50,23 @@ export class OrderClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   static validateOrderClause(clause) {
-    if (clause == null) return;
-    if (Array.isArray(clause) === false) clause = [clause];
-    if (!clause.length) return;
+    if (clause == null) {
+      return;
+    }
+    if (Array.isArray(clause) === false) {
+      clause = [clause];
+    }
+    if (!clause.length) {
+      return;
+    }
     clause.forEach(field => {
-      if (!field || typeof field !== 'string')
+      if (!field || typeof field !== 'string') {
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           field,
         );
+      }
     });
   }
 
@@ -61,16 +77,23 @@ export class OrderClauseTool extends Service {
    * @returns {string[]|undefined}
    */
   static normalizeOrderClause(clause) {
-    if (clause == null) return;
-    if (Array.isArray(clause) === false) clause = [clause];
-    if (!clause.length) return;
+    if (clause == null) {
+      return;
+    }
+    if (Array.isArray(clause) === false) {
+      clause = [clause];
+    }
+    if (!clause.length) {
+      return;
+    }
     clause.forEach(field => {
-      if (!field || typeof field !== 'string')
+      if (!field || typeof field !== 'string') {
         throw new InvalidArgumentError(
           'The provided option "order" should be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           field,
         );
+      }
     });
     return clause;
   }

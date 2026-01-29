@@ -22,7 +22,9 @@ export class AdapterRegistry extends Service {
    */
   async getAdapter(datasourceName) {
     let adapter = this._adapters[datasourceName];
-    if (adapter) return adapter;
+    if (adapter) {
+      return adapter;
+    }
     const datasource =
       this.getService(DefinitionRegistry).getDatasource(datasourceName);
     const adapterName = datasource.adapter;

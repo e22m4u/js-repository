@@ -27,59 +27,69 @@ export class ReferencesManyResolver extends Service {
     foreignKey = undefined,
     scope = undefined,
   ) {
-    if (!entities || !Array.isArray(entities))
+    if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (!sourceName || typeof sourceName !== 'string')
+    }
+    if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
-    if (!targetName || typeof targetName !== 'string')
+    }
+    if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
-    if (!relationName || typeof relationName !== 'string')
+    }
+    if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
-    if (foreignKey && typeof foreignKey !== 'string')
+    }
+    if (foreignKey && typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
         'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
           'should be a String, but %v was given.',
         foreignKey,
       );
-    if (scope && (typeof scope !== 'object' || Array.isArray(scope)))
+    }
+    if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
         'The provided parameter "scope" of ReferencesManyResolver.includeTo ' +
           'should be an Object, but %v was given.',
         scope,
       );
+    }
     if (foreignKey == null) {
       const singularRelationName = singularize(relationName);
       foreignKey = `${singularRelationName}Ids`;
     }
     const targetIds = entities.reduce((acc, entity) => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity))
+      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
           'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
+      }
       const ids = entity[foreignKey];
-      if (Array.isArray(ids))
+      if (Array.isArray(ids)) {
         ids.forEach(id => {
-          if (id == null || acc.includes(id)) return;
+          if (id == null || acc.includes(id)) {
+            return;
+          }
           acc.push(id);
         });
+      }
       return acc;
     }, []);
 
@@ -102,11 +112,14 @@ export class ReferencesManyResolver extends Service {
     entities.forEach(entity => {
       const ids = entity[foreignKey];
       entity[relationName] = [];
-      if (Array.isArray(ids))
+      if (Array.isArray(ids)) {
         targets.forEach(target => {
           const targetId = target[targetPkPropName];
-          if (ids.includes(targetId)) entity[relationName].push(target);
+          if (ids.includes(targetId)) {
+            entity[relationName].push(target);
+          }
         });
+      }
     });
   }
 }

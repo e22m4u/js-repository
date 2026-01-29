@@ -32,7 +32,7 @@ export class ModelDefinitionUtils extends Service {
       const isDefaultPrimaryKeyAlreadyInUse = Object.keys(propDefs).includes(
         DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
       );
-      if (isDefaultPrimaryKeyAlreadyInUse)
+      if (isDefaultPrimaryKeyAlreadyInUse) {
         throw new InvalidArgumentError(
           'The property name %v of the model %v is defined as a regular property. ' +
             'In this case, a primary key should be defined explicitly. ' +
@@ -40,6 +40,7 @@ export class ModelDefinitionUtils extends Service {
           DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
           modelName,
         );
+      }
       return DEFAULT_PRIMARY_KEY_PROPERTY_NAME;
     }
     return propNames[0];
@@ -57,9 +58,13 @@ export class ModelDefinitionUtils extends Service {
     try {
       pkColName = this.getColumnNameByPropertyName(modelName, pkPropName);
     } catch (error) {
-      if (!(error instanceof InvalidArgumentError)) throw error;
+      if (!(error instanceof InvalidArgumentError)) {
+        throw error;
+      }
     }
-    if (pkColName === undefined) return pkPropName;
+    if (pkColName === undefined) {
+      return pkPropName;
+    }
     return pkColName;
   }
 
@@ -85,14 +90,16 @@ export class ModelDefinitionUtils extends Service {
     const propDefs =
       this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propDef = propDefs[propertyName];
-    if (!propDef)
+    if (!propDef) {
       throw new InvalidArgumentError(
         'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
-    if (propDef && typeof propDef === 'object')
+    }
+    if (propDef && typeof propDef === 'object') {
       return propDef.columnName ?? propertyName;
+    }
     return propertyName;
   }
 
@@ -107,16 +114,18 @@ export class ModelDefinitionUtils extends Service {
     const propDefs =
       this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propDef = propDefs[propertyName];
-    if (!propDef)
+    if (!propDef) {
       throw new InvalidArgumentError(
         'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
-    if (propDef && typeof propDef === 'object')
+    }
+    if (propDef && typeof propDef === 'object') {
       return propDef.default instanceof Function
         ? propDef.default()
         : propDef.default;
+    }
   }
 
   /**
@@ -173,7 +182,9 @@ export class ModelDefinitionUtils extends Service {
     const propNames = Object.keys(propDefs);
     const convertedData = cloneDeep(modelData);
     propNames.forEach(propName => {
-      if (!(propName in convertedData)) return;
+      if (!(propName in convertedData)) {
+        return;
+      }
       const colName = this.getColumnNameByPropertyName(modelName, propName);
       let propValue = convertedData[propName];
       // если значением является объект, то проверяем
@@ -232,7 +243,9 @@ export class ModelDefinitionUtils extends Service {
     const convertedData = cloneDeep(tableData);
     propNames.forEach(propName => {
       const colName = this.getColumnNameByPropertyName(modelName, propName);
-      if (!(colName in convertedData)) return;
+      if (!(colName in convertedData)) {
+        return;
+      }
       let colValue = convertedData[colName];
       // если значением является объект, то проверяем
       // тип свойства и наличие модели для замены
@@ -289,14 +302,18 @@ export class ModelDefinitionUtils extends Service {
     const propDef = propDefs[propertyName];
     if (!propDef) {
       const pkPropName = this.getPrimaryKeyAsPropertyName(modelName);
-      if (pkPropName === propertyName) return DataType.ANY;
+      if (pkPropName === propertyName) {
+        return DataType.ANY;
+      }
       throw new InvalidArgumentError(
         'The model %v does not have the property %v.',
         modelName,
         propertyName,
       );
     }
-    if (typeof propDef === 'string') return propDef;
+    if (typeof propDef === 'string') {
+      return propDef;
+    }
     return propDef.type;
   }
 
@@ -317,15 +334,18 @@ export class ModelDefinitionUtils extends Service {
         propDef,
       );
     }
-    if (typeof propDef === 'string') return propDef;
+    if (typeof propDef === 'string') {
+      return propDef;
+    }
     const dataType = propDef.type;
-    if (!Object.values(DataType).includes(dataType))
+    if (!Object.values(DataType).includes(dataType)) {
       throw new InvalidArgumentError(
         'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
           'should have the "type" property with one of values: %l, but %v was given.',
         Object.values(DataType),
         propDef.type,
       );
+    }
     return dataType;
   }
 
@@ -356,7 +376,9 @@ export class ModelDefinitionUtils extends Service {
     const propDefs = modelDef.properties ?? {};
     return Object.keys(propDefs).reduce((result, propName) => {
       const propDef = propDefs[propName];
-      if (typeof propDef === 'object' && propDef.primaryKey) return result;
+      if (typeof propDef === 'object' && propDef.primaryKey) {
+        return result;
+      }
       return {...result, [propName]: propDef};
     }, {});
   }
@@ -371,21 +393,25 @@ export class ModelDefinitionUtils extends Service {
     let pkPropDefs = {};
     let regularPropDefs = {};
     const recursion = (currModelName, prevModelName = undefined) => {
-      if (currModelName === prevModelName)
+      if (currModelName === prevModelName) {
         throw new InvalidArgumentError(
           'The model %v has a circular inheritance.',
           currModelName,
         );
-      if (Object.keys(pkPropDefs).length === 0)
+      }
+      if (Object.keys(pkPropDefs).length === 0) {
         pkPropDefs =
           this.getOwnPropertiesDefinitionOfPrimaryKeys(currModelName);
+      }
       regularPropDefs = {
         ...this.getOwnPropertiesDefinitionWithoutPrimaryKeys(currModelName),
         ...regularPropDefs,
       };
       const modelDef =
         this.getService(DefinitionRegistry).getModel(currModelName);
-      if (modelDef.base) recursion(modelDef.base, currModelName);
+      if (modelDef.base) {
+        recursion(modelDef.base, currModelName);
+      }
     };
     recursion(modelName);
     return {...pkPropDefs, ...regularPropDefs};
@@ -411,16 +437,19 @@ export class ModelDefinitionUtils extends Service {
   getRelationsDefinitionInBaseModelHierarchy(modelName) {
     let result = {};
     const recursion = (currModelName, prevModelName = undefined) => {
-      if (currModelName === prevModelName)
+      if (currModelName === prevModelName) {
         throw new InvalidArgumentError(
           'The model %v has a circular inheritance.',
           currModelName,
         );
+      }
       const modelDef =
         this.getService(DefinitionRegistry).getModel(currModelName);
       const ownRelDefs = modelDef.relations ?? {};
       result = {...ownRelDefs, ...result};
-      if (modelDef.base) recursion(modelDef.base, currModelName);
+      if (modelDef.base) {
+        recursion(modelDef.base, currModelName);
+      }
     };
     recursion(modelName);
     return result;
@@ -443,12 +472,13 @@ export class ModelDefinitionUtils extends Service {
         break;
       }
     }
-    if (!foundDef)
+    if (!foundDef) {
       throw new InvalidArgumentError(
         'The model %v does not have relation name %v.',
         modelName,
         relationName,
       );
+    }
     return foundDef;
   }
 
@@ -460,12 +490,17 @@ export class ModelDefinitionUtils extends Service {
    * @returns {object}
    */
   excludeObjectKeysByRelationNames(modelName, modelData) {
-    if (!modelData || typeof modelData !== 'object' || Array.isArray(modelData))
+    if (
+      !modelData ||
+      typeof modelData !== 'object' ||
+      Array.isArray(modelData)
+    ) {
       throw new InvalidArgumentError(
         'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
           'should be an Object, but %v was given.',
         modelData,
       );
+    }
     const relDefs = this.getRelationsDefinitionInBaseModelHierarchy(modelName);
     const relNames = Object.keys(relDefs);
     return excludeObjectKeys(modelData, relNames);
@@ -479,26 +514,30 @@ export class ModelDefinitionUtils extends Service {
    * @returns {string|undefined}
    */
   getModelNameOfPropertyValueIfDefined(modelName, propertyName) {
-    if (!modelName || typeof modelName !== 'string')
+    if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
         'Parameter "modelName" of ' +
           'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
           'requires a non-empty String, but %v was given.',
         modelName,
       );
-    if (!propertyName || typeof propertyName !== 'string')
+    }
+    if (!propertyName || typeof propertyName !== 'string') {
       throw new InvalidArgumentError(
         'Parameter "propertyName" of ' +
           'ModelDefinitionUtils.getModelNameOfPropertyValueIfDefined ' +
           'requires a non-empty String, but %v was given.',
         propertyName,
       );
+    }
     // если определение свойства не найдено,
     // то возвращаем undefined
     const propDefs =
       this.getPropertiesDefinitionInBaseModelHierarchy(modelName);
     const propDef = propDefs[propertyName];
-    if (!propDef) return undefined;
+    if (!propDef) {
+      return undefined;
+    }
     // если определение свойства является
     // объектом, то проверяем тип и возвращаем
     // название модели
@@ -506,12 +545,15 @@ export class ModelDefinitionUtils extends Service {
       // если тип свойства является объектом,
       // то возвращаем значение опции "model",
       // или undefined
-      if (propDef.type === DataType.OBJECT) return propDef.model || undefined;
+      if (propDef.type === DataType.OBJECT) {
+        return propDef.model || undefined;
+      }
       // если тип свойства является массивом,
       // то возвращаем значение опции "itemModel",
       // или undefined
-      if (propDef.type === DataType.ARRAY)
+      if (propDef.type === DataType.ARRAY) {
         return propDef.itemModel || undefined;
+      }
     }
     // если определение свойства не является
     // объектом, то возвращаем undefined

@@ -25,30 +25,34 @@ export class PropertyUniquenessValidator extends Service {
     modelData,
     modelId = undefined,
   ) {
-    if (typeof countMethod !== 'function')
+    if (typeof countMethod !== 'function') {
       throw new InvalidArgumentError(
         'The parameter "countMethod" of the PropertyUniquenessValidator ' +
           'must be a Function, but %v was given.',
         countMethod,
       );
-    if (!methodName || typeof methodName !== 'string')
+    }
+    if (!methodName || typeof methodName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "methodName" of the PropertyUniquenessValidator ' +
           'must be a non-empty String, but %v was given.',
         methodName,
       );
-    if (!modelName || typeof modelName !== 'string')
+    }
+    if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
         'The parameter "modelName" of the PropertyUniquenessValidator ' +
           'must be a non-empty String, but %v was given.',
         modelName,
       );
-    if (!isPlainObject(modelData))
+    }
+    if (!isPlainObject(modelData)) {
       throw new InvalidArgumentError(
         'The data of the model %v should be an Object, but %v was given.',
         modelName,
         modelData,
       );
+    }
     const propDefs =
       this.getService(
         ModelDefinitionUtils,
@@ -87,7 +91,9 @@ export class PropertyUniquenessValidator extends Service {
       // create
       if (methodName === 'create') {
         const count = await countMethod({[propName]: propValue});
-        if (count > 0) throw createError(propName, propValue);
+        if (count > 0) {
+          throw createError(propName, propValue);
+        }
       }
       // replaceById
       else if (methodName === 'replaceById') {
@@ -95,7 +101,9 @@ export class PropertyUniquenessValidator extends Service {
           [idProp]: {neq: modelId},
           [propName]: propValue,
         });
-        if (count > 0) throw createError(propName, propValue);
+        if (count > 0) {
+          throw createError(propName, propValue);
+        }
       }
       // replaceOrCreate
       else if (methodName === 'replaceOrCreate') {
@@ -110,18 +118,24 @@ export class PropertyUniquenessValidator extends Service {
             [idProp]: {neq: idFromData},
             [propName]: propValue,
           });
-          if (count > 0) throw createError(propName, propValue);
+          if (count > 0) {
+            throw createError(propName, propValue);
+          }
         }
         // create by replaceOrCreate
         else {
           const count = await countMethod({[propName]: propValue});
-          if (count > 0) throw createError(propName, propValue);
+          if (count > 0) {
+            throw createError(propName, propValue);
+          }
         }
       }
       // patch
       else if (methodName === 'patch') {
         const count = await countMethod({[propName]: propValue});
-        if (count > 0) throw createError(propName, propValue);
+        if (count > 0) {
+          throw createError(propName, propValue);
+        }
       }
       // patchById
       else if (methodName === 'patchById') {
@@ -129,7 +143,9 @@ export class PropertyUniquenessValidator extends Service {
           [idProp]: {neq: modelId},
           [propName]: propValue,
         });
-        if (count > 0) throw createError(propName, propValue);
+        if (count > 0) {
+          throw createError(propName, propValue);
+        }
       }
       // unsupported method
       else {

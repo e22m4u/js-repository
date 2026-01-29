@@ -37,7 +37,9 @@ export class MemoryAdapter extends Adapter {
     const tableName =
       this.getService(ModelDefinitionUtils).getTableNameByModelName(modelName);
     let table = this._tables.get(tableName);
-    if (table) return table;
+    if (table) {
+      return table;
+    }
     table = new Map();
     this._tables.set(tableName, table);
     return table;
@@ -121,13 +123,14 @@ export class MemoryAdapter extends Adapter {
     }
 
     const table = this._getTableOrCreate(modelName);
-    if (table.has(idValue))
+    if (table.has(idValue)) {
       throw new InvalidArgumentError(
         'The value %v of the primary key %v already exists in the model %v.',
         idValue,
         pkPropName,
         modelName,
       );
+    }
 
     modelData = cloneDeep(modelData);
     modelData[pkPropName] = idValue;
@@ -159,13 +162,14 @@ export class MemoryAdapter extends Adapter {
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
         modelName,
       );
-    if (!isExists)
+    if (!isExists) {
       throw new InvalidArgumentError(
         'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
       );
+    }
 
     modelData = cloneDeep(modelData);
     modelData[pkPropName] = id;
@@ -230,7 +234,9 @@ export class MemoryAdapter extends Adapter {
   async patch(modelName, modelData, where = undefined) {
     const table = this._getTableOrCreate(modelName);
     const tableItems = Array.from(table.values());
-    if (!tableItems.length) return 0;
+    if (!tableItems.length) {
+      return 0;
+    }
     let modelItems = tableItems.map(tableItem =>
       this.getService(ModelDefinitionUtils).convertColumnNamesToPropertyNames(
         modelName,
@@ -238,8 +244,9 @@ export class MemoryAdapter extends Adapter {
       ),
     );
 
-    if (where && typeof where === 'object')
+    if (where && typeof where === 'object') {
       modelItems = this.getService(WhereClauseTool).filter(modelItems, where);
+    }
     const size = modelItems.length;
 
     const pkPropName =
@@ -277,13 +284,14 @@ export class MemoryAdapter extends Adapter {
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
         modelName,
       );
-    if (existingTableData == null)
+    if (existingTableData == null) {
       throw new InvalidArgumentError(
         'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
       );
+    }
 
     modelData = cloneDeep(modelData);
     delete modelData[pkPropName];
@@ -320,19 +328,22 @@ export class MemoryAdapter extends Adapter {
     );
 
     if (filter && typeof filter === 'object') {
-      if (filter.where)
+      if (filter.where) {
         modelItems = this.getService(WhereClauseTool).filter(
           modelItems,
           filter.where,
         );
-      if (filter.skip || filter.limit)
+      }
+      if (filter.skip || filter.limit) {
         modelItems = this.getService(SliceClauseTool).slice(
           modelItems,
           filter.skip,
           filter.limit,
         );
-      if (filter.order)
+      }
+      if (filter.order) {
         this.getService(OrderClauseTool).sort(modelItems, filter.order);
+      }
     }
     return modelItems;
   }
@@ -353,13 +364,14 @@ export class MemoryAdapter extends Adapter {
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
         modelName,
       );
-    if (!tableData)
+    if (!tableData) {
       throw new InvalidArgumentError(
         'The value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
       );
+    }
     return this.getService(
       ModelDefinitionUtils,
     ).convertColumnNamesToPropertyNames(modelName, tableData);
@@ -375,7 +387,9 @@ export class MemoryAdapter extends Adapter {
   async delete(modelName, where = undefined) {
     const table = this._getTableOrCreate(modelName);
     const tableItems = Array.from(table.values());
-    if (!tableItems.length) return 0;
+    if (!tableItems.length) {
+      return 0;
+    }
     let modelItems = tableItems.map(tableItem =>
       this.getService(ModelDefinitionUtils).convertColumnNamesToPropertyNames(
         modelName,
@@ -383,8 +397,9 @@ export class MemoryAdapter extends Adapter {
       ),
     );
 
-    if (where && typeof where === 'object')
+    if (where && typeof where === 'object') {
       modelItems = this.getService(WhereClauseTool).filter(modelItems, where);
+    }
     const size = modelItems.length;
 
     const idPropName =
@@ -441,8 +456,9 @@ export class MemoryAdapter extends Adapter {
       ),
     );
 
-    if (where && typeof where === 'object')
+    if (where && typeof where === 'object') {
       modelItems = this.getService(WhereClauseTool).filter(modelItems, where);
+    }
     return modelItems.length;
   }
 }

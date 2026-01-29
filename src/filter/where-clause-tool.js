@@ -39,13 +39,16 @@ export class WhereClauseTool extends Service {
    * @returns {object[]}
    */
   filter(entities, where = undefined) {
-    if (!Array.isArray(entities))
+    if (!Array.isArray(entities)) {
       throw new InvalidArgumentError(
         'The first argument of WhereClauseTool.filter should be ' +
           'an Array of Object, but %v was given.',
         entities,
       );
-    if (where == null) return entities;
+    }
+    if (where == null) {
+      return entities;
+    }
     return entities.filter(this._createFilter(where));
   }
 
@@ -56,37 +59,43 @@ export class WhereClauseTool extends Service {
    * @returns {Function}
    */
   _createFilter(whereClause) {
-    if (typeof whereClause !== 'object' || Array.isArray(whereClause))
+    if (typeof whereClause !== 'object' || Array.isArray(whereClause)) {
       throw new InvalidArgumentError(
         'The provided option "where" should be an Object, but %v was given.',
         whereClause,
       );
+    }
     const keys = Object.keys(whereClause);
     return data => {
-      if (typeof data !== 'object')
+      if (typeof data !== 'object') {
         throw new InvalidArgumentError(
           'The first argument of WhereClauseTool.filter should be ' +
             'an Array of Object, but %v was given.',
           data,
         );
+      }
       return keys.every(key => {
         // AndClause (recursion)
         if (key === 'and' && key in whereClause) {
           const andClause = whereClause[key];
-          if (Array.isArray(andClause))
+          if (Array.isArray(andClause)) {
             return andClause.every(clause => this._createFilter(clause)(data));
+          }
         }
         // OrClause (recursion)
         else if (key === 'or' && key in whereClause) {
           const orClause = whereClause[key];
-          if (Array.isArray(orClause))
+          if (Array.isArray(orClause)) {
             return orClause.some(clause => this._createFilter(clause)(data));
+          }
         }
         // PropertiesClause (properties)
         const value = getValueByPath(data, key);
         const matcher = whereClause[key];
         // Test property value.
-        if (this._test(matcher, value)) return true;
+        if (this._test(matcher, value)) {
+          return true;
+        }
       });
     };
   }
@@ -145,7 +154,9 @@ export class WhereClauseTool extends Service {
       // если один из элементов массива соответствует
       // поиску, то возвращается true
       const isElementMatched = value.some(el => isDeepEqual(el, example));
-      if (isElementMatched) return true;
+      if (isElementMatched) {
+        return true;
+      }
     }
     return isDeepEqual(example, value);
   }
@@ -156,11 +167,14 @@ export class WhereClauseTool extends Service {
    * @param {WhereClause|undefined} clause
    */
   static validateWhereClause(clause) {
-    if (clause == null || typeof clause === 'function') return;
-    if (typeof clause !== 'object' || Array.isArray(clause))
+    if (clause == null || typeof clause === 'function') {
+      return;
+    }
+    if (typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
         'The provided option "where" should be an Object, but %v was given.',
         clause,
       );
+    }
   }
 }
