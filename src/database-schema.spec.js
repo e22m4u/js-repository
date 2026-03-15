@@ -28,9 +28,7 @@ describe('DatabaseSchema', function () {
       dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
       const throwable = () =>
         dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
-      expect(throwable).to.throw(
-        'The datasource "datasource" is already defined.',
-      );
+      expect(throwable).to.throw('Datasource "datasource" is already defined.');
     });
   });
 
@@ -52,7 +50,7 @@ describe('DatabaseSchema', function () {
       const dbs = new DatabaseSchema();
       dbs.defineModel({name: 'model'});
       const throwable = () => dbs.defineModel({name: 'model'});
-      expect(throwable).to.throw('The model "model" is already defined.');
+      expect(throwable).to.throw('Model "model" is already defined.');
     });
   });
 
@@ -68,7 +66,7 @@ describe('DatabaseSchema', function () {
     it('throws an error if the model is not defined', function () {
       const dbs = new DatabaseSchema();
       const throwable = () => dbs.getRepository('model');
-      expect(throwable).to.throw('The model "model" is not defined.');
+      expect(throwable).to.throw('Model "model" is not defined.');
     });
   });
 });

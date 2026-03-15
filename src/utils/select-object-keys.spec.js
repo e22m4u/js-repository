@@ -17,24 +17,21 @@ describe('selectObjectKeys', function () {
   it('throws an error if a given value is not an Object', function () {
     const throwable = () => selectObjectKeys(10, ['key']);
     expect(throwable).to.throw(
-      'The first argument of selectObjectKeys ' +
-        'should be an Object, but 10 was given.',
+      'Parameter "obj" must be an Object, but 10 was given.',
     );
   });
 
   it('throws an error if a given keys is not an Array', function () {
     const throwable = () => selectObjectKeys({});
     expect(throwable).to.throw(
-      'The second argument of selectObjectKeys ' +
-        'should be an Array of String, but undefined was given.',
+      'Parameter "keys" must be an Array, but undefined was given.',
     );
   });
 
   it('throws an error if a given keys is not an String', function () {
     const throwable = () => selectObjectKeys({}, [10]);
     expect(throwable).to.throw(
-      'The second argument of selectObjectKeys ' +
-        'should be an Array of String, but 10 was given.',
+      'Element 0 of the parameter "keys" must be a String, but 10 was given.',
     );
   });
 });

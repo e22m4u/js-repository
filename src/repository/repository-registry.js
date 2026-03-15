@@ -34,8 +34,8 @@ export class RepositoryRegistry extends Service {
       !(ctor.prototype instanceof Repository)
     ) {
       throw new InvalidArgumentError(
-        'The first argument of RepositoryRegistry.setRepositoryCtor ' +
-          'must inherit from Repository class, but %v was given.',
+        'Parameter "ctor" must inherit from Repository class, ' +
+          'but %v was given.',
         ctor,
       );
     }

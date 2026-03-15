@@ -9,14 +9,14 @@ describe('AdapterLoader', function () {
     it('requires an adapter name as a non-empty string', async function () {
       const promise = S.loadByName('');
       await expect(promise).to.be.rejectedWith(
-        'The adapter name should be a non-empty String, but "" was given.',
+        'Adapter name must be a non-empty String, but "" was given.',
       );
     });
 
     it('throws an error if a given adapter name is not found', async function () {
       const promise = S.loadByName('unknown');
       await expect(promise).to.be.rejectedWith(
-        'The adapter "unknown" is not found.',
+        'Adapter "unknown" is not found.',
       );
     });
 

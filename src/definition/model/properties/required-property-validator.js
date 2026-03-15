@@ -27,7 +27,7 @@ export class RequiredPropertyValidator extends Service {
       Array.isArray(modelData)
     ) {
       throw new InvalidArgumentError(
-        'Data of the model %v should be an Object, but %v was given.',
+        'Data of the model %v must be an Object, but %v was given.',
         modelName,
         modelData,
       );

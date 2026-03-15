@@ -35,7 +35,7 @@ describe('RequiredPropertyValidator', function () {
       const throwable = v => () => S.validate('model', v);
       const error = s =>
         format(
-          'Data of the model "model" should be an Object, but %s was given.',
+          'Data of the model "model" must be an Object, but %s was given.',
           s,
         );
       expect(throwable('str')).to.throw(error('"str"'));

@@ -39,7 +39,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for an empty string', function () {
     const throwable = () => modelNameToModelKey('');
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but "" was given.',
     );
   });
@@ -47,7 +47,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for a string with spaces', function () {
     const throwable = () => modelNameToModelKey('user profile');
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but "user profile" was given.',
     );
   });
@@ -55,7 +55,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for null', function () {
     const throwable = () => modelNameToModelKey(null);
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but null was given.',
     );
   });
@@ -63,7 +63,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for undefined', function () {
     const throwable = () => modelNameToModelKey(undefined);
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but undefined was given.',
     );
   });
@@ -71,7 +71,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for a number', function () {
     const throwable = () => modelNameToModelKey(123);
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but 123 was given.',
     );
   });
@@ -79,7 +79,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for an object', function () {
     const throwable = () => modelNameToModelKey({name: 'test'});
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but Object was given.',
     );
   });
@@ -87,7 +87,7 @@ describe('modelNameToModelKey', function () {
   it('should throw an error for an array', function () {
     const throwable = () => modelNameToModelKey(['test']);
     expect(throwable).to.throw(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but Array was given.',
     );
   });

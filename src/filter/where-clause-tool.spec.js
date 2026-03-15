@@ -59,12 +59,11 @@ const OBJECTS = [
 
 describe('WhereClauseTool', function () {
   describe('filter', function () {
-    it('requires the first argument to be an array of objects', function () {
+    it('requires the parameter "entities" to be an array of objects', function () {
       const throwable = v => () => S.filter(v, {});
       const error = v =>
         format(
-          'The first argument of WhereClauseTool.filter should be ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -80,13 +79,10 @@ describe('WhereClauseTool', function () {
       expect(throwable([])()).to.be.eql([]);
     });
 
-    it('requires the second argument to be an object', function () {
+    it('requires the parameter "where" to be an object', function () {
       const throwable = v => () => S.filter(OBJECTS, v);
       const error = v =>
-        format(
-          'The provided option "where" should be an Object, but %s was given.',
-          v,
-        );
+        format('Option "where" must be an Object, but %s was given.', v);
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));
@@ -390,13 +386,10 @@ describe('WhereClauseTool', function () {
   });
 
   describe('validateWhereClause', function () {
-    it('requires the first argument to be an object or a function', function () {
+    it('requires the option "where" to be an object or a function', function () {
       const throwable = v => () => WhereClauseTool.validateWhereClause(v);
       const error = v =>
-        format(
-          'The provided option "where" should be an Object, but %s was given.',
-          v,
-        );
+        format('Option "where" must be an Object, but %s was given.', v);
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));

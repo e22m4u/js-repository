@@ -31,10 +31,7 @@ export class DefinitionRegistry extends Service {
     this.getService(DatasourceDefinitionValidator).validate(datasourceDef);
     const name = datasourceDef.name;
     if (name in this._datasources) {
-      throw new InvalidArgumentError(
-        'The datasource %v is already defined.',
-        name,
-      );
+      throw new InvalidArgumentError('Datasource %v is already defined.', name);
     }
     this._datasources[name] = datasourceDef;
   }
@@ -58,7 +55,7 @@ export class DefinitionRegistry extends Service {
   getDatasource(name) {
     const datasourceDef = this._datasources[name];
     if (!datasourceDef) {
-      throw new InvalidArgumentError('The datasource %v is not defined.', name);
+      throw new InvalidArgumentError('Datasource %v is not defined.', name);
     }
     return datasourceDef;
   }
@@ -73,7 +70,7 @@ export class DefinitionRegistry extends Service {
     const modelKey = modelNameToModelKey(modelDef.name);
     if (modelKey in this._models) {
       throw new InvalidArgumentError(
-        'The model %v is already defined.',
+        'Model %v is already defined.',
         modelDef.name,
       );
     }
@@ -101,7 +98,7 @@ export class DefinitionRegistry extends Service {
     const modelKey = modelNameToModelKey(name);
     const modelDef = this._models[modelKey];
     if (!modelDef) {
-      throw new InvalidArgumentError('The model %v is not defined.', name);
+      throw new InvalidArgumentError('Model %v is not defined.', name);
     }
     return modelDef;
   }

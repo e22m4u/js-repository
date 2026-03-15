@@ -27,28 +27,28 @@ export class PropertyUniquenessValidator extends Service {
   ) {
     if (typeof countMethod !== 'function') {
       throw new InvalidArgumentError(
-        'The parameter "countMethod" of the PropertyUniquenessValidator ' +
+        'Parameter "countMethod" of the PropertyUniquenessValidator ' +
           'must be a Function, but %v was given.',
         countMethod,
       );
     }
     if (!methodName || typeof methodName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "methodName" of the PropertyUniquenessValidator ' +
+        'Parameter "methodName" of the PropertyUniquenessValidator ' +
           'must be a non-empty String, but %v was given.',
         methodName,
       );
     }
     if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "modelName" of the PropertyUniquenessValidator ' +
+        'Parameter "modelName" of the PropertyUniquenessValidator ' +
           'must be a non-empty String, but %v was given.',
         modelName,
       );
     }
     if (!isPlainObject(modelData)) {
       throw new InvalidArgumentError(
-        'The data of the model %v should be an Object, but %v was given.',
+        'Data of the model %v must be an Object, but %v was given.',
         modelName,
         modelData,
       );
@@ -66,7 +66,7 @@ export class PropertyUniquenessValidator extends Service {
     const createError = (propName, propValue) =>
       new InvalidArgumentError(
         'An existing document of the model %v already has ' +
-          'the property %v with the value %v and should be unique.',
+          'the property %v with the value %v and must be unique.',
         modelName,
         propName,
         propValue,
@@ -150,8 +150,7 @@ export class PropertyUniquenessValidator extends Service {
       // unsupported method
       else {
         throw new InvalidArgumentError(
-          'The PropertyUniquenessValidator does not ' +
-            'support the adapter method %v.',
+          'Adapter method %v is not supported.',
           methodName,
         );
       }

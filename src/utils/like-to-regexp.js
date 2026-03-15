@@ -14,8 +14,7 @@ import {InvalidArgumentError} from '../errors/index.js';
 export function likeToRegexp(pattern, isCaseInsensitive = false) {
   if (typeof pattern !== 'string') {
     throw new InvalidArgumentError(
-      'The first argument of `likeToRegexp` ' +
-        'should be a String, but %v was given.',
+      'Parameter "pattern" must be a String, but %v was given.',
       pattern,
     );
   }

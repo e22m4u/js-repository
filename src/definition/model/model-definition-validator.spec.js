@@ -17,10 +17,7 @@ describe('ModelDefinitionValidator', function () {
     it('requires the given definition to be an object', function () {
       const validate = v => () => S.validate(v);
       const error = v =>
-        format(
-          'The model definition should be an Object, but %s was given.',
-          v,
-        );
+        format('Model definition must be an Object, but %s was given.', v);
       expect(validate('str')).to.throw(error('"str"'));
       expect(validate(10)).to.throw(error('10'));
       expect(validate(true)).to.throw(error('true'));
@@ -35,7 +32,7 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: v});
       const error = v =>
         format(
-          'The model definition requires the option "name" ' +
+          'Model definition requires the option "name" ' +
             'as a non-empty String, but %s was given.',
           v,
         );
@@ -54,8 +51,8 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: 'model', datasource: v});
       const error = v =>
         format(
-          'The provided option "datasource" of the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "datasource" of the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -69,8 +66,8 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: 'model', base: v});
       const error = v =>
         format(
-          'The provided option "base" of the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "base" of the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -84,8 +81,8 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: 'model', tableName: v});
       const error = v =>
         format(
-          'The provided option "tableName" of the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "tableName" of the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -99,8 +96,8 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: 'model', properties: v});
       const error = v =>
         format(
-          'The provided option "properties" of the model "model" ' +
-            'should be an Object, but %s was given.',
+          'Option "properties" of the model "model" ' +
+            'must be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -114,8 +111,8 @@ describe('ModelDefinitionValidator', function () {
       const validate = v => () => S.validate({name: 'model', relations: v});
       const error = v =>
         format(
-          'The provided option "relations" of the model "model" ' +
-            'should be an Object, but %s was given.',
+          'Option "relations" of the model "model" ' +
+            'must be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));

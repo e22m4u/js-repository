@@ -29,43 +29,43 @@ export class BelongsToResolver extends Service {
   ) {
     if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'The parameter "entities" of BelongsToResolver.includeTo requires ' +
+        'Parameter "entities" of BelongsToResolver.includeTo requires ' +
           'an Array of Object, but %v was given.',
         entities,
       );
     }
     if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "sourceName" of BelongsToResolver.includeTo requires ' +
+        'Parameter "sourceName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         sourceName,
       );
     }
     if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "targetName" of BelongsToResolver.includeTo requires ' +
+        'Parameter "targetName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         targetName,
       );
     }
     if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "relationName" of BelongsToResolver.includeTo requires ' +
+        'Parameter "relationName" of BelongsToResolver.includeTo requires ' +
           'a non-empty String, but %v was given.',
         relationName,
       );
     }
     if (foreignKey && typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
-        'The provided parameter "foreignKey" of BelongsToResolver.includeTo ' +
-          'should be a String, but %v was given.',
+        'Parameter "foreignKey" of BelongsToResolver.includeTo ' +
+          'must be a String, but %v was given.',
         foreignKey,
       );
     }
     if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
-        'The provided parameter "scope" of BelongsToResolver.includeTo ' +
-          'should be an Object, but %v was given.',
+        'Parameter "scope" of BelongsToResolver.includeTo ' +
+          'must be an Object, but %v was given.',
         scope,
       );
     }
@@ -75,7 +75,7 @@ export class BelongsToResolver extends Service {
     const targetIds = entities.reduce((acc, entity) => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
-          'The parameter "entities" of BelongsToResolver.includeTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includeTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
@@ -129,43 +129,43 @@ export class BelongsToResolver extends Service {
   ) {
     if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'The parameter "entities" of BelongsToResolver.includePolymorphicTo ' +
+        'Parameter "entities" of BelongsToResolver.includePolymorphicTo ' +
           'requires an Array of Object, but %v was given.',
         entities,
       );
     }
     if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo ' +
+        'Parameter "sourceName" of BelongsToResolver.includePolymorphicTo ' +
           'requires a non-empty String, but %v was given.',
         sourceName,
       );
     }
     if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
-        'The parameter "relationName" of BelongsToResolver.includePolymorphicTo ' +
+        'Parameter "relationName" of BelongsToResolver.includePolymorphicTo ' +
           'requires a non-empty String, but %v was given.',
         relationName,
       );
     }
     if (foreignKey && typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
-        'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
-          'should be a String, but %v was given.',
+        'Parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
+          'must be a String, but %v was given.',
         foreignKey,
       );
     }
     if (discriminator && typeof discriminator !== 'string') {
       throw new InvalidArgumentError(
-        'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
-          'should be a String, but %v was given.',
+        'Parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
+          'must be a String, but %v was given.',
         discriminator,
       );
     }
     if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
-        'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
-          'should be an Object, but %v was given.',
+        'Parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
+          'must be an Object, but %v was given.',
         scope,
       );
     }
@@ -181,7 +181,7 @@ export class BelongsToResolver extends Service {
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
-          'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %v was given.',
           entity,
         );
@@ -210,9 +210,9 @@ export class BelongsToResolver extends Service {
       } catch (error) {
         if (error instanceof InvalidArgumentError) {
           if (
-            error.message === `The model "${targetName}" is not defined.` ||
+            error.message === `Model "${targetName}" is not defined.` ||
             error.message ===
-              `The model "${targetName}" does not have a specified datasource.`
+              `Model "${targetName}" does not have a specified datasource.`
           ) {
             return;
           }

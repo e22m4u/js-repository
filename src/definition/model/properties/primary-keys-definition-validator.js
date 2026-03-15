@@ -22,8 +22,8 @@ export class PrimaryKeysDefinitionValidator extends Service {
         Object.keys(propDefs).includes(DEF_PK);
       if (isDefaultPrimaryKeyAlreadyInUse) {
         throw new InvalidArgumentError(
-          'The property name %v of the model %v is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model %v is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
           modelName,
@@ -33,8 +33,8 @@ export class PrimaryKeysDefinitionValidator extends Service {
     }
     if (propNames.length > 1) {
       throw new InvalidArgumentError(
-        'The model definition %v should not have ' +
-          'multiple primary keys, but %v keys given.',
+        'Model definition %v must not have multiple primary keys, ' +
+          'but %v keys given.',
         modelName,
         propNames.length,
       );

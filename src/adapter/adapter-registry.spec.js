@@ -19,7 +19,7 @@ describe('AdapterRegistry', function () {
       const R = new AdapterRegistry();
       const promise = R.getAdapter('unknown');
       await expect(promise).to.be.rejectedWith(
-        'The datasource "unknown" is not defined.',
+        'Datasource "unknown" is not defined.',
       );
     });
 
@@ -29,7 +29,7 @@ describe('AdapterRegistry', function () {
       const R = dbs.getService(AdapterRegistry);
       const promise = R.getAdapter('datasource');
       await expect(promise).to.be.rejectedWith(
-        'The adapter "unknown" is not found.',
+        'Adapter "unknown" is not found.',
       );
     });
   });

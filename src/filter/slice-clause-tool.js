@@ -16,20 +16,19 @@ export class SliceClauseTool extends Service {
   slice(entities, skip = undefined, limit = undefined) {
     if (!Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'The first argument of SliceClauseTool.slice ' +
-          'should be an Array, but %v was given.',
+        'Parameter "entities" must be an Array, but %v was given.',
         entities,
       );
     }
     if (skip != null && typeof skip !== 'number') {
       throw new InvalidArgumentError(
-        'The provided option "skip" should be a Number, but %v was given.',
+        'Option "skip" must be a Number, but %v was given.',
         skip,
       );
     }
     if (limit != null && typeof limit !== 'number') {
       throw new InvalidArgumentError(
-        'The provided option "limit" should be a Number, but %v was given.',
+        'Option "limit" must be a Number, but %v was given.',
         limit,
       );
     }
@@ -49,7 +48,7 @@ export class SliceClauseTool extends Service {
     }
     if (typeof skip !== 'number') {
       throw new InvalidArgumentError(
-        'The provided option "skip" should be a Number, but %v was given.',
+        'Option "skip" must be a Number, but %v was given.',
         skip,
       );
     }
@@ -66,7 +65,7 @@ export class SliceClauseTool extends Service {
     }
     if (typeof limit !== 'number') {
       throw new InvalidArgumentError(
-        'The provided option "limit" should be a Number, but %v was given.',
+        'Option "limit" must be a Number, but %v was given.',
         limit,
       );
     }

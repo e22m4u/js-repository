@@ -16,15 +16,13 @@ export class ModelDataSanitizer extends Service {
   sanitize(modelName, modelData) {
     if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
-        'The first argument of ModelDataSanitizer.sanitize ' +
-          'should be a string, but %v was given.',
+        'Parameter "modelName" must be a String, but %v was given.',
         modelName,
       );
     }
     if (!modelData || typeof modelData !== 'object') {
       throw new InvalidArgumentError(
-        'The second argument of ModelDataSanitizer.sanitize ' +
-          'should be an Object, but %v was given.',
+        'Parameter "modelData" must be an Object, but %v was given.',
         modelData,
       );
     }

@@ -41,8 +41,8 @@ describe('PrimaryKeysDefinitionValidator', function () {
           },
         });
       expect(throwable).to.throw(
-        'The model definition "model" should not have ' +
-          'multiple primary keys, but 2 keys given.',
+        'Model definition "model" must not have multiple primary keys, ' +
+          'but 2 keys given.',
       );
     });
 
@@ -53,8 +53,8 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name %v of the model "model" is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model "model" is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
         ),
@@ -70,8 +70,8 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name %v of the model "model" is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model "model" is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
         ),
@@ -88,8 +88,8 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         format(
-          'The property name %v of the model "model" is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model "model" is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
         ),

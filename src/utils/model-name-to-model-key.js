@@ -9,7 +9,7 @@ import {InvalidArgumentError} from '../errors/index.js';
 export function modelNameToModelKey(modelName) {
   if (!modelName || typeof modelName !== 'string' || /\s/.test(modelName)) {
     throw new InvalidArgumentError(
-      'The model name should be a non-empty String ' +
+      'Model name must be a non-empty String ' +
         'without spaces, but %v was given.',
       modelName,
     );

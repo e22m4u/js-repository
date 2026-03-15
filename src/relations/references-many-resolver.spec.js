@@ -16,7 +16,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
+          'Parameter "entities" of ReferencesManyResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -37,7 +37,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of ReferencesManyResolver.includeTo requires ' +
+          'Parameter "entities" of ReferencesManyResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -58,7 +58,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
+          'Parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -78,7 +78,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
+          'Parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -98,7 +98,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
+          'Parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -118,8 +118,8 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
-            'should be a String, but %s was given.',
+          'Parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
+            'must be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -135,8 +135,8 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of ReferencesManyResolver.includeTo ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of ReferencesManyResolver.includeTo ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -159,9 +159,7 @@ describe('ReferencesManyResolver', function () {
       dbs.defineModel({name: 'source'});
       const R = dbs.getService(ReferencesManyResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
-      await expect(promise).to.be.rejectedWith(
-        'The model "target" is not defined',
-      );
+      await expect(promise).to.be.rejectedWith('Model "target" is not defined');
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
@@ -170,7 +168,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have a specified datasource.',
+        'Model "target" does not have a specified datasource.',
       );
     });
 

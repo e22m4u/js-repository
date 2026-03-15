@@ -53,7 +53,7 @@ export class Repository extends Service {
     const datasourceName = modelDef.datasource;
     if (!datasourceName) {
       throw new InvalidArgumentError(
-        'The model %v does not have a specified datasource.',
+        'Model %v does not have a specified datasource.',
         modelName,
       );
     }

@@ -242,7 +242,7 @@ var init_invalid_operator_value_error = __esm({
       constructor(operator, expected, value) {
         super(
           (0, import_js_format3.format)(
-            "Condition of {%s: ...} should have %s, but %v was given.",
+            "Condition of {%s: ...} must have %s, but %v was given.",
             operator,
             expected,
             value
@@ -267,7 +267,7 @@ var init_errors = __esm({
 function likeToRegexp(pattern, isCaseInsensitive = false) {
   if (typeof pattern !== "string") {
     throw new InvalidArgumentError(
-      "The first argument of `likeToRegexp` should be a String, but %v was given.",
+      'Parameter "pattern" must be a String, but %v was given.',
       pattern
     );
   }
@@ -362,20 +362,21 @@ var init_get_value_by_path = __esm({
 function selectObjectKeys(obj, keys) {
   if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
     throw new InvalidArgumentError(
-      "The first argument of selectObjectKeys should be an Object, but %v was given.",
+      'Parameter "obj" must be an Object, but %v was given.',
       obj
     );
   }
   if (!Array.isArray(keys)) {
     throw new InvalidArgumentError(
-      "The second argument of selectObjectKeys should be an Array of String, but %v was given.",
+      'Parameter "keys" must be an Array, but %v was given.',
       keys
     );
   }
-  keys.forEach((key) => {
+  keys.forEach((key, index) => {
     if (typeof key !== "string") {
       throw new InvalidArgumentError(
-        "The second argument of selectObjectKeys should be an Array of String, but %v was given.",
+        'Element %d of the parameter "keys" must be a String, but %v was given.',
+        index,
         key
       );
     }
@@ -422,7 +423,7 @@ var init_exclude_object_keys = __esm({
 function modelNameToModelKey(modelName) {
   if (!modelName || typeof modelName !== "string" || /\s/.test(modelName)) {
     throw new InvalidArgumentError(
-      "The model name should be a non-empty String without spaces, but %v was given.",
+      "Model name must be a non-empty String without spaces, but %v was given.",
       modelName
     );
   }
@@ -477,19 +478,19 @@ var init_slice_clause_tool = __esm({
       slice(entities, skip = void 0, limit = void 0) {
         if (!Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            "The first argument of SliceClauseTool.slice should be an Array, but %v was given.",
+            'Parameter "entities" must be an Array, but %v was given.',
             entities
           );
         }
         if (skip != null && typeof skip !== "number") {
           throw new InvalidArgumentError(
-            'The provided option "skip" should be a Number, but %v was given.',
+            'Option "skip" must be a Number, but %v was given.',
             skip
           );
         }
         if (limit != null && typeof limit !== "number") {
           throw new InvalidArgumentError(
-            'The provided option "limit" should be a Number, but %v was given.',
+            'Option "limit" must be a Number, but %v was given.',
             limit
           );
         }
@@ -508,7 +509,7 @@ var init_slice_clause_tool = __esm({
         }
         if (typeof skip !== "number") {
           throw new InvalidArgumentError(
-            'The provided option "skip" should be a Number, but %v was given.',
+            'Option "skip" must be a Number, but %v was given.',
             skip
           );
         }
@@ -524,7 +525,7 @@ var init_slice_clause_tool = __esm({
         }
         if (typeof limit !== "number") {
           throw new InvalidArgumentError(
-            'The provided option "limit" should be a Number, but %v was given.',
+            'Option "limit" must be a Number, but %v was given.',
             limit
           );
         }
@@ -580,7 +581,7 @@ var init_order_clause_tool = __esm({
         clause.forEach((key, index) => {
           if (!key || typeof key !== "string") {
             throw new InvalidArgumentError(
-              'The provided option "order" should be a non-empty String or an Array of non-empty String, but %v was given.',
+              'Option "order" must be a non-empty String or an Array of non-empty String, but %v was given.',
               key
             );
           }
@@ -614,7 +615,7 @@ var init_order_clause_tool = __esm({
         clause.forEach((field) => {
           if (!field || typeof field !== "string") {
             throw new InvalidArgumentError(
-              'The provided option "order" should be a non-empty String or an Array of non-empty String, but %v was given.',
+              'Option "order" must be a non-empty String or an Array of non-empty String, but %v was given.',
               field
             );
           }
@@ -639,7 +640,7 @@ var init_order_clause_tool = __esm({
         clause.forEach((field) => {
           if (!field || typeof field !== "string") {
             throw new InvalidArgumentError(
-              'The provided option "order" should be a non-empty String or an Array of non-empty String, but %v was given.',
+              'Option "order" must be a non-empty String or an Array of non-empty String, but %v was given.',
               field
             );
           }
@@ -714,7 +715,7 @@ var init_operator_clause_tool = __esm({
       testAll(clause, value) {
         if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testAll should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -772,9 +773,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testEqNeq(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testEqNeq should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -821,9 +822,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testGtLt(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testGtLt should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -855,9 +856,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testInq(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testInq should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -892,9 +893,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testNin(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testNin should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -926,9 +927,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testBetween(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testBetween should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -958,9 +959,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testExists(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testExists should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -992,7 +993,7 @@ var init_operator_clause_tool = __esm({
       testLike(clause, value) {
         if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testLike should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1020,7 +1021,7 @@ var init_operator_clause_tool = __esm({
       testNlike(clause, value) {
         if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testNlike should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1048,7 +1049,7 @@ var init_operator_clause_tool = __esm({
       testIlike(clause, value) {
         if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testIlike should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1076,7 +1077,7 @@ var init_operator_clause_tool = __esm({
       testNilike(clause, value) {
         if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testNilike should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1114,9 +1115,9 @@ var init_operator_clause_tool = __esm({
        * @returns {boolean|undefined}
        */
       testRegexp(clause, value) {
-        if (!clause || typeof clause !== "object") {
+        if (!clause || typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            "The first argument of OperatorUtils.testRegexp should be an Object, but %v was given.",
+            'Parameter "clause" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1131,7 +1132,7 @@ var init_operator_clause_tool = __esm({
           const flags = clause.flags || void 0;
           if (flags && typeof flags !== "string") {
             throw new InvalidArgumentError(
-              "RegExp flags should be a String, but %v was given.",
+              "RegExp flags must be a String, but %v was given.",
               clause.flags
             );
           }
@@ -1191,7 +1192,7 @@ var init_where_clause_tool = __esm({
       filter(entities, where = void 0) {
         if (!Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            "The first argument of WhereClauseTool.filter should be an Array of Object, but %v was given.",
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
@@ -1209,7 +1210,7 @@ var init_where_clause_tool = __esm({
       _createFilter(whereClause) {
         if (typeof whereClause !== "object" || Array.isArray(whereClause)) {
           throw new InvalidArgumentError(
-            'The provided option "where" should be an Object, but %v was given.',
+            'Option "where" must be an Object, but %v was given.',
             whereClause
           );
         }
@@ -1217,7 +1218,7 @@ var init_where_clause_tool = __esm({
         return (data) => {
           if (typeof data !== "object") {
             throw new InvalidArgumentError(
-              "The first argument of WhereClauseTool.filter should be an Array of Object, but %v was given.",
+              'Parameter "data" must be an Array of Object, but %v was given.',
               data
             );
           }
@@ -1298,7 +1299,7 @@ var init_where_clause_tool = __esm({
         }
         if (typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            'The provided option "where" should be an Object, but %v was given.',
+            'Option "where" must be an Object, but %v was given.',
             clause
           );
         }
@@ -1349,13 +1350,13 @@ var init_relations_definition_validator = __esm({
       validate(modelName, relDefs) {
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The first argument of RelationsDefinitionValidator.validate should be a non-empty String, but %v was given.",
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (!relDefs || typeof relDefs !== "object" || Array.isArray(relDefs)) {
           throw new InvalidArgumentError(
-            'The provided option "relations" of the model %v should be an Object, but %v was given.',
+            'Option "relations" of the model %v must be an Object, but %v was given.',
             modelName,
             relDefs
           );
@@ -1376,20 +1377,20 @@ var init_relations_definition_validator = __esm({
       _validateRelation(modelName, relName, relDef) {
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The first argument of RelationsDefinitionValidator._validateRelation should be a non-empty String, but %v was given.",
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (!relName || typeof relName !== "string") {
           throw new InvalidArgumentError(
-            "The relation name of the model %v should be a non-empty String, but %v was given.",
+            "Relation name of the model %v must be a non-empty String, but %v was given.",
             modelName,
             relName
           );
         }
         if (!relDef || typeof relDef !== "object" || Array.isArray(relDef)) {
           throw new InvalidArgumentError(
-            "The relation %v of the model %v should be an Object, but %v was given.",
+            "Relation %v of the model %v must be an Object, but %v was given.",
             relName,
             modelName,
             relDef
@@ -1397,7 +1398,7 @@ var init_relations_definition_validator = __esm({
         }
         if (!relDef.type || !Object.values(RelationType).includes(relDef.type)) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v requires the option "type" to have one of relation types: %l, but %v was given.',
+            'Relation %v of the model %v requires the option "type" to have one of relation types: %l, but %v was given.',
             relName,
             modelName,
             Object.values(RelationType),
@@ -1443,7 +1444,7 @@ var init_relations_definition_validator = __esm({
         if (relDef.polymorphic) {
           if (typeof relDef.polymorphic !== "boolean") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "belongsTo", so it expects the option "polymorphic" to be a Boolean, but %v was given.',
+              'Relation %v of the model %v has the type "belongsTo", so it expects the option "polymorphic" to be a Boolean, but %v was given.',
               relName,
               modelName,
               relDef.polymorphic
@@ -1451,7 +1452,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.foreignKey && typeof relDef.foreignKey !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v is a polymorphic "belongsTo" relation, so it expects the provided option "foreignKey" to be a String, but %v was given.',
+              'Relation %v of the model %v is a polymorphic "belongsTo" relation, so it expects the provided option "foreignKey" to be a String, but %v was given.',
               relName,
               modelName,
               relDef.foreignKey
@@ -1459,7 +1460,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.discriminator && typeof relDef.discriminator !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v is a polymorphic "belongsTo" relation, so it expects the provided option "discriminator" to be a String, but %v was given.',
+              'Relation %v of the model %v is a polymorphic "belongsTo" relation, so it expects the provided option "discriminator" to be a String, but %v was given.',
               relName,
               modelName,
               relDef.discriminator
@@ -1468,7 +1469,7 @@ var init_relations_definition_validator = __esm({
         } else {
           if (!relDef.model || typeof relDef.model !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "belongsTo", so it requires the option "model" to be a non-empty String, but %v was given.',
+              'Relation %v of the model %v has the type "belongsTo", so it requires the option "model" to be a non-empty String, but %v was given.',
               relName,
               modelName,
               relDef.model
@@ -1476,7 +1477,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.foreignKey && typeof relDef.foreignKey !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "belongsTo", so it expects the provided option "foreignKey" to be a String, but %v was given.',
+              'Relation %v of the model %v has the type "belongsTo", so it expects the provided option "foreignKey" to be a String, but %v was given.',
               relName,
               modelName,
               relDef.foreignKey
@@ -1484,7 +1485,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.discriminator) {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v is a non-polymorphic "belongsTo" relation, so it should not have the option "discriminator" to be provided.',
+              'Relation %v of the model %v is a non-polymorphic "belongsTo" relation, so it must not have the option "discriminator" to be provided.',
               relName,
               modelName
             );
@@ -1534,7 +1535,7 @@ var init_relations_definition_validator = __esm({
         }
         if (!relDef.model || typeof relDef.model !== "string") {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v has the type "hasOne", so it requires the option "model" to be a non-empty String, but %v was given.',
+            'Relation %v of the model %v has the type "hasOne", so it requires the option "model" to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.model
@@ -1544,14 +1545,14 @@ var init_relations_definition_validator = __esm({
           if (typeof relDef.polymorphic === "string") {
             if (relDef.foreignKey) {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with a String value, so it should not have the option "foreignKey" to be provided.',
+                'Relation %v of the model %v has the option "polymorphic" with a String value, so it must not have the option "foreignKey" to be provided.',
                 relName,
                 modelName
               );
             }
             if (relDef.discriminator) {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with a String value, so it should not have the option "discriminator" to be provided.',
+                'Relation %v of the model %v has the option "polymorphic" with a String value, so it must not have the option "discriminator" to be provided.',
                 relName,
                 modelName
               );
@@ -1559,7 +1560,7 @@ var init_relations_definition_validator = __esm({
           } else if (typeof relDef.polymorphic === "boolean") {
             if (!relDef.foreignKey || typeof relDef.foreignKey !== "string") {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
+                'Relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
                 relName,
                 modelName,
                 relDef.foreignKey
@@ -1567,7 +1568,7 @@ var init_relations_definition_validator = __esm({
             }
             if (!relDef.discriminator || typeof relDef.discriminator !== "string") {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "discriminator" to be a non-empty String, but %v was given.',
+                'Relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "discriminator" to be a non-empty String, but %v was given.',
                 relName,
                 modelName,
                 relDef.discriminator
@@ -1575,7 +1576,7 @@ var init_relations_definition_validator = __esm({
             }
           } else {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "hasOne", so it expects the provided option "polymorphic" to be a String or a Boolean, but %v was given.',
+              'Relation %v of the model %v has the type "hasOne", so it expects the provided option "polymorphic" to be a String or a Boolean, but %v was given.',
               relName,
               modelName,
               relDef.polymorphic
@@ -1584,7 +1585,7 @@ var init_relations_definition_validator = __esm({
         } else {
           if (!relDef.foreignKey || typeof relDef.foreignKey !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "hasOne", so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
+              'Relation %v of the model %v has the type "hasOne", so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
               relName,
               modelName,
               relDef.foreignKey
@@ -1592,7 +1593,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.discriminator) {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v is a non-polymorphic "hasOne" relation, so it should not have the option "discriminator" to be provided.',
+              'Relation %v of the model %v is a non-polymorphic "hasOne" relation, so it must not have the option "discriminator" to be provided.',
               relName,
               modelName
             );
@@ -1642,7 +1643,7 @@ var init_relations_definition_validator = __esm({
         }
         if (!relDef.model || typeof relDef.model !== "string") {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v has the type "hasMany", so it requires the option "model" to be a non-empty String, but %v was given.',
+            'Relation %v of the model %v has the type "hasMany", so it requires the option "model" to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.model
@@ -1652,14 +1653,14 @@ var init_relations_definition_validator = __esm({
           if (typeof relDef.polymorphic === "string") {
             if (relDef.foreignKey) {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with a String value, so it should not have the option "foreignKey" to be provided.',
+                'Relation %v of the model %v has the option "polymorphic" with a String value, so it must not have the option "foreignKey" to be provided.',
                 relName,
                 modelName
               );
             }
             if (relDef.discriminator) {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with a String value, so it should not have the option "discriminator" to be provided.',
+                'Relation %v of the model %v has the option "polymorphic" with a String value, so it must not have the option "discriminator" to be provided.',
                 relName,
                 modelName
               );
@@ -1667,7 +1668,7 @@ var init_relations_definition_validator = __esm({
           } else if (typeof relDef.polymorphic === "boolean") {
             if (!relDef.foreignKey || typeof relDef.foreignKey !== "string") {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
+                'Relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
                 relName,
                 modelName,
                 relDef.foreignKey
@@ -1675,7 +1676,7 @@ var init_relations_definition_validator = __esm({
             }
             if (!relDef.discriminator || typeof relDef.discriminator !== "string") {
               throw new InvalidArgumentError(
-                'The relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "discriminator" to be a non-empty String, but %v was given.',
+                'Relation %v of the model %v has the option "polymorphic" with "true" value, so it requires the option "discriminator" to be a non-empty String, but %v was given.',
                 relName,
                 modelName,
                 relDef.discriminator
@@ -1683,7 +1684,7 @@ var init_relations_definition_validator = __esm({
             }
           } else {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "hasMany", so it expects the provided option "polymorphic" to be a String or a Boolean, but %v was given.',
+              'Relation %v of the model %v has the type "hasMany", so it expects the provided option "polymorphic" to be a String or a Boolean, but %v was given.',
               relName,
               modelName,
               relDef.polymorphic
@@ -1692,7 +1693,7 @@ var init_relations_definition_validator = __esm({
         } else {
           if (!relDef.foreignKey || typeof relDef.foreignKey !== "string") {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v has the type "hasMany", so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
+              'Relation %v of the model %v has the type "hasMany", so it requires the option "foreignKey" to be a non-empty String, but %v was given.',
               relName,
               modelName,
               relDef.foreignKey
@@ -1700,7 +1701,7 @@ var init_relations_definition_validator = __esm({
           }
           if (relDef.discriminator) {
             throw new InvalidArgumentError(
-              'The relation %v of the model %v is a non-polymorphic "hasMany" relation, so it should not have the option "discriminator" to be provided.',
+              'Relation %v of the model %v is a non-polymorphic "hasMany" relation, so it must not have the option "discriminator" to be provided.',
               relName,
               modelName
             );
@@ -1730,7 +1731,7 @@ var init_relations_definition_validator = __esm({
         }
         if (!relDef.model || typeof relDef.model !== "string") {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v has the type "referencesMany", so it requires the option "model" to be a non-empty String, but %v was given.',
+            'Relation %v of the model %v has the type "referencesMany", so it requires the option "model" to be a non-empty String, but %v was given.',
             relName,
             modelName,
             relDef.model
@@ -1738,7 +1739,7 @@ var init_relations_definition_validator = __esm({
         }
         if (relDef.foreignKey && typeof relDef.foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v has the type "referencesMany", so it expects the provided option "foreignKey" to be a String, but %v was given.',
+            'Relation %v of the model %v has the type "referencesMany", so it expects the provided option "foreignKey" to be a String, but %v was given.',
             relName,
             modelName,
             relDef.foreignKey
@@ -1746,7 +1747,7 @@ var init_relations_definition_validator = __esm({
         }
         if (relDef.discriminator) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v has the type "referencesMany", so it should not have the option "discriminator" to be provided.',
+            'Relation %v of the model %v has the type "referencesMany", so it must not have the option "discriminator" to be provided.',
             relName,
             modelName
           );
@@ -1837,10 +1838,7 @@ var init_definition_registry = __esm({
         this.getService(DatasourceDefinitionValidator).validate(datasourceDef);
         const name = datasourceDef.name;
         if (name in this._datasources) {
-          throw new InvalidArgumentError(
-            "The datasource %v is already defined.",
-            name
-          );
+          throw new InvalidArgumentError("Datasource %v is already defined.", name);
         }
         this._datasources[name] = datasourceDef;
       }
@@ -1862,7 +1860,7 @@ var init_definition_registry = __esm({
       getDatasource(name) {
         const datasourceDef = this._datasources[name];
         if (!datasourceDef) {
-          throw new InvalidArgumentError("The datasource %v is not defined.", name);
+          throw new InvalidArgumentError("Datasource %v is not defined.", name);
         }
         return datasourceDef;
       }
@@ -1876,7 +1874,7 @@ var init_definition_registry = __esm({
         const modelKey = modelNameToModelKey(modelDef.name);
         if (modelKey in this._models) {
           throw new InvalidArgumentError(
-            "The model %v is already defined.",
+            "Model %v is already defined.",
             modelDef.name
           );
         }
@@ -1902,7 +1900,7 @@ var init_definition_registry = __esm({
         const modelKey = modelNameToModelKey(name);
         const modelDef = this._models[modelKey];
         if (!modelDef) {
-          throw new InvalidArgumentError("The model %v is not defined.", name);
+          throw new InvalidArgumentError("Model %v is not defined.", name);
         }
         return modelDef;
       }
@@ -1943,7 +1941,7 @@ var init_model_definition_utils = __esm({
           );
           if (isDefaultPrimaryKeyAlreadyInUse) {
             throw new InvalidArgumentError(
-              'The property name %v of the model %v is defined as a regular property. In this case, a primary key should be defined explicitly. Do use the option "primaryKey" to specify the primary key.',
+              'Property name %v of the model %v is defined as a regular property. In this case, a primary key must be defined explicitly. Do use the option "primaryKey" to specify the primary key.',
               DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
               modelName
             );
@@ -1995,7 +1993,7 @@ var init_model_definition_utils = __esm({
         const propDef = propDefs[propertyName];
         if (!propDef) {
           throw new InvalidArgumentError(
-            "The model %v does not have the property %v.",
+            "Model %v does not have the property %v.",
             modelName,
             propertyName
           );
@@ -2017,7 +2015,7 @@ var init_model_definition_utils = __esm({
         const propDef = propDefs[propertyName];
         if (!propDef) {
           throw new InvalidArgumentError(
-            "The model %v does not have the property %v.",
+            "Model %v does not have the property %v.",
             modelName,
             propertyName
           );
@@ -2137,7 +2135,7 @@ var init_model_definition_utils = __esm({
             return DataType.ANY;
           }
           throw new InvalidArgumentError(
-            "The model %v does not have the property %v.",
+            "Model %v does not have the property %v.",
             modelName,
             propertyName
           );
@@ -2156,7 +2154,7 @@ var init_model_definition_utils = __esm({
       getDataTypeFromPropertyDefinition(propDef) {
         if ((!propDef || typeof propDef !== "object") && !Object.values(DataType).includes(propDef)) {
           throw new InvalidArgumentError(
-            'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition should be an Object or the DataType enum, but %v was given.',
+            'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition must be an Object or the DataType enum, but %v was given.',
             propDef
           );
         }
@@ -2166,7 +2164,7 @@ var init_model_definition_utils = __esm({
         const dataType = propDef.type;
         if (!Object.values(DataType).includes(dataType)) {
           throw new InvalidArgumentError(
-            'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition should have the "type" property with one of values: %l, but %v was given.',
+            'Option "type" must be one of values: %l, but %v was given.',
             Object.values(DataType),
             propDef.type
           );
@@ -2217,7 +2215,7 @@ var init_model_definition_utils = __esm({
         const recursion = /* @__PURE__ */ __name((currModelName, prevModelName = void 0) => {
           if (currModelName === prevModelName) {
             throw new InvalidArgumentError(
-              "The model %v has a circular inheritance.",
+              "Model %v has a circular inheritance.",
               currModelName
             );
           }
@@ -2257,7 +2255,7 @@ var init_model_definition_utils = __esm({
         const recursion = /* @__PURE__ */ __name((currModelName, prevModelName = void 0) => {
           if (currModelName === prevModelName) {
             throw new InvalidArgumentError(
-              "The model %v has a circular inheritance.",
+              "Model %v has a circular inheritance.",
               currModelName
             );
           }
@@ -2290,7 +2288,7 @@ var init_model_definition_utils = __esm({
         }
         if (!foundDef) {
           throw new InvalidArgumentError(
-            "The model %v does not have relation name %v.",
+            "Model %v does not have relation name %v.",
             modelName,
             relationName
           );
@@ -2307,7 +2305,7 @@ var init_model_definition_utils = __esm({
       excludeObjectKeysByRelationNames(modelName, modelData) {
         if (!modelData || typeof modelData !== "object" || Array.isArray(modelData)) {
           throw new InvalidArgumentError(
-            "The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames should be an Object, but %v was given.",
+            'Parameter "modelData" must be an Object, but %v was given.',
             modelData
           );
         }
@@ -2383,7 +2381,7 @@ var init_required_property_validator = __esm({
         }
         if (!modelData || typeof modelData !== "object" || Array.isArray(modelData)) {
           throw new InvalidArgumentError(
-            "Data of the model %v should be an Object, but %v was given.",
+            "Data of the model %v must be an Object, but %v was given.",
             modelName,
             modelData
           );
@@ -2454,25 +2452,25 @@ var init_property_uniqueness_validator = __esm({
       async validate(countMethod, methodName, modelName, modelData, modelId = void 0) {
         if (typeof countMethod !== "function") {
           throw new InvalidArgumentError(
-            'The parameter "countMethod" of the PropertyUniquenessValidator must be a Function, but %v was given.',
+            'Parameter "countMethod" of the PropertyUniquenessValidator must be a Function, but %v was given.',
             countMethod
           );
         }
         if (!methodName || typeof methodName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "methodName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
+            'Parameter "methodName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
             methodName
           );
         }
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "modelName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
+            'Parameter "modelName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (!isPlainObject(modelData)) {
           throw new InvalidArgumentError(
-            "The data of the model %v should be an Object, but %v was given.",
+            "Data of the model %v must be an Object, but %v was given.",
             modelName,
             modelData
           );
@@ -2486,7 +2484,7 @@ var init_property_uniqueness_validator = __esm({
           modelName
         );
         const createError = /* @__PURE__ */ __name((propName, propValue) => new InvalidArgumentError(
-          "An existing document of the model %v already has the property %v with the value %v and should be unique.",
+          "An existing document of the model %v already has the property %v with the value %v and must be unique.",
           modelName,
           propName,
           propValue
@@ -2549,7 +2547,7 @@ var init_property_uniqueness_validator = __esm({
             }
           } else {
             throw new InvalidArgumentError(
-              "The PropertyUniquenessValidator does not support the adapter method %v.",
+              "Adapter method %v is not supported.",
               methodName
             );
           }
@@ -2586,7 +2584,7 @@ var init_primary_keys_definition_validator = __esm({
           const isDefaultPrimaryKeyAlreadyInUse = Object.keys(propDefs).includes(DEFAULT_PRIMARY_KEY_PROPERTY_NAME);
           if (isDefaultPrimaryKeyAlreadyInUse) {
             throw new InvalidArgumentError(
-              'The property name %v of the model %v is defined as a regular property. In this case, a primary key should be defined explicitly. Do use the option "primaryKey" to specify the primary key.',
+              'Property name %v of the model %v is defined as a regular property. In this case, a primary key must be defined explicitly. Do use the option "primaryKey" to specify the primary key.',
               DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
               modelName
             );
@@ -2595,7 +2593,7 @@ var init_primary_keys_definition_validator = __esm({
         }
         if (propNames.length > 1) {
           throw new InvalidArgumentError(
-            "The model definition %v should not have multiple primary keys, but %v keys given.",
+            "Model definition %v must not have multiple primary keys, but %v keys given.",
             modelName,
             propNames.length
           );
@@ -2638,13 +2636,13 @@ var init_properties_definition_validator = __esm({
       validate(modelName, propDefs) {
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The first argument of PropertiesDefinitionValidator.validate should be a non-empty String, but %v was given.",
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (!propDefs || typeof propDefs !== "object" || Array.isArray(propDefs)) {
           throw new InvalidArgumentError(
-            'The provided option "properties" of the model %v should be an Object, but %v was given.',
+            'Option "properties" of the model %v must be an Object, but %v was given.',
             modelName,
             propDefs
           );
@@ -2669,20 +2667,20 @@ var init_properties_definition_validator = __esm({
       _validateProperty(modelName, propName, propDef) {
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The first argument of PropertiesDefinitionValidator._validateProperty should be a non-empty String, but %v was given.",
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (!propName || typeof propName !== "string") {
           throw new InvalidArgumentError(
-            "The property name of the model %v should be a non-empty String, but %v was given.",
+            "Property name of the model %v must be a non-empty String, but %v was given.",
             modelName,
             propName
           );
         }
         if (!propDef) {
           throw new InvalidArgumentError(
-            "The property %v of the model %v should have a property definition, but %v was given.",
+            "Property %v of the model %v must have a property definition, but %v was given.",
             propName,
             modelName,
             propDef
@@ -2691,7 +2689,7 @@ var init_properties_definition_validator = __esm({
         if (typeof propDef === "string") {
           if (!Object.values(DataType).includes(propDef)) {
             throw new InvalidArgumentError(
-              "In case of a short property definition, the property %v of the model %v should have one of data types: %l, but %v was given.",
+              "In case of a short property definition, the property %v of the model %v must have one of data types: %l, but %v was given.",
               propName,
               modelName,
               Object.values(DataType),
@@ -2702,7 +2700,7 @@ var init_properties_definition_validator = __esm({
         }
         if (!propDef || typeof propDef !== "object" || Array.isArray(propDef)) {
           throw new InvalidArgumentError(
-            "In case of a full property definition, the property %v of the model %v should be an Object, but %v was given.",
+            "In case of a full property definition, the property %v of the model %v must be an Object, but %v was given.",
             propName,
             modelName,
             propDef
@@ -2710,7 +2708,7 @@ var init_properties_definition_validator = __esm({
         }
         if (!propDef.type || !Object.values(DataType).includes(propDef.type)) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v requires the option "type" to have one of data types: %l, but %v was given.',
+            'Property %v of the model %v requires the option "type" to have one of data types: %l, but %v was given.',
             propName,
             modelName,
             Object.values(DataType),
@@ -2719,7 +2717,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.itemType && !Object.values(DataType).includes(propDef.itemType)) {
           throw new InvalidArgumentError(
-            'The provided option "itemType" of the property %v in the model %v should have one of data types: %l, but %v was given.',
+            'Option "itemType" of the property %v in the model %v should have one of data types: %l, but %v was given.',
             propName,
             modelName,
             Object.values(DataType),
@@ -2728,7 +2726,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.itemModel && typeof propDef.itemModel !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "itemModel" of the property %v in the model %v should be a String, but %v was given.',
+            'Option "itemModel" of the property %v in the model %v must be a String, but %v was given.',
             propName,
             modelName,
             propDef.itemModel
@@ -2736,7 +2734,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.model && typeof propDef.model !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "model" of the property %v in the model %v should be a String, but %v was given.',
+            'Option "model" of the property %v in the model %v must be a String, but %v was given.',
             propName,
             modelName,
             propDef.model
@@ -2744,7 +2742,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.primaryKey && typeof propDef.primaryKey !== "boolean") {
           throw new InvalidArgumentError(
-            'The provided option "primaryKey" of the property %v in the model %v should be a Boolean, but %v was given.',
+            'Option "primaryKey" of the property %v in the model %v must be a Boolean, but %v was given.',
             propName,
             modelName,
             propDef.primaryKey
@@ -2752,7 +2750,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.columnName && typeof propDef.columnName !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "columnName" of the property %v in the model %v should be a String, but %v was given.',
+            'Option "columnName" of the property %v in the model %v must be a String, but %v was given.',
             propName,
             modelName,
             propDef.columnName
@@ -2760,7 +2758,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.columnType && typeof propDef.columnType !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "columnType" of the property %v in the model %v should be a String, but %v was given.',
+            'Option "columnType" of the property %v in the model %v must be a String, but %v was given.',
             propName,
             modelName,
             propDef.columnType
@@ -2768,7 +2766,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.required && typeof propDef.required !== "boolean") {
           throw new InvalidArgumentError(
-            'The provided option "required" of the property %v in the model %v should be a Boolean, but %v was given.',
+            'Option "required" of the property %v in the model %v must be a Boolean, but %v was given.',
             propName,
             modelName,
             propDef.required
@@ -2776,28 +2774,28 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.required && propDef.default !== void 0) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v is a required property, so it should not have the option "default" to be provided.',
+            'Property %v of the model %v is a required property, so it must not have the option "default" to be provided.',
             propName,
             modelName
           );
         }
         if (propDef.primaryKey && propDef.required) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v is a primary key, so it should not have the option "required" to be provided.',
+            'Property %v of the model %v is a primary key, so it must not have the option "required" to be provided.',
             propName,
             modelName
           );
         }
         if (propDef.primaryKey && propDef.default !== void 0) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v is a primary key, so it should not have the option "default" to be provided.',
+            'Property %v of the model %v is a primary key, so it must not have the option "default" to be provided.',
             propName,
             modelName
           );
         }
         if (propDef.itemType && propDef.type !== DataType.ARRAY) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v has a non-array type, so it should not have the option "itemType" to be provided.',
+            'Property %v of the model %v has a non-array type, so it must not have the option "itemType" to be provided.',
             propName,
             modelName,
             propDef.type
@@ -2805,7 +2803,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.itemModel && propDef.type !== DataType.ARRAY) {
           throw new InvalidArgumentError(
-            'The option "itemModel" is not supported for %s property type, so the property %v of the model %v should not have the option "itemModel" to be provided.',
+            'Option "itemModel" is not supported for %s property type, so the property %v of the model %v must not have the option "itemModel" to be provided.',
             capitalize(propDef.type),
             propName,
             modelName
@@ -2814,14 +2812,14 @@ var init_properties_definition_validator = __esm({
         if (propDef.itemModel && propDef.itemType !== DataType.OBJECT) {
           if (propDef.itemType) {
             throw new InvalidArgumentError(
-              'The provided option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v has specified item type as %s.',
+              'Option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v has specified item type as %s.',
               propName,
               modelName,
               capitalize(propDef.itemType)
             );
           } else {
             throw new InvalidArgumentError(
-              'The provided option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v does not have specified item type.',
+              'Option "itemModel" requires the option "itemType" to be explicitly set to Object, but the property %v of the model %v does not have specified item type.',
               propName,
               modelName
             );
@@ -2829,7 +2827,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.model && propDef.type !== DataType.OBJECT) {
           throw new InvalidArgumentError(
-            'The option "model" is not supported for %s property type, so the property %v of the model %v should not have the option "model" to be provided.',
+            'Option "model" is not supported for %s property type, so the property %v of the model %v must not have the option "model" to be provided.',
             capitalize(propDef.type),
             propName,
             modelName
@@ -2838,7 +2836,7 @@ var init_properties_definition_validator = __esm({
         if (propDef.unique) {
           if (typeof propDef.unique !== "boolean" && !Object.values(PropertyUniqueness).includes(propDef.unique)) {
             throw new InvalidArgumentError(
-              'The provided option "unique" of the property %v in the model %v should be a Boolean or one of values: %l, but %v was given.',
+              'Option "unique" of the property %v in the model %v must be a Boolean or one of values: %l, but %v was given.',
               propName,
               modelName,
               Object.values(PropertyUniqueness),
@@ -2848,7 +2846,7 @@ var init_properties_definition_validator = __esm({
         }
         if (propDef.unique && propDef.primaryKey) {
           throw new InvalidArgumentError(
-            'The property %v of the model %v is a primary key, so it should not have the option "unique" to be provided.',
+            'Property %v of the model %v is a primary key, so it must not have the option "unique" to be provided.',
             propName,
             modelName
           );
@@ -2901,13 +2899,13 @@ var init_model_data_sanitizer = __esm({
       sanitize(modelName, modelData) {
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The first argument of ModelDataSanitizer.sanitize should be a string, but %v was given.",
+            'Parameter "modelName" must be a String, but %v was given.',
             modelName
           );
         }
         if (!modelData || typeof modelData !== "object") {
           throw new InvalidArgumentError(
-            "The second argument of ModelDataSanitizer.sanitize should be an Object, but %v was given.",
+            'Parameter "modelData" must be an Object, but %v was given.',
             modelData
           );
         }
@@ -2940,33 +2938,33 @@ var init_model_definition_validator = __esm({
       validate(modelDef) {
         if (!modelDef || typeof modelDef !== "object" || Array.isArray(modelDef)) {
           throw new InvalidArgumentError(
-            "The model definition should be an Object, but %v was given.",
+            "Model definition must be an Object, but %v was given.",
             modelDef
           );
         }
         if (!modelDef.name || typeof modelDef.name !== "string") {
           throw new InvalidArgumentError(
-            'The model definition requires the option "name" as a non-empty String, but %v was given.',
+            'Model definition requires the option "name" as a non-empty String, but %v was given.',
             modelDef.name
           );
         }
         if (modelDef.datasource && typeof modelDef.datasource !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "datasource" of the model %v should be a String, but %v was given.',
+            'Option "datasource" of the model %v must be a String, but %v was given.',
             modelDef.name,
             modelDef.datasource
           );
         }
         if (modelDef.base && typeof modelDef.base !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "base" of the model %v should be a String, but %v was given.',
+            'Option "base" of the model %v must be a String, but %v was given.',
             modelDef.name,
             modelDef.base
           );
         }
         if (modelDef.tableName && typeof modelDef.tableName !== "string") {
           throw new InvalidArgumentError(
-            'The provided option "tableName" of the model %v should be a String, but %v was given.',
+            'Option "tableName" of the model %v must be a String, but %v was given.',
             modelDef.name,
             modelDef.tableName
           );
@@ -2974,7 +2972,7 @@ var init_model_definition_validator = __esm({
         if (modelDef.properties) {
           if (typeof modelDef.properties !== "object" || Array.isArray(modelDef.properties)) {
             throw new InvalidArgumentError(
-              'The provided option "properties" of the model %v should be an Object, but %v was given.',
+              'Option "properties" of the model %v must be an Object, but %v was given.',
               modelDef.name,
               modelDef.properties
             );
@@ -2987,7 +2985,7 @@ var init_model_definition_validator = __esm({
         if (modelDef.relations) {
           if (typeof modelDef.relations !== "object" || Array.isArray(modelDef.relations)) {
             throw new InvalidArgumentError(
-              'The provided option "relations" of the model %v should be an Object, but %v was given.',
+              'Option "relations" of the model %v must be an Object, but %v was given.',
               modelDef.name,
               modelDef.relations
             );
@@ -3034,19 +3032,19 @@ var init_datasource_definition_validator = __esm({
       validate(datasourceDef) {
         if (!datasourceDef || typeof datasourceDef !== "object") {
           throw new InvalidArgumentError(
-            "The datasource definition should be an Object, but %v was given.",
+            "Datasource definition must be an Object, but %v was given.",
             datasourceDef
           );
         }
         if (!datasourceDef.name || typeof datasourceDef.name !== "string") {
           throw new InvalidArgumentError(
-            'The datasource definition requires the option "name" as a non-empty String, but %v was given.',
+            'Datasource definition requires the option "name" as a non-empty String, but %v was given.',
             datasourceDef.name
           );
         }
         if (!datasourceDef.adapter || typeof datasourceDef.adapter !== "string") {
           throw new InvalidArgumentError(
-            'The datasource %v requires the option "adapter" as a non-empty String, but %v was given.',
+            'Datasource %v requires the option "adapter" as a non-empty String, but %v was given.',
             datasourceDef.name,
             datasourceDef.adapter
           );
@@ -3096,45 +3094,64 @@ var init_fields_clause_tool = __esm({
        * @returns {object|object[]}
        */
       filter(input, modelName, clause) {
-        const isArray = Array.isArray(input);
-        let entities = isArray ? input : [input];
-        entities.forEach((entity) => {
-          if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
-            throw new InvalidArgumentError(
-              "The first argument of FieldsClauseTool.filter should be an Object or an Array of Object, but %v was given.",
-              entity
-            );
-          }
-        });
+        if (!input || typeof input !== "object") {
+          throw new InvalidArgumentError(
+            'Parameter "input" must be an Object or an Array, but %v was given.',
+            input
+          );
+        }
+        const isArrayInput = Array.isArray(input);
+        if (isArrayInput) {
+          input.forEach((entity, index) => {
+            if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
+              throw new InvalidArgumentError(
+                'Element %d of the parameter "input" must be an Object, but %v was given.',
+                index,
+                entity
+              );
+            }
+          });
+        }
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            "The second argument of FieldsClauseTool.filter should be a non-empty String, but %v was given.",
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
         if (clause == null) {
           return input;
         }
-        const fields = Array.isArray(clause) ? clause.slice() : [clause];
-        if (!fields.length) {
-          return input;
+        const isArrayClause = Array.isArray(clause);
+        if (!clause || typeof clause !== "string" && !isArrayClause) {
+          throw new InvalidArgumentError(
+            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            clause
+          );
         }
-        fields.forEach((field) => {
-          if (!field || typeof field !== "string") {
-            throw new InvalidArgumentError(
-              'The provided option "fields" should be a non-empty String or an Array of non-empty String, but %v was given.',
-              field
-            );
+        if (isArrayClause) {
+          if (!clause.length) {
+            return input;
           }
-        });
+          clause.forEach((field, index) => {
+            if (!field || typeof field !== "string") {
+              throw new InvalidArgumentError(
+                'Element %d of the option "fields" must be a non-empty String, but %v was given.',
+                index,
+                field
+              );
+            }
+          });
+        }
+        const fields = isArrayClause ? clause.slice() : [clause];
         const pkPropName = this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
           modelName
         );
         if (fields.indexOf(pkPropName) === -1) {
           fields.push(pkPropName);
         }
+        let entities = isArrayInput ? input : [input];
         entities = entities.map((entity) => selectObjectKeys(entity, fields));
-        return isArray ? entities : entities[0];
+        return isArrayInput ? entities : entities[0];
       }
       /**
        * Validate fields clause.
@@ -3145,18 +3162,24 @@ var init_fields_clause_tool = __esm({
         if (clause == null) {
           return;
         }
-        const fields = Array.isArray(clause) ? clause : [clause];
-        if (!fields.length) {
-          return;
+        const isArray = Array.isArray(clause);
+        if (!clause || typeof clause !== "string" && !isArray) {
+          throw new InvalidArgumentError(
+            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            clause
+          );
         }
-        fields.forEach((field) => {
-          if (!field || typeof field !== "string") {
-            throw new InvalidArgumentError(
-              'The provided option "fields" should be a non-empty String or an Array of non-empty String, but %v was given.',
-              field
-            );
-          }
-        });
+        if (isArray && clause.length > 0) {
+          clause.forEach((field, index) => {
+            if (!field || typeof field !== "string") {
+              throw new InvalidArgumentError(
+                'Element %d of the option "fields" must be a non-empty String, but %v was given.',
+                index,
+                field
+              );
+            }
+          });
+        }
       }
       /**
        * Normalize fields clause.
@@ -3168,19 +3191,28 @@ var init_fields_clause_tool = __esm({
         if (clause == null) {
           return;
         }
-        const fields = Array.isArray(clause) ? clause : [clause];
-        if (!fields.length) {
-          return;
+        const isArray = Array.isArray(clause);
+        if (!clause || typeof clause !== "string" && !isArray) {
+          throw new InvalidArgumentError(
+            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            clause
+          );
         }
-        fields.forEach((field) => {
-          if (!field || typeof field !== "string") {
-            throw new InvalidArgumentError(
-              'The provided option "fields" should be a non-empty String or an Array of non-empty String, but %v was given.',
-              field
-            );
+        if (isArray) {
+          if (!clause.length) {
+            return;
           }
-        });
-        return fields;
+          clause.forEach((field, index) => {
+            if (!field || typeof field !== "string") {
+              throw new InvalidArgumentError(
+                'Element %d of the option "fields" must be a non-empty String, but %v was given.',
+                index,
+                field
+              );
+            }
+          });
+        }
+        return isArray ? clause : [clause];
       }
     };
   }
@@ -3207,7 +3239,7 @@ var init_inclusion_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of InclusionDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3304,7 +3336,7 @@ var init_default_values_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of DefaultValuesDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3371,7 +3403,7 @@ var init_data_sanitizing_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of DataSanitizingDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3428,7 +3460,7 @@ var init_fields_filtering_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of FieldsFilteringDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3519,7 +3551,7 @@ var init_required_property_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of RequiredPropertyDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3575,7 +3607,7 @@ var init_property_uniqueness_decorator = __esm({
       decorate(adapter) {
         if (!adapter || !(adapter instanceof Adapter)) {
           throw new InvalidArgumentError(
-            "The first argument of PropertyUniquenessDecorator.decorate should be an Adapter instance, but %v was given.",
+            'Parameter "adapter" must be an instance of Adapter, but %v was given.',
             adapter
           );
         }
@@ -3909,7 +3941,7 @@ var init_memory_adapter = __esm({
         const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
         if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
           throw new InvalidArgumentError(
-            "The memory adapter able to generate only Number identifiers, but the primary key %v of the model %v is defined as %s. Do provide your own value for the %v property, or change the type in the primary key definition to a Number that will be generated automatically.",
+            "Memory adapter able to generate only Number identifiers, but the primary key %v of the model %v is defined as %s. Do provide your own value for the %v property, or change the type in the primary key definition to a Number that will be generated automatically.",
             propName,
             modelName,
             capitalize(propType),
@@ -3964,7 +3996,7 @@ var init_memory_adapter = __esm({
         const table = this._getTableOrCreate(modelName);
         if (table.has(idValue)) {
           throw new InvalidArgumentError(
-            "The value %v of the primary key %v already exists in the model %v.",
+            "Value %v of the primary key %v already exists in the model %v.",
             idValue,
             pkPropName,
             modelName
@@ -3998,7 +4030,7 @@ var init_memory_adapter = __esm({
         );
         if (!isExists) {
           throw new InvalidArgumentError(
-            "The value %v of the primary key %v does not exist in the model %v.",
+            "Value %v of the primary key %v does not exist in the model %v.",
             id,
             pkPropName,
             modelName
@@ -4101,7 +4133,7 @@ var init_memory_adapter = __esm({
         );
         if (existingTableData == null) {
           throw new InvalidArgumentError(
-            "The value %v of the primary key %v does not exist in the model %v.",
+            "Value %v of the primary key %v does not exist in the model %v.",
             id,
             pkPropName,
             modelName
@@ -4174,7 +4206,7 @@ var init_memory_adapter = __esm({
         );
         if (!tableData) {
           throw new InvalidArgumentError(
-            "The value %v of the primary key %v does not exist in the model %v.",
+            "Value %v of the primary key %v does not exist in the model %v.",
             id,
             pkPropName,
             modelName
@@ -4311,7 +4343,7 @@ var init_adapter_loader = __esm({
       async loadByName(adapterName, settings = void 0) {
         if (!adapterName || typeof adapterName !== "string") {
           throw new InvalidArgumentError(
-            "The adapter name should be a non-empty String, but %v was given.",
+            "Adapter name must be a non-empty String, but %v was given.",
             adapterName
           );
         }
@@ -4329,10 +4361,7 @@ var init_adapter_loader = __esm({
           }
         }
         if (!adapterCtor) {
-          throw new InvalidArgumentError(
-            "The adapter %v is not found.",
-            adapterName
-          );
+          throw new InvalidArgumentError("Adapter %v is not found.", adapterName);
         }
         return new adapterCtor(this.container, settings);
       }
@@ -4449,7 +4478,7 @@ var init_repository = __esm({
         const datasourceName = modelDef.datasource;
         if (!datasourceName) {
           throw new InvalidArgumentError(
-            "The model %v does not have a specified datasource.",
+            "Model %v does not have a specified datasource.",
             modelName
           );
         }
@@ -4632,7 +4661,7 @@ var init_repository_registry = __esm({
       setRepositoryCtor(ctor) {
         if (!ctor || typeof ctor !== "function" || !(ctor.prototype instanceof Repository)) {
           throw new InvalidArgumentError(
-            "The first argument of RepositoryRegistry.setRepositoryCtor must inherit from Repository class, but %v was given.",
+            'Parameter "ctor" must inherit from Repository class, but %v was given.',
             ctor
           );
         }
@@ -4695,37 +4724,37 @@ var init_has_one_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includeTo should be an Object, but %v was given.',
+            'Parameter "scope" of HasOneResolver.includeTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -4736,7 +4765,7 @@ var init_has_one_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -4785,43 +4814,43 @@ var init_has_one_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (!discriminator || typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "discriminator" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "discriminator" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includePolymorphicTo should be an Object, but %v was given.',
+            'Parameter "scope" of HasOneResolver.includePolymorphicTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -4832,7 +4861,7 @@ var init_has_one_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -4883,37 +4912,37 @@ var init_has_one_resolver = __esm({
       async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!targetRelationName || typeof targetRelationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             targetRelationName
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasOneResolver.includePolymorphicByRelationName should be an Object, but %v was given.',
+            'Parameter "scope" of HasOneResolver.includePolymorphicByRelationName must be an Object, but %v was given.',
             scope
           );
         }
@@ -4922,7 +4951,7 @@ var init_has_one_resolver = __esm({
         ).getRelationDefinitionByName(targetName, targetRelationName);
         if (targetRelationDef.type !== RelationType.BELONGS_TO) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type was given.',
+            'Relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type was given.',
             relationName,
             sourceName,
             targetRelationName,
@@ -4931,7 +4960,7 @@ var init_has_one_resolver = __esm({
         }
         if (!targetRelationDef.polymorphic) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic too.',
+            'Relation %v of the model %v is a polymorphic "hasOne" relation, so it requires the target relation %v to be a polymorphic too.',
             relationName,
             sourceName,
             targetRelationName
@@ -4981,37 +5010,37 @@ var init_has_many_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includeTo should be an Object, but %v was given.',
+            'Parameter "scope" of HasManyResolver.includeTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -5022,7 +5051,7 @@ var init_has_many_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5072,43 +5101,43 @@ var init_has_many_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (!discriminator || typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "discriminator" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includePolymorphicTo should be an Object, but %v was given.',
+            'Parameter "scope" of HasManyResolver.includePolymorphicTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -5119,7 +5148,7 @@ var init_has_many_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5171,37 +5200,37 @@ var init_has_many_resolver = __esm({
       async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
+            'Parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!targetRelationName || typeof targetRelationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
             targetRelationName
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName should be an Object, but %v was given.',
+            'Parameter "scope" of HasManyResolver.includePolymorphicByRelationName must be an Object, but %v was given.',
             scope
           );
         }
@@ -5210,7 +5239,7 @@ var init_has_many_resolver = __esm({
         ).getRelationDefinitionByName(targetName, targetRelationName);
         if (targetRelationDef.type !== RelationType.BELONGS_TO) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type was given.',
+            'Relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic "belongsTo", but %v type was given.',
             relationName,
             sourceName,
             targetRelationName,
@@ -5219,7 +5248,7 @@ var init_has_many_resolver = __esm({
         }
         if (!targetRelationDef.polymorphic) {
           throw new InvalidArgumentError(
-            'The relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic too.',
+            'Relation %v of the model %v is a polymorphic "hasMany" relation, so it requires the target relation %v to be a polymorphic too.',
             relationName,
             sourceName,
             targetRelationName
@@ -5269,37 +5298,37 @@ var init_belongs_to_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of BelongsToResolver.includeTo should be a String, but %v was given.',
+            'Parameter "foreignKey" of BelongsToResolver.includeTo must be a String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of BelongsToResolver.includeTo should be an Object, but %v was given.',
+            'Parameter "scope" of BelongsToResolver.includeTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -5309,7 +5338,7 @@ var init_belongs_to_resolver = __esm({
         const targetIds = entities.reduce((acc, entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5352,37 +5381,37 @@ var init_belongs_to_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, relationName, foreignKey = void 0, discriminator = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo should be a String, but %v was given.',
+            'Parameter "foreignKey" of BelongsToResolver.includePolymorphicTo must be a String, but %v was given.',
             foreignKey
           );
         }
         if (discriminator && typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo should be a String, but %v was given.',
+            'Parameter "discriminator" of BelongsToResolver.includePolymorphicTo must be a String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo should be an Object, but %v was given.',
+            'Parameter "scope" of BelongsToResolver.includePolymorphicTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -5398,7 +5427,7 @@ var init_belongs_to_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5424,7 +5453,7 @@ var init_belongs_to_resolver = __esm({
             targetRepository = this.getService(RepositoryRegistry).getRepository(targetName);
           } catch (error) {
             if (error instanceof InvalidArgumentError) {
-              if (error.message === `The model "${targetName}" is not defined.` || error.message === `The model "${targetName}" does not have a specified datasource.`) {
+              if (error.message === `Model "${targetName}" is not defined.` || error.message === `Model "${targetName}" does not have a specified datasource.`) {
                 return;
               }
             } else {
@@ -5499,37 +5528,37 @@ var init_references_many_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "sourceName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "targetName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'The parameter "relationName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'The provided parameter "foreignKey" of ReferencesManyResolver.includeTo should be a String, but %v was given.',
+            'Parameter "foreignKey" of ReferencesManyResolver.includeTo must be a String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'The provided parameter "scope" of ReferencesManyResolver.includeTo should be an Object, but %v was given.',
+            'Parameter "scope" of ReferencesManyResolver.includeTo must be an Object, but %v was given.',
             scope
           );
         }
@@ -5540,7 +5569,7 @@ var init_references_many_resolver = __esm({
         const targetIds = entities.reduce((acc, entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'The parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5745,7 +5774,7 @@ var init_include_clause_tool = __esm({
               break;
             default:
               throw new InvalidArgumentError(
-                "The relation type %v does not have an inclusion resolver.",
+                "Relation type %v does not have an inclusion resolver.",
                 relDef.type
               );
           }
@@ -5779,7 +5808,7 @@ var init_include_clause_tool = __esm({
           );
           if (duplicateNames.length) {
             throw new InvalidArgumentError(
-              'The provided option "include" has duplicates of %v.',
+              'Option "include" has duplicates of %v.',
               duplicateNames[0]
             );
           }
@@ -5787,7 +5816,7 @@ var init_include_clause_tool = __esm({
           if ("relation" in clause) {
             if (!clause.relation || typeof clause.relation !== "string") {
               throw new InvalidArgumentError(
-                'The provided option "relation" should be a non-empty String, but %v was given.',
+                'Option "relation" must be a non-empty String, but %v was given.',
                 clause.relation
               );
             }
@@ -5805,7 +5834,7 @@ var init_include_clause_tool = __esm({
           }
         } else {
           throw new InvalidArgumentError(
-            'The provided option "include" should have a non-empty String, an Object or an Array, but %v was given.',
+            'Option "include" must have a non-empty String, an Object or an Array, but %v was given.',
             clause
           );
         }
@@ -5821,7 +5850,7 @@ var init_include_clause_tool = __esm({
         }
         if (typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            'The provided option "scope" should be an Object, but %v was given.',
+            'Option "scope" must be an Object, but %v was given.',
             clause
           );
         }
@@ -5867,7 +5896,7 @@ var init_include_clause_tool = __esm({
           );
           if (duplicateNames.length) {
             throw new InvalidArgumentError(
-              'The provided option "include" has duplicates of %v.',
+              'Option "include" has duplicates of %v.',
               duplicateNames[0]
             );
           }
@@ -5875,7 +5904,7 @@ var init_include_clause_tool = __esm({
           if ("relation" in clause) {
             if (!clause.relation || typeof clause.relation !== "string") {
               throw new InvalidArgumentError(
-                'The provided option "relation" should be a non-empty String, but %v was given.',
+                'Option "relation" must be a non-empty String, but %v was given.',
                 clause.relation
               );
             }
@@ -5901,7 +5930,7 @@ var init_include_clause_tool = __esm({
           }
         } else {
           throw new InvalidArgumentError(
-            'The provided option "include" should have a non-empty String, an Object or an Array, but %v was given.',
+            'Option "include" must have a non-empty String, an Object or an Array, but %v was given.',
             clause
           );
         }
@@ -5919,7 +5948,7 @@ var init_include_clause_tool = __esm({
         }
         if (typeof clause !== "object" || Array.isArray(clause)) {
           throw new InvalidArgumentError(
-            'The provided option "scope" should be an Object, but %v was given.',
+            'Option "scope" must be an Object, but %v was given.',
             clause
           );
         }

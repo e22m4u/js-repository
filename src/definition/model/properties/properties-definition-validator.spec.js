@@ -15,12 +15,11 @@ describe('PropertiesDefinitionValidator', function () {
   });
 
   describe('validate', function () {
-    it('requires a first argument to be a non-empty string', function () {
+    it('requires the parameter "modelName" to be a non-empty string', function () {
       const validate = v => () => S.validate(v, {});
       const error = v =>
         format(
-          'The first argument of PropertiesDefinitionValidator.validate ' +
-            'should be a non-empty String, but %s was given.',
+          'Parameter "modelName" must be a non-empty String, but %s was given.',
           v,
         );
       expect(validate('')).to.throw(error('""'));
@@ -34,12 +33,12 @@ describe('PropertiesDefinitionValidator', function () {
       validate('model')();
     });
 
-    it('requires a second argument to be an object', function () {
+    it('requires the parameter "propDefs" to be an object', function () {
       const validate = v => () => S.validate('model', v);
       const error = v =>
         format(
-          'The provided option "properties" of the model "model" ' +
-            'should be an Object, but %s was given.',
+          'Option "properties" of the model "model" ' +
+            'must be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -56,7 +55,7 @@ describe('PropertiesDefinitionValidator', function () {
       const validate = v => () => S.validate('model', v);
       const error = v =>
         format(
-          'The property name of the model "model" should be ' +
+          'Property name of the model "model" must be ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -68,7 +67,7 @@ describe('PropertiesDefinitionValidator', function () {
       const validate = v => () => S.validate('model', {foo: v});
       const error = v =>
         format(
-          'The property "foo" of the model "model" should have ' +
+          'Property "foo" of the model "model" must have ' +
             'a property definition, but %s was given.',
           v,
         );
@@ -83,7 +82,8 @@ describe('PropertiesDefinitionValidator', function () {
       const error = v =>
         format(
           'In case of a short property definition, the property "foo" ' +
-            'of the model "model" should have one of data types: %l, but %s was given.',
+            'of the model "model" must have one of data types: %l, ' +
+            'but %s was given.',
           Object.values(DataType),
           v,
         );
@@ -96,7 +96,7 @@ describe('PropertiesDefinitionValidator', function () {
       const error = v =>
         format(
           'In case of a full property definition, the property "foo" ' +
-            'of the model "model" should be an Object, but %s was given.',
+            'of the model "model" must be an Object, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -109,7 +109,7 @@ describe('PropertiesDefinitionValidator', function () {
       const validate = v => () => S.validate('model', {foo: {type: v}});
       const error = v =>
         format(
-          'The property "foo" of the model "model" requires the option "type" ' +
+          'Property "foo" of the model "model" requires the option "type" ' +
             'to have one of data types: %l, but %s was given.',
           Object.values(DataType),
           v,
@@ -132,7 +132,7 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "itemType" of the property "foo" in the model "model" ' +
+          'Option "itemType" of the property "foo" in the model "model" ' +
             'should have one of data types: %l, but %s was given.',
           Object.values(DataType),
           v,
@@ -156,8 +156,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "itemModel" of the property "foo" ' +
-            'in the model "model" should be a String, but %s was given.',
+          'Option "itemModel" of the property "foo" ' +
+            'in the model "model" must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -177,8 +177,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "model" of the property "foo" in the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "model" of the property "foo" in the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -198,8 +198,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "primaryKey" of the property "foo" in the model "model" ' +
-            'should be a Boolean, but %s was given.',
+          'Option "primaryKey" of the property "foo" in the model "model" ' +
+            'must be a Boolean, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -219,8 +219,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "columnName" of the property "foo" in the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "columnName" of the property "foo" in the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -240,8 +240,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "columnType" of the property "foo" in the model "model" ' +
-            'should be a String, but %s was given.',
+          'Option "columnType" of the property "foo" in the model "model" ' +
+            'must be a String, but %s was given.',
           v,
         );
       expect(validate(10)).to.throw(error('10'));
@@ -261,8 +261,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "required" of the property "foo" in the model "model" ' +
-            'should be a Boolean, but %s was given.',
+          'Option "required" of the property "foo" in the model "model" ' +
+            'must be a Boolean, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -273,7 +273,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(false)();
     });
 
-    it('expects the required property should not have the option "default" to be provided', function () {
+    it('expects the required property must not have the option "default" to be provided', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ANY,
@@ -283,8 +283,8 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error = format(
-        'The property "foo" of the model "model" is a required property, ' +
-          'so it should not have the option "default" to be provided.',
+        'Property "foo" of the model "model" is a required property, ' +
+          'so it must not have the option "default" to be provided.',
       );
       expect(validate('str')).to.throw(error);
       expect(validate(10)).to.throw(error);
@@ -296,7 +296,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(undefined)();
     });
 
-    it('expects the primary key should not have the option "required" to be true', function () {
+    it('expects the primary key must not have the option "required" to be true', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ANY,
@@ -306,15 +306,15 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error = format(
-        'The property "foo" of the model "model" is a primary key, ' +
-          'so it should not have the option "required" to be provided.',
+        'Property "foo" of the model "model" is a primary key, ' +
+          'so it must not have the option "required" to be provided.',
       );
       expect(validate(true)).to.throw(error);
       validate(false)();
       validate(undefined)();
     });
 
-    it('expects the primary key should not have the option "default" to be provided', function () {
+    it('expects the primary key must not have the option "default" to be provided', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ANY,
@@ -324,8 +324,8 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error = format(
-        'The property "foo" of the model "model" is a primary key, ' +
-          'so it should not have the option "default" to be provided.',
+        'Property "foo" of the model "model" is a primary key, ' +
+          'so it must not have the option "default" to be provided.',
       );
       expect(validate('str')).to.throw(error);
       expect(validate(10)).to.throw(error);
@@ -337,7 +337,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(undefined)();
     });
 
-    it('expects a non-array property should not have the option "itemType" to be provided', function () {
+    it('expects a non-array property must not have the option "itemType" to be provided', function () {
       const validate = v => () => {
         const foo = {
           type: v,
@@ -346,8 +346,8 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error =
-        'The property "foo" of the model "model" has a non-array type, ' +
-        'so it should not have the option "itemType" to be provided.';
+        'Property "foo" of the model "model" has a non-array type, ' +
+        'so it must not have the option "itemType" to be provided.';
       expect(validate(DataType.ANY)).to.throw(error);
       expect(validate(DataType.STRING)).to.throw(error);
       expect(validate(DataType.NUMBER)).to.throw(error);
@@ -366,8 +366,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The option "model" is not supported for %s property type, ' +
-            'so the property "foo" of the model "model" should not have ' +
+          'Option "model" is not supported for %s property type, ' +
+            'so the property "foo" of the model "model" must not have ' +
             'the option "model" to be provided.',
           v,
         );
@@ -389,13 +389,13 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const errorForNonEmpty = v =>
         format(
-          'The provided option "itemModel" requires the option "itemType" ' +
+          'Option "itemModel" requires the option "itemType" ' +
             'to be explicitly set to Object, but the property "foo" of ' +
             'the model "model" has specified item type as %s.',
           v,
         );
       const errorForEmpty = format(
-        'The provided option "itemModel" requires the option "itemType" ' +
+        'Option "itemModel" requires the option "itemType" ' +
           'to be explicitly set to Object, but the property "foo" of ' +
           'the model "model" does not have specified item type.',
       );
@@ -428,8 +428,8 @@ describe('PropertiesDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The provided option "unique" of the property "foo" in the model "model" ' +
-            'should be a Boolean or one of values: %l, but %s was given.',
+          'Option "unique" of the property "foo" in the model "model" ' +
+            'must be a Boolean or one of values: %l, but %s was given.',
           Object.values(PropertyUniqueness),
           v,
         );
@@ -444,7 +444,7 @@ describe('PropertiesDefinitionValidator', function () {
       validate(PropertyUniqueness.NON_UNIQUE)();
     });
 
-    it('expects the primary key should not have the option "unique"', function () {
+    it('expects the primary key must not have the option "unique"', function () {
       const validate = v => () => {
         const foo = {
           type: DataType.ANY,
@@ -454,8 +454,8 @@ describe('PropertiesDefinitionValidator', function () {
         S.validate('model', {foo});
       };
       const error = format(
-        'The property "foo" of the model "model" is a primary key, ' +
-          'so it should not have the option "unique" to be provided.',
+        'Property "foo" of the model "model" is a primary key, ' +
+          'so it must not have the option "unique" to be provided.',
       );
       expect(validate(true)).to.throw(error);
       expect(validate(PropertyUniqueness.STRICT)).to.throw(error);

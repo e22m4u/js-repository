@@ -68,8 +68,7 @@ export class OperatorClauseTool extends Service {
   testAll(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testAll ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -135,10 +134,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testEqNeq(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testEqNeq ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -186,10 +184,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testGtLt(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testGtLt ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -222,10 +219,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testInq(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testInq ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -261,10 +257,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testNin(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testNin ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -297,10 +292,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testBetween(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testBetween ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -334,10 +328,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testExists(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testExists ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -370,8 +363,7 @@ export class OperatorClauseTool extends Service {
   testLike(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testLike ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -400,8 +392,7 @@ export class OperatorClauseTool extends Service {
   testNlike(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testNlike ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -430,8 +421,7 @@ export class OperatorClauseTool extends Service {
   testIlike(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testIlike ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -460,8 +450,7 @@ export class OperatorClauseTool extends Service {
   testNilike(clause, value) {
     if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testNilike ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -500,10 +489,9 @@ export class OperatorClauseTool extends Service {
    * @returns {boolean|undefined}
    */
   testRegexp(clause, value) {
-    if (!clause || typeof clause !== 'object') {
+    if (!clause || typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The first argument of OperatorUtils.testRegexp ' +
-          'should be an Object, but %v was given.',
+        'Parameter "clause" must be an Object, but %v was given.',
         clause,
       );
     }
@@ -521,7 +509,7 @@ export class OperatorClauseTool extends Service {
       const flags = clause.flags || undefined;
       if (flags && typeof flags !== 'string') {
         throw new InvalidArgumentError(
-          'RegExp flags should be a String, but %v was given.',
+          'RegExp flags must be a String, but %v was given.',
           clause.flags,
         );
       }

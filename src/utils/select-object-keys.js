@@ -10,23 +10,22 @@ import {InvalidArgumentError} from '../errors/index.js';
 export function selectObjectKeys(obj, keys) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
     throw new InvalidArgumentError(
-      'The first argument of selectObjectKeys ' +
-        'should be an Object, but %v was given.',
+      'Parameter "obj" must be an Object, but %v was given.',
       obj,
     );
   }
   if (!Array.isArray(keys)) {
     throw new InvalidArgumentError(
-      'The second argument of selectObjectKeys ' +
-        'should be an Array of String, but %v was given.',
+      'Parameter "keys" must be an Array, but %v was given.',
       keys,
     );
   }
-  keys.forEach(key => {
+  keys.forEach((key, index) => {
     if (typeof key !== 'string') {
       throw new InvalidArgumentError(
-        'The second argument of selectObjectKeys ' +
-          'should be an Array of String, but %v was given.',
+        'Element %d of the parameter "keys" must be a String, ' +
+          'but %v was given.',
+        index,
         key,
       );
     }

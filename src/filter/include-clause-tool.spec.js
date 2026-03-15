@@ -40,7 +40,7 @@ describe('IncludeClauseTool', function () {
       const throwable = v => () => IncludeClauseTool.validateIncludeClause(v);
       const createError = v =>
         format(
-          'The provided option "include" should have a non-empty String, ' +
+          'Option "include" must have a non-empty String, ' +
             'an Object or an Array, but %v was given.',
           v,
         );
@@ -80,7 +80,7 @@ describe('IncludeClauseTool', function () {
 
     it('throws an error for duplicates', function () {
       const validate = v => () => IncludeClauseTool.validateIncludeClause(v);
-      const error = 'The provided option "include" has duplicates of "foo".';
+      const error = 'Option "include" has duplicates of "foo".';
       const clauses = [
         ['foo', 'foo'],
         [['foo'], 'foo'],
@@ -104,7 +104,7 @@ describe('IncludeClauseTool', function () {
       const throwable = v => () => IncludeClauseTool.normalizeIncludeClause(v);
       const createError = v =>
         format(
-          'The provided option "include" should have a non-empty String, ' +
+          'Option "include" must have a non-empty String, ' +
             'an Object or an Array, but %v was given.',
           v,
         );
@@ -144,7 +144,7 @@ describe('IncludeClauseTool', function () {
 
     it('throws an error for duplicates', function () {
       const validate = v => () => IncludeClauseTool.normalizeIncludeClause(v);
-      const error = 'The provided option "include" has duplicates of "foo".';
+      const error = 'Option "include" has duplicates of "foo".';
       const clauses = [
         ['foo', 'foo'],
         [['foo'], 'foo'],

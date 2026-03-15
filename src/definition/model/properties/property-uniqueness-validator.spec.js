@@ -23,7 +23,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(v, 'create', 'model', {});
       const error = v =>
         format(
-          'The parameter "countMethod" of the PropertyUniquenessValidator ' +
+          'Parameter "countMethod" of the PropertyUniquenessValidator ' +
             'must be a Function, but %s was given.',
           v,
         );
@@ -58,7 +58,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, v, 'model', {});
       const error = v =>
         format(
-          'The parameter "methodName" of the PropertyUniquenessValidator ' +
+          'Parameter "methodName" of the PropertyUniquenessValidator ' +
             'must be a non-empty String, but %s was given.',
           v,
         );
@@ -93,7 +93,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, 'create', v, {});
       const error = v =>
         format(
-          'The parameter "modelName" of the PropertyUniquenessValidator ' +
+          'Parameter "modelName" of the PropertyUniquenessValidator ' +
             'must be a non-empty String, but %s was given.',
           v,
         );
@@ -128,7 +128,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, 'create', 'model', v);
       const error = v =>
         format(
-          'The data of the model "model" should be an Object, but %s was given.',
+          'Data of the model "model" must be an Object, but %s was given.',
           v,
         );
       await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
@@ -241,8 +241,7 @@ describe('PropertyUniquenessValidator', function () {
       const puv = dbs.getService(PropertyUniquenessValidator);
       const promise = puv.validate(() => 1, 'unsupported', 'model', {});
       await expect(promise).to.be.rejectedWith(
-        'The PropertyUniquenessValidator does not ' +
-          'support the adapter method "unsupported".',
+        'Adapter method "unsupported" is not supported.',
       );
     });
 
@@ -265,7 +264,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -342,7 +341,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -467,7 +466,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -796,7 +795,7 @@ describe('PropertyUniquenessValidator', function () {
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -815,7 +814,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -868,7 +867,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });
@@ -896,7 +895,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -915,7 +914,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -978,7 +977,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });
@@ -1043,7 +1042,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1120,7 +1119,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1245,7 +1244,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1574,7 +1573,7 @@ describe('PropertyUniquenessValidator', function () {
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1593,7 +1592,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1646,7 +1645,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });
@@ -1674,7 +1673,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1693,7 +1692,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -1756,7 +1755,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });
@@ -1821,7 +1820,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -1840,7 +1839,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'create', 'model', {foo: 'bar'});
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2012,7 +2011,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -2031,7 +2030,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'replaceById', 'model', {foo: 'bar'}, 1);
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2288,7 +2287,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -2307,7 +2306,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'replaceOrCreate', 'model', {foo: 'bar'});
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -2959,7 +2958,7 @@ describe('PropertyUniquenessValidator', function () {
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -2978,7 +2977,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patch', 'model', {foo: 'bar'});
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -3031,7 +3030,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });
@@ -3175,7 +3174,7 @@ describe('PropertyUniquenessValidator', function () {
           );
           await expect(promise).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
         });
 
@@ -3194,7 +3193,7 @@ describe('PropertyUniquenessValidator', function () {
           await puv.validate(() => 0, 'patchById', 'model', {foo: 'bar'}, 1);
         });
 
-        it('invokes the "countMethod" for given properties which should be unique', async function () {
+        it('invokes the "countMethod" for given properties which must be unique', async function () {
           const dbs = new DatabaseSchema();
           dbs.defineModel({
             name: 'model',
@@ -3257,7 +3256,7 @@ describe('PropertyUniquenessValidator', function () {
           });
           await expect(promise1).to.be.rejectedWith(
             'An existing document of the model "model" already has ' +
-              'the property "foo" with the value "bar" and should be unique.',
+              'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
         });

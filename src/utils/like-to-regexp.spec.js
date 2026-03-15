@@ -1,11 +1,11 @@
 import {expect} from 'chai';
+import {format} from '@e22m4u/js-format';
 import {likeToRegexp} from './like-to-regexp.js';
 
 describe('likeToRegexp', function () {
   it('throws an error if the pattern is not a string', function () {
-    const error = v =>
-      'The first argument of `likeToRegexp` ' +
-      `should be a String, but ${v} was given.`;
+    const error = s =>
+      format('Parameter "pattern" must be a String, but %s was given.', s);
     expect(() => likeToRegexp(123)).to.throw(error('123'));
     expect(() => likeToRegexp(null)).to.throw(error('null'));
     expect(() => likeToRegexp({})).to.throw(error('Object'));
@@ -39,13 +39,13 @@ describe('likeToRegexp', function () {
   });
 
   describe('case sensitivity', function () {
-    it('should be case-sensitive by default', function () {
+    it('must be case-sensitive by default', function () {
       const re = likeToRegexp('Hello%');
       expect(re.test('Hello World')).to.be.true;
       expect(re.test('hello World')).to.be.false;
     });
 
-    it('should be case-insensitive when specified', function () {
+    it('must be case-insensitive when specified', function () {
       const re = likeToRegexp('Hello%', true);
       expect(re.test('Hello World')).to.be.true;
       expect(re.test('hello World')).to.be.true;

@@ -26,7 +26,7 @@ export class OrderClauseTool extends Service {
     clause.forEach((key, index) => {
       if (!key || typeof key !== 'string') {
         throw new InvalidArgumentError(
-          'The provided option "order" should be a non-empty String ' +
+          'Option "order" must be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           key,
         );
@@ -62,7 +62,7 @@ export class OrderClauseTool extends Service {
     clause.forEach(field => {
       if (!field || typeof field !== 'string') {
         throw new InvalidArgumentError(
-          'The provided option "order" should be a non-empty String ' +
+          'Option "order" must be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           field,
         );
@@ -89,7 +89,7 @@ export class OrderClauseTool extends Service {
     clause.forEach(field => {
       if (!field || typeof field !== 'string') {
         throw new InvalidArgumentError(
-          'The provided option "order" should be a non-empty String ' +
+          'Option "order" must be a non-empty String ' +
             'or an Array of non-empty String, but %v was given.',
           field,
         );

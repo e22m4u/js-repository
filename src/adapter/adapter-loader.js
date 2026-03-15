@@ -16,7 +16,7 @@ export class AdapterLoader extends Service {
   async loadByName(adapterName, settings = undefined) {
     if (!adapterName || typeof adapterName !== 'string') {
       throw new InvalidArgumentError(
-        'The adapter name should be a non-empty String, but %v was given.',
+        'Adapter name must be a non-empty String, but %v was given.',
         adapterName,
       );
     }
@@ -38,10 +38,7 @@ export class AdapterLoader extends Service {
       }
     }
     if (!adapterCtor) {
-      throw new InvalidArgumentError(
-        'The adapter %v is not found.',
-        adapterName,
-      );
+      throw new InvalidArgumentError('Adapter %v is not found.', adapterName);
     }
     return new adapterCtor(this.container, settings);
   }

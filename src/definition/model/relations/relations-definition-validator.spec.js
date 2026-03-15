@@ -7,12 +7,11 @@ const S = new RelationsDefinitionValidator();
 
 describe('RelationsDefinitionValidator', function () {
   describe('validate', function () {
-    it('requires a first argument to be a non-empty string', function () {
+    it('requires the parameter "modelName" to be a non-empty string', function () {
       const validate = v => () => S.validate(v, {});
       const error = v =>
         format(
-          'The first argument of RelationsDefinitionValidator.validate ' +
-            'should be a non-empty String, but %s was given.',
+          'Parameter "modelName" must be a non-empty String, but %s was given.',
           v,
         );
       expect(validate('')).to.throw(error('""'));
@@ -26,12 +25,12 @@ describe('RelationsDefinitionValidator', function () {
       validate('model')();
     });
 
-    it('requires a second argument to be an object', function () {
+    it('requires the parameter "relDefs" to be an object', function () {
       const validate = v => () => S.validate('model', v);
       const error = v =>
         format(
-          'The provided option "relations" of the model "model" ' +
-            'should be an Object, but %s was given.',
+          'Option "relations" of the model "model" ' +
+            'must be an Object, but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -48,7 +47,7 @@ describe('RelationsDefinitionValidator', function () {
       const validate = v => () => S.validate('model', v);
       const error = v =>
         format(
-          'The relation name of the model "model" should be ' +
+          'Relation name of the model "model" must be ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -60,8 +59,8 @@ describe('RelationsDefinitionValidator', function () {
       const validate = v => () => S.validate('model', {foo: v});
       const error = v =>
         format(
-          'The relation "foo" of the model "model" should ' +
-            'be an Object, but %s was given.',
+          'Relation "foo" of the model "model" must be an Object, ' +
+            'but %s was given.',
           v,
         );
       expect(validate('str')).to.throw(error('"str"'));
@@ -81,7 +80,7 @@ describe('RelationsDefinitionValidator', function () {
       };
       const error = v =>
         format(
-          'The relation "foo" of the model "model" requires the option "type" ' +
+          'Relation "foo" of the model "model" requires the option "type" ' +
             'to have one of relation types: %l, but %s was given.',
           Object.values(RelationType),
           v,
@@ -109,7 +108,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "belongsTo", ' +
+              'Relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -136,7 +135,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "belongsTo", ' +
+              'Relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
                 'but %s was given.',
               v,
@@ -162,8 +161,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" is a non-polymorphic "belongsTo" relation, ' +
-              'so it should not have the option "discriminator" to be provided.',
+            'Relation "foo" of the model "model" is a non-polymorphic "belongsTo" relation, ' +
+              'so it must not have the option "discriminator" to be provided.',
           );
         });
       });
@@ -179,7 +178,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "belongsTo", ' +
+              'Relation "foo" of the model "model" has the type "belongsTo", ' +
                 'so it expects the option "polymorphic" to be a Boolean, ' +
                 'but %s was given.',
               v,
@@ -202,7 +201,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
+              'Relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "foreignKey" to be a String, ' +
                 'but %s was given.',
               v,
@@ -229,7 +228,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
+              'Relation "foo" of the model "model" is a polymorphic "belongsTo" relation, ' +
                 'so it expects the provided option "discriminator" to be a String, ' +
                 'but %s was given.',
               v,
@@ -260,7 +259,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasOne", ' +
+              'Relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -287,7 +286,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasOne", ' +
+              'Relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -314,8 +313,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" is a non-polymorphic "hasOne" relation, ' +
-              'so it should not have the option "discriminator" to be provided.',
+            'Relation "foo" of the model "model" is a non-polymorphic "hasOne" relation, ' +
+              'so it must not have the option "discriminator" to be provided.',
           );
         });
       });
@@ -332,7 +331,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasOne", ' +
+              'Relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -359,8 +358,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" has the option "polymorphic" with ' +
-              'a String value, so it should not have the option "foreignKey" ' +
+            'Relation "foo" of the model "model" has the option "polymorphic" with ' +
+              'a String value, so it must not have the option "foreignKey" ' +
               'to be provided.',
           );
         });
@@ -376,8 +375,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" has the option "polymorphic" with ' +
-              'a String value, so it should not have the option "discriminator" ' +
+            'Relation "foo" of the model "model" has the option "polymorphic" with ' +
+              'a String value, so it must not have the option "discriminator" ' +
               'to be provided.',
           );
         });
@@ -397,7 +396,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasOne", ' +
+              'Relation "foo" of the model "model" has the type "hasOne", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -426,7 +425,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the option "polymorphic" ' +
+              'Relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
                 'to be a non-empty String, but %s was given.',
               v,
@@ -455,7 +454,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the option "polymorphic" ' +
+              'Relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
                 'to be a non-empty String, but %s was given.',
               v,
@@ -486,7 +485,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasMany", ' +
+              'Relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -513,7 +512,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasMany", ' +
+              'Relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "foreignKey" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -540,8 +539,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" is a non-polymorphic "hasMany" ' +
-              'relation, so it should not have the option "discriminator" to be provided.',
+            'Relation "foo" of the model "model" is a non-polymorphic "hasMany" ' +
+              'relation, so it must not have the option "discriminator" to be provided.',
           );
         });
       });
@@ -558,7 +557,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasMany", ' +
+              'Relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -585,8 +584,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" has the option "polymorphic" ' +
-              'with a String value, so it should not have the option "foreignKey" ' +
+            'Relation "foo" of the model "model" has the option "polymorphic" ' +
+              'with a String value, so it must not have the option "foreignKey" ' +
               'to be provided.',
           );
         });
@@ -602,8 +601,8 @@ describe('RelationsDefinitionValidator', function () {
               },
             });
           expect(throwable).to.throw(
-            'The relation "foo" of the model "model" has the option "polymorphic" with ' +
-              'a String value, so it should not have the option "discriminator" ' +
+            'Relation "foo" of the model "model" has the option "polymorphic" with ' +
+              'a String value, so it must not have the option "discriminator" ' +
               'to be provided.',
           );
         });
@@ -623,7 +622,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the type "hasMany", ' +
+              'Relation "foo" of the model "model" has the type "hasMany", ' +
                 'so it requires the option "model" to be a non-empty String, ' +
                 'but %s was given.',
               v,
@@ -652,7 +651,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the option "polymorphic" ' +
+              'Relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "foreignKey" ' +
                 'to be a non-empty String, but %s was given.',
               v,
@@ -681,7 +680,7 @@ describe('RelationsDefinitionValidator', function () {
           };
           const error = v =>
             format(
-              'The relation "foo" of the model "model" has the option "polymorphic" ' +
+              'Relation "foo" of the model "model" has the option "polymorphic" ' +
                 'with "true" value, so it requires the option "discriminator" ' +
                 'to be a non-empty String, but %s was given.',
               v,
@@ -710,7 +709,7 @@ describe('RelationsDefinitionValidator', function () {
         };
         const error = v =>
           format(
-            'The relation "foo" of the model "model" has the type "referencesMany", ' +
+            'Relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it requires the option "model" to be a non-empty String, ' +
               'but %s was given.',
             v,
@@ -737,7 +736,7 @@ describe('RelationsDefinitionValidator', function () {
         };
         const error = v =>
           format(
-            'The relation "foo" of the model "model" has the type "referencesMany", ' +
+            'Relation "foo" of the model "model" has the type "referencesMany", ' +
               'so it expects the provided option "foreignKey" to be a String, ' +
               'but %s was given.',
             v,
@@ -763,8 +762,8 @@ describe('RelationsDefinitionValidator', function () {
             },
           });
         expect(throwable).to.throw(
-          'The relation "foo" of the model "model" has the type "referencesMany", ' +
-            'so it should not have the option "discriminator" to be provided.',
+          'Relation "foo" of the model "model" has the type "referencesMany", ' +
+            'so it must not have the option "discriminator" to be provided.',
         );
       });
     });

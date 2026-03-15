@@ -16,7 +16,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includeTo requires ' +
+          'Parameter "entities" of HasManyResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -44,7 +44,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includeTo requires ' +
+          'Parameter "entities" of HasManyResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -65,7 +65,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of HasManyResolver.includeTo requires ' +
+          'Parameter "sourceName" of HasManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -86,7 +86,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "targetName" of HasManyResolver.includeTo requires ' +
+          'Parameter "targetName" of HasManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -107,7 +107,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of HasManyResolver.includeTo requires ' +
+          'Parameter "relationName" of HasManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -128,7 +128,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "foreignKey" of HasManyResolver.includeTo requires ' +
+          'Parameter "foreignKey" of HasManyResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -149,8 +149,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of HasManyResolver.includeTo ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of HasManyResolver.includeTo ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -179,9 +179,7 @@ describe('HasManyResolver', function () {
         'relationName',
         'foreignKey',
       );
-      await expect(promise).to.be.rejectedWith(
-        'The model "target" is not defined',
-      );
+      await expect(promise).to.be.rejectedWith('Model "target" is not defined');
     });
 
     it('throws an error if a target model does not have datasource', async function () {
@@ -197,7 +195,7 @@ describe('HasManyResolver', function () {
         'foreignKey',
       );
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have a specified datasource.',
+        'Model "target" does not have a specified datasource.',
       );
     });
 
@@ -728,7 +726,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -757,7 +755,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -785,7 +783,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -813,7 +811,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -841,7 +839,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -869,7 +867,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -897,7 +895,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -925,8 +923,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of HasManyResolver.includePolymorphicTo ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of HasManyResolver.includePolymorphicTo ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -958,9 +956,7 @@ describe('HasManyResolver', function () {
         'parentId',
         'parentType',
       );
-      await expect(promise).to.be.rejectedWith(
-        'The model "target" is not defined',
-      );
+      await expect(promise).to.be.rejectedWith('Model "target" is not defined');
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
@@ -978,7 +974,7 @@ describe('HasManyResolver', function () {
         'parentType',
       );
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have a specified datasource.',
+        'Model "target" does not have a specified datasource.',
       );
     });
 
@@ -1687,7 +1683,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
+          'Parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -1724,7 +1720,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -1751,7 +1747,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
+          'Parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -1778,7 +1774,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
+          'Parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -1805,7 +1801,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
+          'Parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -1832,7 +1828,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
+          'Parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -1859,8 +1855,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1890,9 +1886,7 @@ describe('HasManyResolver', function () {
         'children',
         'parent',
       );
-      await expect(promise).to.be.rejectedWith(
-        'The model "target" is not defined',
-      );
+      await expect(promise).to.be.rejectedWith('Model "target" is not defined');
     });
 
     it('throws an error if the given target model does not have the given relation name', async function () {
@@ -1909,7 +1903,7 @@ describe('HasManyResolver', function () {
         'parent',
       );
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have relation name "parent".',
+        'Model "target" does not have relation name "parent".',
       );
     });
 
@@ -1935,7 +1929,7 @@ describe('HasManyResolver', function () {
         'parent',
       );
       await expect(promise).to.be.rejectedWith(
-        'The relation "children" of the model "source" is a polymorphic "hasMany" relation, ' +
+        'Relation "children" of the model "source" is a polymorphic "hasMany" relation, ' +
           'so it requires the target relation "parent" to be a polymorphic "belongsTo", ' +
           'but "referencesMany" type was given.',
       );
@@ -1963,7 +1957,7 @@ describe('HasManyResolver', function () {
         'parent',
       );
       await expect(promise).to.be.rejectedWith(
-        'The relation "children" of the model "source" is a polymorphic ' +
+        'Relation "children" of the model "source" is a polymorphic ' +
           '"hasMany" relation, so it requires the target relation "parent" ' +
           'to be a polymorphic too.',
       );
@@ -1991,7 +1985,7 @@ describe('HasManyResolver', function () {
         'parent',
       );
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have a specified datasource.',
+        'Model "target" does not have a specified datasource.',
       );
     });
 

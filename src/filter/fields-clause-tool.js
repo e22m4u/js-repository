@@ -16,44 +16,64 @@ export class FieldsClauseTool extends Service {
    * @returns {object|object[]}
    */
   filter(input, modelName, clause) {
-    const isArray = Array.isArray(input);
-    let entities = isArray ? input : [input];
-    entities.forEach(entity => {
-      if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
-        throw new InvalidArgumentError(
-          'The first argument of FieldsClauseTool.filter should be an Object or ' +
-            'an Array of Object, but %v was given.',
-          entity,
-        );
-      }
-    });
-
+    // input
+    if (!input || typeof input !== 'object') {
+      throw new InvalidArgumentError(
+        'Parameter "input" must be an Object or an Array, ' +
+          'but %v was given.',
+        input,
+      );
+    }
+    // input[n]
+    const isArrayInput = Array.isArray(input);
+    if (isArrayInput) {
+      input.forEach((entity, index) => {
+        if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
+          throw new InvalidArgumentError(
+            'Element %d of the parameter "input" must be an Object, ' +
+              'but %v was given.',
+            index,
+            entity,
+          );
+        }
+      });
+    }
+    // modelName
     if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
-        'The second argument of FieldsClauseTool.filter should be ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "modelName" must be a non-empty String, but %v was given.',
         modelName,
       );
     }
-
+    // clause
     if (clause == null) {
       return input;
     }
-    const fields = Array.isArray(clause) ? clause.slice() : [clause];
-    if (!fields.length) {
-      return input;
+    const isArrayClause = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArrayClause)) {
+      throw new InvalidArgumentError(
+        'Option "fields" must be a non-empty String or an Array, ' +
+          'but %v was given.',
+        clause,
+      );
     }
-
-    fields.forEach(field => {
-      if (!field || typeof field !== 'string') {
-        throw new InvalidArgumentError(
-          'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          field,
-        );
+    // clause[n]
+    if (isArrayClause) {
+      if (!clause.length) {
+        return input;
       }
-    });
-
+      clause.forEach((field, index) => {
+        if (!field || typeof field !== 'string') {
+          throw new InvalidArgumentError(
+            'Element %d of the option "fields" must be a non-empty String, ' +
+              'but %v was given.',
+            index,
+            field,
+          );
+        }
+      });
+    }
+    const fields = isArrayClause ? clause.slice() : [clause];
     const pkPropName =
       this.getService(ModelDefinitionUtils).getPrimaryKeyAsPropertyName(
         modelName,
@@ -62,8 +82,9 @@ export class FieldsClauseTool extends Service {
       fields.push(pkPropName);
     }
 
+    let entities = isArrayInput ? input : [input];
     entities = entities.map(entity => selectObjectKeys(entity, fields));
-    return isArray ? entities : entities[0];
+    return isArrayInput ? entities : entities[0];
   }
 
   /**
@@ -75,19 +96,28 @@ export class FieldsClauseTool extends Service {
     if (clause == null) {
       return;
     }
-    const fields = Array.isArray(clause) ? clause : [clause];
-    if (!fields.length) {
-      return;
+    // clause
+    const isArray = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArray)) {
+      throw new InvalidArgumentError(
+        'Option "fields" must be a non-empty String or an Array, ' +
+          'but %v was given.',
+        clause,
+      );
     }
-    fields.forEach(field => {
-      if (!field || typeof field !== 'string') {
-        throw new InvalidArgumentError(
-          'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          field,
-        );
-      }
-    });
+    // clause[n]
+    if (isArray && clause.length > 0) {
+      clause.forEach((field, index) => {
+        if (!field || typeof field !== 'string') {
+          throw new InvalidArgumentError(
+            'Element %d of the option "fields" must be a non-empty String, ' +
+              'but %v was given.',
+            index,
+            field,
+          );
+        }
+      });
+    }
   }
 
   /**
@@ -100,19 +130,31 @@ export class FieldsClauseTool extends Service {
     if (clause == null) {
       return;
     }
-    const fields = Array.isArray(clause) ? clause : [clause];
-    if (!fields.length) {
-      return;
+    // clause
+    const isArray = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArray)) {
+      throw new InvalidArgumentError(
+        'Option "fields" must be a non-empty String or an Array, ' +
+          'but %v was given.',
+        clause,
+      );
     }
-    fields.forEach(field => {
-      if (!field || typeof field !== 'string') {
-        throw new InvalidArgumentError(
-          'The provided option "fields" should be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          field,
-        );
+    // clause[n]
+    if (isArray) {
+      if (!clause.length) {
+        return;
       }
-    });
-    return fields;
+      clause.forEach((field, index) => {
+        if (!field || typeof field !== 'string') {
+          throw new InvalidArgumentError(
+            'Element %d of the option "fields" must be a non-empty String, ' +
+              'but %v was given.',
+            index,
+            field,
+          );
+        }
+      });
+    }
+    return isArray ? clause : [clause];
   }
 }

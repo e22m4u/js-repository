@@ -597,11 +597,11 @@ describe('OrderClauseTool', function () {
 
   describe('validateOrderClause', function () {
     describe('single field', function () {
-      it('requires the first argument as a non-empty string', function () {
+      it('requires the option "order" to be a non-empty string', function () {
         const throwable = v => () => OrderClauseTool.validateOrderClause(v);
         const error = v =>
           format(
-            'The provided option "order" should be a non-empty String ' +
+            'Option "order" must be a non-empty String ' +
               'or an Array of non-empty String, but %s was given.',
             v,
           );
@@ -618,11 +618,11 @@ describe('OrderClauseTool', function () {
     });
 
     describe('multiple fields', function () {
-      it('requires the first argument as a non-empty string', function () {
+      it('requires the option "order" to be a non-empty string', function () {
         const throwable = v => () => OrderClauseTool.validateOrderClause(v);
         const error = v =>
           format(
-            'The provided option "order" should be a non-empty String ' +
+            'Option "order" must be a non-empty String ' +
               'or an Array of non-empty String, but %s was given.',
             v,
           );
@@ -642,11 +642,11 @@ describe('OrderClauseTool', function () {
 
   describe('normalizeOrderClause', function () {
     describe('single field', function () {
-      it('requires the first argument as a non-empty string', function () {
+      it('requires the option "order" to be a non-empty string', function () {
         const throwable = v => () => OrderClauseTool.normalizeOrderClause(v);
         const error = v =>
           format(
-            'The provided option "order" should be a non-empty String ' +
+            'Option "order" must be a non-empty String ' +
               'or an Array of non-empty String, but %s was given.',
             v,
           );
@@ -668,11 +668,11 @@ describe('OrderClauseTool', function () {
     });
 
     describe('multiple fields', function () {
-      it('requires the first argument as a non-empty string', function () {
+      it('requires the option "order" to be a non-empty string', function () {
         const throwable = v => () => OrderClauseTool.normalizeOrderClause(v);
         const error = v =>
           format(
-            'The provided option "order" should be a non-empty String ' +
+            'Option "order" must be a non-empty String ' +
               'or an Array of non-empty String, but %s was given.',
             v,
           );

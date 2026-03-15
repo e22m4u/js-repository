@@ -39,9 +39,7 @@ describe('DefinitionRegistry', function () {
       const datasource2 = {name: 'datasource', adapter: 'adapter'};
       S.addDatasource(datasource1);
       const throwable = () => S.addDatasource(datasource2);
-      expect(throwable).to.throw(
-        'The datasource "datasource" is already defined.',
-      );
+      expect(throwable).to.throw('Datasource "datasource" is already defined.');
     });
   });
 
@@ -64,7 +62,7 @@ describe('DefinitionRegistry', function () {
 
     it('throws an error if ths datasource is not defined', function () {
       const throwable = () => S.getDatasource('undefined');
-      expect(throwable).to.throw('The datasource "undefined" is not defined.');
+      expect(throwable).to.throw('Datasource "undefined" is not defined.');
     });
   });
 
@@ -90,7 +88,7 @@ describe('DefinitionRegistry', function () {
       const model2 = {name: 'TestModel'};
       S.addModel(model1);
       const throwable = () => S.addModel(model2);
-      expect(throwable).to.throw('The model "TestModel" is already defined.');
+      expect(throwable).to.throw('Model "TestModel" is already defined.');
     });
   });
 
@@ -157,7 +155,7 @@ describe('DefinitionRegistry', function () {
 
     it('throws an error if the model is not defined', function () {
       const throwable = () => S.getModel('undefined');
-      expect(throwable).to.throw('The model "undefined" is not defined.');
+      expect(throwable).to.throw('Model "undefined" is not defined.');
     });
 
     it('should ignore naming convention of the model name', function () {

@@ -44,8 +44,8 @@ describe('ModelDefinitionUtils', function () {
       const throwable = () => mdu.getPrimaryKeyAsPropertyName('model');
       expect(throwable).to.throw(
         format(
-          'The property name %v of the model "model" is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model "model" is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
         ),
@@ -179,8 +179,8 @@ describe('ModelDefinitionUtils', function () {
       const throwable = () => mdu.getPrimaryKeyAsColumnName('model');
       expect(throwable).to.throw(
         format(
-          'The property name %v of the model "model" is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model "model" is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEF_PK,
         ),
@@ -1222,8 +1222,8 @@ describe('ModelDefinitionUtils', function () {
       const throwable = v => () => mdu.getDataTypeFromPropertyDefinition(v);
       const error = v =>
         format(
-          'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-            'should be an Object or the DataType enum, but %s was given.',
+          'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+            'must be an Object or the DataType enum, but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));
@@ -1245,8 +1245,7 @@ describe('ModelDefinitionUtils', function () {
         mdu.getDataTypeFromPropertyDefinition({type: v});
       const error = v =>
         format(
-          'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-            'should have the "type" property with one of values: %l, but %s was given.',
+          'Option "type" must be one of values: %l, but %s was given.',
           Object.values(DataType),
           v,
         );
@@ -1562,9 +1561,7 @@ describe('ModelDefinitionUtils', function () {
         dbs
           .getService(ModelDefinitionUtils)
           .getPropertiesDefinitionInBaseModelHierarchy('model');
-      expect(throwable).to.throw(
-        'The model "model" has a circular inheritance.',
-      );
+      expect(throwable).to.throw('Model "model" has a circular inheritance.');
     });
 
     it('places a primary key definition at the start of the result', function () {
@@ -1782,9 +1779,7 @@ describe('ModelDefinitionUtils', function () {
         dbs
           .getService(ModelDefinitionUtils)
           .getRelationsDefinitionInBaseModelHierarchy('model');
-      expect(throwable).to.throw(
-        'The model "model" has a circular inheritance.',
-      );
+      expect(throwable).to.throw('Model "model" has a circular inheritance.');
     });
   });
 
@@ -1795,7 +1790,7 @@ describe('ModelDefinitionUtils', function () {
         dbs
           .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
-      expect(throwable).to.throw('The model "model" is not defined.');
+      expect(throwable).to.throw('Model "model" is not defined.');
     });
 
     it('throws an error if a given relation is not found', function () {
@@ -1808,7 +1803,7 @@ describe('ModelDefinitionUtils', function () {
           .getService(ModelDefinitionUtils)
           .getRelationDefinitionByName('model', 'myRelation');
       expect(throwable).to.throw(
-        'The model "model" does not have relation name "myRelation".',
+        'Model "model" does not have relation name "myRelation".',
       );
     });
 
@@ -1924,11 +1919,7 @@ describe('ModelDefinitionUtils', function () {
           .getService(ModelDefinitionUtils)
           .excludeObjectKeysByRelationNames('model', v);
       const error = v =>
-        format(
-          'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-            'should be an Object, but %s was given.',
-          v,
-        );
+        format('Parameter "modelData" must be an Object, but %s was given.', v);
       expect(throwable('')).to.throw(error('""'));
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable(10)).to.throw(error('10'));

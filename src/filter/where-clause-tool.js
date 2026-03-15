@@ -41,8 +41,7 @@ export class WhereClauseTool extends Service {
   filter(entities, where = undefined) {
     if (!Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'The first argument of WhereClauseTool.filter should be ' +
-          'an Array of Object, but %v was given.',
+        'Parameter "entities" must be an Array of Object, but %v was given.',
         entities,
       );
     }
@@ -61,7 +60,7 @@ export class WhereClauseTool extends Service {
   _createFilter(whereClause) {
     if (typeof whereClause !== 'object' || Array.isArray(whereClause)) {
       throw new InvalidArgumentError(
-        'The provided option "where" should be an Object, but %v was given.',
+        'Option "where" must be an Object, but %v was given.',
         whereClause,
       );
     }
@@ -69,8 +68,7 @@ export class WhereClauseTool extends Service {
     return data => {
       if (typeof data !== 'object') {
         throw new InvalidArgumentError(
-          'The first argument of WhereClauseTool.filter should be ' +
-            'an Array of Object, but %v was given.',
+          'Parameter "data" must be an Array of Object, but %v was given.',
           data,
         );
       }
@@ -172,7 +170,7 @@ export class WhereClauseTool extends Service {
     }
     if (typeof clause !== 'object' || Array.isArray(clause)) {
       throw new InvalidArgumentError(
-        'The provided option "where" should be an Object, but %v was given.',
+        'Option "where" must be an Object, but %v was given.',
         clause,
       );
     }

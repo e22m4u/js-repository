@@ -57,7 +57,7 @@ export class MemoryAdapter extends Adapter {
     const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
     if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
       throw new InvalidArgumentError(
-        'The memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter able to generate only Number identifiers, ' +
           'but the primary key %v of the model %v is defined as %s. ' +
           'Do provide your own value for the %v property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -125,7 +125,7 @@ export class MemoryAdapter extends Adapter {
     const table = this._getTableOrCreate(modelName);
     if (table.has(idValue)) {
       throw new InvalidArgumentError(
-        'The value %v of the primary key %v already exists in the model %v.',
+        'Value %v of the primary key %v already exists in the model %v.',
         idValue,
         pkPropName,
         modelName,
@@ -164,7 +164,7 @@ export class MemoryAdapter extends Adapter {
       );
     if (!isExists) {
       throw new InvalidArgumentError(
-        'The value %v of the primary key %v does not exist in the model %v.',
+        'Value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
@@ -286,7 +286,7 @@ export class MemoryAdapter extends Adapter {
       );
     if (existingTableData == null) {
       throw new InvalidArgumentError(
-        'The value %v of the primary key %v does not exist in the model %v.',
+        'Value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,
@@ -366,7 +366,7 @@ export class MemoryAdapter extends Adapter {
       );
     if (!tableData) {
       throw new InvalidArgumentError(
-        'The value %v of the primary key %v does not exist in the model %v.',
+        'Value %v of the primary key %v does not exist in the model %v.',
         id,
         pkPropName,
         modelName,

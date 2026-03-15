@@ -34,8 +34,8 @@ export class ModelDefinitionUtils extends Service {
       );
       if (isDefaultPrimaryKeyAlreadyInUse) {
         throw new InvalidArgumentError(
-          'The property name %v of the model %v is defined as a regular property. ' +
-            'In this case, a primary key should be defined explicitly. ' +
+          'Property name %v of the model %v is defined as a regular property. ' +
+            'In this case, a primary key must be defined explicitly. ' +
             'Do use the option "primaryKey" to specify the primary key.',
           DEFAULT_PRIMARY_KEY_PROPERTY_NAME,
           modelName,
@@ -92,7 +92,7 @@ export class ModelDefinitionUtils extends Service {
     const propDef = propDefs[propertyName];
     if (!propDef) {
       throw new InvalidArgumentError(
-        'The model %v does not have the property %v.',
+        'Model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -116,7 +116,7 @@ export class ModelDefinitionUtils extends Service {
     const propDef = propDefs[propertyName];
     if (!propDef) {
       throw new InvalidArgumentError(
-        'The model %v does not have the property %v.',
+        'Model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -306,7 +306,7 @@ export class ModelDefinitionUtils extends Service {
         return DataType.ANY;
       }
       throw new InvalidArgumentError(
-        'The model %v does not have the property %v.',
+        'Model %v does not have the property %v.',
         modelName,
         propertyName,
       );
@@ -329,8 +329,8 @@ export class ModelDefinitionUtils extends Service {
       !Object.values(DataType).includes(propDef)
     ) {
       throw new InvalidArgumentError(
-        'The argument "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-          'should be an Object or the DataType enum, but %v was given.',
+        'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
+          'must be an Object or the DataType enum, but %v was given.',
         propDef,
       );
     }
@@ -340,8 +340,7 @@ export class ModelDefinitionUtils extends Service {
     const dataType = propDef.type;
     if (!Object.values(DataType).includes(dataType)) {
       throw new InvalidArgumentError(
-        'The given Object to the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-          'should have the "type" property with one of values: %l, but %v was given.',
+        'Option "type" must be one of values: %l, but %v was given.',
         Object.values(DataType),
         propDef.type,
       );
@@ -395,7 +394,7 @@ export class ModelDefinitionUtils extends Service {
     const recursion = (currModelName, prevModelName = undefined) => {
       if (currModelName === prevModelName) {
         throw new InvalidArgumentError(
-          'The model %v has a circular inheritance.',
+          'Model %v has a circular inheritance.',
           currModelName,
         );
       }
@@ -439,7 +438,7 @@ export class ModelDefinitionUtils extends Service {
     const recursion = (currModelName, prevModelName = undefined) => {
       if (currModelName === prevModelName) {
         throw new InvalidArgumentError(
-          'The model %v has a circular inheritance.',
+          'Model %v has a circular inheritance.',
           currModelName,
         );
       }
@@ -474,7 +473,7 @@ export class ModelDefinitionUtils extends Service {
     }
     if (!foundDef) {
       throw new InvalidArgumentError(
-        'The model %v does not have relation name %v.',
+        'Model %v does not have relation name %v.',
         modelName,
         relationName,
       );
@@ -496,8 +495,7 @@ export class ModelDefinitionUtils extends Service {
       Array.isArray(modelData)
     ) {
       throw new InvalidArgumentError(
-        'The second argument of ModelDefinitionUtils.excludeObjectKeysByRelationNames ' +
-          'should be an Object, but %v was given.',
+        'Parameter "modelData" must be an Object, but %v was given.',
         modelData,
       );
     }

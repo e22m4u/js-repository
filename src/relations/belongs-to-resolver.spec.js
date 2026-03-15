@@ -16,7 +16,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "entities" of BelongsToResolver.includeTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -37,7 +37,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "entities" of BelongsToResolver.includeTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includeTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -58,7 +58,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of BelongsToResolver.includeTo requires ' +
+          'Parameter "sourceName" of BelongsToResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -78,7 +78,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "targetName" of BelongsToResolver.includeTo requires ' +
+          'Parameter "targetName" of BelongsToResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -98,7 +98,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of BelongsToResolver.includeTo requires ' +
+          'Parameter "relationName" of BelongsToResolver.includeTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -118,8 +118,8 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The provided parameter "foreignKey" of BelongsToResolver.includeTo ' +
-            'should be a String, but %s was given.',
+          'Parameter "foreignKey" of BelongsToResolver.includeTo ' +
+            'must be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -135,8 +135,8 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of BelongsToResolver.includeTo ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of BelongsToResolver.includeTo ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -159,9 +159,7 @@ describe('BelongsToResolver', function () {
       dbs.defineModel({name: 'source'});
       const R = dbs.getService(BelongsToResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
-      await expect(promise).to.be.rejectedWith(
-        'The model "target" is not defined',
-      );
+      await expect(promise).to.be.rejectedWith('Model "target" is not defined');
     });
 
     it('throws an error if the given target model does not have a datasource', async function () {
@@ -170,7 +168,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const promise = R.includeTo([], 'source', 'target', 'relation');
       await expect(promise).to.be.rejectedWith(
-        'The model "target" does not have a specified datasource.',
+        'Model "target" does not have a specified datasource.',
       );
     });
 
@@ -530,7 +528,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -551,7 +549,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
+          'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires ' +
             'an Array of Object, but %s was given.',
           v,
         );
@@ -572,7 +570,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires ' +
+          'Parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -593,7 +591,7 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The parameter "relationName" of BelongsToResolver.includePolymorphicTo requires ' +
+          'Parameter "relationName" of BelongsToResolver.includePolymorphicTo requires ' +
             'a non-empty String, but %s was given.',
           v,
         );
@@ -613,8 +611,8 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The provided parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
-            'should be a String, but %s was given.',
+          'Parameter "foreignKey" of BelongsToResolver.includePolymorphicTo ' +
+            'must be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -630,8 +628,8 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The provided parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
-            'should be a String, but %s was given.',
+          'Parameter "discriminator" of BelongsToResolver.includePolymorphicTo ' +
+            'must be a String, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -647,8 +645,8 @@ describe('BelongsToResolver', function () {
       const R = dbs.getService(BelongsToResolver);
       const error = v =>
         format(
-          'The provided parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
-            'should be an Object, but %s was given.',
+          'Parameter "scope" of BelongsToResolver.includePolymorphicTo ' +
+            'must be an Object, but %s was given.',
           v,
         );
       const throwable = v =>
