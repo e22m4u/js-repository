@@ -16,8 +16,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -37,8 +36,7 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of ReferencesManyResolver.includeTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -58,8 +56,8 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'Parameter "sourceName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "sourceName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], v, 'targetName', 'relationName');
@@ -78,8 +76,8 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'Parameter "targetName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "targetName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', v, 'relationName');
@@ -98,8 +96,8 @@ describe('ReferencesManyResolver', function () {
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
         format(
-          'Parameter "relationName" of ReferencesManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "relationName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v => R.includeTo([], 'sourceName', 'targetName', v);
@@ -117,11 +115,7 @@ describe('ReferencesManyResolver', function () {
       const dbs = new DatabaseSchema();
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
-        format(
-          'Parameter "foreignKey" of ReferencesManyResolver.includeTo ' +
-            'must be a String, but %s was given.',
-          v,
-        );
+        format('Parameter "foreignKey" must be a String, but %s was given.', v);
       const throwable = v =>
         R.includeTo([], 'sourceName', 'targetName', 'relationName', v);
       await expect(throwable(10)).to.be.rejectedWith(error('10'));
@@ -134,11 +128,7 @@ describe('ReferencesManyResolver', function () {
       const dbs = new DatabaseSchema();
       const R = dbs.getService(ReferencesManyResolver);
       const error = v =>
-        format(
-          'Parameter "scope" of ReferencesManyResolver.includeTo ' +
-            'must be an Object, but %s was given.',
-          v,
-        );
+        format('Parameter "scope" must be an Object, but %s was given.', v);
       const throwable = v =>
         R.includeTo(
           [],

@@ -23,8 +23,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(v, 'create', 'model', {});
       const error = v =>
         format(
-          'Parameter "countMethod" of the PropertyUniquenessValidator ' +
-            'must be a Function, but %s was given.',
+          'Parameter "countMethod" must be a Function, but %s was given.',
           v,
         );
       await expect(throwable('str')).to.be.rejectedWith(error('"str"'));
@@ -58,8 +57,8 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, v, 'model', {});
       const error = v =>
         format(
-          'Parameter "methodName" of the PropertyUniquenessValidator ' +
-            'must be a non-empty String, but %s was given.',
+          'Parameter "methodName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       await expect(throwable('')).to.be.rejectedWith(error('""'));
@@ -93,8 +92,7 @@ describe('PropertyUniquenessValidator', function () {
       const throwable = v => puv.validate(() => 0, 'create', v, {});
       const error = v =>
         format(
-          'Parameter "modelName" of the PropertyUniquenessValidator ' +
-            'must be a non-empty String, but %s was given.',
+          'Parameter "modelName" must be a non-empty String, but %s was given.',
           v,
         );
       await expect(throwable('')).to.be.rejectedWith(error('""'));
@@ -263,7 +261,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -340,7 +338,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -465,7 +463,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -794,7 +792,7 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -866,7 +864,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
@@ -894,7 +892,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -976,7 +974,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
@@ -1041,7 +1039,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -1118,7 +1116,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -1243,7 +1241,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -1572,7 +1570,7 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -1644,7 +1642,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
@@ -1672,7 +1670,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -1754,7 +1752,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
@@ -1819,7 +1817,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -2010,7 +2008,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -2286,7 +2284,7 @@ describe('PropertyUniquenessValidator', function () {
             foo: 'bar',
           });
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -2957,7 +2955,7 @@ describe('PropertyUniquenessValidator', function () {
           const puv = dbs.getService(PropertyUniquenessValidator);
           const promise = puv.validate(() => 1, 'patch', 'model', {foo: 'bar'});
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -3029,7 +3027,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;
@@ -3173,7 +3171,7 @@ describe('PropertyUniquenessValidator', function () {
             1,
           );
           await expect(promise).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
         });
@@ -3255,7 +3253,7 @@ describe('PropertyUniquenessValidator', function () {
             baz: 'qux',
           });
           await expect(promise1).to.be.rejectedWith(
-            'An existing document of the model "model" already has ' +
+            'Existing document of the model "model" already has ' +
               'the property "foo" with the value "bar" and must be unique.',
           );
           await expect(promise2).not.to.be.rejected;

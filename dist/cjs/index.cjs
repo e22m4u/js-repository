@@ -2179,7 +2179,7 @@ var init_model_definition_utils = __esm({
       getDataTypeFromPropertyDefinition(propDef) {
         if ((!propDef || typeof propDef !== "object") && !Object.values(DataType).includes(propDef)) {
           throw new InvalidArgumentError(
-            'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition must be an Object or the DataType enum, but %v was given.',
+            'Parameter "propDef" must be an Object or a DataType, but %v was given.',
             propDef
           );
         }
@@ -2477,19 +2477,19 @@ var init_property_uniqueness_validator = __esm({
       async validate(countMethod, methodName, modelName, modelData, modelId = void 0) {
         if (typeof countMethod !== "function") {
           throw new InvalidArgumentError(
-            'Parameter "countMethod" of the PropertyUniquenessValidator must be a Function, but %v was given.',
+            'Parameter "countMethod" must be a Function, but %v was given.',
             countMethod
           );
         }
         if (!methodName || typeof methodName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "methodName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
+            'Parameter "methodName" must be a non-empty String, but %v was given.',
             methodName
           );
         }
         if (!modelName || typeof modelName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "modelName" of the PropertyUniquenessValidator must be a non-empty String, but %v was given.',
+            'Parameter "modelName" must be a non-empty String, but %v was given.',
             modelName
           );
         }
@@ -2509,7 +2509,7 @@ var init_property_uniqueness_validator = __esm({
           modelName
         );
         const createError = /* @__PURE__ */ __name((propName, propValue) => new InvalidArgumentError(
-          "An existing document of the model %v already has the property %v with the value %v and must be unique.",
+          "Existing document of the model %v already has the property %v with the value %v and must be unique.",
           modelName,
           propName,
           propValue
@@ -4749,37 +4749,37 @@ var init_has_one_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of HasOneResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" must be a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasOneResolver.includeTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -4790,7 +4790,7 @@ var init_has_one_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of HasOneResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -4839,43 +4839,43 @@ var init_has_one_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" must be a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (!discriminator || typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "discriminator" of HasOneResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "discriminator" must be a non-empty String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasOneResolver.includePolymorphicTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -4886,7 +4886,7 @@ var init_has_one_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of HasOneResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -4937,37 +4937,37 @@ var init_has_one_resolver = __esm({
       async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!targetRelationName || typeof targetRelationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetRelationName" must be a non-empty String, but %v was given.',
             targetRelationName
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasOneResolver.includePolymorphicByRelationName must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5035,37 +5035,37 @@ var init_has_many_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of HasManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" must be a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasManyResolver.includeTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5076,7 +5076,7 @@ var init_has_many_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of HasManyResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5126,43 +5126,43 @@ var init_has_many_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, targetName, relationName, foreignKey, discriminator, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!foreignKey || typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "foreignKey" must be a non-empty String, but %v was given.',
             foreignKey
           );
         }
         if (!discriminator || typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "discriminator" of HasManyResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "discriminator" must be a non-empty String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasManyResolver.includePolymorphicTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5173,7 +5173,7 @@ var init_has_many_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of HasManyResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5225,37 +5225,37 @@ var init_has_many_resolver = __esm({
       async includePolymorphicByRelationName(entities, sourceName, targetName, relationName, targetRelationName, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (!targetRelationName || typeof targetRelationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires a non-empty String, but %v was given.',
+            'Parameter "targetRelationName" must be a non-empty String, but %v was given.',
             targetRelationName
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of HasManyResolver.includePolymorphicByRelationName must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5323,37 +5323,37 @@ var init_belongs_to_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of BelongsToResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of BelongsToResolver.includeTo must be a String, but %v was given.',
+            'Parameter "foreignKey" must be a String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of BelongsToResolver.includeTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5363,7 +5363,7 @@ var init_belongs_to_resolver = __esm({
         const targetIds = entities.reduce((acc, entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of BelongsToResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5406,37 +5406,37 @@ var init_belongs_to_resolver = __esm({
       async includePolymorphicTo(entities, sourceName, relationName, foreignKey = void 0, discriminator = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of BelongsToResolver.includePolymorphicTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of BelongsToResolver.includePolymorphicTo must be a String, but %v was given.',
+            'Parameter "foreignKey" must be a String, but %v was given.',
             foreignKey
           );
         }
         if (discriminator && typeof discriminator !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "discriminator" of BelongsToResolver.includePolymorphicTo must be a String, but %v was given.',
+            'Parameter "discriminator" must be a String, but %v was given.',
             discriminator
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of BelongsToResolver.includePolymorphicTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5452,7 +5452,7 @@ var init_belongs_to_resolver = __esm({
         entities.forEach((entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of BelongsToResolver.includePolymorphicTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }
@@ -5553,37 +5553,37 @@ var init_references_many_resolver = __esm({
       async includeTo(entities, sourceName, targetName, relationName, foreignKey = void 0, scope = void 0) {
         if (!entities || !Array.isArray(entities)) {
           throw new InvalidArgumentError(
-            'Parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
+            'Parameter "entities" must be an Array of Object, but %v was given.',
             entities
           );
         }
         if (!sourceName || typeof sourceName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "sourceName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "sourceName" must be a non-empty String, but %v was given.',
             sourceName
           );
         }
         if (!targetName || typeof targetName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "targetName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "targetName" must be a non-empty String, but %v was given.',
             targetName
           );
         }
         if (!relationName || typeof relationName !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "relationName" of ReferencesManyResolver.includeTo requires a non-empty String, but %v was given.',
+            'Parameter "relationName" must be a non-empty String, but %v was given.',
             relationName
           );
         }
         if (foreignKey && typeof foreignKey !== "string") {
           throw new InvalidArgumentError(
-            'Parameter "foreignKey" of ReferencesManyResolver.includeTo must be a String, but %v was given.',
+            'Parameter "foreignKey" must be a String, but %v was given.',
             foreignKey
           );
         }
         if (scope && (typeof scope !== "object" || Array.isArray(scope))) {
           throw new InvalidArgumentError(
-            'Parameter "scope" of ReferencesManyResolver.includeTo must be an Object, but %v was given.',
+            'Parameter "scope" must be an Object, but %v was given.',
             scope
           );
         }
@@ -5594,7 +5594,7 @@ var init_references_many_resolver = __esm({
         const targetIds = entities.reduce((acc, entity) => {
           if (!entity || typeof entity !== "object" || Array.isArray(entity)) {
             throw new InvalidArgumentError(
-              'Parameter "entities" of ReferencesManyResolver.includeTo requires an Array of Object, but %v was given.',
+              'Parameter "entities" must be an Array of Object, but %v was given.',
               entity
             );
           }

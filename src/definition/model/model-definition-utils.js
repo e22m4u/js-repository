@@ -329,8 +329,8 @@ export class ModelDefinitionUtils extends Service {
       !Object.values(DataType).includes(propDef)
     ) {
       throw new InvalidArgumentError(
-        'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-          'must be an Object or the DataType enum, but %v was given.',
+        'Parameter "propDef" must be an Object or a DataType, ' +
+          'but %v was given.',
         propDef,
       );
     }

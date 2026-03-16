@@ -1222,8 +1222,8 @@ describe('ModelDefinitionUtils', function () {
       const throwable = v => () => mdu.getDataTypeFromPropertyDefinition(v);
       const error = v =>
         format(
-          'Parameter "propDef" of the ModelDefinitionUtils.getDataTypeFromPropertyDefinition ' +
-            'must be an Object or the DataType enum, but %s was given.',
+          'Parameter "propDef" must be an Object or a DataType, ' +
+            'but %s was given.',
           v,
         );
       expect(throwable('str')).to.throw(error('"str"'));

@@ -16,8 +16,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includeTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -44,8 +43,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includeTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -65,8 +63,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "sourceName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "sourceName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -86,8 +84,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "targetName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "targetName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -107,8 +105,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "relationName" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "relationName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -128,8 +126,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "foreignKey" of HasManyResolver.includeTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "foreignKey" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -148,11 +146,7 @@ describe('HasManyResolver', function () {
       const dbs = new DatabaseSchema();
       const R = dbs.getService(HasManyResolver);
       const error = v =>
-        format(
-          'Parameter "scope" of HasManyResolver.includeTo ' +
-            'must be an Object, but %s was given.',
-          v,
-        );
+        format('Parameter "scope" must be an Object, but %s was given.', v);
       const throwable = v =>
         R.includeTo(
           [],
@@ -726,8 +720,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -755,8 +748,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -783,8 +775,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "sourceName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "sourceName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -811,8 +803,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "targetName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "targetName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -839,8 +831,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "relationName" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "relationName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -867,8 +859,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "foreignKey" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "foreignKey" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -895,8 +887,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "discriminator" of HasManyResolver.includePolymorphicTo requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "discriminator" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -922,11 +914,7 @@ describe('HasManyResolver', function () {
       const dbs = new DatabaseSchema();
       const R = dbs.getService(HasManyResolver);
       const error = v =>
-        format(
-          'Parameter "scope" of HasManyResolver.includePolymorphicTo ' +
-            'must be an Object, but %s was given.',
-          v,
-        );
+        format('Parameter "scope" must be an Object, but %s was given.', v);
       const throwable = v =>
         R.includePolymorphicTo(
           [],
@@ -1683,8 +1671,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1720,8 +1707,7 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "entities" of HasManyResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %s was given.',
+          'Parameter "entities" must be an Array of Object, but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1747,8 +1733,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "sourceName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "sourceName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1774,8 +1760,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "targetName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "targetName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1801,8 +1787,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "relationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "relationName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1828,8 +1814,8 @@ describe('HasManyResolver', function () {
       const R = dbs.getService(HasManyResolver);
       const error = v =>
         format(
-          'Parameter "targetRelationName" of HasManyResolver.includePolymorphicByRelationName requires ' +
-            'a non-empty String, but %s was given.',
+          'Parameter "targetRelationName" must be a non-empty String, ' +
+            'but %s was given.',
           v,
         );
       const throwable = v =>
@@ -1854,11 +1840,7 @@ describe('HasManyResolver', function () {
       const dbs = new DatabaseSchema();
       const R = dbs.getService(HasManyResolver);
       const error = v =>
-        format(
-          'Parameter "scope" of HasManyResolver.includePolymorphicByRelationName ' +
-            'must be an Object, but %s was given.',
-          v,
-        );
+        format('Parameter "scope" must be an Object, but %s was given.', v);
       const throwable = v =>
         R.includePolymorphicByRelationName(
           [],

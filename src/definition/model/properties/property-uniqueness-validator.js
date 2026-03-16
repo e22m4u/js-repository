@@ -27,22 +27,19 @@ export class PropertyUniquenessValidator extends Service {
   ) {
     if (typeof countMethod !== 'function') {
       throw new InvalidArgumentError(
-        'Parameter "countMethod" of the PropertyUniquenessValidator ' +
-          'must be a Function, but %v was given.',
+        'Parameter "countMethod" must be a Function, but %v was given.',
         countMethod,
       );
     }
     if (!methodName || typeof methodName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "methodName" of the PropertyUniquenessValidator ' +
-          'must be a non-empty String, but %v was given.',
+        'Parameter "methodName" must be a non-empty String, but %v was given.',
         methodName,
       );
     }
     if (!modelName || typeof modelName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "modelName" of the PropertyUniquenessValidator ' +
-          'must be a non-empty String, but %v was given.',
+        'Parameter "modelName" must be a non-empty String, but %v was given.',
         modelName,
       );
     }
@@ -65,7 +62,7 @@ export class PropertyUniquenessValidator extends Service {
       );
     const createError = (propName, propValue) =>
       new InvalidArgumentError(
-        'An existing document of the model %v already has ' +
+        'Existing document of the model %v already has ' +
           'the property %v with the value %v and must be unique.',
         modelName,
         propName,

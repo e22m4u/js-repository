@@ -29,43 +29,38 @@ export class HasOneResolver extends Service {
   ) {
     if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'Parameter "entities" of HasOneResolver.includeTo requires ' +
-          'an Array of Object, but %v was given.',
+        'Parameter "entities" must be an Array of Object, but %v was given.',
         entities,
       );
     }
     if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "sourceName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "sourceName" must be a non-empty String, but %v was given.',
         sourceName,
       );
     }
     if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "targetName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "targetName" must be a non-empty String, but %v was given.',
         targetName,
       );
     }
     if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "relationName" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "relationName" must be a non-empty String, ' +
+          'but %v was given.',
         relationName,
       );
     }
     if (!foreignKey || typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "foreignKey" of HasOneResolver.includeTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "foreignKey" must be a non-empty String, but %v was given.',
         foreignKey,
       );
     }
     if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
-        'Parameter "scope" of HasOneResolver.includeTo ' +
-          'must be an Object, but %v was given.',
+        'Parameter "scope" must be an Object, but %v was given.',
         scope,
       );
     }
@@ -78,8 +73,7 @@ export class HasOneResolver extends Service {
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
-          'Parameter "entities" of HasOneResolver.includeTo requires ' +
-            'an Array of Object, but %v was given.',
+          'Parameter "entities" must be an Array of Object, but %v was given.',
           entity,
         );
       }
@@ -140,50 +134,45 @@ export class HasOneResolver extends Service {
   ) {
     if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'Parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-          'an Array of Object, but %v was given.',
+        'Parameter "entities" must be an Array of Object, but %v was given.',
         entities,
       );
     }
     if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "sourceName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "sourceName" must be a non-empty String, but %v was given.',
         sourceName,
       );
     }
     if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "targetName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "targetName" must be a non-empty String, but %v was given.',
         targetName,
       );
     }
     if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "relationName" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "relationName" must be a non-empty String, ' +
+          'but %v was given.',
         relationName,
       );
     }
     if (!foreignKey || typeof foreignKey !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "foreignKey" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "foreignKey" must be a non-empty String, but %v was given.',
         foreignKey,
       );
     }
     if (!discriminator || typeof discriminator !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "discriminator" of HasOneResolver.includePolymorphicTo requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "discriminator" must be a non-empty String, ' +
+          'but %v was given.',
         discriminator,
       );
     }
     if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
-        'Parameter "scope" of HasOneResolver.includePolymorphicTo ' +
-          'must be an Object, but %v was given.',
+        'Parameter "scope" must be an Object, but %v was given.',
         scope,
       );
     }
@@ -196,8 +185,7 @@ export class HasOneResolver extends Service {
     entities.forEach(entity => {
       if (!entity || typeof entity !== 'object' || Array.isArray(entity)) {
         throw new InvalidArgumentError(
-          'Parameter "entities" of HasOneResolver.includePolymorphicTo requires ' +
-            'an Array of Object, but %v was given.',
+          'Parameter "entities" must be an Array of Object, but %v was given.',
           entity,
         );
       }
@@ -259,43 +247,39 @@ export class HasOneResolver extends Service {
   ) {
     if (!entities || !Array.isArray(entities)) {
       throw new InvalidArgumentError(
-        'Parameter "entities" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'an Array of Object, but %v was given.',
+        'Parameter "entities" must be an Array of Object, but %v was given.',
         entities,
       );
     }
     if (!sourceName || typeof sourceName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "sourceName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "sourceName" must be a non-empty String, but %v was given.',
         sourceName,
       );
     }
     if (!targetName || typeof targetName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "targetName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "targetName" must be a non-empty String, but %v was given.',
         targetName,
       );
     }
     if (!relationName || typeof relationName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "relationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "relationName" must be a non-empty String, ' +
+          'but %v was given.',
         relationName,
       );
     }
     if (!targetRelationName || typeof targetRelationName !== 'string') {
       throw new InvalidArgumentError(
-        'Parameter "targetRelationName" of HasOneResolver.includePolymorphicByRelationName requires ' +
-          'a non-empty String, but %v was given.',
+        'Parameter "targetRelationName" must be a non-empty String, ' +
+          'but %v was given.',
         targetRelationName,
       );
     }
     if (scope && (typeof scope !== 'object' || Array.isArray(scope))) {
       throw new InvalidArgumentError(
-        'Parameter "scope" of HasOneResolver.includePolymorphicByRelationName ' +
-          'must be an Object, but %v was given.',
+        'Parameter "scope" must be an Object, but %v was given.',
         scope,
       );
     }
