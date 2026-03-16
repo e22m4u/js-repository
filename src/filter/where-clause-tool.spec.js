@@ -61,10 +61,10 @@ describe('WhereClauseTool', function () {
   describe('filter', function () {
     it('requires the parameter "entities" to be an array of objects', function () {
       const throwable = v => () => S.filter(v, {});
-      const error = v =>
+      const error = s =>
         format(
           'Parameter "entities" must be an Array of Object, but %s was given.',
-          v,
+          s,
         );
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
@@ -79,10 +79,27 @@ describe('WhereClauseTool', function () {
       expect(throwable([])()).to.be.eql([]);
     });
 
+    it('requires elements of the parameter "entities" to be an object', function () {
+      const throwable = v => () => S.filter([v], {});
+      const error = s =>
+        format('Entity at index 0 must be an Object, but %s was given.', s);
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable({foo: 'bar'})();
+      throwable({})();
+    });
+
     it('requires the parameter "where" to be an object', function () {
       const throwable = v => () => S.filter(OBJECTS, v);
-      const error = v =>
-        format('Option "where" must be an Object, but %s was given.', v);
+      const error = s =>
+        format('Option "where" must be an Object, but %s was given.', s);
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));
@@ -388,8 +405,8 @@ describe('WhereClauseTool', function () {
   describe('validateWhereClause', function () {
     it('requires the option "where" to be an object or a function', function () {
       const throwable = v => () => WhereClauseTool.validateWhereClause(v);
-      const error = v =>
-        format('Option "where" must be an Object, but %s was given.', v);
+      const error = s =>
+        format('Option "where" must be an Object, but %s was given.', s);
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));

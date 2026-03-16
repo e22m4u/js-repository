@@ -58,17 +58,22 @@ export class WhereClauseTool extends Service {
    * @returns {Function}
    */
   _createFilter(whereClause) {
-    if (typeof whereClause !== 'object' || Array.isArray(whereClause)) {
+    if (
+      !whereClause ||
+      typeof whereClause !== 'object' ||
+      Array.isArray(whereClause)
+    ) {
       throw new InvalidArgumentError(
         'Option "where" must be an Object, but %v was given.',
         whereClause,
       );
     }
     const keys = Object.keys(whereClause);
-    return data => {
-      if (typeof data !== 'object') {
+    return (data, index) => {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
         throw new InvalidArgumentError(
-          'Parameter "data" must be an Array of Object, but %v was given.',
+          'Entity at index %d must be an Object, but %v was given.',
+          index,
           data,
         );
       }
@@ -77,14 +82,18 @@ export class WhereClauseTool extends Service {
         if (key === 'and' && key in whereClause) {
           const andClause = whereClause[key];
           if (Array.isArray(andClause)) {
-            return andClause.every(clause => this._createFilter(clause)(data));
+            return andClause.every(clause =>
+              this._createFilter(clause)(data, index),
+            );
           }
         }
         // OrClause (recursion)
         else if (key === 'or' && key in whereClause) {
           const orClause = whereClause[key];
           if (Array.isArray(orClause)) {
-            return orClause.some(clause => this._createFilter(clause)(data));
+            return orClause.some(clause =>
+              this._createFilter(clause)(data, index),
+            );
           }
         }
         // PropertiesClause (properties)
