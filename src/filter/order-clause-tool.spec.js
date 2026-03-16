@@ -6,8 +6,68 @@ const S = new OrderClauseTool();
 
 describe('OrderClauseTool', function () {
   describe('sort', function () {
+    it('should require the parameter "entities" to be an array', function () {
+      const throwable = v => () => S.sort(v, 'prop');
+      const error = s =>
+        format('Parameter "entities" must be an Array, but %s was given.', s);
+      expect(throwable('str')).to.throw(error('"str"'));
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable([{prop: true}])();
+      throwable([{}])();
+    });
+
+    it('should require the parameter "clause" to be a correct value', function () {
+      const entities = [{prop: 1}, {prop: 2}];
+      const throwable = v => () => S.sort(entities, v);
+      const error = s =>
+        format(
+          'Option "order" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({})).to.throw(error('Object'));
+      throwable('prop')();
+      throwable(['prop'])();
+      throwable([])();
+      throwable(undefined)();
+      throwable(null)();
+    });
+
+    it('should require elements of the parameter "clause" to be a non-empty string', function () {
+      const entities = [{prop: 1}, {prop: 2}];
+      const throwable = v => () => S.sort(entities, [v]);
+      const error = s =>
+        format(
+          'Element 0 of the option "order" must be a non-empty String, ' +
+            'but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable('prop')();
+    });
+
     describe('single field', function () {
-      it('does not throw an error if the given field is not exist', function () {
+      it('does not throw an error if the given field does not exist', function () {
         const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
         S.sort(objects, 'bar');
         expect(objects).to.have.length(4);
@@ -83,7 +143,7 @@ describe('OrderClauseTool', function () {
     });
 
     describe('multiple fields', function () {
-      it('does not throw an error if multiple fields are not exist', function () {
+      it('does not throw an error if multiple fields do not exist', function () {
         const objects = [{foo: 1}, {foo: 2}, {foo: 3}, {foo: 4}];
         S.sort(objects, ['bar', 'baz']);
         expect(objects).to.have.length(4);
@@ -281,7 +341,7 @@ describe('OrderClauseTool', function () {
     });
 
     describe('nested single field', function () {
-      it('does not throw an error if the nested field is not exist', function () {
+      it('does not throw an error if the nested field does not exist', function () {
         const objects = [
           {foo: 1},
           {foo: 2, bar: undefined},
@@ -392,7 +452,7 @@ describe('OrderClauseTool', function () {
     });
 
     describe('nested multiple fields', function () {
-      it('does not throw an error if nested multiple fields are not exist', function () {
+      it('does not throw an error if nested multiple fields do not exist', function () {
         const objects = [
           {foo: 1},
           {foo: 2, bar: undefined},
@@ -596,102 +656,103 @@ describe('OrderClauseTool', function () {
   });
 
   describe('validateOrderClause', function () {
-    describe('single field', function () {
-      it('requires the option "order" to be a non-empty string', function () {
-        const throwable = v => () => OrderClauseTool.validateOrderClause(v);
-        const error = v =>
-          format(
-            'Option "order" must be a non-empty String ' +
-              'or an Array of non-empty String, but %s was given.',
-            v,
-          );
-        expect(throwable('')).to.throw(error('""'));
-        expect(throwable(10)).to.throw(error('10'));
-        expect(throwable(0)).to.throw(error('0'));
-        expect(throwable(true)).to.throw(error('true'));
-        expect(throwable(false)).to.throw(error('false'));
-        expect(throwable({})).to.throw(error('Object'));
-        throwable('field')();
-        throwable(undefined)();
-        throwable(null)();
-      });
+    it('should require the parameter "clause" to be a correct value', function () {
+      const throwable = v => () => OrderClauseTool.validateOrderClause(v);
+      const error = s =>
+        format(
+          'Option "order" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({})).to.throw(error('Object'));
+      throwable('prop')();
+      throwable(['prop'])();
+      throwable([])();
+      throwable(undefined)();
+      throwable(null)();
     });
 
-    describe('multiple fields', function () {
-      it('requires the option "order" to be a non-empty string', function () {
-        const throwable = v => () => OrderClauseTool.validateOrderClause(v);
-        const error = v =>
-          format(
-            'Option "order" must be a non-empty String ' +
-              'or an Array of non-empty String, but %s was given.',
-            v,
-          );
-        expect(throwable([''])).to.throw(error('""'));
-        expect(throwable([10])).to.throw(error('10'));
-        expect(throwable([0])).to.throw(error('0'));
-        expect(throwable([true])).to.throw(error('true'));
-        expect(throwable([false])).to.throw(error('false'));
-        expect(throwable([{}])).to.throw(error('Object'));
-        expect(throwable([undefined])).to.throw(error('undefined'));
-        expect(throwable([null])).to.throw(error('null'));
-        throwable(['field'])();
-        throwable([])();
-      });
+    it('should require elements of the parameter "clause" to be a non-empty string', function () {
+      const throwable = v => () => OrderClauseTool.validateOrderClause([v]);
+      const error = s =>
+        format(
+          'Element 0 of the option "order" must be a non-empty String, ' +
+            'but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable('prop')();
     });
   });
 
   describe('normalizeOrderClause', function () {
-    describe('single field', function () {
-      it('requires the option "order" to be a non-empty string', function () {
-        const throwable = v => () => OrderClauseTool.normalizeOrderClause(v);
-        const error = v =>
-          format(
-            'Option "order" must be a non-empty String ' +
-              'or an Array of non-empty String, but %s was given.',
-            v,
-          );
-        expect(throwable('')).to.throw(error('""'));
-        expect(throwable(10)).to.throw(error('10'));
-        expect(throwable(0)).to.throw(error('0'));
-        expect(throwable(true)).to.throw(error('true'));
-        expect(throwable(false)).to.throw(error('false'));
-        expect(throwable({})).to.throw(error('Object'));
-        expect(throwable('field')()).to.be.eql(['field']);
-        expect(throwable(undefined)()).to.be.undefined;
-        expect(throwable(null)()).to.be.undefined;
-      });
-
-      it('returns an array of string', function () {
-        const fn = OrderClauseTool.normalizeOrderClause;
-        expect(fn('foo')).to.be.eql(['foo']);
-      });
+    it('should require the parameter "clause" to be a correct value', function () {
+      const throwable = v => () => OrderClauseTool.normalizeOrderClause(v);
+      const error = s =>
+        format(
+          'Option "order" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable({})).to.throw(error('Object'));
+      throwable('prop')();
+      throwable(['prop'])();
+      throwable([])();
+      throwable(undefined)();
+      throwable(null)();
     });
 
-    describe('multiple fields', function () {
-      it('requires the option "order" to be a non-empty string', function () {
-        const throwable = v => () => OrderClauseTool.normalizeOrderClause(v);
-        const error = v =>
-          format(
-            'Option "order" must be a non-empty String ' +
-              'or an Array of non-empty String, but %s was given.',
-            v,
-          );
-        expect(throwable([''])).to.throw(error('""'));
-        expect(throwable([10])).to.throw(error('10'));
-        expect(throwable([0])).to.throw(error('0'));
-        expect(throwable([true])).to.throw(error('true'));
-        expect(throwable([false])).to.throw(error('false'));
-        expect(throwable([{}])).to.throw(error('Object'));
-        expect(throwable([undefined])).to.throw(error('undefined'));
-        expect(throwable([null])).to.throw(error('null'));
-        expect(throwable(['field'])()).to.be.eql(['field']);
-        expect(throwable([])()).to.be.undefined;
-      });
+    it('should require elements of the parameter "clause" to be a non-empty string', function () {
+      const throwable = v => () => OrderClauseTool.normalizeOrderClause([v]);
+      const error = s =>
+        format(
+          'Element 0 of the option "order" must be a non-empty String, ' +
+            'but %s was given.',
+          s,
+        );
+      expect(throwable('')).to.throw(error('""'));
+      expect(throwable(10)).to.throw(error('10'));
+      expect(throwable(0)).to.throw(error('0'));
+      expect(throwable(true)).to.throw(error('true'));
+      expect(throwable(false)).to.throw(error('false'));
+      expect(throwable([])).to.throw(error('Array'));
+      expect(throwable({})).to.throw(error('Object'));
+      expect(throwable(undefined)).to.throw(error('undefined'));
+      expect(throwable(null)).to.throw(error('null'));
+      throwable('prop')();
+    });
 
-      it('returns an array of strings', function () {
-        const fn = OrderClauseTool.normalizeOrderClause;
-        expect(fn(['foo', 'bar'])).to.be.eql(['foo', 'bar']);
-      });
+    it('should wrap a string value with an array', function () {
+      const res = OrderClauseTool.normalizeOrderClause('foo');
+      expect(res).to.be.eql(['foo']);
+    });
+
+    it('should return a non-empty array as is', function () {
+      const res = OrderClauseTool.normalizeOrderClause(['foo', 'bar']);
+      expect(res).to.be.eql(['foo', 'bar']);
+    });
+
+    it('should return undefined for an empty array', function () {
+      const res = OrderClauseTool.normalizeOrderClause([]);
+      expect(res).to.be.undefined;
     });
   });
 });

@@ -13,11 +13,11 @@ describe('FieldsClauseTool', function () {
   describe('filter', function () {
     it('should require the parameter "input" to be an object or an array', function () {
       const throwable = v => () => S.filter(v, MODEL_NAME, 'prop');
-      const error = v =>
+      const error = s =>
         format(
           'Parameter "input" must be an Object or an Array of Object, ' +
             'but %s was given.',
-          v,
+          s,
         );
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
@@ -35,11 +35,11 @@ describe('FieldsClauseTool', function () {
 
     it('should require elements of the parameter "input" to be an object', function () {
       const throwable = v => () => S.filter([v], MODEL_NAME, 'prop');
-      const error = v =>
+      const error = s =>
         format(
           'Element 0 of the parameter "input" must be an Object, ' +
             'but %s was given.',
-          v,
+          s,
         );
       expect(throwable('str')).to.throw(error('"str"'));
       expect(throwable('')).to.throw(error('""'));
@@ -56,11 +56,11 @@ describe('FieldsClauseTool', function () {
 
     it('should require the parameter "modelName" to be a non-empty string', function () {
       const throwable = v => () => S.filter({prop: true}, v, 'prop');
-      const error = v =>
+      const error = s =>
         format(
           'Parameter "modelName" must be a non-empty String, ' +
             'but %s was given.',
-          v,
+          s,
         );
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));
@@ -76,11 +76,11 @@ describe('FieldsClauseTool', function () {
 
     it('should require the parameter "clause" to be a correct value', function () {
       const throwable = v => () => S.filter({prop: true}, MODEL_NAME, v);
-      const error = v =>
+      const error = s =>
         format(
           'Option "fields" must be a non-empty String or an Array ' +
             'of non-empty String, but %s was given.',
-          v,
+          s,
         );
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));
@@ -96,11 +96,11 @@ describe('FieldsClauseTool', function () {
 
     it('should require elements of the parameter "clause" to be a non-empty string', function () {
       const throwable = v => () => S.filter({prop: true}, MODEL_NAME, [v]);
-      const error = v =>
+      const error = s =>
         format(
           'Element 0 of the option "fields" must be a non-empty String, ' +
             'but %s was given.',
-          v,
+          s,
         );
       expect(throwable('')).to.throw(error('""'));
       expect(throwable(10)).to.throw(error('10'));
@@ -323,8 +323,8 @@ describe('FieldsClauseTool', function () {
     });
 
     it('should return a non-empty array as is', function () {
-      const res = FieldsClauseTool.normalizeFieldsClause(['foo']);
-      expect(res).to.be.eql(['foo']);
+      const res = FieldsClauseTool.normalizeFieldsClause(['foo', 'bar']);
+      expect(res).to.be.eql(['foo', 'bar']);
     });
 
     it('should return undefined for an empty array', function () {

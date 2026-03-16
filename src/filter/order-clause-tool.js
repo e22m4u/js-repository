@@ -13,33 +13,47 @@ export class OrderClauseTool extends Service {
    * @param {string|string[]|undefined} clause
    */
   sort(entities, clause) {
+    if (!Array.isArray(entities)) {
+      throw new InvalidArgumentError(
+        'Parameter "entities" must be an Array, but %v was given.',
+        entities,
+      );
+    }
     if (clause == null) {
       return;
     }
-    if (Array.isArray(clause) === false) {
-      clause = [clause];
+    const isArrayClause = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArrayClause)) {
+      throw new InvalidArgumentError(
+        'Option "order" must be a non-empty String or an Array ' +
+          'of non-empty String, but %v was given.',
+        clause,
+      );
     }
-    if (!clause.length) {
+    if (!isArrayClause) {
+      clause = [clause];
+    } else if (!clause.length) {
       return;
     }
     const mapping = [];
-    clause.forEach((key, index) => {
-      if (!key || typeof key !== 'string') {
+    clause.forEach((element, index) => {
+      if (!element || typeof element !== 'string') {
         throw new InvalidArgumentError(
-          'Option "order" must be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          key,
+          'Element %d of the option "order" must be a non-empty String, ' +
+            'but %v was given.',
+          index,
+          element,
         );
       }
       let reverse = 1;
-      const matches = key.match(/\s+(A|DE)SC$/i);
+      const matches = element.match(/\s+(A|DE)SC$/i);
       if (matches) {
-        key = key.replace(/\s+(A|DE)SC/i, '');
+        element = element.replace(/\s+(A|DE)SC/i, '');
         if (matches[1].toLowerCase() === 'de') {
           reverse = -1;
         }
       }
-      mapping[index] = {key: key, reverse};
+      mapping[index] = {key: element, reverse};
     });
     entities.sort(compareFn.bind(mapping));
   }
@@ -53,18 +67,24 @@ export class OrderClauseTool extends Service {
     if (clause == null) {
       return;
     }
-    if (Array.isArray(clause) === false) {
-      clause = [clause];
+    const isArrayClause = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArrayClause)) {
+      throw new InvalidArgumentError(
+        'Option "order" must be a non-empty String or an Array ' +
+          'of non-empty String, but %v was given.',
+        clause,
+      );
     }
-    if (!clause.length) {
+    if (!isArrayClause || !clause.length) {
       return;
     }
-    clause.forEach(field => {
-      if (!field || typeof field !== 'string') {
+    clause.forEach((element, index) => {
+      if (!element || typeof element !== 'string') {
         throw new InvalidArgumentError(
-          'Option "order" must be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          field,
+          'Element %d of the option "order" must be a non-empty String, ' +
+            'but %v was given.',
+          index,
+          element,
         );
       }
     });
@@ -80,18 +100,26 @@ export class OrderClauseTool extends Service {
     if (clause == null) {
       return;
     }
-    if (Array.isArray(clause) === false) {
-      clause = [clause];
+    const isArrayClause = Array.isArray(clause);
+    if (!clause || (typeof clause !== 'string' && !isArrayClause)) {
+      throw new InvalidArgumentError(
+        'Option "order" must be a non-empty String or an Array ' +
+          'of non-empty String, but %v was given.',
+        clause,
+      );
     }
-    if (!clause.length) {
+    if (!isArrayClause) {
+      return [clause];
+    } else if (!clause.length) {
       return;
     }
-    clause.forEach(field => {
-      if (!field || typeof field !== 'string') {
+    clause.forEach((element, index) => {
+      if (!element || typeof element !== 'string') {
         throw new InvalidArgumentError(
-          'Option "order" must be a non-empty String ' +
-            'or an Array of non-empty String, but %v was given.',
-          field,
+          'Element %d of the option "order" must be a non-empty String, ' +
+            'but %v was given.',
+          index,
+          element,
         );
       }
     });
