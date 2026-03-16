@@ -5,12 +5,12 @@
   "author": "Mikhail Evstropov <e22m4u@yandex.ru>",
   "license": "MIT",
   "keywords": [
-    "Repository",
     "ORM",
     "ODM",
-    "Database",
-    "Datasource",
-    "Relations"
+    "database",
+    "datasource",
+    "repository",
+    "relations"
   ],
   "homepage": "https://gitverse.ru/e22m4u/js-repository",
   "repository": {
