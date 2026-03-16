@@ -15,7 +15,7 @@ describe('FieldsClauseTool', function () {
       const throwable = v => () => S.filter(v, MODEL_NAME, 'prop');
       const error = v =>
         format(
-          'Parameter "input" must be an Object or an Array, ' +
+          'Parameter "input" must be an Object or an Array of Object, ' +
             'but %s was given.',
           v,
         );
@@ -78,8 +78,8 @@ describe('FieldsClauseTool', function () {
       const throwable = v => () => S.filter({prop: true}, MODEL_NAME, v);
       const error = v =>
         format(
-          'Option "fields" must be a non-empty String or an Array, ' +
-            'but %s was given.',
+          'Option "fields" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));
@@ -241,8 +241,8 @@ describe('FieldsClauseTool', function () {
       const throwable = v => () => FieldsClauseTool.validateFieldsClause(v);
       const error = v =>
         format(
-          'Option "fields" must be a non-empty String or an Array, ' +
-            'but %s was given.',
+          'Option "fields" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));
@@ -282,8 +282,8 @@ describe('FieldsClauseTool', function () {
       const throwable = v => () => FieldsClauseTool.normalizeFieldsClause(v);
       const error = v =>
         format(
-          'Option "fields" must be a non-empty String or an Array, ' +
-            'but %s was given.',
+          'Option "fields" must be a non-empty String or an Array ' +
+            'of non-empty String, but %s was given.',
           v,
         );
       expect(throwable('')).to.throw(error('""'));

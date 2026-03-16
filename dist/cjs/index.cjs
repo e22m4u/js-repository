@@ -3096,7 +3096,7 @@ var init_fields_clause_tool = __esm({
       filter(input, modelName, clause) {
         if (!input || typeof input !== "object") {
           throw new InvalidArgumentError(
-            'Parameter "input" must be an Object or an Array, but %v was given.',
+            'Parameter "input" must be an Object or an Array of Object, but %v was given.',
             input
           );
         }
@@ -3124,7 +3124,7 @@ var init_fields_clause_tool = __esm({
         const isArrayClause = Array.isArray(clause);
         if (!clause || typeof clause !== "string" && !isArrayClause) {
           throw new InvalidArgumentError(
-            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            'Option "fields" must be a non-empty String or an Array of non-empty String, but %v was given.',
             clause
           );
         }
@@ -3165,7 +3165,7 @@ var init_fields_clause_tool = __esm({
         const isArray = Array.isArray(clause);
         if (!clause || typeof clause !== "string" && !isArray) {
           throw new InvalidArgumentError(
-            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            'Option "fields" must be a non-empty String or an Array of non-empty String, but %v was given.',
             clause
           );
         }
@@ -3194,7 +3194,7 @@ var init_fields_clause_tool = __esm({
         const isArray = Array.isArray(clause);
         if (!clause || typeof clause !== "string" && !isArray) {
           throw new InvalidArgumentError(
-            'Option "fields" must be a non-empty String or an Array, but %v was given.',
+            'Option "fields" must be a non-empty String or an Array of non-empty String, but %v was given.',
             clause
           );
         }
