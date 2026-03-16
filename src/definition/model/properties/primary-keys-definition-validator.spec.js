@@ -42,7 +42,7 @@ describe('PrimaryKeysDefinitionValidator', function () {
         });
       expect(throwable).to.throw(
         'Model definition "model" must not have multiple primary keys, ' +
-          'but 2 keys given.',
+          'but 2 keys were given.',
       );
     });
 

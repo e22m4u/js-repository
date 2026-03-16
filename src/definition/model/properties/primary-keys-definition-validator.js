@@ -34,7 +34,7 @@ export class PrimaryKeysDefinitionValidator extends Service {
     if (propNames.length > 1) {
       throw new InvalidArgumentError(
         'Model definition %v must not have multiple primary keys, ' +
-          'but %v keys given.',
+          'but %v keys were given.',
         modelName,
         propNames.length,
       );

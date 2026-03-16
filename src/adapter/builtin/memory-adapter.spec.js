@@ -364,7 +364,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as String. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -391,7 +391,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {foo: 'string', bar: 10});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Boolean. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -419,7 +419,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Array. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -446,7 +446,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.create('model', {});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Object. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -1452,7 +1452,7 @@ describe('MemoryAdapter', function () {
         bar: 10,
       });
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as String. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -1482,7 +1482,7 @@ describe('MemoryAdapter', function () {
         bar: 10,
       });
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Boolean. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -1510,7 +1510,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Array. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +
@@ -1537,7 +1537,7 @@ describe('MemoryAdapter', function () {
       const adapter = new MemoryAdapter(dbs.container, {});
       const promise = adapter.replaceOrCreate('model', {});
       await expect(promise).to.be.rejectedWith(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key "myId" of the model "model" is defined as Object. ' +
           'Do provide your own value for the "myId" property, or change the type ' +
           'in the primary key definition to a Number that will be ' +

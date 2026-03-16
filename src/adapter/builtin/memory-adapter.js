@@ -57,7 +57,7 @@ export class MemoryAdapter extends Adapter {
     const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
     if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
       throw new InvalidArgumentError(
-        'Memory adapter able to generate only Number identifiers, ' +
+        'Memory adapter is able to generate only Number identifiers, ' +
           'but the primary key %v of the model %v is defined as %s. ' +
           'Do provide your own value for the %v property, or change the type ' +
           'in the primary key definition to a Number that will be ' +

@@ -400,9 +400,9 @@ var init_select_object_keys = __esm({
 
 // src/utils/exclude-object-keys.js
 function excludeObjectKeys(obj, keys) {
-  if (typeof obj !== "object" || !obj || Array.isArray(obj)) {
+  if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
     throw new InvalidArgumentError(
-      "Cannot exclude keys from a non-Object value, %v was given.",
+      'Parameter "obj" must be an Object, but %v was given.',
       obj
     );
   }
@@ -2623,7 +2623,7 @@ var init_primary_keys_definition_validator = __esm({
         }
         if (propNames.length > 1) {
           throw new InvalidArgumentError(
-            "Model definition %v must not have multiple primary keys, but %v keys given.",
+            "Model definition %v must not have multiple primary keys, but %v keys were given.",
             modelName,
             propNames.length
           );
@@ -3971,7 +3971,7 @@ var init_memory_adapter = __esm({
         const propType = modelUtils.getDataTypeByPropertyName(modelName, propName);
         if (propType !== DataType.ANY && propType !== DataType.NUMBER) {
           throw new InvalidArgumentError(
-            "Memory adapter able to generate only Number identifiers, but the primary key %v of the model %v is defined as %s. Do provide your own value for the %v property, or change the type in the primary key definition to a Number that will be generated automatically.",
+            "Memory adapter is able to generate only Number identifiers, but the primary key %v of the model %v is defined as %s. Do provide your own value for the %v property, or change the type in the primary key definition to a Number that will be generated automatically.",
             propName,
             modelName,
             capitalize(propType),
