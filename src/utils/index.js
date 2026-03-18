@@ -9,4 +9,3 @@ export * from './string-to-regexp.js';
 export * from './get-value-by-path.js';
 export * from './select-object-keys.js';
 export * from './exclude-object-keys.js';
-export * from './model-name-to-model-key.js';

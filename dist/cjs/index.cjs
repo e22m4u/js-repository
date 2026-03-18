@@ -419,24 +419,6 @@ var init_exclude_object_keys = __esm({
   }
 });
 
-// src/utils/model-name-to-model-key.js
-function modelNameToModelKey(modelName) {
-  if (!modelName || typeof modelName !== "string" || /\s/.test(modelName)) {
-    throw new InvalidArgumentError(
-      "Model name must be a non-empty String without spaces, but %v was given.",
-      modelName
-    );
-  }
-  return modelName.toLowerCase().replace(/[-_]/g, "");
-}
-var init_model_name_to_model_key = __esm({
-  "src/utils/model-name-to-model-key.js"() {
-    "use strict";
-    init_errors();
-    __name(modelNameToModelKey, "modelNameToModelKey");
-  }
-});
-
 // src/utils/index.js
 var init_utils = __esm({
   "src/utils/index.js"() {
@@ -452,7 +434,6 @@ var init_utils = __esm({
     init_get_value_by_path();
     init_select_object_keys();
     init_exclude_object_keys();
-    init_model_name_to_model_key();
   }
 });
 
@@ -1833,17 +1814,65 @@ var init_property_uniqueness = __esm({
   }
 });
 
+// src/definition/datasource/datasource-definition-validator.js
+var import_js_service6, DatasourceDefinitionValidator;
+var init_datasource_definition_validator = __esm({
+  "src/definition/datasource/datasource-definition-validator.js"() {
+    "use strict";
+    import_js_service6 = require("@e22m4u/js-service");
+    init_errors();
+    DatasourceDefinitionValidator = class extends import_js_service6.Service {
+      static {
+        __name(this, "DatasourceDefinitionValidator");
+      }
+      /**
+       * Validate.
+       *
+       * @param {object} datasourceDef
+       */
+      validate(datasourceDef) {
+        if (!datasourceDef || typeof datasourceDef !== "object") {
+          throw new InvalidArgumentError(
+            "Datasource definition must be an Object, but %v was given.",
+            datasourceDef
+          );
+        }
+        if (!datasourceDef.name || typeof datasourceDef.name !== "string") {
+          throw new InvalidArgumentError(
+            'Datasource definition requires the option "name" as a non-empty String, but %v was given.',
+            datasourceDef.name
+          );
+        }
+        if (!datasourceDef.adapter || typeof datasourceDef.adapter !== "string") {
+          throw new InvalidArgumentError(
+            'Datasource %v requires the option "adapter" as a non-empty String, but %v was given.',
+            datasourceDef.name,
+            datasourceDef.adapter
+          );
+        }
+      }
+    };
+  }
+});
+
+// src/definition/datasource/index.js
+var init_datasource = __esm({
+  "src/definition/datasource/index.js"() {
+    "use strict";
+    init_datasource_definition_validator();
+  }
+});
+
 // src/definition/definition-registry.js
-var import_js_service6, DefinitionRegistry;
+var import_js_service7, DefinitionRegistry;
 var init_definition_registry = __esm({
   "src/definition/definition-registry.js"() {
     "use strict";
-    import_js_service6 = require("@e22m4u/js-service");
-    init_utils();
+    import_js_service7 = require("@e22m4u/js-service");
     init_errors();
     init_model();
-    init_definition();
-    DefinitionRegistry = class extends import_js_service6.Service {
+    init_datasource();
+    DefinitionRegistry = class extends import_js_service7.Service {
       static {
         __name(this, "DefinitionRegistry");
       }
@@ -1901,14 +1930,11 @@ var init_definition_registry = __esm({
        */
       addModel(modelDef) {
         this.getService(ModelDefinitionValidator).validate(modelDef);
-        const modelKey = modelNameToModelKey(modelDef.name);
-        if (modelKey in this._models) {
-          throw new InvalidArgumentError(
-            "Model %v is already defined.",
-            modelDef.name
-          );
+        const name = modelDef.name;
+        if (name in this._models) {
+          throw new InvalidArgumentError("Model %v is already defined.", name);
         }
-        this._models[modelKey] = modelDef;
+        this._models[name] = modelDef;
       }
       /**
        * Has model.
@@ -1917,8 +1943,7 @@ var init_definition_registry = __esm({
        * @returns {boolean}
        */
       hasModel(name) {
-        const modelKey = modelNameToModelKey(name);
-        return Boolean(this._models[modelKey]);
+        return Boolean(this._models[name]);
       }
       /**
        * Get model.
@@ -1927,8 +1952,7 @@ var init_definition_registry = __esm({
        * @returns {object}
        */
       getModel(name) {
-        const modelKey = modelNameToModelKey(name);
-        const modelDef = this._models[modelKey];
+        const modelDef = this._models[name];
         if (!modelDef) {
           throw new InvalidArgumentError("Model %v is not defined.", name);
         }
@@ -1939,17 +1963,17 @@ var init_definition_registry = __esm({
 });
 
 // src/definition/model/model-definition-utils.js
-var import_js_service7, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, ModelDefinitionUtils;
+var import_js_service8, DEFAULT_PRIMARY_KEY_PROPERTY_NAME, ModelDefinitionUtils;
 var init_model_definition_utils = __esm({
   "src/definition/model/model-definition-utils.js"() {
     "use strict";
-    import_js_service7 = require("@e22m4u/js-service");
+    import_js_service8 = require("@e22m4u/js-service");
     init_properties();
     init_errors();
     init_definition_registry();
     init_utils();
     DEFAULT_PRIMARY_KEY_PROPERTY_NAME = "id";
-    ModelDefinitionUtils = class extends import_js_service7.Service {
+    ModelDefinitionUtils = class extends import_js_service8.Service {
       static {
         __name(this, "ModelDefinitionUtils");
       }
@@ -2383,15 +2407,15 @@ var init_model_definition_utils = __esm({
 });
 
 // src/definition/model/properties/required-property-validator.js
-var import_js_service8, RequiredPropertyValidator;
+var import_js_service9, RequiredPropertyValidator;
 var init_required_property_validator = __esm({
   "src/definition/model/properties/required-property-validator.js"() {
     "use strict";
     init_data_type();
-    import_js_service8 = require("@e22m4u/js-service");
+    import_js_service9 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
-    RequiredPropertyValidator = class extends import_js_service8.Service {
+    RequiredPropertyValidator = class extends import_js_service9.Service {
       static {
         __name(this, "RequiredPropertyValidator");
       }
@@ -2456,16 +2480,16 @@ var init_required_property_validator = __esm({
 });
 
 // src/definition/model/properties/property-uniqueness-validator.js
-var import_js_service9, PropertyUniquenessValidator;
+var import_js_service10, PropertyUniquenessValidator;
 var init_property_uniqueness_validator = __esm({
   "src/definition/model/properties/property-uniqueness-validator.js"() {
     "use strict";
-    import_js_service9 = require("@e22m4u/js-service");
+    import_js_service10 = require("@e22m4u/js-service");
     init_utils();
     init_property_uniqueness();
     init_errors();
     init_model_definition_utils();
-    PropertyUniquenessValidator = class extends import_js_service9.Service {
+    PropertyUniquenessValidator = class extends import_js_service10.Service {
       static {
         __name(this, "PropertyUniquenessValidator");
       }
@@ -2588,14 +2612,14 @@ var init_property_uniqueness_validator = __esm({
 });
 
 // src/definition/model/properties/primary-keys-definition-validator.js
-var import_js_service10, PrimaryKeysDefinitionValidator;
+var import_js_service11, PrimaryKeysDefinitionValidator;
 var init_primary_keys_definition_validator = __esm({
   "src/definition/model/properties/primary-keys-definition-validator.js"() {
     "use strict";
-    import_js_service10 = require("@e22m4u/js-service");
+    import_js_service11 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
-    PrimaryKeysDefinitionValidator = class extends import_js_service10.Service {
+    PrimaryKeysDefinitionValidator = class extends import_js_service11.Service {
       static {
         __name(this, "PrimaryKeysDefinitionValidator");
       }
@@ -2643,17 +2667,17 @@ var init_primary_keys_definition_validator = __esm({
 });
 
 // src/definition/model/properties/properties-definition-validator.js
-var import_js_service11, PropertiesDefinitionValidator;
+var import_js_service12, PropertiesDefinitionValidator;
 var init_properties_definition_validator = __esm({
   "src/definition/model/properties/properties-definition-validator.js"() {
     "use strict";
-    import_js_service11 = require("@e22m4u/js-service");
+    import_js_service12 = require("@e22m4u/js-service");
     init_data_type();
     init_utils();
     init_property_uniqueness();
     init_errors();
     init_primary_keys_definition_validator();
-    PropertiesDefinitionValidator = class extends import_js_service11.Service {
+    PropertiesDefinitionValidator = class extends import_js_service12.Service {
       static {
         __name(this, "PropertiesDefinitionValidator");
       }
@@ -2908,14 +2932,14 @@ var init_model_definition = __esm({
 });
 
 // src/definition/model/model-data-sanitizer.js
-var import_js_service12, ModelDataSanitizer;
+var import_js_service13, ModelDataSanitizer;
 var init_model_data_sanitizer = __esm({
   "src/definition/model/model-data-sanitizer.js"() {
     "use strict";
-    import_js_service12 = require("@e22m4u/js-service");
+    import_js_service13 = require("@e22m4u/js-service");
     init_errors();
     init_model_definition_utils();
-    ModelDataSanitizer = class extends import_js_service12.Service {
+    ModelDataSanitizer = class extends import_js_service13.Service {
       static {
         __name(this, "ModelDataSanitizer");
       }
@@ -2948,15 +2972,15 @@ var init_model_data_sanitizer = __esm({
 });
 
 // src/definition/model/model-definition-validator.js
-var import_js_service13, ModelDefinitionValidator;
+var import_js_service14, ModelDefinitionValidator;
 var init_model_definition_validator = __esm({
   "src/definition/model/model-definition-validator.js"() {
     "use strict";
-    import_js_service13 = require("@e22m4u/js-service");
+    import_js_service14 = require("@e22m4u/js-service");
     init_errors();
     init_relations();
     init_properties();
-    ModelDefinitionValidator = class extends import_js_service13.Service {
+    ModelDefinitionValidator = class extends import_js_service14.Service {
       static {
         __name(this, "ModelDefinitionValidator");
       }
@@ -3040,55 +3064,6 @@ var init_model = __esm({
     init_model_data_sanitizer();
     init_model_definition_utils();
     init_model_definition_validator();
-  }
-});
-
-// src/definition/datasource/datasource-definition-validator.js
-var import_js_service14, DatasourceDefinitionValidator;
-var init_datasource_definition_validator = __esm({
-  "src/definition/datasource/datasource-definition-validator.js"() {
-    "use strict";
-    import_js_service14 = require("@e22m4u/js-service");
-    init_errors();
-    DatasourceDefinitionValidator = class extends import_js_service14.Service {
-      static {
-        __name(this, "DatasourceDefinitionValidator");
-      }
-      /**
-       * Validate.
-       *
-       * @param {object} datasourceDef
-       */
-      validate(datasourceDef) {
-        if (!datasourceDef || typeof datasourceDef !== "object") {
-          throw new InvalidArgumentError(
-            "Datasource definition must be an Object, but %v was given.",
-            datasourceDef
-          );
-        }
-        if (!datasourceDef.name || typeof datasourceDef.name !== "string") {
-          throw new InvalidArgumentError(
-            'Datasource definition requires the option "name" as a non-empty String, but %v was given.',
-            datasourceDef.name
-          );
-        }
-        if (!datasourceDef.adapter || typeof datasourceDef.adapter !== "string") {
-          throw new InvalidArgumentError(
-            'Datasource %v requires the option "adapter" as a non-empty String, but %v was given.',
-            datasourceDef.name,
-            datasourceDef.adapter
-          );
-        }
-      }
-    };
-  }
-});
-
-// src/definition/datasource/index.js
-var init_datasource = __esm({
-  "src/definition/datasource/index.js"() {
-    "use strict";
-    init_datasource_definition_validator();
   }
 });
 
@@ -4664,7 +4639,6 @@ var init_repository_registry = __esm({
     "use strict";
     import_js_service26 = require("@e22m4u/js-service");
     init_repository();
-    init_utils();
     init_errors();
     RepositoryRegistry = class extends import_js_service26.Service {
       static {
@@ -4704,13 +4678,12 @@ var init_repository_registry = __esm({
        * @returns {Repository}
        */
       getRepository(modelName) {
-        const modelKey = modelNameToModelKey(modelName);
-        let repository = this._repositories[modelKey];
+        let repository = this._repositories[modelName];
         if (repository) {
           return repository;
         }
         repository = new this._repositoryCtor(this.container, modelName);
-        this._repositories[modelKey] = repository;
+        this._repositories[modelName] = repository;
         return repository;
       }
     };
@@ -6073,7 +6046,6 @@ __export(index_exports, {
   isPlainObject: () => isPlainObject,
   isPromise: () => isPromise,
   likeToRegexp: () => likeToRegexp,
-  modelNameToModelKey: () => modelNameToModelKey,
   selectObjectKeys: () => selectObjectKeys,
   singularize: () => singularize,
   stringToRegexp: () => stringToRegexp
@@ -6171,7 +6143,6 @@ init_repository2();
   isPlainObject,
   isPromise,
   likeToRegexp,
-  modelNameToModelKey,
   selectObjectKeys,
   singularize,
   stringToRegexp

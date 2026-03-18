@@ -35,25 +35,6 @@ describe('RepositoryRegistry', function () {
       expect(repA2).to.be.not.eq(repB2);
     });
 
-    it('should ignore naming convention of the model name', function () {
-      const dbs = new DatabaseSchema();
-      const modelName = 'userProfileDetails';
-      dbs.defineDatasource({name: 'datasource', adapter: 'memory'});
-      dbs.defineModel({name: modelName, datasource: 'datasource'});
-      const reg = dbs.getService(RepositoryRegistry);
-      const rep = reg.getRepository(modelName);
-      const modelNames = [
-        'UserProfileDetails',
-        'user-profile-details',
-        'user_profile_details',
-        'USER-PROFILE-DETAILS',
-        'USER_PROFILE_DETAILS',
-        'USERPROFILEDETAILS',
-        'userprofiledetails',
-      ];
-      modelNames.forEach(v => expect(reg.getRepository(v)).to.be.eq(rep));
-    });
-
     it('should respect numbers in the model name', function () {
       const dbs = new DatabaseSchema();
       dbs.defineDatasource({name: 'datasource', adapter: 'memory'});

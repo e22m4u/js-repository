@@ -1,8 +1,7 @@
 import {Service} from '@e22m4u/js-service';
-import {modelNameToModelKey} from '../utils/index.js';
 import {InvalidArgumentError} from '../errors/index.js';
 import {ModelDefinitionValidator} from './model/index.js';
-import {DatasourceDefinitionValidator} from '../definition/index.js';
+import {DatasourceDefinitionValidator} from './datasource/index.js';
 
 /**
  * Definition registry.
@@ -67,14 +66,11 @@ export class DefinitionRegistry extends Service {
    */
   addModel(modelDef) {
     this.getService(ModelDefinitionValidator).validate(modelDef);
-    const modelKey = modelNameToModelKey(modelDef.name);
-    if (modelKey in this._models) {
-      throw new InvalidArgumentError(
-        'Model %v is already defined.',
-        modelDef.name,
-      );
+    const name = modelDef.name;
+    if (name in this._models) {
+      throw new InvalidArgumentError('Model %v is already defined.', name);
     }
-    this._models[modelKey] = modelDef;
+    this._models[name] = modelDef;
   }
 
   /**
@@ -84,8 +80,7 @@ export class DefinitionRegistry extends Service {
    * @returns {boolean}
    */
   hasModel(name) {
-    const modelKey = modelNameToModelKey(name);
-    return Boolean(this._models[modelKey]);
+    return Boolean(this._models[name]);
   }
 
   /**
@@ -95,8 +90,7 @@ export class DefinitionRegistry extends Service {
    * @returns {object}
    */
   getModel(name) {
-    const modelKey = modelNameToModelKey(name);
-    const modelDef = this._models[modelKey];
+    const modelDef = this._models[name];
     if (!modelDef) {
       throw new InvalidArgumentError('Model %v is not defined.', name);
     }
