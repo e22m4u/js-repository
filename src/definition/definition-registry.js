@@ -60,6 +60,15 @@ export class DefinitionRegistry extends Service {
   }
 
   /**
+   * Get datasource names.
+   *
+   * @returns {string[]}
+   */
+  getDatasourceNames() {
+    return Object.keys(this._datasources);
+  }
+
+  /**
    * Add model.
    *
    * @param {object} modelDef
@@ -95,5 +104,14 @@ export class DefinitionRegistry extends Service {
       throw new InvalidArgumentError('Model %v is not defined.', name);
     }
     return modelDef;
+  }
+
+  /**
+   * Get model names.
+   *
+   * @returns {string[]}
+   */
+  getModelNames() {
+    return Object.keys(this._models);
   }
 }

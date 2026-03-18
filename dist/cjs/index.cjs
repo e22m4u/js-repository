@@ -1924,6 +1924,14 @@ var init_definition_registry = __esm({
         return datasourceDef;
       }
       /**
+       * Get datasource names.
+       *
+       * @returns {string[]}
+       */
+      getDatasourceNames() {
+        return Object.keys(this._datasources);
+      }
+      /**
        * Add model.
        *
        * @param {object} modelDef
@@ -1957,6 +1965,14 @@ var init_definition_registry = __esm({
           throw new InvalidArgumentError("Model %v is not defined.", name);
         }
         return modelDef;
+      }
+      /**
+       * Get model names.
+       *
+       * @returns {string[]}
+       */
+      getModelNames() {
+        return Object.keys(this._models);
       }
     };
   }

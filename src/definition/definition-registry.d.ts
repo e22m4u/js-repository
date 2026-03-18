@@ -28,6 +28,11 @@ export declare class DefinitionRegistry extends Service {
   getDatasource(name: string): DatasourceDefinition;
 
   /**
+   * Get datasource names.
+   */
+  getDatasourceNames(): string[];
+
+  /**
    * Add model.
    *
    * @param modelDef
@@ -47,4 +52,9 @@ export declare class DefinitionRegistry extends Service {
    * @param name
    */
   getModel(name: string): ModelDefinition;
+
+  /**
+   * Get model names.
+   */
+  getModelNames(): string[];
 }

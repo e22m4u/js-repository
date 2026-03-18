@@ -60,6 +60,24 @@ describe('DefinitionRegistry', function () {
     });
   });
 
+  describe('getDatasourceNames', function () {
+    it('should return an array of datasource names in the definition order', function () {
+      const datasource1 = {name: 'datasource1', adapter: 'adapter'};
+      const datasource2 = {name: 'datasource2', adapter: 'adapter'};
+      const datasource3 = {name: 'datasource3', adapter: 'adapter'};
+      const S = new DefinitionRegistry();
+      expect(S.getDatasourceNames()).to.be.eql([]);
+      S.addDatasource(datasource1);
+      S.addDatasource(datasource2);
+      S.addDatasource(datasource3);
+      expect(S.getDatasourceNames()).to.be.eql([
+        datasource1.name,
+        datasource2.name,
+        datasource3.name,
+      ]);
+    });
+  });
+
   describe('addModel', function () {
     it('should add the given model to the registry', function () {
       const model = {name: 'model'};
@@ -112,6 +130,24 @@ describe('DefinitionRegistry', function () {
       const S = new DefinitionRegistry();
       const throwable = () => S.getModel('undefined');
       expect(throwable).to.throw('Model "undefined" is not defined.');
+    });
+  });
+
+  describe('getModelNames', function () {
+    it('should return an array of model names in the definition order', function () {
+      const model1 = {name: 'model1'};
+      const model2 = {name: 'model2'};
+      const model3 = {name: 'model3'};
+      const S = new DefinitionRegistry();
+      expect(S.getModelNames()).to.be.eql([]);
+      S.addModel(model1);
+      S.addModel(model2);
+      S.addModel(model3);
+      expect(S.getModelNames()).to.be.eql([
+        model1.name,
+        model2.name,
+        model3.name,
+      ]);
     });
   });
 });
