@@ -50,10 +50,15 @@ npm install @e22m4u/js-repository
 
 Опционально устанавливается нужный адаптер.
 
-| адаптер   | описание                                        | установка                                                                  |
+| адаптер   | описание                                        |                                                                            |
 |-----------|-------------------------------------------------|----------------------------------------------------------------------------|
 | `memory`  | Виртуальная база в памяти процесса              | *встроенный*                                                               |
-| `mongodb` | MongoDB - документо-ориентированная база данных | [npm](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) |
+| `mongodb` | MongoDB - документо-ориентированная база данных | [*установка*](https://www.npmjs.com/package/@e22m4u/js-repository-mongodb-adapter) |
+
+**Утилиты**
+
+- [@e22m4u/js-repository-json-schema](https://www.npmjs.com/package/@e22m4u/js-repository-json-schema)  
+  JSON Schema генератор по моделям репозитория
 
 ## Импорт
 
