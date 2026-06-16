@@ -61,7 +61,7 @@ npm install @e22m4u/js-repository
 **Утилиты**
 
 - [@e22m4u/js-repository-json-schema](https://www.npmjs.com/package/@e22m4u/js-repository-json-schema)  
-  *JSON Schema генератор по моделям репозитория*
+  *Генератор JSON Schema для моделей репозитория*
 
 ## Импорт
 
