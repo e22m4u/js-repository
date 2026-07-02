@@ -101,7 +101,7 @@ const {DatabaseSchema} = require('@e22m4u/js-repository');
 ```mermaid
 flowchart TD
 
-  A[экземпляр DatabaseSchema]
+  A[DatabaseSchema]
   subgraph Базы данных
     B[Источник данных 1]
     C[Источник данных 2]
