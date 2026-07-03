@@ -425,7 +425,7 @@ dbs.defineModel({
 dbs.defineModel({
   name: 'user',
   properties: {
-    // краткая форма
+    // краткая форма (только тип)
     name: DataType.STRING,
     // расширенное определение
     email: {
