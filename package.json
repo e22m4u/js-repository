@@ -12,10 +12,10 @@
     "repository",
     "relations"
   ],
-  "homepage": "https://gitverse.ru/e22m4u/js-repository",
+  "homepage": "https://github.com/e22m4u/js-repository",
   "repository": {
     "type": "git",
-    "url": "git+https://gitverse.ru/e22m4u/js-repository.git"
+    "url": "git+https://github.com/e22m4u/js-repository.git"
   },
   "type": "module",
   "types": "./src/index.d.ts",
